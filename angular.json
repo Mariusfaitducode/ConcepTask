@@ -80,8 +80,9 @@
               "browserTarget": "app:build:development"
             },
             "ci": {
-              "progress": false
+              "browserTarget": "app:build:ci"
             }
+            
           },
           "defaultConfiguration": "development"
         },

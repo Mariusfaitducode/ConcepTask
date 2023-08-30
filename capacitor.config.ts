@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'fr.marscode.todolist',
   appName: 'ToDoList',
   webDir: 'www',
   server: {
