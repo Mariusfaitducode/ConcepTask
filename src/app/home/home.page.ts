@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { FirebaseService } from '../service/firebase.service';
 
+import { MenuController } from '@ionic/angular';
+
 //import { AngularFireDatabase } from '@angular/fire/database';
 
 
@@ -12,7 +14,7 @@ import { FirebaseService } from '../service/firebase.service';
 })
 export class HomePage {
 
-  constructor(private service : FirebaseService) {}
+  constructor(private service : FirebaseService, private menuCtrl: MenuController) {}
 
   todos : any[] = []
 
@@ -21,6 +23,14 @@ export class HomePage {
       console.log(tasks);
       this.todos = tasks;
     });
+  }
+
+  openMenu() {
+    this.menuCtrl.open();
+  }
+
+  closeMenu() {
+    this.menuCtrl.close();
   }
 
   // app = initializeApp(environnement.firebaseConfig);
