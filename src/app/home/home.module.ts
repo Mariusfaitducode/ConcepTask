@@ -7,6 +7,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { TodoCardComponent } from '../component/todo-card/todo-card.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -14,6 +15,7 @@ import { TodoCardComponent } from '../component/todo-card/todo-card.component';
 @NgModule({
   
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     IonicModule,
@@ -22,7 +24,7 @@ import { TodoCardComponent } from '../component/todo-card/todo-card.component';
   ],
   declarations: [
     HomePage,
-    TodoCardComponent
+    
   ]
 })
 export class HomePageModule {}

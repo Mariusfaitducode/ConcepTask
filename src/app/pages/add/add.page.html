@@ -12,28 +12,113 @@
 <ion-content [fullscreen]="true">
   
 
-  <ion-list>
-    <ion-item>
-      <ion-label position="floating">Title</ion-label>
-      <ion-input type="text" [(ngModel)]="todo.title"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Description</ion-label>
-      <ion-textarea [(ngModel)]="todo.description"></ion-textarea>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Due date</ion-label>
-      <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="todo.dueDate"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Priority</ion-label>
-      <ion-select [(ngModel)]="todo.priority">
-        <ion-select-option value="low">Low</ion-select-option>
-        <ion-select-option value="medium">Medium</ion-select-option>
-        <ion-select-option value="high">High</ion-select-option>
+  <ion-list  [inset]="true" >
+
+    <ion-row>
+      <!-- <ion-label position="floating">Type</ion-label> -->
+
+      <ion-select [(ngModel)]="newTodo.type" placeholder="Type">
+        <ion-select-option value="todo">Todo</ion-select-option>
+        <ion-select-option value="todo list">Todo list</ion-select-option>
+        <ion-select-option value="project">Project</ion-select-option>
+        <ion-select-option value="reminder">Reminder</ion-select-option>
       </ion-select>
-    </ion-item>
+    </ion-row>
+
+    <ion-row>
+      <ion-input type="text" [(ngModel)]="newTodo.title" placeholder="Title"></ion-input>
+    </ion-row>
+
+    <ion-row>
+      <!-- <ion-label position="floating">Description</ion-label> -->
+      <ion-textarea [(ngModel)]="newTodo.description" placeholder="Description"></ion-textarea>
+    </ion-row>
+
     
+
+      <!-- <div class="date-selector">
+       
+      </div> -->
+        <!-- <ion-input type="date" placeholder="Date"></ion-input> -->
+
+        <!-- <ion-input type="text" placeholder="Date"></ion-input>
+
+        <ion-datetime *ngIf="showDate" (blur)="showDate = false" displayFormat="YYYY-MM-DDTHH:mm" [(ngModel)]="newTodo.dueDate"></ion-datetime> -->
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="datetime"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    <ion-list class="date-selector">
+
+      <ion-input type="date" placeholder="Date" [(ngModel)]="newTodo.date" (click)="openDatePicker()"></ion-input>
+      
+
+      <!-- <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newTodo.date"></ion-datetime> -->
+
+      
+      <ion-input type="date" placeholder="Time"></ion-input>
+
+
+    </ion-list>
+
+
+
+    <div *ngIf="newTodo.type !='todo'">
+
+      <ion-item>
+
+        <ion-text>Todos</ion-text>
+  
+        <ion-icon slot="end" name="add" (click)="canAdd = true"></ion-icon>
+  
+      </ion-item>
+
+      <!-- Créer un nouvel élément -->
+
+      <div *ngIf="canAdd" >
+
+        <ion-card class="input-todo">
+
+          <!-- <ion-label position="floating">Title</ion-label> -->
+          <ion-input type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Title">
+
+          </ion-input>
+          <ion-icon name="checkmark-outline" (click)="addOnList()"></ion-icon>
+
+        </ion-card>
+        
+
+
+      </div>
+      
+
+      <!-- Afficher élément créé -->
+      <ion-list>
+  
+        <ion-row *ngFor="let todo of todoList">
+          
+          <app-todo-card [todo]="todo"></app-todo-card>
+        </ion-row >
+        
+    
+      </ion-list> 
+
+    </div>
+
+    
+
+      
+
   </ion-list>
+
+  
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-button (click)="saveTodo()">
+      Ajouter
+    </ion-button>
+  </ion-fab>
+  
 
 </ion-content>

@@ -1,0 +1,27 @@
+
+
+.date-selector{
+    display: flex;
+    flex-direction: row;
+}
+
+.date-selector ion-input{
+    width: 50%;
+}
+
+.input-todo{
+    background-color: var(--ion-color-step-200);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+    font-size: 18px;
+}
+
+ion-list, ion-item{
+    background-color: var(--ion-background-color);
+}
+
+

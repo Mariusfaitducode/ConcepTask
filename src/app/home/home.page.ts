@@ -4,6 +4,10 @@ import { FirebaseService } from '../service/firebase.service';
 
 import { MenuController } from '@ionic/angular';
 
+// import { NavParams } from '@ionic/angular';
+
+import { ActivatedRoute } from '@angular/router';
+
 //import { AngularFireDatabase } from '@angular/fire/database';
 
 
@@ -14,16 +18,40 @@ import { MenuController } from '@ionic/angular';
 })
 export class HomePage {
 
-  constructor(private service : FirebaseService, private menuCtrl: MenuController) {}
+  constructor(
+    private menuCtrl : MenuController,
+    private route : ActivatedRoute) {}
 
   todos : any[] = []
 
   ngOnInit() {
-    this.service.getTasks().then((tasks: any[]) => {
-      console.log(tasks);
-      this.todos = tasks;
+
+    this.loadTodos();
+
+    
+
+    this.route.queryParams.subscribe(params => {
+      const newTodo = history.state.newTodo;
+
+      if (newTodo) {
+
+        this.todos.push(newTodo);
+        this.setTodos();
+      }
     });
+
+    this.loadTodos();
   }
+
+  loadTodos(){
+    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    console.log(this.todos)
+  }
+
+  setTodos(){
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+
 
   openMenu() {
     this.menuCtrl.open();

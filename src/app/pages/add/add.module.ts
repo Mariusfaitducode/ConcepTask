@@ -8,12 +8,17 @@ import { AddPageRoutingModule } from './add-routing.module';
 
 import { AddPage } from './add.page';
 
+import { TodoCardComponent } from '../../component/todo-card/todo-card.component';
+import { AppModule } from 'src/app/app.module';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 @NgModule({
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     IonicModule,
-    AddPageRoutingModule
+    AddPageRoutingModule,
   ],
   declarations: [AddPage]
 })
