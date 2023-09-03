@@ -1,15 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
+      <ion-back-button default-href="#" routerLink="/home" (click)="actualizeTodo()"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{todo.title}}</ion-title>
+
+    <div class="toolbar-content">
+
+      <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input>
+
+      <ion-select [(ngModel)]="todo.type" aria-label="Type" class="select-right">
+        <ion-select-option value="todo">Todo</ion-select-option>
+        <ion-select-option value="todo list">Todo list</ion-select-option>
+        <ion-select-option value="project">Project</ion-select-option>
+        <ion-select-option value="reminder">Reminder</ion-select-option>
+      </ion-select>
+
+    </div>
+    <!-- <ion-title>{{todo.title}}</ion-title> -->
+    
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   
-  <ion-list  [inset]="true" >
+  <ion-list class="list-page" >
+
+    <ion-row>
+      <ion-buttons class="middle-buttons">
+
+        <button class="middle-button" (click)="deleteTodo()">
+
+          <ion-icon name="trash-outline" color="danger" ></ion-icon>
+
+        </button>
+
+        <button class="middle-button" disabled>
+
+          <ion-icon name="checkmark-outline" color="primary"></ion-icon>
+
+        </button>
+
+      
+      </ion-buttons>
+    </ion-row>
 
     <ion-item >
       <ion-label position="floating" color="primary">Description</ion-label>
@@ -35,32 +69,29 @@
     </ion-row>
 
    
-    <ion-row>
-      <ion-buttons class="middle-buttons">
-
-        <button class="middle-button" (click)="deleteTodo()">
-
-          <ion-icon name="trash-outline" color="danger"></ion-icon>
-
-        </button>
-
-        <button class="middle-button">
-
-          <ion-icon name="checkmark-outline" color="primary"></ion-icon>
-
-        </button>
-
-      
-      </ion-buttons>
-    </ion-row>
+    
 
     <div *ngIf="todo.type !='todo'">
 
-      <ion-list>
-        <ion-row *ngFor="let todo of todo.list">
-          <app-todo-card [todo]="todo"></app-todo-card>
-        </ion-row >    
+
+      <ion-list class="sub-todo-list">
+
+        <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
+
+        <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+
+          <div *ngFor="let subTodo of todo.list; let id = index">
+            <app-sub-todo [todo]="todo" [subTodo]="subTodo" [index]="id" [page]="'todo'"></app-sub-todo>
+          </div > 
+
+        </ion-reorder-group>
+           
       </ion-list> 
+
+      <ion-row class="new-sub-todo">
+        <ion-input type="text" placeholder="Sub task"></ion-input>
+        <ion-icon name="add"></ion-icon>
+      </ion-row>
 
     </div>
   </ion-list>

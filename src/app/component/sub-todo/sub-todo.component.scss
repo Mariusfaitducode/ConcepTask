@@ -1,6 +1,9 @@
 
 
 ion-card-content{
+
+    width: 100%;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -12,4 +15,14 @@ ion-card-content{
 ion-icon{
     font-size: 30px;
     color: var(--ion-color-step-600);
+}
+
+.todo-page ion-icon{
+
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+ion-title{
+    font-size: 18px;
 }

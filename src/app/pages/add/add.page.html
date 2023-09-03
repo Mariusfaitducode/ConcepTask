@@ -42,58 +42,36 @@
       <ion-textarea [(ngModel)]="newTodo.description"></ion-textarea>
     </ion-item>
 
-    <!-- <div class="date-selector">   
-      </div> -->
-        <!-- <ion-input type="date" placeholder="Date"></ion-input> -->
+    <ion-item >
+      <ion-label position="floating">Due date</ion-label>
 
-        <!-- <ion-input type="text" placeholder="Date"></ion-input>
+      <div class="date-selector">
+        <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>
+      <!-- <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newTodo.date"></ion-datetime> -->
+        <ion-input type="time" placeholder="Time"></ion-input>
 
-        <ion-datetime *ngIf="showDate" (blur)="showDate = false" displayFormat="YYYY-MM-DDTHH:mm" [(ngModel)]="newTodo.dueDate"></ion-datetime> -->
-
-      <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime id="datetime"></ion-datetime>
-        </ng-template>
-      </ion-modal>
-
-      <ion-item >
-        <ion-label position="floating">Due date</ion-label>
-  
-        <div class="date-selector">
-          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>
-        <!-- <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newTodo.date"></ion-datetime> -->
-          <ion-input type="time" placeholder="Time"></ion-input>
-  
-        </div>
-        
-        
-      </ion-item>
+      </div>
+    </ion-item>
 
     <ion-row>
       <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
     </ion-row>
 
-    
-
     <div *ngIf="newTodo.type !='todo'">
 
       <ion-row class="new-sub-todo">
-      
         <ion-input type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub task"></ion-input>
         <ion-icon name="add" (click)="addOnList()"></ion-icon>
       </ion-row>
-
-      
 
       <!-- Créer un nouvel élément -->
       
       <!-- Afficher élément créé -->
       <ion-list>
 
-
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-          <div *ngFor="let todo of todoList">
-            <app-sub-todo [todo]="todo"></app-sub-todo>
+          <div *ngFor="let subTodo of newTodo.list; let id = index">
+            <app-sub-todo [todo]="newTodo" [subTodo]="subTodo" [index]="id" [page]="'add'"></app-sub-todo>
           </div > 
 
         </ion-reorder-group>

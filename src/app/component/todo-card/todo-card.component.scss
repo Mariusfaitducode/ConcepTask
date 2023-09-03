@@ -4,8 +4,52 @@ ion-card{
     // width: 100%;
 
     margin: 5px 10px;
+    // background: linear-gradient(to bottom, yellow 50%, white 50%);
 }
+
+.custom-card {
+    position: relative;
+    // background: transparent;
+    padding: 0;
+  
+    /* Hauteur de la card */
+    // height: 200px; /* Ajustez la hauteur selon vos besoins */
+  
+    /* Dégradé vertical */
+    // background: linear-gradient(to bottom, yellow 50%, white 50%);
+  }
+
+.custom-background{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+
+    transform: translate(100px);
+
+    /* Dégradé vertical */
+    // background: linear-gradient(to bottom, yellow 50%, white 50%);
+}
+  
+
 
 ion-card-content{
     display: flex;
+}
+
+.home-card{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-card{
+    // width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

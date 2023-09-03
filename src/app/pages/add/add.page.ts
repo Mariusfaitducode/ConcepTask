@@ -13,12 +13,14 @@ import { ItemReorderEventDetail } from '@ionic/core';
 })
 export class AddPage implements OnInit {
 
-  newTodo: any = {}
+  newTodo: any = {
+    list: []
+  }
 
   canAdd: boolean = false;
 
 
-  todoList: any[] = [];
+  // todoList: any[] = [];
 
   newTodoOnListTitle: string = "";
 
@@ -40,16 +42,12 @@ export class AddPage implements OnInit {
   }
 
   addOnList(){
-
     this.canAdd = false;
 
-
-
-
-    this.todoList.push({
+    this.newTodo.list.push({
       title: this.newTodoOnListTitle,
     });
-    
+    console.log(this.newTodo);
   }
 
 
@@ -61,6 +59,8 @@ export class AddPage implements OnInit {
     // Finish the reorder and position the item in the DOM based on
     // where the gesture ended. This method can also be called directly
     // by the reorder group
-    ev.detail.complete();
+    ev.detail.complete(this.newTodo.list);
+
+    console.log(this.newTodo.list);
   }
 }

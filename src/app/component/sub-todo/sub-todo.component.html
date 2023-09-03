@@ -8,9 +8,21 @@
 
     <ion-reorder ></ion-reorder>
 
-    <ion-title >{{todo.title}}</ion-title>
+    <ion-title >{{subTodo.title}}</ion-title>
 
-    <ion-icon name="close-outline"></ion-icon>
+    <div *ngIf="page == 'add'">
+      <ion-icon name="close-outline" (click)="deleteSubTodo()"></ion-icon>
+    </div>
+
+    <div *ngIf="page == 'todo'" class="todo-page">
+      
+      <ion-icon name="trash-outline" color="danger" (click)="deleteSubTodo()"></ion-icon>
+      
+      <ion-checkbox></ion-checkbox>
+      
+    </div>
+
+    
 
   </ion-card-content>
  

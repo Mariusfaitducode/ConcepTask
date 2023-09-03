@@ -1,4 +1,26 @@
 
+.title-input{
+    width: 100%;
+    font-size: 20px;
+
+    margin-left: 15px;
+    
+}
+
+.select-right{
+    // align-self: flex-end;
+
+    margin-right: 20px;
+    width: fit-content;
+}
+
+.toolbar-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
 .description{
     overflow: none;
@@ -31,6 +53,14 @@ ion-label{
     padding-bottom: 20px;
 }
 
+.list-page{
+    margin: 12px 16px 0px 16px;
+
+    padding-top: 16px;
+}
+
+
+
 ion-list, ion-item{
     background-color: var(--ion-background-color);
 }
@@ -46,6 +76,12 @@ ion-list, ion-item{
 }
 
 .middle-buttons{
+
+    position: absolute;
+
+    top: 5px;
+    right: -5px;
+    z-index: 20;
 
     width: 100%;
 
@@ -71,4 +107,35 @@ ion-list, ion-item{
 
 .middle-button:hover{
     background: var(--ion-color-step-100);
+}
+
+
+.sub-todo-list{
+    margin-top: 20px;
+}
+
+.sub-todos-label{
+    font-size: 12px;
+    margin-left: 16px;
+}
+
+.new-sub-todo{
+    
+    padding: 0px 16px;
+    font-size: 18px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-sub-todo ion-input{
+    
+    width: 80%;
+}
+
+.new-sub-todo ion-icon{
+    font-size: 30px;
+    color: var(--ion-color-step-600);
 }
