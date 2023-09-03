@@ -9,9 +9,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class TodoPage implements OnInit {
 
 
-  //todos = [];
+  todos = [];
 
   todo : any = {};
+
+  index : number = 0;
 
   constructor(private route : ActivatedRoute) { }
 
@@ -20,20 +22,29 @@ export class TodoPage implements OnInit {
 
     this.route.params.subscribe((params) => {
 
-      const id = +params['id'];
-      console.log(id); // Check if the id is correct
+      this.index = +params['id'];
+      console.log(this.index); // Check if the id is correct
   
-      this.loadTodo(id);
+      this.loadTodo(this.index);
     });
   }
 
 
   loadTodo(id : number){
-    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    console.log(todos)
+    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    console.log(this.todos)
 
-    this.todo = todos[id]
+    this.todo = this.todos[id]
 
+  }
+
+  deleteTodo(){
+
+
+
+    this.todos.splice(this.index, 1);
+
+    localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 
 

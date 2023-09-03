@@ -6,38 +6,43 @@
     
     <ion-title size="large">New todo</ion-title>
     <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
+
+    <ion-button class="save-button" slot="end" fill="clear" (click)="saveTodo()">
+      Save
+    </ion-button>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   
-
   <ion-list  [inset]="true" >
 
-    <ion-row>
+    <ion-row >
       <!-- <ion-label position="floating">Type</ion-label> -->
 
-      <ion-select [(ngModel)]="newTodo.type" placeholder="Type">
+      <!-- <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input> -->
+      
+      <ion-select label="Type" label-placement="floating" [(ngModel)]="newTodo.type" aria-label="Type" style="width: 100%; padding-left: 16px;">
         <ion-select-option value="todo">Todo</ion-select-option>
         <ion-select-option value="todo list">Todo list</ion-select-option>
         <ion-select-option value="project">Project</ion-select-option>
         <ion-select-option value="reminder">Reminder</ion-select-option>
       </ion-select>
+
     </ion-row>
 
-    <ion-row>
-      <ion-input type="text" [(ngModel)]="newTodo.title" placeholder="Title"></ion-input>
-    </ion-row>
+    <ion-item>
+      <ion-label position="floating">Title</ion-label>
+      <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
+    </ion-item>
 
-    <ion-row>
-      <!-- <ion-label position="floating">Description</ion-label> -->
-      <ion-textarea [(ngModel)]="newTodo.description" placeholder="Description"></ion-textarea>
-    </ion-row>
+    <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-textarea [(ngModel)]="newTodo.description"></ion-textarea>
+    </ion-item>
 
-    
-
-      <!-- <div class="date-selector">
-       
+    <!-- <div class="date-selector">   
       </div> -->
         <!-- <ion-input type="date" placeholder="Date"></ion-input> -->
 
@@ -50,61 +55,53 @@
           <ion-datetime id="datetime"></ion-datetime>
         </ng-template>
       </ion-modal>
-    <ion-list class="date-selector">
 
-      
+      <ion-item >
+        <ion-label position="floating">Due date</ion-label>
+  
+        <div class="date-selector">
+          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>
+        <!-- <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newTodo.date"></ion-datetime> -->
+          <ion-input type="time" placeholder="Time"></ion-input>
+  
+        </div>
+        
+        
+      </ion-item>
 
-      <ion-input type="date" placeholder="MM/DD/YYYY" onfocus="(this.type='date')" [(ngModel)]="newTodo.date" (click)="openDatePicker()"></ion-input>
-      
+    <ion-row>
+      <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
+    </ion-row>
 
-      <!-- <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newTodo.date"></ion-datetime> -->
-
-      
-      <ion-input type="time" placeholder="Time"></ion-input>
-
-
-    </ion-list>
-
-
+    
 
     <div *ngIf="newTodo.type !='todo'">
 
-      <ion-item>
-
+      <ion-row class="new-sub-todo">
+      
         <ion-input type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub task"></ion-input>
-  
-        <ion-icon slot="end" name="add" (click)="addOnList()"></ion-icon>
-  
-      </ion-item>
+        <ion-icon name="add" (click)="addOnList()"></ion-icon>
+      </ion-row>
+
+      
 
       <!-- Créer un nouvel élément -->
       
-
       <!-- Afficher élément créé -->
       <ion-list>
-  
-        <ion-row *ngFor="let todo of todoList">
-          
-          <app-todo-card [todo]="todo"></app-todo-card>
-        </ion-row >
-        
-    
+
+
+        <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+          <div *ngFor="let todo of todoList">
+            <app-sub-todo [todo]="todo"></app-sub-todo>
+          </div > 
+
+        </ion-reorder-group>
+
+           
       </ion-list> 
 
     </div>
-
-    
-
-      
-
   </ion-list>
-
-  
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-button (click)="saveTodo()">
-      Ajouter
-    </ion-button>
-  </ion-fab>
-  
 
 </ion-content>

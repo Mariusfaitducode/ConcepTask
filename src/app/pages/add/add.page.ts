@@ -4,6 +4,8 @@ import { NavController } from '@ionic/angular';
 
 import { ModalController } from '@ionic/angular';
 
+import { ItemReorderEventDetail } from '@ionic/core';
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -51,24 +53,14 @@ export class AddPage implements OnInit {
   }
 
 
-  async openDatePicker() {
+  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+    // The `from` and `to` properties contain the index of the item
+    // when the drag started and ended, respectively
+    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
 
-    // console.log("openDatePicker")
-
-    // const modal = await this.modalController.create({
-    //   component: 'ion-datetime',
-    //   componentProps: {
-    //     displayFormat: 'DD/MM/YYYY',
-    //     value: this.newTodo.date || new Date().toISOString(),
-    //   },
-    // });
-
-    // modal.onDidDismiss().then((result) => {
-    //   if (result.data && result.data.value) {
-    //     this.newTodo.date = result.data.value;
-    //   }
-    // });
-
-    // return await modal.present();
+    // Finish the reorder and position the item in the DOM based on
+    // where the gesture ended. This method can also be called directly
+    // by the reorder group
+    ev.detail.complete();
   }
 }
