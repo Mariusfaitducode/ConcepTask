@@ -14,10 +14,12 @@
 
 <ion-content [fullscreen]="true">
   
-
   <ion-list>
-    <ion-row *ngFor="let todo of todos">
-      <app-todo-card [todo]="todo"></app-todo-card>
+
+  <!-- How to iterate object + index -->
+    <ion-row *ngFor="let todo of todos; let id = index">
+      
+      <app-todo-card [todo]="todo" [routerLink]="'/todo/' + id"></app-todo-card>
     </ion-row >
   </ion-list>
   <ion-infinite-scroll>
