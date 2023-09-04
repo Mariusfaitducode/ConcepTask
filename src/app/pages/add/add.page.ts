@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 
 import { ItemReorderEventDetail } from '@ionic/core';
+import { ModalService } from 'src/app/service/modal.service';
 
 @Component({
   selector: 'app-add',
@@ -14,6 +15,7 @@ import { ItemReorderEventDetail } from '@ionic/core';
 export class AddPage implements OnInit {
 
   newTodo: any = {
+    type: 'project',
     list: []
   }
 
@@ -25,10 +27,19 @@ export class AddPage implements OnInit {
   newTodoOnListTitle: string = "";
 
   showDate: boolean = false;
+  openModal: boolean = false;
 
-  constructor(private navCtrl: NavController, private modalController: ModalController) { }
+  constructor(private navCtrl: NavController, private modalService: ModalService) { }
 
   ngOnInit() {
+
+    this.modalService.openModal$.subscribe(openModal => {
+      if (openModal) {
+        this.openModal= true;
+      } else {
+        this.openModal = false;
+      }
+    });
   }
 
   saveTodo(){
