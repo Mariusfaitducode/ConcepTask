@@ -47,6 +47,8 @@ export class AddPage implements OnInit {
     this.newTodo.list.push({
       title: this.newTodoOnListTitle,
     });
+
+    this.newTodoOnListTitle = '';
     console.log(this.newTodo);
   }
 

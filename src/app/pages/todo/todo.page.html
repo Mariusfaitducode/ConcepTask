@@ -30,18 +30,13 @@
       <ion-buttons class="middle-buttons">
 
         <button class="middle-button" (click)="deleteTodo()">
-
           <ion-icon name="trash-outline" color="danger" ></ion-icon>
-
         </button>
 
         <button class="middle-button" disabled>
-
           <ion-icon name="checkmark-outline" color="primary"></ion-icon>
-
         </button>
 
-      
       </ion-buttons>
     </ion-row>
 
@@ -50,34 +45,27 @@
       <ion-textarea [(ngModel)]="todo.description" placeholder="Description" autoGrow="true"></ion-textarea>
     </ion-item>
 
-    <ion-item >
-      <ion-label position="floating" color="primary">Due date</ion-label>
+    <div class="date-selector">
 
-      <div class="date-selector">
-        <ion-input type="date" placeholder="MM/DD/YYYY" onfocus="(this.type='date')" [(ngModel)]="todo.date"></ion-input>
-      <!-- <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newTodo.date"></ion-datetime> -->
+      <ion-item class="date-left">
+        <ion-label position="floating" color="primary">Due date</ion-label>
+        <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date"></ion-input>  
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Due time</ion-label>
         <ion-input type="time" placeholder="Time"></ion-input>
-
-      </div>
-      
-      
-    </ion-item>
+      </ion-item>
+    </div>
 
     <ion-row class="rappel">
-      
       <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
     </ion-row>
 
-   
-    
-
     <div *ngIf="todo.type !='todo'">
 
-
       <ion-list class="sub-todo-list">
-
-        <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
-
+        <ion-label class="sub-todos-label" color="primary">Sub Todos</ion-label>
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
 
           <div *ngFor="let subTodo of todo.list; let id = index">
@@ -89,11 +77,20 @@
       </ion-list> 
 
       <ion-row class="new-sub-todo">
-        <ion-input type="text" placeholder="Sub task"></ion-input>
-        <ion-icon name="add"></ion-icon>
+        <ion-input type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todo"></ion-input>
+        <ion-icon name="add" (click)="addOnList()"></ion-icon>
       </ion-row>
-
     </div>
+
+    
+
+    <!-- <ion-buttons class="add-button-container">
+      <button class="add-button" (click)="deleteTodo()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons> -->
+    
+
   </ion-list>
 
 </ion-content>

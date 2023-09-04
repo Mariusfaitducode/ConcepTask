@@ -16,11 +16,11 @@ export class TodoPage implements OnInit {
 
   index : number = 0;
 
+  newTodoOnListTitle: string = "";
+
   constructor(private route : ActivatedRoute) { }
 
   ngOnInit() {
-
-
     this.route.params.subscribe((params) => {
 
       this.index = +params['id'];
@@ -54,6 +54,15 @@ export class TodoPage implements OnInit {
     console.log(this.todo.list);
   }
 
+  addOnList(){
+    //this.canAdd = false;
+
+    this.todo.list.push({
+      title: this.newTodoOnListTitle,
+    });
+
+    this.newTodoOnListTitle = '';
+  }
   
 
 }

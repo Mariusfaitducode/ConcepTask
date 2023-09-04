@@ -1,16 +1,11 @@
 
 
-.date-selector{
-    display: flex;
-    flex-direction: row;
 
-    width: 100%;
+.list-page{
+    margin: 12px 10px 0px 10px;
+
+    padding-top: 16px;
 }
-
-.date-selector ion-input{
-    width: 50%;
-}
-
 
 
 .input-todo{
@@ -37,9 +32,9 @@ ion-select {
     --placeholder-opacity: 1 !important; /* Pour être sûr que le texte est lisible */
 }
 
-// ion-label{
-//     padding-bottom: 20px;
-// }
+ion-label{
+    padding-bottom: 20px;
+}
 
 ion-row{
     border-bottom: solid var(--ion-border-color) 1px;

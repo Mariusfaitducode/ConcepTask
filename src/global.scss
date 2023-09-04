@@ -30,6 +30,19 @@ app-todo-card{
     width: 100%;
 }
 
-ion-item .item-native{
+ion-list, ion-item{
     background-color: var(--ion-background-color);
+}
+
+
+
+.date-selector{
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+}
+
+.date-left{
+    margin-right: 20px;
 }
