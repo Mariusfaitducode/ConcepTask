@@ -15,19 +15,35 @@ export class TodoPage implements OnInit {
   todo : any = {};
   index : number = 0;
 
+  // originalIndex : number = 0;
+
+  inSubTask : boolean = false;
   openModal: boolean = false;
 
   newTodoOnListTitle: string = "";
 
-  constructor(private route : ActivatedRoute, private modalService : ModalService) { }
+  constructor(private route : ActivatedRoute, private router : Router, private modalService : ModalService) { }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
 
-      this.index = +params['id'];
-      console.log(this.index); // Check if the id is correct
-  
-      this.loadTodo(this.index);
+
+      if (params['subId'] == undefined) {
+        this.inSubTask = false;
+        this.index = +params['id'];
+
+        this.loadTodo(this.index);
+      }
+      else{
+        this.inSubTask = true;
+        this.index = +params['id'];
+        
+        this.loadTodo(this.index);
+
+        this.todo = this.todo.list[params['subId']];
+      }
+
+      
     });
 
     this.modalService.openModal$.subscribe(openModal => {
@@ -37,6 +53,7 @@ export class TodoPage implements OnInit {
         this.openModal = false;
       }
     });
+
     this.modalService.subTask$.subscribe(subTask => {
 
       if (subTask) {
@@ -48,6 +65,17 @@ export class TodoPage implements OnInit {
     });
   }
 
+  actualizeTodo(){
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+
+    if (this.inSubTask) {
+      this.router.navigate(['/todo', this.index]);
+    }
+    else{
+      this.router.navigate(['/home']);
+    }
+  }
+
 
   loadTodo(id : number){
     this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
@@ -57,10 +85,6 @@ export class TodoPage implements OnInit {
 
   deleteTodo(){
     this.todos.splice(this.index, 1);
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-  }
-
-  actualizeTodo(){
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 

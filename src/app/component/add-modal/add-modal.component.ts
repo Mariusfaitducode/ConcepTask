@@ -11,7 +11,9 @@ export class AddModalComponent  implements OnInit {
 
   // @Input() openModal : boolean = true;
 
-  subTask : any = {}
+  @Input() subTask : any = {}
+
+  @Input() modify : boolean = false;
 
   newTodoOnListTitle: string = "";
 

@@ -19,15 +19,17 @@ export class AddPage implements OnInit {
     list: []
   }
 
-  canAdd: boolean = false;
-
 
   // todoList: any[] = [];
 
   newTodoOnListTitle: string = "";
 
   showDate: boolean = false;
-  openModal: boolean = false;
+  openModal: any = {
+    open: false,
+    task: null,
+    modify: false
+  };
 
   constructor(private navCtrl: NavController, private modalService: ModalService) { }
 
@@ -35,9 +37,9 @@ export class AddPage implements OnInit {
 
     this.modalService.openModal$.subscribe(openModal => {
       if (openModal) {
-        this.openModal= true;
+        this.openModal.open = true;
       } else {
-        this.openModal = false;
+        this.openModal.open = false;
       }
     });
     this.modalService.subTask$.subscribe(subTask => {
@@ -62,7 +64,6 @@ export class AddPage implements OnInit {
   }
 
   addTodoOnList(){
-    this.canAdd = false;
 
     this.newTodo.list.push({
       type: 'todo',
@@ -85,5 +86,20 @@ export class AddPage implements OnInit {
     ev.detail.complete(this.newTodo.list);
 
     console.log(this.newTodo.list);
+  }
+
+
+  addTaskOnList(){
+    console.log(this.openModal);
+    this.openModal.task = {};
+    this.openModal.open = true;
+    this.openModal.modify = false;
+  }
+
+
+  modifyTaskOnList(subTask : any){
+    this.openModal.task = subTask;
+    this.openModal.open = true;
+    this.openModal.modify = true;
   }
 }

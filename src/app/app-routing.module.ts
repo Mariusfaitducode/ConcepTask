@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'todo/:id',
     loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
   },
+  {
+    path: 'todo/:id/:subId',
+    loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
+  },
 
   // { path: 'Todo/:id', },
   // { path: 'Add',},

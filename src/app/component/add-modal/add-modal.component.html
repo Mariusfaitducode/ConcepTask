@@ -7,8 +7,11 @@
     <ion-title size="large">New {{subTask.type}}</ion-title>
     <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
 
-    <ion-button class="save-button" slot="end" fill="clear" (click)="addSubTask()">
+    <ion-button *ngIf="!modify" class="save-button" slot="end" fill="clear" (click)="addSubTask()">
       Add
+    </ion-button >
+    <ion-button *ngIf="modify" class="save-button" slot="end" fill="clear" (click)="closeModal()">
+      Done
     </ion-button >
 
   </ion-toolbar>

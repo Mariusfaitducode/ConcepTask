@@ -67,7 +67,7 @@
 
         <ion-text>Sub tasks</ion-text>
         <ion-buttons class="add-button-container" >
-          <button class="add-button" (click)="openModal = true">
+          <button class="add-button" (click)="addTaskOnList()">
             <ion-icon name="add"></ion-icon>
           </button>
         </ion-buttons>
@@ -83,7 +83,7 @@
               <app-sub-todo [todo]="newTodo" [subTodo]="subTodo" [index]="id" [page]="'add'"></app-sub-todo>
             </div>
             <div *ngIf="subTodo.type != 'todo'">
-              <app-sub-task [todo]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'"></app-sub-task>
+              <app-sub-task [todo]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'" (click)="modifyTaskOnList(subTodo)"></app-sub-task>
             </div>
             
           </div > 
@@ -94,8 +94,8 @@
   </ion-list>
 
 
-  <div *ngIf="openModal">
-    <app-add-modal></app-add-modal>
+  <div *ngIf="openModal.open">
+    <app-add-modal [subTask]="openModal.task" [modify]="openModal.modify"></app-add-modal>
 
   </div>
 
