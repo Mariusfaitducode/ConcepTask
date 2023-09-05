@@ -9,8 +9,9 @@ import { ModalService } from 'src/app/service/modal.service';
 })
 export class AddModalComponent  implements OnInit {
 
-  @Input() subTask : any;
   // @Input() openModal : boolean = true;
+
+  subTask : any = {}
 
   newTodoOnListTitle: string = "";
 
@@ -27,6 +28,11 @@ export class AddModalComponent  implements OnInit {
   
   closeModal() {
     this.modalService.setOpenModal(false);
+  }
+
+  addSubTask(){
+    this.closeModal();
+    this.modalService.setSubTask(this.subTask);
   }
 
   addOnList(){

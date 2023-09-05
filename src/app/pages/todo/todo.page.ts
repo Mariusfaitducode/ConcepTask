@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail } from '@ionic/angular';
+import { ModalService } from 'src/app/service/modal.service';
 
 @Component({
   selector: 'app-todo',
@@ -11,14 +12,14 @@ export class TodoPage implements OnInit {
 
 
   todos = [];
-
   todo : any = {};
-
   index : number = 0;
+
+  openModal: boolean = false;
 
   newTodoOnListTitle: string = "";
 
-  constructor(private route : ActivatedRoute) { }
+  constructor(private route : ActivatedRoute, private modalService : ModalService) { }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -27,6 +28,23 @@ export class TodoPage implements OnInit {
       console.log(this.index); // Check if the id is correct
   
       this.loadTodo(this.index);
+    });
+
+    this.modalService.openModal$.subscribe(openModal => {
+      if (openModal) {
+        this.openModal= true;
+      } else {
+        this.openModal = false;
+      }
+    });
+    this.modalService.subTask$.subscribe(subTask => {
+
+      if (subTask) {
+        this.todo.list.push(subTask);
+      }
+      console.log(this.todo);
+      //this.subTask = subTask;
+      // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
     });
   }
 
@@ -54,14 +72,15 @@ export class TodoPage implements OnInit {
     console.log(this.todo.list);
   }
 
-  addOnList(){
-    //this.canAdd = false;
+  addTodoOnList(){
 
     this.todo.list.push({
+      type: 'todo',
       title: this.newTodoOnListTitle,
     });
 
     this.newTodoOnListTitle = '';
+    console.log(this.todo);
   }
   
 

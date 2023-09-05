@@ -60,7 +60,7 @@
 
       <ion-row class="new-sub-todo" *ngIf="newTodo.type == 'todo list'">
         <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
-        <ion-icon name="add" (click)="addOnList()"></ion-icon>
+        <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
       </ion-row>
 
       <ion-row *ngIf="newTodo.type == 'project'" class="new-sub-task">
@@ -78,7 +78,14 @@
       <ion-list>
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
           <div *ngFor="let subTodo of newTodo.list; let id = index">
-            <app-sub-todo [todo]="newTodo" [subTodo]="subTodo" [index]="id" [page]="'add'"></app-sub-todo>
+
+            <div *ngIf="subTodo.type == 'todo'">
+              <app-sub-todo [todo]="newTodo" [subTodo]="subTodo" [index]="id" [page]="'add'"></app-sub-todo>
+            </div>
+            <div *ngIf="subTodo.type != 'todo'">
+              <app-sub-task [todo]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'"></app-sub-task>
+            </div>
+            
           </div > 
         </ion-reorder-group>
       </ion-list> 
@@ -88,7 +95,7 @@
 
 
   <div *ngIf="openModal">
-    <app-add-modal [subTask]="{}"></app-add-modal>
+    <app-add-modal></app-add-modal>
 
   </div>
 

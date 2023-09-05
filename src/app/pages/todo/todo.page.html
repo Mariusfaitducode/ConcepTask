@@ -62,35 +62,53 @@
       <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
     </ion-row>
 
-    <div *ngIf="todo.type !='todo'">
+
+    <div *ngIf=" todo.type && todo.type !='todo'">
+
+      
+      
 
       <ion-list class="sub-todo-list">
         <ion-label class="sub-todos-label" color="primary">Sub Todos</ion-label>
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-
           <div *ngFor="let subTodo of todo.list; let id = index">
-            <app-sub-todo [todo]="todo" [subTodo]="subTodo" [index]="id" [page]="'todo'"></app-sub-todo>
-          </div > 
 
+            <div *ngIf="subTodo.type == 'todo'">
+              <app-sub-todo [todo]="todo" [subTodo]="subTodo" [index]="id" [page]="'todo'"></app-sub-todo>
+            </div>
+            <div *ngIf="subTodo.type != 'todo'">
+              <app-sub-task [todo]="todo" [subTask]="subTodo" [index]="id" [page]="'todo'"></app-sub-task>
+            </div>
+            
+          </div > 
         </ion-reorder-group>
-           
       </ion-list> 
 
-      <ion-row class="new-sub-todo">
-        <ion-input type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todo"></ion-input>
-        <ion-icon name="add" (click)="addOnList()"></ion-icon>
+      <ion-row class="new-sub-todo" *ngIf="todo.type == 'todo list'">
+        <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
+        <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
       </ion-row>
+
+      <ion-row *ngIf="todo.type == 'project'" class="new-sub-task">
+
+        <ion-text>Sub tasks</ion-text>
+        <ion-buttons class="add-button-container" >
+          <button class="add-button" (click)="openModal = true">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-buttons>
+
+      </ion-row>
+
     </div>
 
     
 
-    <!-- <ion-buttons class="add-button-container">
-      <button class="add-button" (click)="deleteTodo()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons> -->
-    
-
   </ion-list>
+
+  <div *ngIf="openModal">
+    <app-add-modal></app-add-modal>
+
+  </div>
 
 </ion-content>

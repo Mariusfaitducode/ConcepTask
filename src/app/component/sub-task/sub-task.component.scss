@@ -1,0 +1,59 @@
+ion-card-content{
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    color: white;
+}
+
+ion-icon{
+    font-size: 30px;
+    color: var(--ion-color-step-600);
+}
+
+
+.left-card{
+    // width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    
+}
+
+.task-title{
+
+    margin-left: 15px;
+}
+
+
+.todo-page{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 0 10px;
+}
+
+.todo-page svg{
+    margin-right: 10px;
+    fill: var(--ion-color-primary);
+}
+
+.todo-page ion-label{
+
+    color: var(--ion-color-step-600);
+}
+
+
+
+
+
+
+

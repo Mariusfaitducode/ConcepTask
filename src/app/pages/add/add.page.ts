@@ -40,6 +40,15 @@ export class AddPage implements OnInit {
         this.openModal = false;
       }
     });
+    this.modalService.subTask$.subscribe(subTask => {
+
+      if (subTask) {
+        this.newTodo.list.push(subTask);
+      }
+      console.log(this.newTodo);
+      //this.subTask = subTask;
+      // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
+    });
   }
 
   saveTodo(){
@@ -52,10 +61,11 @@ export class AddPage implements OnInit {
     });
   }
 
-  addOnList(){
+  addTodoOnList(){
     this.canAdd = false;
 
     this.newTodo.list.push({
+      type: 'todo',
       title: this.newTodoOnListTitle,
     });
 
