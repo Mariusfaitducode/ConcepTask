@@ -26,21 +26,31 @@ export class HomePage {
 
   ngOnInit() {
 
-    this.loadTodos();
-
+    console.log("HOME PAGEEEE")
     
 
     this.route.queryParams.subscribe(params => {
+
+      console.log("HOME PAGEEEE CHANGE")
+      
       const newTodo = history.state.newTodo;
 
       if (newTodo) {
 
+        console.log("ADD TODOOOOOO")
+
         this.todos.push(newTodo);
         this.setTodos();
       }
+
+      this.loadTodos();
     });
 
     this.loadTodos();
+  }
+
+  ngOnChange(){
+    
   }
 
   loadTodos(){

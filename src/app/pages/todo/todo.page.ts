@@ -86,6 +86,7 @@ export class TodoPage implements OnInit {
   deleteTodo(){
     this.todos.splice(this.index, 1);
     localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.router.navigate(['/home']);
   }
 
 
