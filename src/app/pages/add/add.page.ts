@@ -46,6 +46,7 @@ export class AddPage implements OnInit {
 
       if (subTask) {
         this.newTodo.list.push(subTask);
+        subTask = null;
       }
       console.log(this.newTodo);
       //this.subTask = subTask;

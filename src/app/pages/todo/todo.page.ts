@@ -27,7 +27,6 @@ export class TodoPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
 
-
       if (params['subId'] == undefined) {
         this.inSubTask = false;
         this.index = +params['id'];
@@ -58,6 +57,7 @@ export class TodoPage implements OnInit {
 
       if (subTask) {
         this.todo.list.push(subTask);
+        subTask = null;
       }
       console.log(this.todo);
       //this.subTask = subTask;
@@ -86,7 +86,8 @@ export class TodoPage implements OnInit {
   deleteTodo(){
     this.todos.splice(this.index, 1);
     localStorage.setItem('todos', JSON.stringify(this.todos));
-    this.router.navigate(['/home']);
+
+    //this.router.navigate(['/home']);
   }
 
 

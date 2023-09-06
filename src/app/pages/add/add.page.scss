@@ -8,17 +8,6 @@
 }
 
 
-.input-todo{
-    background-color: var(--ion-color-step-200);
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 10px;
-    font-size: 18px;
-}
-
 ion-list, ion-item{
     background-color: var(--ion-background-color);
 }
@@ -29,16 +18,28 @@ ion-checkbox{
 
 ion-select {
     padding-right: 16px;
-    --placeholder-color: white !important; /* Remplacez cette couleur par celle de votre choix */
-    --placeholder-opacity: 1 !important; /* Pour être sûr que le texte est lisible */
+    //--color:var(--ion-color-step-600);
 }
 
-ion-label{
-    padding-bottom: 20px;
-}
 
 ion-row{
     border-bottom: solid var(--ion-border-color) 1px;
+}
+
+.title-type-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // align-items: center;
+}
+
+.title-type-header .title{
+    width: 60%;
+}
+
+.title-type-header .type{
+    width: 35%;
+    
 }
 
 .new-sub-todo{

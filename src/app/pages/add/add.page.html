@@ -18,19 +18,26 @@
   
   <ion-list class="list-page">
 
-    <ion-row >
-      <ion-select label="Type" label-placement="floating" [(ngModel)]="newTodo.type" aria-label="Type" style="width: 100%; padding-left: 16px;">
-        <ion-select-option value="todo">Todo</ion-select-option>
-        <ion-select-option value="todo list">Todo list</ion-select-option>
-        <ion-select-option value="project">Project</ion-select-option>
-        <ion-select-option value="reminder">Reminder</ion-select-option>
-      </ion-select>
-    </ion-row>
+    <div class="title-type-header">
 
-    <ion-item>
-      <ion-label position="floating">Title</ion-label>
-      <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
-    </ion-item>
+      <ion-item class="title">
+        <ion-label position="floating">Title</ion-label>
+        <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
+      </ion-item>
+
+      <ion-row  class="type">
+        <ion-select label="Type" label-placement="floating"  [(ngModel)]="newTodo.type" aria-label="Type">
+          <ion-select-option value="todo">Todo</ion-select-option>
+          <ion-select-option value="todo list">Todo list</ion-select-option>
+          <ion-select-option value="project">Project</ion-select-option>
+          <ion-select-option value="reminder">Reminder</ion-select-option>
+        </ion-select>
+      </ion-row>
+      
+
+      
+
+    </div>
 
     <ion-item>
       <ion-label position="floating">Description</ion-label>
