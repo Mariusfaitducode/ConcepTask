@@ -42,6 +42,38 @@ ion-row{
     
 }
 
+
+.customize-container{
+
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.customize-button{
+    margin: 10px 10px 0px 0px;
+    padding: 0px 10px;
+    height: 30px;
+    border-radius: 15px;
+    border: solid var(--ion-color-step-600) 1px;
+    color: var(--ion-color-step-600);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+
+.close-item{
+    margin-top: 15px;
+}
+
+
+
+
+
+
+
 .new-sub-todo{
     
     padding: 0px 16px;

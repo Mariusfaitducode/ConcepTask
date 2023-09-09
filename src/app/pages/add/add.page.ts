@@ -5,6 +5,9 @@ import { NavController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 
 import { ItemReorderEventDetail } from '@ionic/core';
+
+import { Todo } from 'src/app/model/todo';
+import { Config } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 
 @Component({
@@ -14,10 +17,17 @@ import { ModalService } from 'src/app/service/modal.service';
 })
 export class AddPage implements OnInit {
 
-  newTodo: any = {
-    type: 'project',
-    list: []
-  }
+  newTodo!: Todo;
+
+
+
+  configArray: { key: string, value: boolean }[] = [
+    { key: 'description', value: false },
+    { key: 'date', value: false },
+    { key: 'time', value: false },
+    { key: 'repetition', value: false },
+    { key: 'list', value: false },
+  ];
 
 
   // todoList: any[] = [];
@@ -35,6 +45,11 @@ export class AddPage implements OnInit {
 
   ngOnInit() {
 
+
+    //Trouver id du Todo
+    this.newTodo = new Todo(1, "Nouveau Todo");
+
+
     this.modalService.openModal$.subscribe(openModal => {
       if (openModal) {
         this.openModal.open = true;
@@ -45,7 +60,7 @@ export class AddPage implements OnInit {
     this.modalService.subTask$.subscribe(subTask => {
 
       if (subTask) {
-        this.newTodo.list.push(subTask);
+        //this.newTodo.list.push(subTask);
         subTask = null;
       }
       console.log(this.newTodo);
@@ -64,12 +79,77 @@ export class AddPage implements OnInit {
     });
   }
 
+
+  findOnConfig(key: string): boolean {
+    const configItem = this.configArray.find(item => item.key === key);
+    
+    return configItem ? configItem.value : false;
+  }
+
+  closeOnConfig(key: string) {
+    const configItem = this.configArray.find(item => item.key === key);
+    
+    configItem!.value = false;
+  }
+
+
+  onTypeChange(){
+    
+
+    switch (this.newTodo.type){
+      
+      case 'customize' :
+        //this.config.customizedConfig();
+        this.configArray = [
+          { key: 'description', value: false },
+          { key: 'date', value: false },
+          { key: 'time', value: false },
+          { key: 'repetition', value: false },
+          { key: 'list', value: false },
+        ];
+        break;
+
+      case 'todo' :
+        this.configArray = [
+          { key: 'description', value: false },
+          { key: 'date', value: false },
+          { key: 'time', value: false },
+          { key: 'repetition', value: false },
+          { key: 'list', value: false },
+        ];
+        break;
+
+      case 'todo list':
+        //this.config.todoListConfig();
+        this.configArray = [
+          { key: 'description', value: true },
+          { key: 'date', value: true },
+          { key: 'time', value: true },
+          { key: 'repetition', value: false },
+          { key: 'list', value: true },
+        ];
+        break;
+
+      default:
+        //Search in localStorage
+        break;
+
+
+    }
+  }
+
+
+
+
+
+
+
   addTodoOnList(){
 
-    this.newTodo.list.push({
-      type: 'todo',
-      title: this.newTodoOnListTitle,
-    });
+    // this.newTodo.list.push({
+    //   type: 'todo',
+    //   title: this.newTodoOnListTitle,
+    // });
 
     this.newTodoOnListTitle = '';
     console.log(this.newTodo);
@@ -84,9 +164,9 @@ export class AddPage implements OnInit {
     // Finish the reorder and position the item in the DOM based on
     // where the gesture ended. This method can also be called directly
     // by the reorder group
-    ev.detail.complete(this.newTodo.list);
+    //ev.detail.complete(this.newTodo.list);
 
-    console.log(this.newTodo.list);
+    //console.log(this.newTodo.list);
   }
 
 

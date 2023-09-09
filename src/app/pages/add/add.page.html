@@ -26,44 +26,69 @@
       </ion-item>
 
       <ion-row  class="type">
-        <ion-select label="Type" label-placement="floating"  [(ngModel)]="newTodo.type" aria-label="Type">
+        <ion-select label="Type" label-placement="floating"  [(ngModel)]="newTodo.type" aria-label="Type" (ionChange)="onTypeChange()">
+          <ion-select-option value="customize">Customize</ion-select-option>
           <ion-select-option value="todo">Todo</ion-select-option>
           <ion-select-option value="todo list">Todo list</ion-select-option>
           <ion-select-option value="project">Project</ion-select-option>
           <ion-select-option value="reminder">Reminder</ion-select-option>
         </ion-select>
       </ion-row>
-      
-
-      
-
     </div>
 
-    <ion-item>
+
+    <div *ngIf="newTodo.type == 'customize'" class="customize-container">
+
+      <!-- Personnalisation du Todo -->
+
+      <div *ngFor="let item of configArray">
+
+
+        <button class="customize-button" (click)="item.value = true" *ngIf="item.value == false">
+          {{ item.key }}
+        </button>
+
+        
+      </div>
+      
+
+      
+    </div>
+
+    <ion-item *ngIf="findOnConfig('description')">
+
+
       <ion-label position="floating">Description</ion-label>
+      <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('description')"></ion-icon>
       <ion-textarea [(ngModel)]="newTodo.description"></ion-textarea>
+
+      
     </ion-item>
 
 
-    <div class="date-selector">
+    <div class="date-selector" *ngIf="findOnConfig('date')">
 
-      <ion-item class="date-left">
+      <ion-item class="date-left" >
         <ion-label position="floating">Due date</ion-label>
+        <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon>
+
         <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>  
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="findOnConfig('time')">
         <ion-label position="floating">Due time</ion-label>
+        <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon>
+
         <ion-input type="time" placeholder="Time"></ion-input>
       </ion-item>
 
     </div>
 
-    <ion-row>
+    <ion-row *ngIf="findOnConfig('reminder')">
       <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
     </ion-row>
 
-    <div *ngIf=" newTodo.type && newTodo.type !='todo'">
+    <div *ngIf="findOnConfig('list')">
 
       <ion-row class="new-sub-todo" *ngIf="newTodo.type == 'todo list'">
         <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
