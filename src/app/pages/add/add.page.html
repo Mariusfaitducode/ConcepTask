@@ -4,7 +4,15 @@
       <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
     </ion-buttons>
     
-    <ion-title size="large">New {{newTodo.type}}</ion-title>
+    <div *ngIf="newTodo.type != 'customize'">
+      <ion-title size="large">New {{newTodo.type}}</ion-title>
+    </div>
+
+    <div *ngIf="newTodo.type == 'customize'">
+      <ion-title size="large">New task</ion-title>
+    </div>
+    
+
     <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
 
     <ion-button class="save-button" slot="end" fill="clear" (click)="saveTodo()">
@@ -43,10 +51,22 @@
 
       <div *ngFor="let item of configArray">
 
+        <div *ngIf="item.value == false">
 
-        <button class="customize-button" (click)="item.value = true" *ngIf="item.value == false">
-          {{ item.key }}
-        </button>
+          <button class="customize-button open" (click)="item.value = true; configCustomizedArray = configArray">
+            {{ item.key }}
+          </button>
+        </div>
+
+        <div *ngIf="item.value == true">
+          <button class="customize-button close" (click)="item.value = false; configCustomizedArray = configArray" >
+            {{ item.key }} 
+            <ion-icon name="close-outline" class="close-item"></ion-icon>
+          </button>
+        </div>
+          
+
+       
 
         
       </div>
@@ -59,53 +79,78 @@
 
 
       <ion-label position="floating">Description</ion-label>
-      <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('description')"></ion-icon>
+      <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('description')"></ion-icon> -->
       <ion-textarea [(ngModel)]="newTodo.description"></ion-textarea>
 
       
     </ion-item>
 
 
-    <div class="date-selector" *ngIf="findOnConfig('date')">
+    <div *ngIf="findOnConfig('date')">
+      <div class="date-selector" >
 
-      <ion-item class="date-left" >
-        <ion-label position="floating">Due date</ion-label>
-        <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon>
-
-        <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>  
-      </ion-item>
-
-      <ion-item *ngIf="findOnConfig('time')">
-        <ion-label position="floating">Due time</ion-label>
-        <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon>
-
-        <ion-input type="time" placeholder="Time"></ion-input>
-      </ion-item>
+        <ion-item class="date-left" >
+          <ion-label position="floating">Due date</ion-label>
+          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
+  
+          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>  
+        </ion-item>
+  
+        <ion-item *ngIf="findOnConfig('time')">
+          <ion-label position="floating">Due time</ion-label>
+          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
+  
+          <ion-input type="time" placeholder="Time"></ion-input>
+        </ion-item>
+      </div>
+      
+      <ion-row>
+        <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
+      </ion-row>
 
     </div>
+    
 
-    <ion-row *ngIf="findOnConfig('reminder')">
-      <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
-    </ion-row>
+  
 
-    <div *ngIf="findOnConfig('list')">
+    <div *ngIf="findOnConfig('sub tasks')" class="sub-tasks">
 
-      <ion-row class="new-sub-todo" *ngIf="newTodo.type == 'todo list'">
+      <!-- <ion-row class="new-sub-todo" *ngIf="newTodo.type == 'todo list'">
         <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
         <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
-      </ion-row>
+      </ion-row> -->
 
-      <ion-row *ngIf="newTodo.type == 'project'" class="new-sub-task">
+      <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
+      <div *ngIf="findOnConfig('sub tasks')" class="new-sub-task">
 
-        <ion-text>Sub tasks</ion-text>
-        <ion-buttons class="add-button-container" >
-          <button class="add-button" (click)="addTaskOnList()">
-            <ion-icon name="add"></ion-icon>
-          </button>
-        </ion-buttons>
+        <ion-row  class="sub-type">
+          
+          <ion-select label="Type" label-placement="floating"  [(ngModel)]="newSubTodo.type" aria-label="Type" (ionChange)="onTypeChange()">
+            <ion-select-option value="customize">Customize</ion-select-option>
+            <ion-select-option value="todo">Todo</ion-select-option>
+            <ion-select-option value="todo list">Todo list</ion-select-option>
+            <ion-select-option value="reminder">Reminder</ion-select-option>
+          </ion-select>
+        </ion-row>
 
-      </ion-row>
-      
+
+        <div *ngIf="newSubTodo.type == 'todo'">
+          <ion-row class="new-sub-todo">
+            <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
+            <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
+          </ion-row>
+        </div>
+
+        <div *ngIf="newSubTodo.type != 'todo'">
+
+          <ion-buttons class="add-button-container" >
+            <button class="add-button" (click)="addTaskOnList()">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-buttons>
+
+        </div>
+      </div>
 
       <ion-list>
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
@@ -127,7 +172,7 @@
 
 
   <div *ngIf="openModal.open">
-    <app-add-modal [subTask]="openModal.task" [modify]="openModal.modify"></app-add-modal>
+    <app-add-modal [subTodo]="newSubTodo" [modify]="openModal.modify"></app-add-modal>
 
   </div>
 

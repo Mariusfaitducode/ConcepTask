@@ -19,6 +19,8 @@ export class AddPage implements OnInit {
 
   newTodo!: Todo;
 
+  newSubTodo!: Todo;
+
 
 
   configArray: { key: string, value: boolean }[] = [
@@ -26,9 +28,12 @@ export class AddPage implements OnInit {
     { key: 'date', value: false },
     { key: 'time', value: false },
     { key: 'repetition', value: false },
-    { key: 'list', value: false },
+    { key: 'sub tasks', value: true },
+    // { key: 'sub tasks', value: false },
+
   ];
 
+  configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
 
   // todoList: any[] = [];
 
@@ -37,7 +42,7 @@ export class AddPage implements OnInit {
   showDate: boolean = false;
   openModal: any = {
     open: false,
-    task: null,
+    // task: null,
     modify: false
   };
 
@@ -47,7 +52,10 @@ export class AddPage implements OnInit {
 
 
     //Trouver id du Todo
-    this.newTodo = new Todo(1, "Nouveau Todo");
+    this.newTodo = new Todo(1);
+    this.newSubTodo = new Todo(2);
+
+
 
 
     this.modalService.openModal$.subscribe(openModal => {
@@ -94,19 +102,12 @@ export class AddPage implements OnInit {
 
 
   onTypeChange(){
-    
 
     switch (this.newTodo.type){
       
       case 'customize' :
         //this.config.customizedConfig();
-        this.configArray = [
-          { key: 'description', value: false },
-          { key: 'date', value: false },
-          { key: 'time', value: false },
-          { key: 'repetition', value: false },
-          { key: 'list', value: false },
-        ];
+        this.configArray = this.configCustomizedArray!;
         break;
 
       case 'todo' :
@@ -115,7 +116,7 @@ export class AddPage implements OnInit {
           { key: 'date', value: false },
           { key: 'time', value: false },
           { key: 'repetition', value: false },
-          { key: 'list', value: false },
+          { key: 'sub tasks', value: false },
         ];
         break;
 
@@ -126,7 +127,7 @@ export class AddPage implements OnInit {
           { key: 'date', value: true },
           { key: 'time', value: true },
           { key: 'repetition', value: false },
-          { key: 'list', value: true },
+          { key: 'sub tasks', value: true },
         ];
         break;
 
@@ -146,10 +147,7 @@ export class AddPage implements OnInit {
 
   addTodoOnList(){
 
-    // this.newTodo.list.push({
-    //   type: 'todo',
-    //   title: this.newTodoOnListTitle,
-    // });
+    this.newTodo.list!.push(new Todo(1, this.newTodoOnListTitle, 'todo'));
 
     this.newTodoOnListTitle = '';
     console.log(this.newTodo);

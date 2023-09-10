@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
+import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class AddModalComponent  implements OnInit {
 
   // @Input() openModal : boolean = true;
 
-  @Input() subTask : any = {}
+  @Input() subTodo! : Todo;
 
   @Input() modify : boolean = false;
 
@@ -34,14 +35,14 @@ export class AddModalComponent  implements OnInit {
 
   addSubTask(){
     this.closeModal();
-    this.modalService.setSubTask(this.subTask);
+    this.modalService.setSubTask(this.subTodo);
   }
 
   addOnList(){
 
-    this.subTask.list.push({
+    /*this.subTask.list.push({
       title: this.newTodoOnListTitle,
-    });
+    });*/
 
     this.newTodoOnListTitle = '';
     // console.log(this.newTodo);
@@ -56,9 +57,9 @@ export class AddModalComponent  implements OnInit {
     // Finish the reorder and position the item in the DOM based on
     // where the gesture ended. This method can also be called directly
     // by the reorder group
-    ev.detail.complete(this.subTask.list);
+    ev.detail.complete(this.subTodo.list);
 
-    console.log(this.subTask.list);
+    console.log(this.subTodo.list);
   }
 
 }

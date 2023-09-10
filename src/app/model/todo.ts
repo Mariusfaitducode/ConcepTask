@@ -22,11 +22,12 @@ export class Todo {
     public list?: Todo[];
 
 
-    constructor(id: number, title: string) {
+    constructor(id: number, title?: string, type?: string) {
 
         this.id = id;
-        this.type = "customize";
-        //this.title = title;
+        this.type = type || 'customize';
+        this.title = title || '';
+        this.list = [];
         // this.description = description;
        
     }
