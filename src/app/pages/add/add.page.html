@@ -64,25 +64,14 @@
             <ion-icon name="close-outline" class="close-item"></ion-icon>
           </button>
         </div>
-          
-
-       
-
-        
       </div>
-      
-
-      
     </div>
 
     <ion-item *ngIf="findOnConfig('description')">
 
-
       <ion-label position="floating">Description</ion-label>
-      <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('description')"></ion-icon> -->
       <ion-textarea [(ngModel)]="newTodo.description"></ion-textarea>
 
-      
     </ion-item>
 
 
@@ -125,7 +114,7 @@
 
         <ion-row  class="sub-type">
           
-          <ion-select label="Type" label-placement="floating"  [(ngModel)]="newSubTodo.type" aria-label="Type" (ionChange)="onTypeChange()">
+          <ion-select label="Type" label-placement="floating"  [(ngModel)]="newSubTodo.type" aria-label="Type">
             <ion-select-option value="customize">Customize</ion-select-option>
             <ion-select-option value="todo">Todo</ion-select-option>
             <ion-select-option value="todo list">Todo list</ion-select-option>
@@ -172,7 +161,7 @@
 
 
   <div *ngIf="openModal.open">
-    <app-add-modal [subTodo]="newSubTodo" [modify]="openModal.modify"></app-add-modal>
+    <app-add-modal [subTodo]="newSubTodo" [level]="1" [modify]="openModal.modify"></app-add-modal>
 
   </div>
 

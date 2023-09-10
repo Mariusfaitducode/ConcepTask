@@ -55,10 +55,11 @@ export class TodoPage implements OnInit {
 
     this.modalService.subTask$.subscribe(subTask => {
 
-      if (subTask) {
-        this.todo.list.push(subTask);
-        subTask = null;
+      if (subTask.level == 0 && subTask.todo) {
+        this.todo.list!.push(subTask.todo);
+        subTask.todo = null;
       }
+   
       console.log(this.todo);
       //this.subTask = subTask;
       // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici

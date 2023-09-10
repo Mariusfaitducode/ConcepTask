@@ -17,6 +17,8 @@ import { ModalService } from 'src/app/service/modal.service';
 })
 export class AddPage implements OnInit {
 
+  todos = JSON.parse(localStorage.getItem('todos') || '[]');
+
   newTodo!: Todo;
 
   newSubTodo!: Todo;
@@ -50,26 +52,23 @@ export class AddPage implements OnInit {
 
   ngOnInit() {
 
-
     //Trouver id du Todo
-    this.newTodo = new Todo(1);
-    this.newSubTodo = new Todo(2);
-
-
-
+    this.newTodo = new Todo();
+    this.newSubTodo = new Todo();
 
     this.modalService.openModal$.subscribe(openModal => {
-      if (openModal) {
-        this.openModal.open = true;
-      } else {
+      console.log("main open modal");
+      if (openModal == 0) {
         this.openModal.open = false;
+      } else {
+        this.openModal.open = true;
       }
     });
     this.modalService.subTask$.subscribe(subTask => {
 
-      if (subTask) {
-        //this.newTodo.list.push(subTask);
-        subTask = null;
+      if (subTask.level == 0 && subTask.todo) {
+        this.newTodo.list!.push(subTask.todo);
+        subTask.todo = null;
       }
       console.log(this.newTodo);
       //this.subTask = subTask;
@@ -80,11 +79,11 @@ export class AddPage implements OnInit {
   saveTodo(){
     console.log(this.newTodo);
 
-    this.navCtrl.navigateForward('/home', {
-      state: {
-        newTodo: this.newTodo
-      }
-    });
+    this.todos.push(this.newTodo);
+
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+
+    this.navCtrl.navigateForward('/home');
   }
 
 
@@ -140,14 +139,22 @@ export class AddPage implements OnInit {
   }
 
 
+  getId(){
+    return this.todos.length + 1;
+  }
 
 
+  findTodoById(id: number): Todo {
+    return this.todos.find((todo: { id: number; }) => todo.id === id)!;
+  }
 
 
 
   addTodoOnList(){
 
-    this.newTodo.list!.push(new Todo(1, this.newTodoOnListTitle, 'todo'));
+    let newTodoOnList = new Todo(this.newTodoOnListTitle, 'todo');
+
+    this.newTodo.list?.push(newTodoOnList);
 
     this.newTodoOnListTitle = '';
     console.log(this.newTodo);
@@ -170,7 +177,6 @@ export class AddPage implements OnInit {
 
   addTaskOnList(){
     console.log(this.openModal);
-    this.openModal.task = {};
     this.openModal.open = true;
     this.openModal.modify = false;
   }

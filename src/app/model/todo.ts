@@ -2,7 +2,8 @@
 
 export class Todo {
 
-    public id: number;
+    //public id: number;
+    public main: boolean;
     public title!: string;
     public type: string;
 
@@ -22,9 +23,10 @@ export class Todo {
     public list?: Todo[];
 
 
-    constructor(id: number, title?: string, type?: string) {
+    constructor(title?: string, type?: string, main?: boolean) {
 
-        this.id = id;
+        //this.id = id;
+        this.main = main || true;
         this.type = type || 'customize';
         this.title = title || '';
         this.list = [];

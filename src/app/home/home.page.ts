@@ -29,19 +29,9 @@ export class HomePage {
     console.log("HOME PAGEEEE")
     
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params =>{
 
       console.log("HOME PAGEEEE CHANGE")
-      
-      const newTodo = history.state.newTodo;
-
-      if (newTodo) {
-
-        console.log("ADD TODOOOOOO")
-
-        this.todos.push(newTodo);
-        this.setTodos();
-      }
 
       this.loadTodos();
     });
@@ -51,25 +41,25 @@ export class HomePage {
 
   ngOnChange(){
     
-  }
+ }
 
-  loadTodos(){
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    console.log(this.todos)
-  }
+ loadTodos(){
+   this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+   console.log(this.todos)
+ }
 
-  setTodos(){
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-  }
+ setTodos(){
+   localStorage.setItem('todos', JSON.stringify(this.todos));
+ }
 
 
-  openMenu() {
-    this.menuCtrl.open();
-  }
+ openMenu() {
+   this.menuCtrl.open();
+ }
 
-  closeMenu() {
-    this.menuCtrl.close();
-  }
+ closeMenu() {
+   this.menuCtrl.close();
+ }
 
   // app = initializeApp(environnement.firebaseConfig);
 }

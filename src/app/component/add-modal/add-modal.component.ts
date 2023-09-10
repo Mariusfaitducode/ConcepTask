@@ -14,29 +14,105 @@ export class AddModalComponent  implements OnInit {
 
   @Input() subTodo! : Todo;
 
+  @Input() level! : number;
+
+  newSubTodo: Todo = new Todo();
+
+
+  configArray: { key: string, value: boolean }[] = [
+    { key: 'description', value: false },
+    { key: 'date', value: false },
+    { key: 'time', value: false },
+    { key: 'repetition', value: false },
+    { key: 'sub tasks', value: true },
+    // { key: 'sub tasks', value: false },
+
+  ];
+
+  configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
+
+
   @Input() modify : boolean = false;
 
   newTodoOnListTitle: string = "";
 
   showDate: boolean = false;
 
+
+  openModal: any = {
+    open: false,
+    // task: null,
+    modify: false
+  };
+
   constructor(private modalService: ModalService) { }
 
   ngOnInit() {
+
+    console.log(this.level)
+
+    this.onTypeChange();
+
+    this.modalService.openModal$.subscribe(openModal => {
+
+      console.log("sub open modal");
+      if (openModal == this.level) {
+        this.openModal.open = false;
+      } 
+    });
+    this.modalService.subTask$.subscribe(subTask => {
+
+      if (subTask.level == this.level && subTask.todo) {
+        this.subTodo.list!.push(subTask.todo);
+        subTask.todo = null;
+      }
+      //this.subTask = subTask;
+      // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
+    });
   }
 
-  openModal() {
-    this.modalService.setOpenModal(true);
-  }
+  // openModal() {
+  //   this.modalService.setOpenModal(true);
+  // }
   
   closeModal() {
-    this.modalService.setOpenModal(false);
+    console.log("close modal" + this.level);
+
+
+    this.modalService.setOpenModal(this.decrementLevel());
   }
+
+  incrementLevel(){
+    const level = this.level;
+    return level + 1;
+  }
+
+  decrementLevel(){
+    const level = this.level;
+    return level - 1;
+  }
+
+
+  findOnConfig(key: string): boolean {
+    const configItem = this.configArray.find(item => item.key === key);
+    
+    return configItem ? configItem.value : false;
+  }
+
+  closeOnConfig(key: string) {
+    const configItem = this.configArray.find(item => item.key === key);
+    
+    configItem!.value = false;
+  }
+
 
   addSubTask(){
     this.closeModal();
-    this.modalService.setSubTask(this.subTodo);
+    this.modalService.setSubTask({level: this.decrementLevel(), todo: this.subTodo});
   }
+
+
+
 
   addOnList(){
 
@@ -48,6 +124,58 @@ export class AddModalComponent  implements OnInit {
     // console.log(this.newTodo);
   }
 
+  onTypeChange(){
+
+    switch (this.subTodo.type){
+      
+      case 'customize' :
+        //this.config.customizedConfig();
+        this.configArray = this.configCustomizedArray!;
+        break;
+
+      case 'todo' :
+        this.configArray = [
+          { key: 'description', value: false },
+          { key: 'date', value: false },
+          { key: 'time', value: false },
+          { key: 'repetition', value: false },
+          { key: 'sub tasks', value: false },
+        ];
+        break;
+
+      case 'todo list':
+        //this.config.todoListConfig();
+        this.configArray = [
+          { key: 'description', value: true },
+          { key: 'date', value: true },
+          { key: 'time', value: true },
+          { key: 'repetition', value: false },
+          { key: 'sub tasks', value: true },
+        ];
+        break;
+
+      default:
+        //Search in localStorage
+        break;
+    }
+  }
+
+
+  addTodoOnList(){
+
+    let newTodoOnList = new Todo(this.newTodoOnListTitle, 'todo');
+
+    this.subTodo.list?.push(newTodoOnList);
+
+    this.newTodoOnListTitle = '';
+    console.log(this.subTodo);
+  }
+
+  addTaskOnList(){
+    console.log(this.openModal);
+    this.openModal.open = true;
+    this.openModal.modify = false;
+  }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     // The `from` and `to` properties contain the index of the item

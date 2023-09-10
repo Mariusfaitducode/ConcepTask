@@ -35,6 +35,55 @@ ion-list, ion-item{
 }
 
 
+// CUSTOMIZE BUTTONS CONFIGURATION
+
+.customize-container{
+
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.customize-button{
+    margin: 10px 10px 0px 0px;
+    padding: 0px 10px;
+    height: 30px;
+    border-radius: 15px;
+    border: solid var(--ion-color-step-600) 1px;
+    color: var(--ion-color-step-600);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.customize-button.open{
+    background-color: var(--ion-color-step-600);
+    color: var(--ion-color-light);
+}
+
+.customize-button.close{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.customize-button.close ion-icon{
+    font-size: 20px;
+    margin: auto;
+    margin-left: 5px;
+}
+
+
+
+.close-item{
+    margin-top: 15px;
+}
+
+
+// DATE ELEMENTS
 
 .date-selector{
     display: flex;
@@ -47,6 +96,9 @@ ion-list, ion-item{
     width: 50%;
     margin-right: 20px;
 }
+
+
+//SUB TASKS ELEMENTS
 
 
 .sub-tasks{
@@ -113,6 +165,7 @@ ion-list, ion-item{
 
 app-add-modal{
     position: fixed;
+    
     width: 90%;
     height: 80%;
 
