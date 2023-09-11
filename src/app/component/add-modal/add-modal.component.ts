@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
+import { set } from 'firebase/database';
 import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 
@@ -16,7 +17,7 @@ export class AddModalComponent  implements OnInit {
 
   @Input() level! : number;
 
-  newSubTodo: Todo = new Todo();
+  // newSubTodo: Todo = new Todo();
 
 
   configArray: { key: string, value: boolean }[] = [
@@ -41,7 +42,7 @@ export class AddModalComponent  implements OnInit {
 
   openModal: any = {
     open: false,
-    // task: null,
+    task: new Todo(),
     modify: false
   };
 
@@ -63,8 +64,22 @@ export class AddModalComponent  implements OnInit {
     this.modalService.subTask$.subscribe(subTask => {
 
       if (subTask.level == this.level && subTask.todo) {
+
+        console.log("add sub task in level : " + this.level)
+
         this.subTodo.list!.push(subTask.todo);
-        subTask.todo = null;
+        
+        //this.newSubTodo = new Todo();
+
+        console.log(this.subTodo);
+
+        setTimeout(() => {
+          console.log(this.subTodo.list);
+          console.log("timeout");
+          subTask.todo = null;
+          
+        } , 200);
+
       }
       //this.subTask = subTask;
       // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
@@ -78,9 +93,16 @@ export class AddModalComponent  implements OnInit {
   closeModal() {
     console.log("close modal" + this.level);
 
-
     this.modalService.setOpenModal(this.decrementLevel());
   }
+
+  addSubTask(){
+    this.closeModal();
+    this.modalService.setSubTask({level: this.decrementLevel(), todo: this.subTodo});
+    this.subTodo = new Todo();
+    // this.newSubTodo = new Todo();
+  }
+
 
   incrementLevel(){
     const level = this.level;
@@ -106,10 +128,7 @@ export class AddModalComponent  implements OnInit {
   }
 
 
-  addSubTask(){
-    this.closeModal();
-    this.modalService.setSubTask({level: this.decrementLevel(), todo: this.subTodo});
-  }
+ 
 
 
 
@@ -173,6 +192,7 @@ export class AddModalComponent  implements OnInit {
 
   addTaskOnList(){
     console.log(this.openModal);
+    this.openModal.task = new Todo();
     this.openModal.open = true;
     this.openModal.modify = false;
   }

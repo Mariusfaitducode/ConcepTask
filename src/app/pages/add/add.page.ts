@@ -21,7 +21,7 @@ export class AddPage implements OnInit {
 
   newTodo!: Todo;
 
-  newSubTodo!: Todo;
+  //newSubTodo!: Todo;
 
 
 
@@ -44,7 +44,7 @@ export class AddPage implements OnInit {
   showDate: boolean = false;
   openModal: any = {
     open: false,
-    // task: null,
+    task: new Todo(),
     modify: false
   };
 
@@ -54,7 +54,7 @@ export class AddPage implements OnInit {
 
     //Trouver id du Todo
     this.newTodo = new Todo();
-    this.newSubTodo = new Todo();
+    //this.newSubTodo = new Todo();
 
     this.modalService.openModal$.subscribe(openModal => {
       console.log("main open modal");
@@ -67,8 +67,11 @@ export class AddPage implements OnInit {
     this.modalService.subTask$.subscribe(subTask => {
 
       if (subTask.level == 0 && subTask.todo) {
+
+        console.log("subtask level 0");
         this.newTodo.list!.push(subTask.todo);
         subTask.todo = null;
+        //this.newSubTodo = new Todo();
       }
       console.log(this.newTodo);
       //this.subTask = subTask;
@@ -82,6 +85,9 @@ export class AddPage implements OnInit {
     this.todos.push(this.newTodo);
 
     localStorage.setItem('todos', JSON.stringify(this.todos));
+
+    this.newTodo = new Todo();
+    //this.newSubTodo = new Todo();
 
     this.navCtrl.navigateForward('/home');
   }
@@ -177,6 +183,7 @@ export class AddPage implements OnInit {
 
   addTaskOnList(){
     console.log(this.openModal);
+    this.openModal.task = new Todo();
     this.openModal.open = true;
     this.openModal.modify = false;
   }

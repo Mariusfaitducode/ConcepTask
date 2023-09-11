@@ -95,7 +95,7 @@
 
         <ion-row  class="sub-type">
           
-          <ion-select label="Type" label-placement="floating"  [(ngModel)]="newSubTodo.type" aria-label="Type">
+          <ion-select label="Type" label-placement="floating"  [(ngModel)]="openModal.task.type" aria-label="Type">
             <ion-select-option value="customize">Customize</ion-select-option>
             <ion-select-option value="todo">Todo</ion-select-option>
             <ion-select-option value="todo list">Todo list</ion-select-option>
@@ -104,14 +104,14 @@
         </ion-row>
 
 
-        <div *ngIf="newSubTodo.type == 'todo'">
+        <div *ngIf="openModal.task.type == 'todo'">
           <ion-row class="new-sub-todo">
             <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
             <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
           </ion-row>
         </div>
 
-        <div *ngIf="newSubTodo.type != 'todo'">
+        <div *ngIf="openModal.task.type != 'todo'">
 
           <ion-buttons class="add-button-container" >
             <button class="add-button" (click)="addTaskOnList()">
@@ -135,7 +135,7 @@
   </ion-list>
 
   <div *ngIf="openModal.open">
-    <app-add-modal [subTodo]="newSubTodo" [level]="incrementLevel()" [modify]="openModal.modify"></app-add-modal>
+    <app-add-modal [subTodo]="openModal.task" [level]="incrementLevel()" [modify]="openModal.modify"></app-add-modal>
 
   </div>
 
