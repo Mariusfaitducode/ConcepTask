@@ -7,7 +7,7 @@ import { ModalController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 
 import { Todo } from 'src/app/model/todo';
-import { Config } from 'src/app/model/todo';
+
 import { ModalService } from 'src/app/service/modal.service';
 
 @Component({

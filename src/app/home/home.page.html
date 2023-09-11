@@ -19,7 +19,7 @@
   <!-- How to iterate object + index -->
     <ion-row *ngFor="let todo of todos; let id = index">
       
-      <app-todo-card [todo]="todo" [routerLink]="'/todo/' + id"></app-todo-card>
+      <app-todo-card [todo]="todo" [color]="typeColor(todo.type)" [routerLink]="'/todo/' + id"></app-todo-card>
     </ion-row >
   </ion-list>
   <ion-infinite-scroll>

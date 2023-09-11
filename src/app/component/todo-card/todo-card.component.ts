@@ -1,4 +1,6 @@
+import { SelectorContext } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
+import { Todo } from 'src/app/model/todo';
 
 @Component({
   selector: 'app-todo-card',
@@ -9,8 +11,11 @@ export class TodoCardComponent  implements OnInit {
 
   constructor() { }
 
-  @Input() todo: any;
+  @Input() todo!: Todo;
+  @Input() color!: string;
 
-  ngOnInit() {}
+  ngOnInit() { 
+    
+  }
 
 }

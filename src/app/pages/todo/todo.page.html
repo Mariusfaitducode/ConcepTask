@@ -9,6 +9,7 @@
       <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input>
 
       <ion-select [(ngModel)]="todo.type" aria-label="Type" class="select-right">
+        <ion-select-option value="customize">Customize</ion-select-option>
         <ion-select-option value="todo">Todo</ion-select-option>
         <ion-select-option value="todo list">Todo list</ion-select-option>
         <ion-select-option value="project">Project</ion-select-option>

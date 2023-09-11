@@ -39,14 +39,15 @@ export class HomePage {
     this.loadTodos();
   }
 
-  ngOnChange(){
-    
+  ngOnChange(){  
  }
+
 
  loadTodos(){
    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
    console.log(this.todos)
  }
+
 
  setTodos(){
    localStorage.setItem('todos', JSON.stringify(this.todos));
@@ -57,9 +58,30 @@ export class HomePage {
    this.menuCtrl.open();
  }
 
+
  closeMenu() {
    this.menuCtrl.close();
  }
 
+ typeColor(type : string){
+  switch (type) {
+
+    case "customize":
+      return "var(--ion-color-tertiary)";
+      
+    case "todo":
+      return "var(--ion-color-danger)";
+      
+    case "todo list":
+      return "var(--ion-color-warning)";
+      
+    case "event":
+      return "var(--ion-color-success)";
+      
+    default:
+      return "var(--ion-color-primary)";
+      
+  }
+ }
   // app = initializeApp(environnement.firebaseConfig);
 }

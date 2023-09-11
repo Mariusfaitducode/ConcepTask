@@ -11,13 +11,35 @@ ion-card{
     position: relative;
     // background: transparent;
     padding: 0;
+
   
     /* Hauteur de la card */
-    // height: 200px; /* Ajustez la hauteur selon vos besoins */
+    height: 70px; /* Ajustez la hauteur selon vos besoins */
   
     /* Dégradé vertical */
     // background: linear-gradient(to bottom, yellow 50%, white 50%);
   }
+
+
+.type-card{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    border-radius: 0 0px 5px 0px;
+   
+    color: var(--ion-color-dark);
+    // font-weight: bold;
+
+    // background-color: aqua;
+
+    
+
+    /* Dégradé vertical */
+    // background: linear-gradient(to bottom, yellow 50%, white 50%);
+}  
 
 .custom-background{
     position: absolute;
@@ -36,6 +58,11 @@ ion-card{
 
 ion-card-content{
     display: flex;
+}
+
+
+ion-card-title{
+    margin-top: 20px;
 }
 
 .home-card{
