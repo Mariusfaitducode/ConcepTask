@@ -2,7 +2,7 @@
 
 export class Todo {
 
-    //public id: number;
+    public subId?: number;
     public main: boolean;
     public title!: string;
     public type: string;
@@ -12,6 +12,8 @@ export class Todo {
     public isChecked?: boolean;
 
     public date?: Date;
+
+    public time?: Date;
 
     public reminder?: boolean;
 

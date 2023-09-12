@@ -7,6 +7,7 @@ import { MenuController } from '@ionic/angular';
 // import { NavParams } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
+import { Todo } from '../model/todo';
 
 //import { AngularFireDatabase } from '@angular/fire/database';
 
@@ -22,7 +23,7 @@ export class HomePage {
     private menuCtrl : MenuController,
     private route : ActivatedRoute) {}
 
-  todos : any[] = []
+  todos : Todo[] = []
 
   ngOnInit() {
 

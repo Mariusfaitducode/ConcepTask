@@ -70,8 +70,14 @@ export class AddPage implements OnInit {
 
         console.log("subtask level 0");
         this.newTodo.list!.push(subTask.todo);
-        subTask.todo = null;
         //this.newSubTodo = new Todo();
+
+        setTimeout(() => {
+          
+          console.log("timeout");
+          subTask.todo = null;
+          
+        } , 200);
       }
       console.log(this.newTodo);
       //this.subTask = subTask;
@@ -82,6 +88,10 @@ export class AddPage implements OnInit {
   saveTodo(){
     console.log(this.newTodo);
 
+
+
+    this.assignIds(this.newTodo.list!);
+
     this.todos.push(this.newTodo);
 
     localStorage.setItem('todos', JSON.stringify(this.todos));
@@ -91,6 +101,30 @@ export class AddPage implements OnInit {
 
     this.navCtrl.navigateForward('/home');
   }
+
+  // Fonction pour parcourir l'arbre et attribuer des IDs
+  // Not working
+assignIds(list : Todo[] ): void {
+
+  let copyList = [...list];
+
+  let queue = [{ list: copyList, parentId: 0 }];
+
+  let id = 0;
+
+  for (let i = 0; i < queue.length; i++) {
+    while (queue[i].list.length > 0) {
+
+      let todo = queue[i].list.shift()!;
+
+      todo.subId = id++;
+
+      if (todo.list) {
+        queue.push({ list: todo.list, parentId: todo.subId });
+      }
+    }
+  }
+}
 
 
   findOnConfig(key: string): boolean {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail } from '@ionic/angular';
+import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 
 @Component({
@@ -11,8 +12,9 @@ import { ModalService } from 'src/app/service/modal.service';
 export class TodoPage implements OnInit {
 
 
-  todos = [];
-  todo : any = {};
+  todos: Todo[] = [];
+
+  todo! : Todo;
   index : number = 0;
 
   // originalIndex : number = 0;
@@ -39,31 +41,31 @@ export class TodoPage implements OnInit {
         
         this.loadTodo(this.index);
 
-        this.todo = this.todo.list[params['subId']];
+        //this.todo = this.todo.list[params['subId']];
       }
 
       
     });
 
-    this.modalService.openModal$.subscribe(openModal => {
-      if (openModal) {
-        this.openModal= true;
-      } else {
-        this.openModal = false;
-      }
-    });
+    // this.modalService.openModal$.subscribe(openModal => {
+    //   if (openModal) {
+    //     this.openModal= true;
+    //   } else {
+    //     this.openModal = false;
+    //   }
+    // });
 
-    this.modalService.subTask$.subscribe(subTask => {
+    // this.modalService.subTask$.subscribe(subTask => {
 
-      if (subTask.level == 0 && subTask.todo) {
-        this.todo.list!.push(subTask.todo);
-        subTask.todo = null;
-      }
+    //   if (subTask.level == 0 && subTask.todo) {
+    //     this.todo.list!.push(subTask.todo);
+    //     subTask.todo = null;
+    //   }
    
-      console.log(this.todo);
-      //this.subTask = subTask;
-      // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
-    });
+    //   console.log(this.todo);
+    //   //this.subTask = subTask;
+    //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
+    // });
   }
 
   actualizeTodo(){
@@ -101,10 +103,10 @@ export class TodoPage implements OnInit {
 
   addTodoOnList(){
 
-    this.todo.list.push({
-      type: 'todo',
-      title: this.newTodoOnListTitle,
-    });
+    // this.todo.list.push({
+    //   type: 'todo',
+    //   title: this.newTodoOnListTitle,
+    // });
 
     this.newTodoOnListTitle = '';
     console.log(this.todo);

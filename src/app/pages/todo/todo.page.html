@@ -41,30 +41,32 @@
       </ion-buttons>
     </ion-row>
 
-    <ion-item >
+    <ion-item *ngIf="todo.description != undefined">
       <ion-label position="floating" color="primary">Description</ion-label>
       <ion-textarea [(ngModel)]="todo.description" placeholder="Description" autoGrow="true"></ion-textarea>
     </ion-item>
 
-    <div class="date-selector">
+    <div *ngIf="todo.date != undefined">
+      <div class="date-selector" >
 
-      <ion-item class="date-left">
-        <ion-label position="floating" color="primary">Due date</ion-label>
-        <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date"></ion-input>  
-      </ion-item>
+        <ion-item class="date-left">
+          <ion-label position="floating" color="primary">Due date</ion-label>
+          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date"></ion-input>  
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="floating" color="primary">Due time</ion-label>
-        <ion-input type="time" placeholder="Time"></ion-input>
-      </ion-item>
+        <ion-item *ngIf="todo.time != undefined">
+          <ion-label position="floating" color="primary">Due time</ion-label>
+          <ion-input type="time" placeholder="Time"></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-row class="rappel">
+        <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
+      </ion-row>
     </div>
 
-    <ion-row class="rappel">
-      <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
-    </ion-row>
 
-
-    <div *ngIf=" todo.type && todo.type !='todo'">
+    <div *ngIf="todo.list != undefined && todo.list.length > 0">
 
       <ion-list class="sub-todo-list">
         <ion-label class="sub-todos-label" color="primary">Sub Todos</ion-label>
