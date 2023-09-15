@@ -120,7 +120,7 @@ assignIds(list : Todo[] ): void {
       todo.subId = id++;
 
       if (todo.list) {
-        queue.push({ list: todo.list, parentId: todo.subId });
+        queue.push({ list: [...todo.list], parentId: todo.subId });
       }
     }
   }
