@@ -4,11 +4,8 @@
       <ion-icon name="close-outline" class="close-icon" (click)="closeModal()"></ion-icon>
     </ion-buttons>
     level: {{level}}
-    <div *ngIf="subTodo.type != 'customize'">
-      <ion-title size="large">New {{subTodo.type}}</ion-title>
-    </div>
 
-    <div *ngIf="subTodo.type == 'customize'">
+    <div>
       <ion-title size="large">New task</ion-title>
     </div>
     <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
@@ -30,12 +27,27 @@
   
   <ion-list class="list-page">
 
-    <ion-item>
-      <ion-label position="floating">Title</ion-label>
-      <ion-input type="text" [(ngModel)]="subTodo.title"></ion-input>
-    </ion-item>
+    <div class="title-type-header">
 
-    <div *ngIf="subTodo.type == 'customize'" class="customize-container">
+      <ion-item class="title">
+        <ion-label position="floating">Title</ion-label>
+        <ion-input type="text" [(ngModel)]="subTodo.title"></ion-input>
+      </ion-item>
+
+      <ion-row  class="type">
+        <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTodo.category" aria-label="Type">
+          <ion-select-option value="default">Default</ion-select-option>
+          <ion-select-option value="personnal">Personnal</ion-select-option>
+          <ion-select-option value="project">Project</ion-select-option>
+          <ion-select-option value="work">Work</ion-select-option>
+          <ion-select-option value="wishlist">Wishlist</ion-select-option>
+          <ion-select-option value="sport">Sport</ion-select-option>
+          <ion-select-option value="shopping">Shopping</ion-select-option>
+        </ion-select>
+      </ion-row>
+    </div>
+
+    <div class="customize-container">
 
       <!-- Personnalisation du Todo -->
 
@@ -95,23 +107,21 @@
 
         <ion-row  class="sub-type">
           
-          <ion-select label="Type" label-placement="floating"  [(ngModel)]="openModal.task.type" aria-label="Type">
+          <ion-select label="Type" label-placement="floating"  [(ngModel)]="subType" aria-label="Type">
             <ion-select-option value="customize">Customize</ion-select-option>
             <ion-select-option value="todo">Todo</ion-select-option>
-            <ion-select-option value="todo list">Todo list</ion-select-option>
-            <ion-select-option value="reminder">Reminder</ion-select-option>
           </ion-select>
         </ion-row>
 
 
-        <div *ngIf="openModal.task.type == 'todo'">
+        <div *ngIf="subType == 'todo'">
           <ion-row class="new-sub-todo">
             <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
             <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
           </ion-row>
         </div>
 
-        <div *ngIf="openModal.task.type != 'todo'">
+        <div *ngIf="subType != 'todo'">
 
           <ion-buttons class="add-button-container" >
             <button class="add-button" (click)="addTaskOnList()">

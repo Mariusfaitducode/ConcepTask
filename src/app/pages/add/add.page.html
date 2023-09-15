@@ -3,12 +3,8 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
     </ion-buttons>
-    
-    <div *ngIf="newTodo.type != 'customize'">
-      <ion-title size="large">New {{newTodo.type}}</ion-title>
-    </div>
 
-    <div *ngIf="newTodo.type == 'customize'">
+    <div>
       <ion-title size="large">New task</ion-title>
     </div>
     
@@ -34,18 +30,20 @@
       </ion-item>
 
       <ion-row  class="type">
-        <ion-select label="Type" label-placement="floating"  [(ngModel)]="newTodo.type" aria-label="Type" (ionChange)="onTypeChange()">
-          <ion-select-option value="customize">Customize</ion-select-option>
-          <ion-select-option value="todo">Todo</ion-select-option>
-          <ion-select-option value="todo list">Todo list</ion-select-option>
+        <ion-select label="Category" label-placement="floating"  [(ngModel)]="newTodo.category" aria-label="Type">
+          <ion-select-option value="default">Default</ion-select-option>
+          <ion-select-option value="personnal">Personnal</ion-select-option>
           <ion-select-option value="project">Project</ion-select-option>
-          <ion-select-option value="reminder">Reminder</ion-select-option>
+          <ion-select-option value="work">Work</ion-select-option>
+          <ion-select-option value="wishlist">Wishlist</ion-select-option>
+          <ion-select-option value="sport">Sport</ion-select-option>
+          <ion-select-option value="shopping">Shopping</ion-select-option>
         </ion-select>
       </ion-row>
     </div>
 
 
-    <div *ngIf="newTodo.type == 'customize'" class="customize-container">
+    <div class="customize-container">
 
       <!-- Personnalisation du Todo -->
 
@@ -114,23 +112,21 @@
 
         <ion-row  class="sub-type">
           
-          <ion-select label="Type" label-placement="floating"  [(ngModel)]="openModal.task.type" aria-label="Type">
+          <ion-select label="Type" label-placement="floating"  [(ngModel)]="subType" aria-label="Type">
             <ion-select-option value="customize">Customize</ion-select-option>
             <ion-select-option value="todo">Todo</ion-select-option>
-            <ion-select-option value="todo list">Todo list</ion-select-option>
-            <ion-select-option value="reminder">Reminder</ion-select-option>
           </ion-select>
         </ion-row>
 
 
-        <div *ngIf="openModal.task.type == 'todo'">
+        <div *ngIf="subType == 'todo'">
           <ion-row class="new-sub-todo">
             <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
             <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
           </ion-row>
         </div>
 
-        <div *ngIf="openModal.task.type != 'todo'">
+        <div *ngIf="subType != 'todo'">
 
           <ion-buttons class="add-button-container" >
             <button class="add-button" (click)="addTaskOnList()">
@@ -145,10 +141,10 @@
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
           <div *ngFor="let subTodo of newTodo.list; let id = index">
 
-            <div *ngIf="subTodo.type == 'todo'">
+            <!-- <div *ngIf="subType == 'todo'">
               <app-sub-todo [todo]="newTodo" [subTodo]="subTodo" [index]="id" [page]="'add'"></app-sub-todo>
-            </div>
-            <div *ngIf="subTodo.type != 'todo'">
+            </div> -->
+            <div>
               <app-sub-task [todo]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'" (click)="modifyTaskOnList(subTodo)"></app-sub-task>
             </div>
             

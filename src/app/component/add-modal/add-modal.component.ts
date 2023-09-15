@@ -39,6 +39,7 @@ export class AddModalComponent  implements OnInit {
 
   showDate: boolean = false;
 
+  subType: string = 'customize';
 
   openModal: any = {
     open: false,
@@ -52,7 +53,7 @@ export class AddModalComponent  implements OnInit {
 
     console.log(this.level)
 
-    this.onTypeChange();
+    // this.onTypeChange();
 
     this.modalService.openModal$.subscribe(openModal => {
 
@@ -143,41 +144,41 @@ export class AddModalComponent  implements OnInit {
     // console.log(this.newTodo);
   }
 
-  onTypeChange(){
+  // onTypeChange(){
 
-    switch (this.subTodo.type){
+  //   switch (this.subTodo.type){
       
-      case 'customize' :
-        //this.config.customizedConfig();
-        this.configArray = this.configCustomizedArray!;
-        break;
+  //     case 'customize' :
+  //       //this.config.customizedConfig();
+  //       this.configArray = this.configCustomizedArray!;
+  //       break;
 
-      case 'todo' :
-        this.configArray = [
-          { key: 'description', value: false },
-          { key: 'date', value: false },
-          { key: 'time', value: false },
-          { key: 'repetition', value: false },
-          { key: 'sub tasks', value: false },
-        ];
-        break;
+  //     case 'todo' :
+  //       this.configArray = [
+  //         { key: 'description', value: false },
+  //         { key: 'date', value: false },
+  //         { key: 'time', value: false },
+  //         { key: 'repetition', value: false },
+  //         { key: 'sub tasks', value: false },
+  //       ];
+  //       break;
 
-      case 'todo list':
-        //this.config.todoListConfig();
-        this.configArray = [
-          { key: 'description', value: true },
-          { key: 'date', value: true },
-          { key: 'time', value: true },
-          { key: 'repetition', value: false },
-          { key: 'sub tasks', value: true },
-        ];
-        break;
+  //     case 'todo list':
+  //       //this.config.todoListConfig();
+  //       this.configArray = [
+  //         { key: 'description', value: true },
+  //         { key: 'date', value: true },
+  //         { key: 'time', value: true },
+  //         { key: 'repetition', value: false },
+  //         { key: 'sub tasks', value: true },
+  //       ];
+  //       break;
 
-      default:
-        //Search in localStorage
-        break;
-    }
-  }
+  //     default:
+  //       //Search in localStorage
+  //       break;
+  //   }
+  // }
 
 
   addTodoOnList(){

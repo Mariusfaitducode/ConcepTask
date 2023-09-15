@@ -8,13 +8,16 @@
 
       <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input>
 
-      <ion-select [(ngModel)]="todo.type" aria-label="Type" class="select-right">
-        <ion-select-option value="customize">Customize</ion-select-option>
-        <ion-select-option value="todo">Todo</ion-select-option>
-        <ion-select-option value="todo list">Todo list</ion-select-option>
+      <ion-select aria-label="Type" class="select-right">
+        <ion-select-option value="default">Default</ion-select-option>
+        <ion-select-option value="personnal">Personnal</ion-select-option>
         <ion-select-option value="project">Project</ion-select-option>
-        <ion-select-option value="reminder">Reminder</ion-select-option>
+        <ion-select-option value="work">Work</ion-select-option>
+        <ion-select-option value="wishlist">Wishlist</ion-select-option>
+        <ion-select-option value="sport">Sport</ion-select-option>
+        <ion-select-option value="shopping">Shopping</ion-select-option>
       </ion-select>
+
 
     </div>
     <!-- <ion-title>{{todo.title}}</ion-title> -->
@@ -74,25 +77,25 @@
           <div *ngFor="let subTodo of todo.list; let id = index">
 
             <!-- SubTodo -->
-            <div *ngIf="subTodo.type == 'todo'">
+            <!-- <div *ngIf="subTodo.type == 'todo'">
               <app-sub-todo [todo]="todo" [subTodo]="subTodo" [index]="id" [page]="'todo'"></app-sub-todo>
-            </div>
+            </div> -->
 
             <!-- SubTask -->
-            <div *ngIf="subTodo.type != 'todo'">
+            <!-- <div *ngIf="subTodo.type != 'todo'">
               <app-sub-task [todo]="todo" [subTask]="subTodo" [index]="id" [page]="'todo'" [routerLink]="'/todo/' + this.index + '/' + id"></app-sub-task>
-            </div>
+            </div> -->
             
           </div > 
         </ion-reorder-group>
       </ion-list> 
 
-      <ion-row class="new-sub-todo" *ngIf="todo.type == 'todo list'">
+      <ion-row class="new-sub-todo">
         <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
         <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
       </ion-row>
 
-      <ion-row *ngIf="todo.type == 'project'" class="new-sub-task">
+      <ion-row class="new-sub-task">
 
         <ion-text>Sub tasks</ion-text>
         <ion-buttons class="add-button-container" >

@@ -5,7 +5,7 @@ export class Todo {
     public subId?: number;
     public main: boolean;
     public title!: string;
-    public type: string;
+    public category: string;
 
     public description?: string;
 
@@ -25,11 +25,11 @@ export class Todo {
     public list?: Todo[];
 
 
-    constructor(title?: string, type?: string, main?: boolean) {
+    constructor(title?: string, category?: string, main?: boolean) {
 
         //this.id = id;
         this.main = main || true;
-        this.type = type || 'customize';
+        this.category = category || 'default';
         this.title = title || '';
         this.list = [];
         // this.description = description;

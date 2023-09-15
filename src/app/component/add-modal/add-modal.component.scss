@@ -16,6 +16,22 @@ ion-list{
     padding-top: 10px;
 }
 
+.title-type-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // align-items: center;
+}
+
+.title-type-header .title{
+    width: 60%;
+}
+
+.title-type-header .type{
+    width: 35%;
+    
+}
+
 .input-todo{
     background-color: var(--ion-color-step-200);
 
@@ -35,10 +51,6 @@ ion-select {
     padding-right: 16px;
     --placeholder-color: white !important; /* Remplacez cette couleur par celle de votre choix */
     --placeholder-opacity: 1 !important; /* Pour être sûr que le texte est lisible */
-}
-
-ion-label{
-    padding-bottom: 20px;
 }
 
 ion-row{

@@ -67,16 +67,16 @@ export class HomePage {
  typeColor(type : string){
   switch (type) {
 
-    case "customize":
+    case "default":
       return "var(--ion-color-tertiary)";
       
-    case "todo":
+    case "personnal":
       return "var(--ion-color-danger)";
       
-    case "todo list":
+    case "project":
       return "var(--ion-color-warning)";
       
-    case "event":
+    case "work":
       return "var(--ion-color-success)";
       
     default:

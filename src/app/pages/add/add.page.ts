@@ -23,6 +23,7 @@ export class AddPage implements OnInit {
 
   //newSubTodo!: Todo;
 
+  subType: string = '';
 
 
   configArray: { key: string, value: boolean }[] = [
@@ -140,43 +141,43 @@ assignIds(list : Todo[] ): void {
   }
 
 
-  onTypeChange(){
+  // onTypeChange(){
 
-    switch (this.newTodo.type){
+  //   switch (this.newTodo.type){
       
-      case 'customize' :
-        //this.config.customizedConfig();
-        this.configArray = this.configCustomizedArray!;
-        break;
+  //     case 'customize' :
+  //       //this.config.customizedConfig();
+  //       this.configArray = this.configCustomizedArray!;
+  //       break;
 
-      case 'todo' :
-        this.configArray = [
-          { key: 'description', value: false },
-          { key: 'date', value: false },
-          { key: 'time', value: false },
-          { key: 'repetition', value: false },
-          { key: 'sub tasks', value: false },
-        ];
-        break;
+  //     case 'todo' :
+  //       this.configArray = [
+  //         { key: 'description', value: false },
+  //         { key: 'date', value: false },
+  //         { key: 'time', value: false },
+  //         { key: 'repetition', value: false },
+  //         { key: 'sub tasks', value: false },
+  //       ];
+  //       break;
 
-      case 'todo list':
-        //this.config.todoListConfig();
-        this.configArray = [
-          { key: 'description', value: true },
-          { key: 'date', value: true },
-          { key: 'time', value: true },
-          { key: 'repetition', value: false },
-          { key: 'sub tasks', value: true },
-        ];
-        break;
+  //     case 'todo list':
+  //       //this.config.todoListConfig();
+  //       this.configArray = [
+  //         { key: 'description', value: true },
+  //         { key: 'date', value: true },
+  //         { key: 'time', value: true },
+  //         { key: 'repetition', value: false },
+  //         { key: 'sub tasks', value: true },
+  //       ];
+  //       break;
 
-      default:
-        //Search in localStorage
-        break;
+  //     default:
+  //       //Search in localStorage
+  //       break;
 
 
-    }
-  }
+  //   }
+  // }
 
 
   getId(){
