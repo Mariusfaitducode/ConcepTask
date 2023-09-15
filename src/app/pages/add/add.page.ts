@@ -105,13 +105,13 @@ export class AddPage implements OnInit {
 
   // Fonction pour parcourir l'arbre et attribuer des IDs
   // Not working
-assignIds(list : Todo[] ): void {
+assignIds(list : Todo[]): void {
 
   let copyList = [...list];
 
   let queue = [{ list: copyList, parentId: 0 }];
 
-  let id = 0;
+  let id = 1;
 
   for (let i = 0; i < queue.length; i++) {
     while (queue[i].list.length > 0) {
@@ -119,6 +119,7 @@ assignIds(list : Todo[] ): void {
       let todo = queue[i].list.shift()!;
 
       todo.subId = id++;
+      todo.parentId = queue[i].parentId;
 
       if (todo.list) {
         queue.push({ list: [...todo.list], parentId: todo.subId });

@@ -14,8 +14,11 @@ export class TodoPage implements OnInit {
 
   todos: Todo[] = [];
 
+  mainTodo! : Todo;
+
   todo! : Todo;
   index : number = 0;
+
 
   // originalIndex : number = 0;
 
@@ -41,11 +44,34 @@ export class TodoPage implements OnInit {
         
         this.loadTodo(this.index);
 
-        //this.todo = this.todo.list[params['subId']];
+        this.todo = this.findSubTodo(+params['subId']!);
       }
 
       
     });
+  }
+  
+  findSubTodo(subId : number){
+
+    let copyList = [...this.mainTodo.list!];
+
+    // let queue = [{ list: copyList, parentId: 0 }];
+
+    // Bfs algorithm
+    while (copyList.length > 0) {
+
+      let todo = copyList.shift()!;
+
+      if (todo.subId == subId) {
+        return todo;
+      }
+
+      for (let subTodo of todo.list!) {
+        copyList.push(subTodo);
+      }
+    }
+    return new Todo();
+  }
 
     // this.modalService.openModal$.subscribe(openModal => {
     //   if (openModal) {
@@ -66,13 +92,26 @@ export class TodoPage implements OnInit {
     //   //this.subTask = subTask;
     //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
     // });
-  }
+  
 
-  actualizeTodo(){
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+  goBackTodo(){
+    // localStorage.setItem('todos', JSON.stringify(this.todos));
 
     if (this.inSubTask) {
-      this.router.navigate(['/todo', this.index]);
+
+      console.log("in subtask");
+
+      console.log(this.todo.parentId);
+
+      if (this.todo.parentId != 0){
+        console.log("parent")
+        this.router.navigate(['/todo', this.index , this.todo.parentId]);
+      }
+      else{
+        console.log("no parent")
+        this.router.navigate(['/todo', this.index]);
+      }
+      
     }
     else{
       this.router.navigate(['/home']);
@@ -84,6 +123,7 @@ export class TodoPage implements OnInit {
     this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
     console.log(this.todos)
     this.todo = this.todos[id]
+    this.mainTodo = this.todos[id]
   }
 
   deleteTodo(){

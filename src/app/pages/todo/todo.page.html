@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="#" (click)="actualizeTodo()"></ion-back-button>
+      <ion-back-button default-href="#" (click)="goBackTodo()"></ion-back-button>
     </ion-buttons>
 
     <div class="toolbar-content">
@@ -69,12 +69,14 @@
     </div>
 
 
+    <!-- List -->
+
     <div *ngIf="todo.list != undefined && todo.list.length > 0">
 
       <ion-list class="sub-todo-list">
         <ion-label class="sub-todos-label" color="primary">Sub Todos</ion-label>
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-          <div *ngFor="let subTodo of todo.list; let id = index">
+          <div *ngFor="let subTodo of todo.list">
 
             <!-- SubTodo -->
             <!-- <div *ngIf="subTodo.type == 'todo'">
@@ -82,15 +84,15 @@
             </div> -->
 
             <!-- SubTask -->
-            <!-- <div *ngIf="subTodo.type != 'todo'">
-              <app-sub-task [todo]="todo" [subTask]="subTodo" [index]="id" [page]="'todo'" [routerLink]="'/todo/' + this.index + '/' + id"></app-sub-task>
-            </div> -->
+            <div>
+              <app-sub-task [todo]="todo" [subTask]="subTodo" [index]="subTodo.subId" [page]="'todo'" [routerLink]="'/todo/' + this.index + '/' + subTodo.subId"></app-sub-task>
+            </div>
             
           </div > 
         </ion-reorder-group>
       </ion-list> 
 
-      <ion-row class="new-sub-todo">
+      <!-- <ion-row class="new-sub-todo">
         <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
         <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
       </ion-row>
@@ -104,7 +106,7 @@
           </button>
         </ion-buttons>
 
-      </ion-row>
+      </ion-row> -->
 
     </div>
 

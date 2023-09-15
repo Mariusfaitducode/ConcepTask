@@ -3,6 +3,7 @@
 export class Todo {
 
     public subId?: number;
+    public parentId?: number;
     public main: boolean;
     public title!: string;
     public category: string;
