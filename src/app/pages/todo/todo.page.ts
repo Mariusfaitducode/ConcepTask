@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemReorderEventDetail } from '@ionic/angular';
+import { ItemReorderEventDetail, NavController } from '@ionic/angular';
 import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 
@@ -27,7 +27,7 @@ export class TodoPage implements OnInit {
 
   newTodoOnListTitle: string = "";
 
-  constructor(private route : ActivatedRoute, private router : Router, private modalService : ModalService) { }
+  constructor(private navCtrl: NavController, private route : ActivatedRoute, private router : Router, private modalService : ModalService) { }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -73,49 +73,30 @@ export class TodoPage implements OnInit {
     return new Todo();
   }
 
-    // this.modalService.openModal$.subscribe(openModal => {
-    //   if (openModal) {
-    //     this.openModal= true;
-    //   } else {
-    //     this.openModal = false;
-    //   }
-    // });
-
-    // this.modalService.subTask$.subscribe(subTask => {
-
-    //   if (subTask.level == 0 && subTask.todo) {
-    //     this.todo.list!.push(subTask.todo);
-    //     subTask.todo = null;
-    //   }
-   
-    //   console.log(this.todo);
-    //   //this.subTask = subTask;
-    //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
-    // });
-  
 
   goBackTodo(){
+    this.navCtrl.back();
     // localStorage.setItem('todos', JSON.stringify(this.todos));
 
-    if (this.inSubTask) {
+    // if (this.inSubTask) {
 
-      console.log("in subtask");
+    //   console.log("in subtask");
 
-      console.log(this.todo.parentId);
+    //   console.log(this.todo.parentId);
 
-      if (this.todo.parentId != 0){
-        console.log("parent")
-        this.router.navigate(['/todo', this.index , this.todo.parentId]);
-      }
-      else{
-        console.log("no parent")
-        this.router.navigate(['/todo', this.index]);
-      }
+    //   if (this.todo.parentId != undefined && this.todo.parentId != 0){
+    //     console.log("parent")
+    //     // this.router.navigate(['/todo', this.index , this.todo.parentId]);
+    //   }
+    //   else{
+    //     console.log("no parent")
+    //     this.router.navigate(['/todo', this.index]);
+    //   }
       
-    }
-    else{
-      this.router.navigate(['/home']);
-    }
+    // }
+    // else{
+    //   this.router.navigate(['/home']);
+    // }
   }
 
 
