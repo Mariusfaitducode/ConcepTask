@@ -25,7 +25,7 @@ export class AddPage implements OnInit {
 
   //newSubTodo!: Todo;
 
-  subType: string = '';
+  subType: string = 'customize';
 
 
   configArray: { key: string, value: boolean }[] = [

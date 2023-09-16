@@ -28,14 +28,7 @@ export class TodoPage implements OnInit {
 
   configMode : boolean = false;
 
-  configArray: { key: string, value: boolean }[] = [
-    { key: 'description', value: false },
-    { key: 'date', value: false },
-    { key: 'time', value: false },
-    { key: 'repetition', value: false },
-    { key: 'sub tasks', value: true },
-    // { key: 'sub tasks', value: false },
-  ];
+  
 
   newTodoOnListTitle: string = "";
 
@@ -92,28 +85,27 @@ export class TodoPage implements OnInit {
 
 
   goBackTodo(){
-    this.navCtrl.back();
+    // this.navCtrl.back();
     // localStorage.setItem('todos', JSON.stringify(this.todos));
 
-    // if (this.inSubTask) {
+    if (this.inSubTask) {
 
-    //   console.log("in subtask");
+      console.log("in subtask");
 
-    //   console.log(this.todo.parentId);
+      console.log(this.todo.parentId);
 
-    //   if (this.todo.parentId != undefined && this.todo.parentId != 0){
-    //     console.log("parent")
-    //     // this.router.navigate(['/todo', this.index , this.todo.parentId]);
-    //   }
-    //   else{
-    //     console.log("no parent")
-    //     this.router.navigate(['/todo', this.index]);
-    //   }
-      
-    // }
-    // else{
-    //   this.router.navigate(['/home']);
-    // }
+      if (this.todo.parentId != undefined && this.todo.parentId != 0){
+        console.log("parent")
+        // this.router.navigate(['/todo', this.index , this.todo.parentId]);
+      }
+      else{
+        console.log("no parent")
+        this.router.navigate(['/todo', this.index]);
+      }
+    }
+    else{
+      this.router.navigate(['/home']);
+    }
   }
 
 
@@ -153,7 +145,7 @@ export class TodoPage implements OnInit {
     
     localStorage.setItem('todos', JSON.stringify(this.todos));
 
-    //this.router.navigate(['/home']);
+    this.navCtrl.back();
   }
 
   showConfirm = async () => {
@@ -166,7 +158,7 @@ export class TodoPage implements OnInit {
 
     if (value) {
       this.deleteTodo();
-      this.goBackTodo();
+      
     }
   };
 
@@ -186,6 +178,18 @@ export class TodoPage implements OnInit {
 
     this.newTodoOnListTitle = '';
     console.log(this.todo);
+  }
+
+  haveProperties(){
+    return this.exist(this.todo.description) || this.exist(this.todo.date) || this.exist(this.todo.time) || this.exist(this.todo.repetition)
+  }
+
+  exist(item : any){
+    return item != undefined && item != '';
+  }
+
+  goToConceptor(){
+    this.router.navigate(['/conceptor', this.index]);
   }
   
 

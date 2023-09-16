@@ -31,6 +31,11 @@ const routes: Routes = [
     path: 'todo/:id/:subId',
     loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
   },
+  {
+    path: 'conceptor/:id',
+    loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
+  },
+
 
   // { path: 'Todo/:id', },
   // { path: 'Add',},

@@ -63,7 +63,7 @@ ion-item{
     // padding-bottom: 15px;
 }
 
-.middle-buttons{
+.header-buttons{
 
     position: absolute;
 
@@ -78,12 +78,16 @@ ion-item{
     justify-content: flex-end;
 }
 
-.middle-button{
+.ecart{
+    margin-top: 50px;
+}
+
+.header-button{
     background: var(--ion-color-step-50);
     border-radius: 50%;
 
 
-    padding: 10;
+    padding: 10px;
 
     width: 50px;
     height: 50px;
@@ -93,19 +97,51 @@ ion-item{
     margin-right: 15px;
 }
 
-.middle-button svg{
+.header-button svg{
     stroke: var(--ion-color-step-800);
     fill: none;
 }
 
-.middle-button:hover{
+.header-button:hover{
+    background: var(--ion-color-step-100);
+}
+
+.conceptor-button{
+
+    position: absolute;
+    top: 0px;
+    right: -5px;
+    z-index: 20;
+
+    background: var(--ion-color-step-50);
+    border-radius: 50%;
+
+
+    padding: 10px;
+
+    width: 50px;
+    height: 50px;
+
+    font-size: 25px;
+
+    margin-right: 15px;
+}
+
+.conceptor-button svg{
+    
+    fill: var(--ion-color-success);
+    stroke: none;
+}
+
+.conceptor-button:hover{
     background: var(--ion-color-step-100);
 }
 
 
 
 .sub-todo-list{
-    margin-top: 20px;
+    margin-top: 10px;
+    padding-top: 30px;
     padding-bottom: 0px;
 }
 
