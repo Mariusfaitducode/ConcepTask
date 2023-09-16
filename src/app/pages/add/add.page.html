@@ -42,28 +42,7 @@
       </ion-row>
     </div>
 
-
-    <div class="customize-container">
-
-      <!-- Personnalisation du Todo -->
-
-      <div *ngFor="let item of configArray">
-
-        <div *ngIf="item.value == false">
-
-          <button class="customize-button open" (click)="item.value = true; configCustomizedArray = configArray">
-            {{ item.key }}
-          </button>
-        </div>
-
-        <div *ngIf="item.value == true">
-          <button class="customize-button close" (click)="item.value = false; configCustomizedArray = configArray" >
-            {{ item.key }} 
-            <ion-icon name="close-outline" class="close-item"></ion-icon>
-          </button>
-        </div>
-      </div>
-    </div>
+    <app-custom-config [configArray]="configArray"></app-custom-config>
 
     <ion-item *ngIf="findOnConfig('description')">
 

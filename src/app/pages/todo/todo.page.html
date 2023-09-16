@@ -8,7 +8,7 @@
 
       <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input>
 
-      <ion-select aria-label="Type" class="select-right">
+      <ion-select aria-label="Type" [(ngModel)]="todo.category" class="select-right">
         <ion-select-option value="default">Default</ion-select-option>
         <ion-select-option value="personnal">Personnal</ion-select-option>
         <ion-select-option value="project">Project</ion-select-option>
@@ -33,7 +33,15 @@
     <ion-row>
       <ion-buttons class="middle-buttons">
 
-        <button class="middle-button" (click)="deleteTodo()">
+        <button class="middle-button" (click)="modifyTodo()">
+          <!-- <svg width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8787 3.70705C17.0503 2.53547 18.9498 2.53548 20.1213 3.70705L20.2929 3.87862C21.4645 5.05019 21.4645 6.94969 20.2929 8.12126L18.5556 9.85857L8.70713 19.7071C8.57897 19.8352 8.41839 19.9261 8.24256 19.9701L4.24256 20.9701C3.90178 21.0553 3.54129 20.9554 3.29291 20.7071C3.04453 20.4587 2.94468 20.0982 3.02988 19.7574L4.02988 15.7574C4.07384 15.5816 4.16476 15.421 4.29291 15.2928L14.1989 5.38685L15.8787 3.70705ZM18.7071 5.12126C18.3166 4.73074 17.6834 4.73074 17.2929 5.12126L16.3068 6.10738L17.8622 7.72357L18.8787 6.70705C19.2692 6.31653 19.2692 5.68336 18.8787 5.29283L18.7071 5.12126ZM16.4477 9.13804L14.8923 7.52185L5.90299 16.5112L5.37439 18.6256L7.48877 18.097L16.4477 9.13804Z"/>
+            </svg> -->
+
+            <svg width="30px" height="30px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z"  stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        </button>
+
+        <button class="middle-button" (click)="showConfirm()">
           <ion-icon name="trash-outline" color="danger" ></ion-icon>
         </button>
 
@@ -43,6 +51,10 @@
 
       </ion-buttons>
     </ion-row>
+
+
+    
+
 
     <ion-item *ngIf="todo.description != undefined">
       <ion-label position="floating" color="primary">Description</ion-label>
@@ -114,9 +126,9 @@
 
   </ion-list>
 
-  <div *ngIf="openModal">
+  <!-- <div *ngIf="openModal">
     <app-add-modal></app-add-modal>
 
-  </div>
+  </div> -->
 
 </ion-content>

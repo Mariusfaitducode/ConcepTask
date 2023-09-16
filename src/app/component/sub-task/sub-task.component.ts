@@ -38,6 +38,11 @@ export class SubTaskComponent  implements OnInit {
     return '10px';
   }
 
+  developSubTaskPressed(event: Event){
+    event.stopPropagation();
+    this.developped = true;
+  }
+
 
   developSubTask(event: Event){
     event.stopPropagation();

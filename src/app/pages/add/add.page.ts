@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { NavController } from '@ionic/angular';
 
@@ -20,6 +21,7 @@ export class AddPage implements OnInit {
   todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
   newTodo!: Todo;
+  index?: number = undefined;
 
   //newSubTodo!: Todo;
 
@@ -31,12 +33,11 @@ export class AddPage implements OnInit {
     { key: 'date', value: false },
     { key: 'time', value: false },
     { key: 'repetition', value: false },
-    { key: 'sub tasks', value: true },
+    { key: 'sub tasks', value: false },
     // { key: 'sub tasks', value: false },
-
   ];
 
-  configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
+  // configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
 
   // todoList: any[] = [];
 
@@ -49,12 +50,29 @@ export class AddPage implements OnInit {
     modify: false
   };
 
-  constructor(private navCtrl: NavController, private modalService: ModalService) { }
+  constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) { }
 
   ngOnInit() {
 
+
+    this.route.params.subscribe((params) => {
+
+      if (params['id'] != undefined) {
+        
+        this.index = +params['id'];
+
+        this.loadTodo(this.index);
+      }
+      else{
+        this.newTodo = new Todo();
+      }
+      this.setConfig();
+
+      
+    });
+
     //Trouver id du Todo
-    this.newTodo = new Todo();
+    //this.newTodo = new Todo();
     //this.newSubTodo = new Todo();
 
     this.modalService.openModal$.subscribe(openModal => {
@@ -86,47 +104,77 @@ export class AddPage implements OnInit {
     });
   }
 
+  loadTodo(id : number){
+    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    console.log(this.todos)
+    this.newTodo = this.todos[id]
+    // this.mainTodo = this.todos[id] 
+  }
+
+  setConfig(){
+    this.configArray = [
+      { key: 'description', value: this.newTodo.description ? true : false },
+      { key: 'date', value: this.newTodo.date ? true : false },
+      { key: 'time', value: this.newTodo.time ? true : false },
+      { key: 'repetition', value: this.newTodo.repetition ? true : false },
+      { key: 'sub tasks', value: this.newTodo.list?.length ? true : false },
+    ];
+
+  }
+
   saveTodo(){
     console.log(this.newTodo);
 
-
-
     this.assignIds(this.newTodo.list!);
 
-    this.todos.push(this.newTodo);
 
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    if (this.index != undefined) {
+      this.todos[this.index] = this.newTodo;
 
-    this.newTodo = new Todo();
-    //this.newSubTodo = new Todo();
+      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.newTodo = new Todo();
+      //this.newSubTodo = new Todo();
 
-    this.navCtrl.navigateForward('/home');
+      this.navCtrl.navigateForward('/todo/' + this.index);
+    }
+    else{
+      this.todos.push(this.newTodo);
+
+      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.newTodo = new Todo();
+      //this.newSubTodo = new Todo();
+
+      this.navCtrl.navigateForward('/home');
+    }
+    //this.todos.push(this.newTodo);
+
+    
   }
 
-  // Fonction pour parcourir l'arbre et attribuer des IDs
-  // Not working
-assignIds(list : Todo[]): void {
+    // Fonction pour parcourir l'arbre et attribuer des IDs
+    // Not working
+  assignIds(list : Todo[]): void {
 
-  let copyList = [...list];
+    let copyList = [...list];
 
-  let queue = [{ list: copyList, parentId: 0 }];
+    let queue = [{ list: copyList, parentId: 0 }];
 
-  let id = 1;
+    let id = 1;
 
-  for (let i = 0; i < queue.length; i++) {
-    while (queue[i].list.length > 0) {
+    for (let i = 0; i < queue.length; i++) {
+      while (queue[i].list.length > 0) {
 
-      let todo = queue[i].list.shift()!;
+        let todo = queue[i].list.shift()!;
 
-      todo.subId = id++;
-      todo.parentId = queue[i].parentId;
+        todo.subId = id++;
+        todo.parentId = queue[i].parentId;
 
-      if (todo.list) {
-        queue.push({ list: [...todo.list], parentId: todo.subId });
+        if (todo.list) {
+          queue.push({ list: [...todo.list], parentId: todo.subId });
+        }
       }
     }
   }
-}
 
 
   findOnConfig(key: string): boolean {
@@ -140,46 +188,6 @@ assignIds(list : Todo[]): void {
     
     configItem!.value = false;
   }
-
-
-  // onTypeChange(){
-
-  //   switch (this.newTodo.type){
-      
-  //     case 'customize' :
-  //       //this.config.customizedConfig();
-  //       this.configArray = this.configCustomizedArray!;
-  //       break;
-
-  //     case 'todo' :
-  //       this.configArray = [
-  //         { key: 'description', value: false },
-  //         { key: 'date', value: false },
-  //         { key: 'time', value: false },
-  //         { key: 'repetition', value: false },
-  //         { key: 'sub tasks', value: false },
-  //       ];
-  //       break;
-
-  //     case 'todo list':
-  //       //this.config.todoListConfig();
-  //       this.configArray = [
-  //         { key: 'description', value: true },
-  //         { key: 'date', value: true },
-  //         { key: 'time', value: true },
-  //         { key: 'repetition', value: false },
-  //         { key: 'sub tasks', value: true },
-  //       ];
-  //       break;
-
-  //     default:
-  //       //Search in localStorage
-  //       break;
-
-
-  //   }
-  // }
-
 
   getId(){
     return this.todos.length + 1;

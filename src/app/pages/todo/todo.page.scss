@@ -93,6 +93,11 @@ ion-item{
     margin-right: 15px;
 }
 
+.middle-button svg{
+    stroke: var(--ion-color-step-800);
+    fill: none;
+}
+
 .middle-button:hover{
     background: var(--ion-color-step-100);
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail, NavController } from '@ionic/angular';
 import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
+import { Dialog } from '@capacitor/dialog';
 
 @Component({
   selector: 'app-todo',
@@ -23,7 +24,18 @@ export class TodoPage implements OnInit {
   // originalIndex : number = 0;
 
   inSubTask : boolean = false;
-  openModal: boolean = false;
+  // openModal: boolean = false;
+
+  configMode : boolean = false;
+
+  configArray: { key: string, value: boolean }[] = [
+    { key: 'description', value: false },
+    { key: 'date', value: false },
+    { key: 'time', value: false },
+    { key: 'repetition', value: false },
+    { key: 'sub tasks', value: true },
+    // { key: 'sub tasks', value: false },
+  ];
 
   newTodoOnListTitle: string = "";
 
@@ -33,17 +45,22 @@ export class TodoPage implements OnInit {
     this.route.params.subscribe((params) => {
 
       if (params['subId'] == undefined) {
+
+        //In the main todo
+
         this.inSubTask = false;
         this.index = +params['id'];
 
         this.loadTodo(this.index);
       }
       else{
+
+        //In a subTodo
+
         this.inSubTask = true;
         this.index = +params['id'];
         
         this.loadTodo(this.index);
-
         this.todo = this.findSubTodo(+params['subId']!);
       }
 
@@ -107,13 +124,51 @@ export class TodoPage implements OnInit {
     this.mainTodo = this.todos[id]
   }
 
+  modifyTodo(){
+    this.router.navigate(['/add', this.index]);
+  }
+
   deleteTodo(){
-    this.todos.splice(this.index, 1);
+    // this.todos.splice(this.index, 1);
+
+    console.log("delete");
+
+    if (this.todo.parentId){
+      let parentTodo = this.findSubTodo(this.todo.parentId);
+
+      console.log("parent");
+      console.log(parentTodo);
+
+      for (let i = 0; i < parentTodo.list!.length; i++) {
+        if (parentTodo.list![i].subId == this.todo.subId) {
+          parentTodo.list?.splice(i, 1);
+          break;
+        }
+      }
+    }
+    else{
+      this.todos.splice(this.index, 1);
+    }
+
+    
     localStorage.setItem('todos', JSON.stringify(this.todos));
 
     //this.router.navigate(['/home']);
   }
 
+  showConfirm = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: `Are you sure to delete `+ this.todo.title +` ?`,
+    });
+  
+    console.log('Confirmed:', value);
+
+    if (value) {
+      this.deleteTodo();
+      this.goBackTodo();
+    }
+  };
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
    

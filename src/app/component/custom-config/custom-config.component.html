@@ -1,0 +1,21 @@
+<div class="customize-container">
+
+  <!-- Personnalisation du Todo -->
+
+  <div *ngFor="let item of configArray">
+
+    <div *ngIf="item.value == false">
+
+      <button class="customize-button open" (click)="item.value = true">
+        {{ item.key }}
+      </button>
+    </div>
+
+    <div *ngIf="item.value == true">
+      <button class="customize-button close" (click)="item.value = false" >
+        {{ item.key }} 
+        <ion-icon name="close-outline" class="close-item"></ion-icon>
+      </button>
+    </div>
+  </div>
+</div>
