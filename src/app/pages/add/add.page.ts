@@ -5,11 +5,14 @@ import { NavController } from '@ionic/angular';
 
 import { ModalController } from '@ionic/angular';
 
+import { LocalNotifications } from '@capacitor/local-notifications';
+
 import { ItemReorderEventDetail } from '@ionic/core';
 
 import { Todo } from 'src/app/model/todo';
 
 import { ModalService } from 'src/app/service/modal.service';
+import { set } from 'firebase/database';
 
 @Component({
   selector: 'app-add',
@@ -240,5 +243,80 @@ export class AddPage implements OnInit {
     this.openModal.task = subTask;
     this.openModal.open = true;
     this.openModal.modify = true;
+  }
+
+
+  manageNotification(){
+
+    console.log("click")
+
+    console.log("manage notification")
+    console.log(this.newTodo.reminder);
+    // this.newTodo.sayHello();
+    if (this.newTodo.reminder) {
+      this.scheduleNotification();
+    }
+    else{
+      this.cancelNotification();
+    }
+    
+  }
+
+  async scheduleNotification() {
+    try {
+      // Vérifier si les notifications sont disponibles
+      const available = await LocalNotifications.requestPermissions();
+
+      let notifId = JSON.parse(localStorage.getItem('notifId') || '[]');
+
+      if (!notifId) {
+        notifId = 1;
+      }
+      else{
+        notifId++;
+      }
+
+      localStorage.setItem('notifId', JSON.stringify(notifId));
+      
+      if (available && this.newTodo.date! > new Date()) {
+
+
+        if(this.newTodo.time){
+          this.newTodo.date?.setHours(this.newTodo.time.getHours());
+          this.newTodo.date?.setMinutes(this.newTodo.time.getMinutes());
+        }
+        else{
+          this.newTodo.date?.setHours(0);
+          this.newTodo.date?.setMinutes(0);
+        }
+
+        // Planifier la notification
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: 'Nouvelle tâche',
+              body: `N'oubliez pas : ${this.newTodo.title}`,
+              id: notifId, // Un identifiant unique pour la notification
+              schedule: { at: this.newTodo.date }, // Date et heure de la notification
+              //sound: null, // Chemin vers un fichier audio de notification (facultatif)
+              //attachments: null, // Pièces jointes (facultatif)
+              actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la planification de la notification', error);
+    }
+  }
+
+  async cancelNotification() {
+    try {
+      console.log("remove notification");
+
+      await LocalNotifications.cancel({ notifications: [{ id: this.newTodo.notifId! }] });
+    } catch (error) {
+      console.error('Erreur lors de l`annulation de la notification', error);
+    }
   }
 }

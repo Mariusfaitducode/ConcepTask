@@ -66,12 +66,12 @@
           <ion-label position="floating">Due time</ion-label>
           <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
   
-          <ion-input type="time" placeholder="Time"></ion-input>
+          <ion-input type="time" placeholder="Time" [(ngModel)]="newTodo.time"></ion-input>
         </ion-item>
       </div>
       
-      <ion-row>
-        <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
+      <ion-row *ngIf="newTodo.date != undefined">
+        <ion-checkbox labelPlacement="end" [(ngModel)]="newTodo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
       </ion-row>
 
     </div>

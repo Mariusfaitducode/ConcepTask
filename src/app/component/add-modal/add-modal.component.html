@@ -12,19 +12,31 @@
         <ion-buttons slot="start">
           <ion-icon name="close-outline" class="close-icon" (click)="closeModal()"></ion-icon>
         </ion-buttons>
-        level: {{level}}
+        <!-- level: {{level}} -->
     
-        <div>
+        <div *ngIf="subTodo.title == ''">
           <ion-title size="large">New task</ion-title>
+        </div>
+        <div *ngIf="subTodo.title != ''">
+          <ion-title size="large">{{subTodo.title}}</ion-title>
         </div>
         <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
     
         <ion-button *ngIf="!modify" class="save-button" slot="end" fill="clear" (click)="addSubTask()">
           Add
         </ion-button >
-        <ion-button *ngIf="modify" class="save-button" slot="end" fill="clear" (click)="closeModal()">
-          Done
-        </ion-button >
+
+        <ion-buttons *ngIf="modify" slot="end">
+
+          
+          <!-- <ion-icon name="trash-outline" color="danger" class="delete-button"></ion-icon> -->
+          
+          
+          <ion-button color="primary" class="save-button" fill="clear" (click)="closeModal()">
+            Done
+          </ion-button >
+        </ion-buttons>
+        
     
       </ion-toolbar>
     </ion-header>
@@ -83,8 +95,8 @@
           </ion-item>
         </div>
   
-        <ion-row>
-          <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
+        <ion-row *ngIf="subTodo.date">
+          <ion-checkbox labelPlacement="end" [(ngModel)]="subTodo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
         </ion-row>
       </div>
   

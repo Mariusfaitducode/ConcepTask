@@ -63,12 +63,12 @@
 
         <ion-item *ngIf="todo.time != undefined">
           <ion-label position="floating" color="primary">Due time</ion-label>
-          <ion-input type="time" placeholder="Time"></ion-input>
+          <ion-input type="time" placeholder="Time" [(ngModel)]="todo.date"></ion-input>
         </ion-item>
       </div>
 
       <ion-row class="rappel">
-        <ion-checkbox labelPlacement="end">Rappel</ion-checkbox>
+        <ion-checkbox labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
       </ion-row>
     </div>
 

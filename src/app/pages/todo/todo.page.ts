@@ -5,6 +5,8 @@ import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
+import { LocalNotifications } from '@capacitor/local-notifications';
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.page.html',
@@ -192,5 +194,79 @@ export class TodoPage implements OnInit {
     this.router.navigate(['/conceptor', this.index]);
   }
   
+
+  manageNotification(){
+
+    console.log("click")
+
+    console.log("manage notification")
+    console.log(this.todo.reminder);
+    // this.newTodo.sayHello();
+    if (this.todo.reminder) {
+      this.scheduleNotification();
+    }
+    else{
+      this.cancelNotification();
+    }
+    
+  }
+
+  async scheduleNotification() {
+    try {
+      // Vérifier si les notifications sont disponibles
+      const available = await LocalNotifications.requestPermissions();
+
+      let notifId = JSON.parse(localStorage.getItem('notifId') || '[]');
+
+      if (!notifId) {
+        notifId = 1;
+      }
+      else{
+        notifId++;
+      }
+
+      localStorage.setItem('notifId', JSON.stringify(notifId));
+      
+      if (available && this.todo.date! > new Date()) {
+
+
+        if(this.todo.time){
+          this.todo.date?.setHours(this.todo.time.getHours());
+          this.todo.date?.setMinutes(this.todo.time.getMinutes());
+        }
+        else{
+          this.todo.date?.setHours(0);
+          this.todo.date?.setMinutes(0);
+        }
+
+        // Planifier la notification
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: 'Nouvelle tâche',
+              body: `N'oubliez pas : ${this.todo.title}`,
+              id: notifId, // Un identifiant unique pour la notification
+              schedule: { at: this.todo.date }, // Date et heure de la notification
+              //sound: null, // Chemin vers un fichier audio de notification (facultatif)
+              //attachments: null, // Pièces jointes (facultatif)
+              actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la planification de la notification', error);
+    }
+  }
+
+  async cancelNotification() {
+    try {
+      console.log("remove notification");
+
+      await LocalNotifications.cancel({ notifications: [{ id: this.todo.notifId! }] });
+    } catch (error) {
+      console.error('Erreur lors de l`annulation de la notification', error);
+    }
+  }
 
 }
