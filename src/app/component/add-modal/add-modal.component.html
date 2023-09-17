@@ -1,154 +1,152 @@
-<ion-header [translucent]="true" *ngIf="openModal.open == false">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-icon name="close-outline" class="close-icon" (click)="closeModal()"></ion-icon>
-    </ion-buttons>
-    level: {{level}}
 
-    <div>
-      <ion-title size="large">New task</ion-title>
-    </div>
-    <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
-
-    <ion-button *ngIf="!modify" class="save-button" slot="end" fill="clear" (click)="addSubTask()">
-      Add
-    </ion-button >
-    <ion-button *ngIf="modify" class="save-button" slot="end" fill="clear" (click)="closeModal()">
-      Done
-    </ion-button >
-
-  </ion-toolbar>
-</ion-header>
-
-
-
-
-<ion-content [fullscreen]="true">
-  
-  <ion-list class="list-page">
-
-    <div class="title-type-header">
-
-      <ion-item class="title">
-        <ion-label position="floating">Title</ion-label>
-        <ion-input type="text" [(ngModel)]="subTodo.title"></ion-input>
-      </ion-item>
-
-      <ion-row  class="type">
-        <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTodo.category" aria-label="Type">
-          <ion-select-option value="default">Default</ion-select-option>
-          <ion-select-option value="personnal">Personnal</ion-select-option>
-          <ion-select-option value="project">Project</ion-select-option>
-          <ion-select-option value="work">Work</ion-select-option>
-          <ion-select-option value="wishlist">Wishlist</ion-select-option>
-          <ion-select-option value="sport">Sport</ion-select-option>
-          <ion-select-option value="shopping">Shopping</ion-select-option>
-        </ion-select>
-      </ion-row>
-    </div>
-
-    <div class="customize-container">
-
-      <!-- Personnalisation du Todo -->
-
-      <div *ngFor="let item of configArray">
-
-        <div *ngIf="item.value == false">
-
-          <button class="customize-button open" (click)="item.value = true; configCustomizedArray = configArray">
-            {{ item.key }}
-          </button>
-        </div>
-
-        <div *ngIf="item.value == true">
-          <button class="customize-button close" (click)="item.value = false; configCustomizedArray = configArray" >
-            {{ item.key }} 
-            <ion-icon name="close-outline" class="close-item"></ion-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <ion-item *ngIf="findOnConfig('description')">
-
-      <ion-label position="floating">Description</ion-label>
-      <ion-textarea [(ngModel)]="subTodo.description"></ion-textarea>
-
-    </ion-item>
-
-    <div *ngIf="findOnConfig('date')">
-      <div class="date-selector" >
-
-        <ion-item class="date-left" >
-          <ion-label position="floating">Due date</ion-label>
-          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
-  
-          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="subTodo.date"></ion-input>  
-        </ion-item>
-  
-        <ion-item *ngIf="findOnConfig('time')">
-          <ion-label position="floating">Due time</ion-label>
-          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
-  
-          <ion-input type="time" placeholder="Time"></ion-input>
-        </ion-item>
-      </div>
-
-      <ion-row>
-        <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
-      </ion-row>
-    </div>
-
-
-    <div *ngIf="findOnConfig('sub tasks')">
-
-      <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
-      <div *ngIf="findOnConfig('sub tasks')" class="new-sub-task">
-
-        <ion-row  class="sub-type">
-          
-          <ion-select label="Type" label-placement="floating"  [(ngModel)]="subType" aria-label="Type">
-            <ion-select-option value="customize">Customize</ion-select-option>
-            <ion-select-option value="todo">Todo</ion-select-option>
-          </ion-select>
-        </ion-row>
-
-
-        <div *ngIf="subType == 'todo'">
-          <ion-row class="new-sub-todo">
-            <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
-            <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
-          </ion-row>
-        </div>
-
-        <div *ngIf="subType != 'todo'">
-
-          <ion-buttons class="add-button-container" >
-            <button class="add-button" (click)="addTaskOnList()">
-              <ion-icon name="add"></ion-icon>
-            </button>
-          </ion-buttons>
-
-        </div>
-      </div>
-      
-
-      <ion-list>
-        <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-          <div *ngFor="let newSubTodo of subTodo.list; let id = index">
-            <app-sub-todo [todo]="subTodo" [subTodo]="newSubTodo" [index]="id" [page]="'add'"></app-sub-todo>
-          </div > 
-        </ion-reorder-group>
-      </ion-list> 
-
-    </div>
-  </ion-list>
-
-  <div *ngIf="openModal.open">
-    <app-add-modal [subTodo]="openModal.task" [level]="incrementLevel()" [modify]="openModal.modify"></app-add-modal>
-
+<div>
+  <div class="background">
   </div>
 
-</ion-content>
+
+
+  <div class="content">
+
+    <ion-header>
+      <ion-toolbar [ngClass]="{'hideHeader': openModal.open == true}">
+        <ion-buttons slot="start">
+          <ion-icon name="close-outline" class="close-icon" (click)="closeModal()"></ion-icon>
+        </ion-buttons>
+        level: {{level}}
+    
+        <div>
+          <ion-title size="large">New task</ion-title>
+        </div>
+        <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
+    
+        <ion-button *ngIf="!modify" class="save-button" slot="end" fill="clear" (click)="addSubTask()">
+          Add
+        </ion-button >
+        <ion-button *ngIf="modify" class="save-button" slot="end" fill="clear" (click)="closeModal()">
+          Done
+        </ion-button >
+    
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- <div *ngIf="openModal.open == true" [style.margin-bottom.px]="getMaxHeight()">
+
+    </div> -->
+    
+    
+    <ion-list class="list-page" *ngIf="openModal.open == false">
+  
+      <div class="title-type-header">
+  
+        <ion-item class="title">
+          <ion-label position="floating">Title</ion-label>
+          <ion-input type="text" [(ngModel)]="subTodo.title"></ion-input>
+        </ion-item>
+  
+        <ion-row  class="type">
+          <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTodo.category" aria-label="Type">
+            <ion-select-option value="default">Default</ion-select-option>
+            <ion-select-option value="personnal">Personnal</ion-select-option>
+            <ion-select-option value="project">Project</ion-select-option>
+            <ion-select-option value="work">Work</ion-select-option>
+            <ion-select-option value="wishlist">Wishlist</ion-select-option>
+            <ion-select-option value="sport">Sport</ion-select-option>
+            <ion-select-option value="shopping">Shopping</ion-select-option>
+          </ion-select>
+        </ion-row>
+      </div>
+  
+      <app-custom-config [configArray]="configArray"></app-custom-config>
+  
+      <ion-item *ngIf="findOnConfig('description')">
+  
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea [(ngModel)]="subTodo.description"></ion-textarea>
+  
+      </ion-item>
+  
+      <div *ngIf="findOnConfig('date')">
+        <div class="date-selector" >
+  
+          <ion-item class="date-left" >
+            <ion-label position="floating">Due date</ion-label>
+            <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
+    
+            <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="subTodo.date"></ion-input>  
+          </ion-item>
+    
+          <ion-item *ngIf="findOnConfig('time')">
+            <ion-label position="floating">Due time</ion-label>
+            <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
+    
+            <ion-input type="time" placeholder="Time"></ion-input>
+          </ion-item>
+        </div>
+  
+        <ion-row>
+          <ion-checkbox labelPlacement="end">Reminder</ion-checkbox>
+        </ion-row>
+      </div>
+  
+  
+      <div *ngIf="findOnConfig('sub tasks')">
+  
+        <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
+        <div *ngIf="findOnConfig('sub tasks')" class="new-sub-task">
+  
+          <ion-row  class="sub-type">
+            
+            <ion-select label="Type" label-placement="floating"  [(ngModel)]="subType" aria-label="Type">
+              <ion-select-option value="customize">Customize</ion-select-option>
+              <ion-select-option value="todo">Todo</ion-select-option>
+            </ion-select>
+          </ion-row>
+  
+  
+          <div *ngIf="subType == 'todo'">
+            <ion-row class="new-sub-todo">
+              <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
+              <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
+            </ion-row>
+          </div>
+  
+          <div *ngIf="subType != 'todo'">
+  
+            <ion-buttons class="add-button-container" >
+              <button class="add-button" (click)="addTaskOnList()">
+                <ion-icon name="add"></ion-icon>
+              </button>
+            </ion-buttons>
+  
+          </div>
+        </div>
+        
+  
+        <ion-list>
+          <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+            <div *ngFor="let newSubTodo of subTodo.list; let id = index">
+              <app-sub-todo [todo]="subTodo" [subTodo]="newSubTodo" [index]="id" [page]="'add'"></app-sub-todo>
+            </div > 
+          </ion-reorder-group>
+        </ion-list> 
+  
+      </div>
+    </ion-list>
+  
+    <div  #child>
+      <div *ngIf="openModal.open">
+      
+        <app-add-modal [subTodo]="openModal.task" [level]="incrementLevel()" [modify]="openModal.modify"></app-add-modal>
+    
+      </div>
+
+    </div>
+   
+  
+  </div>
+
+</div>
+
+
 
    

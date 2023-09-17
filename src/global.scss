@@ -120,14 +120,8 @@ ion-list{
     background-color: var(--ion-color-primary);
 }
 
-
-
-app-add-modal{
-    position: fixed;
+.hideHeader{
+    pointer-events: none;
+    opacity: 0.4;
     
-    width: 90%;
-    height: 80%;
-
-    top: 12%;
-    left: 5%;
 }

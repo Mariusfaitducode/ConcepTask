@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
 import { set } from 'firebase/database';
 import { Todo } from 'src/app/model/todo';
@@ -9,7 +9,9 @@ import { ModalService } from 'src/app/service/modal.service';
   templateUrl: './add-modal.component.html',
   styleUrls: ['./add-modal.component.scss'],
 })
-export class AddModalComponent  implements OnInit {
+export class AddModalComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('child') childComponentRef!: ElementRef;
 
   // @Input() openModal : boolean = true;
 
@@ -30,9 +32,6 @@ export class AddModalComponent  implements OnInit {
 
   ];
 
-  configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
-
-
   @Input() modify : boolean = false;
 
   newTodoOnListTitle: string = "";
@@ -48,6 +47,18 @@ export class AddModalComponent  implements OnInit {
   };
 
   constructor(private modalService: ModalService) { }
+
+  ngAfterViewInit() {
+    
+    let classes = document.getElementsByClassName('list-page');
+
+    for (let c of Array.from(classes)) {
+      console.log("size list page")
+
+      console.log(c.clientHeight);
+    }
+  }
+
 
   ngOnInit() {
 
@@ -89,6 +100,23 @@ export class AddModalComponent  implements OnInit {
 
   // openModal() {
   //   this.modalService.setOpenModal(true);
+  // }
+
+  // getMaxHeight(){
+  //   let classes = document.getElementsByClassName('content');
+
+  //   let max = 0;
+
+  //   for (let c of Array.from(classes)) {
+  //     console.log("size list page")
+
+  //     console.log(c.clientHeight);
+
+  //     if(c.clientHeight > max){
+  //       max = c.clientHeight;
+  //     }
+  //   }
+  //   return max + 60 + 60;
   // }
   
   closeModal() {

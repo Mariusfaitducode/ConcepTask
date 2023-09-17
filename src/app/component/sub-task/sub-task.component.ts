@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Todo } from 'src/app/model/todo';
 
 @Component({
   selector: 'app-sub-task',
@@ -10,13 +11,19 @@ export class SubTaskComponent  implements OnInit {
 
   constructor(private router : Router) { }
 
-  @Input() subTask: any;
-  @Input() todo: any;
+  @Input() subTask: Todo = new Todo();
+  @Input() todo: Todo = new Todo();
   @Input() index: any;
   @Input() page: string = "";
   @Input() level: number = 0;
 
   developped: boolean = false;
+
+  @Input() openModal: any = {
+    open: false,
+    task: new Todo(),
+    modify: false
+  };
 
   ngOnInit() {}
 
@@ -49,10 +56,23 @@ export class SubTaskComponent  implements OnInit {
     this.developped = !this.developped;
   }
 
-  navigateToSubTask(){
+  clickSubTask(){
     // [routerLink]="'/todo/' + this.index + '/' + subTodo.subId"
 
-    this.router.navigate(['/todo', this.index , this.subTask.subId]);
+    if (this.page == "todo") {
+
+      this.router.navigate(['/todo', this.index , this.subTask.subId]);
+    }
+    else{
+      this.modifyTaskOnList(this.subTask);
+    }
+
+  }
+
+  modifyTaskOnList(subTask : any){
+    this.openModal.task = subTask;
+    this.openModal.open = true;
+    this.openModal.modify = true;
   }
 
 }

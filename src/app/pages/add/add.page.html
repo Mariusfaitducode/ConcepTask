@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header [translucent]="true" >
+  <ion-toolbar [ngClass]="{'hideHeader': openModal.open == true }">
     <ion-buttons slot="start">
       <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
     </ion-buttons>
@@ -124,7 +124,7 @@
               <app-sub-todo [todo]="newTodo" [subTodo]="subTodo" [index]="id" [page]="'add'"></app-sub-todo>
             </div> -->
             <div>
-              <app-sub-task [todo]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'" (click)="modifyTaskOnList(subTodo)"></app-sub-task>
+              <app-sub-task [todo]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'" [openModal]="openModal"></app-sub-task>
             </div>
             
           </div > 
@@ -136,7 +136,7 @@
 
 
   <div *ngIf="openModal.open">
-    <app-add-modal [subTodo]="openModal.task" [level]="1" [modify]="openModal.modify"></app-add-modal>
+    <app-add-modal [subTodo]="openModal.task" [level]="1" [modify]="openModal.modify" ></app-add-modal>
 
   </div>
 

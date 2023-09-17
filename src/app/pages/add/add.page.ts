@@ -50,7 +50,8 @@ export class AddPage implements OnInit {
     modify: false
   };
 
-  constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) { }
+  constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) 
+  { }
 
   ngOnInit() {
 
@@ -78,6 +79,7 @@ export class AddPage implements OnInit {
     this.modalService.openModal$.subscribe(openModal => {
       console.log("main open modal");
       if (openModal == 0) {
+        console.log("close modal 0");
         this.openModal.open = false;
       } else {
         this.openModal.open = true;
@@ -226,10 +228,11 @@ export class AddPage implements OnInit {
 
 
   addTaskOnList(){
-    console.log(this.openModal);
+    //console.log(this.openModal);
     this.openModal.task = new Todo();
     this.openModal.open = true;
     this.openModal.modify = false;
+    console.log(this.openModal);
   }
 
 

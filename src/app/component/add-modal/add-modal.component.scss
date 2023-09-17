@@ -1,5 +1,46 @@
 
 
+.background{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0100008c;
+}
+
+.content{
+
+
+    // border-radius: 25px;
+
+    
+    position: fixed;
+    // background-color: red;
+    
+    bottom: 0%;
+    width: 100%;
+    height: wrap-content;
+
+    max-height: 80%;
+
+    overflow-y: scroll;
+
+    border-radius: 10px 10px 0px 0px;
+
+    // transform :translateY (100%);
+    // bottom: 0%;
+}
+
+ion-header{
+    position: fixed;
+    height: 55px;
+    
+}
+
+ion-toolbar{
+    border-radius: 10px 10px 0px 0px;
+}
+
 .close-icon{
     padding-left: 10px;
     padding-right: 5px;
@@ -7,13 +48,17 @@
 }
 
 ion-list, ion-item{
+    
+    
     background-color: var(--ion-color-step-100);
 
     padding: 0px 5px; 
 }
 
-ion-list{
-    padding-top: 10px;
+.list-page{
+    height: 100%;
+    
+    padding-top: 60px;
 }
 
 .title-type-header{
