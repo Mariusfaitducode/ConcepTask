@@ -164,6 +164,20 @@ export class TodoPage implements OnInit {
     }
   };
 
+
+  validateTodo(){
+    this.todo.isDone = true;
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+    console.log(this.todos);
+  }
+
+  unvalidateTodo(){
+    this.todo.isDone = false;
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+    console.log(this.todos);
+  }
+
+
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
    
     console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);

@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header [translucent]="true" >
+  <ion-toolbar >
     <ion-buttons slot="start">
       <ion-back-button default-href="#" (click)="goBackTodo()"></ion-back-button>
     </ion-buttons>
@@ -18,11 +18,9 @@
         <ion-select-option value="shopping">Shopping</ion-select-option>
       </ion-select>
 
-
     </div>
     <!-- <ion-title>{{todo.title}}</ion-title> -->
     
-
   </ion-toolbar>
 </ion-header>
 
@@ -41,8 +39,11 @@
           <ion-icon name="trash-outline" color="danger" ></ion-icon>
         </button>
 
-        <button class="header-button" disabled>
-          <ion-icon name="checkmark-outline" color="primary"></ion-icon>
+        <button class="header-button" disabled *ngIf="!todo.isDone">
+          <ion-icon name="checkmark-outline" color="primary" (click)="validateTodo()"></ion-icon>
+        </button>
+        <button class="header-button" disabled *ngIf="todo.isDone">
+          <ion-icon name="refresh-outline" color="primary" (click)="unvalidateTodo()"></ion-icon>
         </button>
 
       </ion-buttons>

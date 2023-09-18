@@ -3,6 +3,7 @@ import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/a
 import { set } from 'firebase/database';
 import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
+import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 
@@ -104,6 +105,18 @@ export class AddModalComponent implements OnInit, AfterViewInit {
       //this.subTask = subTask;
       // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
     });
+
+    this.setConfig();
+  }
+
+  setConfig(){
+    this.configArray = [
+      { key: 'description', value: this.subTodo.description ? true : false },
+      { key: 'date', value: this.subTodo.date ? true : false },
+      { key: 'time', value: this.subTodo.time ? true : false },
+      { key: 'repetition', value: this.subTodo.repetition ? true : false },
+      { key: 'sub tasks', value: this.subTodo.list?.length ? true : false },
+    ];
   }
 
   // openModal() {
@@ -132,6 +145,22 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
     this.modalService.setOpenModal(this.decrementLevel());
   }
+
+
+  // showConfirm = async () => {
+  //   const { value } = await Dialog.confirm({
+  //     title: 'Confirm',
+  //     message: `Are you sure to delete `+ this.subTodo.title +` ?`,
+  //   });
+  
+  //   console.log('Confirmed:', value);
+
+  //   if (value) {
+  //     //this.deleteTodo();
+  //   }
+  // };
+
+
 
   addSubTask(){
     this.closeModal();
@@ -174,42 +203,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     this.newTodoOnListTitle = '';
     // console.log(this.newTodo);
   }
-
-  // onTypeChange(){
-
-  //   switch (this.subTodo.type){
-      
-  //     case 'customize' :
-  //       //this.config.customizedConfig();
-  //       this.configArray = this.configCustomizedArray!;
-  //       break;
-
-  //     case 'todo' :
-  //       this.configArray = [
-  //         { key: 'description', value: false },
-  //         { key: 'date', value: false },
-  //         { key: 'time', value: false },
-  //         { key: 'repetition', value: false },
-  //         { key: 'sub tasks', value: false },
-  //       ];
-  //       break;
-
-  //     case 'todo list':
-  //       //this.config.todoListConfig();
-  //       this.configArray = [
-  //         { key: 'description', value: true },
-  //         { key: 'date', value: true },
-  //         { key: 'time', value: true },
-  //         { key: 'repetition', value: false },
-  //         { key: 'sub tasks', value: true },
-  //       ];
-  //       break;
-
-  //     default:
-  //       //Search in localStorage
-  //       break;
-  //   }
-  // }
 
 
   addTodoOnList(){
