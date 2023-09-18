@@ -16,7 +16,7 @@ export class Todo {
     public isChecked?: boolean;
 
     public date?: Date;
-    public time?: Date;
+    public time?: string;
 
     public reminder?: boolean;
     public notifId?: number;
@@ -36,16 +36,34 @@ export class Todo {
         this.category = category || 'default';
         this.title = title || '';
         this.list = [];
+
         // this.description = description;
        
     }
 
-    public sayHello() {
+    public static sayHello() {
         console.log("Hello");
     }
 
-    public async scheduleNotification() {
+    public static async scheduleNotification(todo : Todo) {
         try {
+
+          let date = new Date(todo.date!);
+
+          if (todo.time) {
+            let time = todo.time!.split(':');
+            const hours = parseInt(time[0], 10); // Convertissez l'heure en entier
+            const minutes = parseInt(time[1], 10);
+            
+            date.setHours(hours);
+            date.setMinutes(minutes);
+          }
+          else{
+            date.setHours(8);
+            date.setMinutes(0);
+          }
+
+          console.log(date);
 
           console.log("add notification");
           // Vérifier si les notifications sont disponibles
@@ -60,30 +78,25 @@ export class Todo {
             notifId++;
           }
 
-          this.notifId = notifId;
+          let description = todo.description;
+          if (!todo.description){
+            description = '';
+          }
+
+          todo.notifId = notifId;
     
           localStorage.setItem('notifId', JSON.stringify(notifId));
           
-          if (available && this.date! > new Date()) {
-    
-    
-            if(this.time){
-              this.date?.setHours(this.time.getHours());
-              this.date?.setMinutes(this.time.getMinutes());
-            }
-            else{
-                this.date?.setHours(0);
-                this.date?.setMinutes(0);
-            }
+          if (available) {
     
             // Planifier la notification
             await LocalNotifications.schedule({
               notifications: [
                 {
-                  title: 'Nouvelle tâche',
-                  body: `N'oubliez pas : ${this.title}`,
+                  title: `${todo.title} reminder`,
+                  body: `${description}`,
                   id: notifId, // Un identifiant unique pour la notification
-                  schedule: { at: this.date }, // Date et heure de la notification
+                  schedule: { at: date }, // Date et heure de la notification
                   //sound: null, // Chemin vers un fichier audio de notification (facultatif)
                   //attachments: null, // Pièces jointes (facultatif)
                   actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
@@ -97,11 +110,11 @@ export class Todo {
       }
 
 
-      public async cancelNotification() {
+      public static async cancelNotification(todo : Todo) {
         try {
           console.log("remove notification");
 
-          await LocalNotifications.cancel({ notifications: [{ id: this.notifId! }] });
+          await LocalNotifications.cancel({ notifications: [{ id: todo.notifId! }] });
         } catch (error) {
           console.error('Erreur lors de l`annulation de la notification', error);
         }

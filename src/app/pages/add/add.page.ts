@@ -5,7 +5,7 @@ import { NavController } from '@ionic/angular';
 
 import { ModalController } from '@ionic/angular';
 
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
 
 import { ItemReorderEventDetail } from '@ionic/core';
 
@@ -27,6 +27,9 @@ export class AddPage implements OnInit {
   index?: number = undefined;
 
   //newSubTodo!: Todo;
+
+  date: any = {date: '', time: ''};
+
 
   subType: string = 'customize';
 
@@ -58,7 +61,7 @@ export class AddPage implements OnInit {
 
   ngOnInit() {
 
-
+    // Récupère chemins et paramètres de la route active -> provenance : Todo / Home  
     this.route.params.subscribe((params) => {
 
       if (params['id'] != undefined) {
@@ -75,9 +78,6 @@ export class AddPage implements OnInit {
       
     });
 
-    //Trouver id du Todo
-    //this.newTodo = new Todo();
-    //this.newSubTodo = new Todo();
 
     this.modalService.openModal$.subscribe(openModal => {
       console.log("main open modal");
@@ -113,8 +113,11 @@ export class AddPage implements OnInit {
     this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
     console.log(this.todos)
     this.newTodo = this.todos[id]
+    console.log(this.newTodo)
     // this.mainTodo = this.todos[id] 
   }
+
+  //Config
 
   setConfig(){
     this.configArray = [
@@ -125,6 +128,19 @@ export class AddPage implements OnInit {
       { key: 'sub tasks', value: this.newTodo.list?.length ? true : false },
     ];
 
+  }
+
+  
+  findOnConfig(key: string): boolean {
+    const configItem = this.configArray.find(item => item.key === key);
+    
+    return configItem ? configItem.value : false;
+  }
+
+  closeOnConfig(key: string) {
+    const configItem = this.configArray.find(item => item.key === key);
+    
+    configItem!.value = false;
   }
 
   saveTodo(){
@@ -156,8 +172,10 @@ export class AddPage implements OnInit {
     
   }
 
+
+  //Id 
+
     // Fonction pour parcourir l'arbre et attribuer des IDs
-    // Not working
   assignIds(list : Todo[]): void {
 
     let copyList = [...list];
@@ -182,17 +200,6 @@ export class AddPage implements OnInit {
   }
 
 
-  findOnConfig(key: string): boolean {
-    const configItem = this.configArray.find(item => item.key === key);
-    
-    return configItem ? configItem.value : false;
-  }
-
-  closeOnConfig(key: string) {
-    const configItem = this.configArray.find(item => item.key === key);
-    
-    configItem!.value = false;
-  }
 
   getId(){
     return this.todos.length + 1;
@@ -204,6 +211,7 @@ export class AddPage implements OnInit {
   }
 
 
+  //List 
 
   addTodoOnList(){
 
@@ -246,6 +254,8 @@ export class AddPage implements OnInit {
   }
 
 
+// Notifications
+
   manageNotification(){
 
     console.log("click")
@@ -254,69 +264,21 @@ export class AddPage implements OnInit {
     console.log(this.newTodo.reminder);
     // this.newTodo.sayHello();
     if (this.newTodo.reminder) {
-      this.scheduleNotification();
+      Todo.scheduleNotification(this.newTodo);
     }
     else{
-      this.cancelNotification();
-    }
-    
-  }
-
-  async scheduleNotification() {
-    try {
-      // Vérifier si les notifications sont disponibles
-      const available = await LocalNotifications.requestPermissions();
-
-      let notifId = JSON.parse(localStorage.getItem('notifId') || '[]');
-
-      if (!notifId) {
-        notifId = 1;
-      }
-      else{
-        notifId++;
-      }
-
-      localStorage.setItem('notifId', JSON.stringify(notifId));
-      
-      if (available && this.newTodo.date! > new Date()) {
-
-
-        if(this.newTodo.time){
-          this.newTodo.date?.setHours(this.newTodo.time.getHours());
-          this.newTodo.date?.setMinutes(this.newTodo.time.getMinutes());
-        }
-        else{
-          this.newTodo.date?.setHours(0);
-          this.newTodo.date?.setMinutes(0);
-        }
-
-        // Planifier la notification
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: 'Nouvelle tâche',
-              body: `N'oubliez pas : ${this.newTodo.title}`,
-              id: notifId, // Un identifiant unique pour la notification
-              schedule: { at: this.newTodo.date }, // Date et heure de la notification
-              //sound: null, // Chemin vers un fichier audio de notification (facultatif)
-              //attachments: null, // Pièces jointes (facultatif)
-              actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
-            },
-          ],
-        });
-      }
-    } catch (error) {
-      console.error('Erreur lors de la planification de la notification', error);
+      Todo.cancelNotification(this.newTodo);
     }
   }
 
-  async cancelNotification() {
-    try {
-      console.log("remove notification");
+  async testNotification() 
+  {
+    console.log(this.newTodo.date);
 
-      await LocalNotifications.cancel({ notifications: [{ id: this.newTodo.notifId! }] });
-    } catch (error) {
-      console.error('Erreur lors de l`annulation de la notification', error);
-    }
+    // Refactor date
+
+
+    Todo.sayHello();
+    Todo.scheduleNotification(this.newTodo);
   }
-}
+ }

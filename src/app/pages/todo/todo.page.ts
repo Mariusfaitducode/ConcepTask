@@ -195,6 +195,8 @@ export class TodoPage implements OnInit {
   }
   
 
+ 
+
   manageNotification(){
 
     console.log("click")
@@ -203,69 +205,10 @@ export class TodoPage implements OnInit {
     console.log(this.todo.reminder);
     // this.newTodo.sayHello();
     if (this.todo.reminder) {
-      this.scheduleNotification();
+      Todo.scheduleNotification(this.todo);
     }
     else{
-      this.cancelNotification();
-    }
-    
-  }
-
-  async scheduleNotification() {
-    try {
-      // Vérifier si les notifications sont disponibles
-      const available = await LocalNotifications.requestPermissions();
-
-      let notifId = JSON.parse(localStorage.getItem('notifId') || '[]');
-
-      if (!notifId) {
-        notifId = 1;
-      }
-      else{
-        notifId++;
-      }
-
-      localStorage.setItem('notifId', JSON.stringify(notifId));
-      
-      if (available && this.todo.date! > new Date()) {
-
-
-        if(this.todo.time){
-          this.todo.date?.setHours(this.todo.time.getHours());
-          this.todo.date?.setMinutes(this.todo.time.getMinutes());
-        }
-        else{
-          this.todo.date?.setHours(0);
-          this.todo.date?.setMinutes(0);
-        }
-
-        // Planifier la notification
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: 'Nouvelle tâche',
-              body: `N'oubliez pas : ${this.todo.title}`,
-              id: notifId, // Un identifiant unique pour la notification
-              schedule: { at: this.todo.date }, // Date et heure de la notification
-              //sound: null, // Chemin vers un fichier audio de notification (facultatif)
-              //attachments: null, // Pièces jointes (facultatif)
-              actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
-            },
-          ],
-        });
-      }
-    } catch (error) {
-      console.error('Erreur lors de la planification de la notification', error);
-    }
-  }
-
-  async cancelNotification() {
-    try {
-      console.log("remove notification");
-
-      await LocalNotifications.cancel({ notifications: [{ id: this.todo.notifId! }] });
-    } catch (error) {
-      console.error('Erreur lors de l`annulation de la notification', error);
+      Todo.cancelNotification(this.todo);
     }
   }
 

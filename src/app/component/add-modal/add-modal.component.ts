@@ -252,69 +252,10 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     console.log(this.subTodo.reminder);
     // this.newTodo.sayHello();
     if (this.subTodo.reminder) {
-      this.scheduleNotification();
+      Todo.scheduleNotification(this.subTodo);
     }
     else{
-      this.cancelNotification();
-    }
-    
-  }
-
-  async scheduleNotification() {
-    try {
-      // Vérifier si les notifications sont disponibles
-      const available = await LocalNotifications.requestPermissions();
-
-      let notifId = JSON.parse(localStorage.getItem('notifId') || '[]');
-
-      if (!notifId) {
-        notifId = 1;
-      }
-      else{
-        notifId++;
-      }
-
-      localStorage.setItem('notifId', JSON.stringify(notifId));
-      
-      if (available && this.subTodo.date! > new Date()) {
-
-
-        if(this.subTodo.time){
-          this.subTodo.date?.setHours(this.subTodo.time.getHours());
-          this.subTodo.date?.setMinutes(this.subTodo.time.getMinutes());
-        }
-        else{
-          this.subTodo.date?.setHours(0);
-          this.subTodo.date?.setMinutes(0);
-        }
-
-        // Planifier la notification
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: 'Nouvelle tâche',
-              body: `N'oubliez pas : ${this.subTodo.title}`,
-              id: notifId, // Un identifiant unique pour la notification
-              schedule: { at: this.subTodo.date }, // Date et heure de la notification
-              //sound: null, // Chemin vers un fichier audio de notification (facultatif)
-              //attachments: null, // Pièces jointes (facultatif)
-              actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
-            },
-          ],
-        });
-      }
-    } catch (error) {
-      console.error('Erreur lors de la planification de la notification', error);
-    }
-  }
-
-  async cancelNotification() {
-    try {
-      console.log("remove notification");
-
-      await LocalNotifications.cancel({ notifications: [{ id: this.subTodo.notifId! }] });
-    } catch (error) {
-      console.error('Erreur lors de l`annulation de la notification', error);
+      Todo.cancelNotification(this.subTodo);
     }
   }
 }
