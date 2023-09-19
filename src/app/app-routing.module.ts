@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'conceptor/:id',
     loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
+  },  {
+    path: 'calendar',
+    loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
   },
+
 
 
   // { path: 'Todo/:id', },

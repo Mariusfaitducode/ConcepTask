@@ -1,16 +1,21 @@
 
+<div class="ion-page">
 
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
 
-      <ion-menu-button autoHide="false"></ion-menu-button>
+  <ion-header id="openMenu">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+  
+        <ion-menu-button autoHide="false" ></ion-menu-button>
+  
+      </ion-buttons>
+      <ion-title size="large">ConcepTodo</ion-title>
+      <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
+    </ion-toolbar>
+  </ion-header>
 
-    </ion-buttons>
-    <ion-title size="large">To do list</ion-title>
-    <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
-  </ion-toolbar>
-</ion-header>
+
+
 
 <ion-content [fullscreen]="true">
   
@@ -31,5 +36,17 @@
       <ion-icon name="add" ></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+
+
+  <div>
+
+    <app-left-menu></app-left-menu>
+  
+  </div>
+  
   
 </ion-content>
+
+</div>
+

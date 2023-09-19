@@ -25,6 +25,8 @@ export class HomePage {
 
   todos : Todo[] = []
 
+  openLeftMenu = false;
+
   ngOnInit() {
 
     console.log("HOME PAGEEEE")

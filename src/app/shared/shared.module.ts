@@ -7,6 +7,7 @@ import { AddModalComponent } from '../component/add-modal/add-modal.component';
 import { FormsModule } from '@angular/forms';
 import { SubTaskComponent } from '../component/sub-task/sub-task.component';
 import { CustomConfigComponent } from '../component/custom-config/custom-config.component';
+import { LeftMenuComponent } from '../component/left-menu/left-menu.component';
 
 
 
@@ -25,8 +26,9 @@ import { CustomConfigComponent } from '../component/custom-config/custom-config.
     SubTaskComponent,
     AddModalComponent,
     CustomConfigComponent,
+    LeftMenuComponent,
     
   ],
-  exports:[TodoCardComponent, SubTodoComponent, AddModalComponent, SubTaskComponent, CustomConfigComponent]
+  exports:[TodoCardComponent, SubTodoComponent, AddModalComponent, SubTaskComponent, CustomConfigComponent, LeftMenuComponent]
 })
 export class SharedModule { }
