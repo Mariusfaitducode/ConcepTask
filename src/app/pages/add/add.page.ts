@@ -275,10 +275,6 @@ export class AddPage implements OnInit {
   {
     console.log(this.newTodo.date);
 
-    // Refactor date
-
-
-    Todo.sayHello();
     Todo.scheduleNotification(this.newTodo);
   }
  }

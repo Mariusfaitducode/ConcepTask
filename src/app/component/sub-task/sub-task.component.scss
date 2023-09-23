@@ -85,6 +85,25 @@ svg{
     // background-color: var(--ion-color-step-200);
 }
 
+.sub-type{
+    color: var(--ion-text-color);
+}
+
+.add-button{
+    background: var(--ion-color-step-100);
+    border-radius: 50%;
+
+    padding: 10;
+
+    width: 40px;
+    height: 40px;
+
+    font-size: 25px;
+
+    margin-right: 15px;
+
+}
+
 
 
 

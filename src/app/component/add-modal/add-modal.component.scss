@@ -37,6 +37,7 @@
     height: wrap-content;
 
     max-height: 0%;
+    
 
     overflow-y: scroll;
 
@@ -48,7 +49,8 @@
 
 .start-effect{
     transition: all 0.5s ease-in-out;
-    max-height: 80%;
+    
+    max-height: 90%;
 }
 
 ion-header{
@@ -77,6 +79,7 @@ ion-list, ion-item{
 
 .list-page{
     height: 100%;
+    min-height: 500px;
     
     padding-top: 60px;
 }

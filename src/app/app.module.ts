@@ -11,6 +11,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { TodoCardComponent } from './component/todo-card/todo-card.component';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -18,7 +19,8 @@ import { TodoCardComponent } from './component/todo-card/todo-card.component';
     BrowserModule, 
     IonicModule.forRoot(),
     AppRoutingModule, 
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

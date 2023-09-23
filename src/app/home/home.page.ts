@@ -83,7 +83,6 @@ export class HomePage {
       
     default:
       return "var(--ion-color-primary)";
-      
   }
  }
   // app = initializeApp(environnement.firebaseConfig);

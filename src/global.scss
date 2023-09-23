@@ -25,6 +25,9 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+@import 'swiper/scss';
+@import '@ionic/angular/css/ionic-swiper';
+
 
 app-todo-card{
     width: 100%;
@@ -71,6 +74,30 @@ ion-list{
     font-size: 12px;
     margin-left: 16px;
     padding-top: 10px;
+}
+
+
+// ADD sub task elements
+
+.new-sub-todo{
+    
+    padding: 0px 16px;
+    font-size: 18px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-sub-todo ion-input{
+    
+    width: 80%;
+}
+
+.new-sub-todo ion-icon{
+    font-size: 30px;
+    color: var(--ion-color-step-600);
 }
 
 .new-sub-task{
@@ -126,4 +153,40 @@ ion-list{
     pointer-events: none;
     opacity: 0.4;
     
+}
+
+
+//CALENDAR 
+
+
+.calendar-style{
+    
+    height : auto !important;
+    
+}
+
+.monthview-container{
+    height : auto !important;
+    border-bottom: 1px solid var(--ion-color-step-100)!important;
+}
+
+.monthview-current { background-color: var(--ion-color-step-200) !important; }
+.monthview-primary-with-event { background-color: #FF9800 !important; }
+.monthview-selected { 
+    background-color: #FF5722 !important;
+    
+}
+
+
+
+thead[_ngcontent-ng-c613479738]{
+    border: 2px solid var(--ion-color-step-100)  !important;
+}
+
+thead[_ngcontent-ng-c613479738] tr th{
+    background-color: var(--ion-color-step-50) ;
+}
+
+.table-bordered[_ngcontent-ng-c613479738],  th[_ngcontent-ng-c613479738], .table-bordered[_ngcontent-ng-c613479738], tr[_ngcontent-ng-c613479738], td[_ngcontent-ng-c613479738]{
+    border: 1px solid var(--ion-color-step-100) !important;
 }

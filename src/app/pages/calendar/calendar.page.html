@@ -4,13 +4,62 @@
       <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Calendar</ion-title>
+    <ion-buttons slot="end">
+      <ion-button default-href="#" (click)="setToday()">today</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Calendar</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <ion-row class="month-row">
+    
+    <ion-button fill="clear" (click)="previousMonth()">
+      <ion-icon name="arrow-back-outline" slot="icon-only" ></ion-icon>
+
+
+    </ion-button>
+  
+  
+    <h2>{{viewTitle}}</h2>
+  
+    <ion-button fill="clear" (click)="nextMonth()">
+    <ion-icon name="arrow-forward-outline" slot="icon-only"></ion-icon>
+
+    </ion-button>
+    
+
+  </ion-row>
+
+  <calendar  class="calendar-style" 
+    [eventSource]="eventSource"  
+    [startingDayMonth]="1" 
+    [showEventDetail] = "false" 
+    (onTitleChanged)="viewTitle = $event"  
+    >
+  </calendar>
+
+
+  <div *ngIf="myCalendar && eventSource.length != 0">
+
+    <!-- <ion-text>{{myCalendar.currentDate | date: 'dd/MM/YYYY' }} todos :</ion-text> -->
+
+    <ion-list>
+      
+      <ion-row *ngFor="let todo of findTodosByDate(myCalendar.currentDate)">
+        <app-todo-card [todo]="todo" [color]="todoColor(todo)" [routerLink]="'/todo/'"></app-todo-card>
+      </ion-row>
+    </ion-list>
+
+  </div>
+  
+
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    
+    <ion-fab-button routerLink="/add">
+      <ion-icon name="add" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

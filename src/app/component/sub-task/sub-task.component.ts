@@ -25,6 +25,8 @@ export class SubTaskComponent  implements OnInit {
     modify: false
   };
 
+  subType : string = "customize";
+
   ngOnInit() {}
 
   // deleteSubTask(){
@@ -73,6 +75,12 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.task = subTask;
     this.openModal.open = true;
     this.openModal.modify = true;
+  }
+
+  addSubTaskOnList(){
+    this.openModal.task = new Todo();
+    this.openModal.open = true;
+    this.openModal.modify = false;
   }
 
 }

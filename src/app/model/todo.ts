@@ -43,8 +43,24 @@ export class Todo {
        
     }
 
-    public static sayHello() {
-        console.log("Hello");
+    public static typeColor(type : string) {
+      switch (type) {
+
+        case "default":
+          return "var(--ion-color-tertiary)";
+          
+        case "personnal":
+          return "var(--ion-color-danger)";
+          
+        case "project":
+          return "var(--ion-color-warning)";
+          
+        case "work":
+          return "var(--ion-color-success)";
+          
+        default:
+          return "var(--ion-color-primary)";
+      }
     }
 
     public static async scheduleNotification(todo : Todo) {
