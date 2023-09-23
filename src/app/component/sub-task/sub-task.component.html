@@ -25,14 +25,13 @@
         </div>  
         
 
-        <div class="develop">
+        <div *ngIf="findOnConfig('sub tasks')" class="develop">
           <div  *ngIf="!developped">
             <ion-icon name="chevron-down-outline" (click)="developSubTask($event)"></ion-icon>
           </div>
           <div *ngIf="developped">
             <ion-icon name="chevron-up-outline" (click)="developSubTask($event)"></ion-icon>
           </div>
-  
         </div>
       </div>
       
@@ -60,7 +59,7 @@
 
   
 
-  <ion-list class="sub-sub-task" *ngIf="developped" [style.background-color]="backgroundColor()">
+  <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && developped" [style.background-color]="backgroundColor()">
 
     <div class="new-sub-task" *ngIf="page === 'add'">
       <ion-row class="sub-type">

@@ -34,14 +34,14 @@ export class AddPage implements OnInit {
   subType: string = 'customize';
 
 
-  configArray: { key: string, value: boolean }[] = [
-    { key: 'description', value: false },
-    { key: 'date', value: false },
-    { key: 'time', value: false },
-    { key: 'repetition', value: false },
-    { key: 'sub tasks', value: false },
-    // { key: 'sub tasks', value: false },
-  ];
+  // configArray: { key: string, value: boolean }[] = [
+  //   { key: 'description', value: false },
+  //   { key: 'date', value: false },
+  //   { key: 'time', value: false },
+  //   { key: 'repetition', value: false },
+  //   { key: 'sub tasks', value: false },
+  //   // { key: 'sub tasks', value: false },
+  // ];
 
   // configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
 
@@ -50,10 +50,11 @@ export class AddPage implements OnInit {
   newTodoOnListTitle: string = "";
 
   showDate: boolean = false;
-  openModal: any = {
+  modalConfig: any = {
     open: false,
-    task: new Todo(),
-    modify: false
+    task: Todo,
+    modify: false,
+    parentTask: Todo,
   };
 
   constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) 
@@ -78,35 +79,25 @@ export class AddPage implements OnInit {
       
     });
 
+    // this.modalService.subTask$.subscribe(subTask => {
 
-    this.modalService.openModal$.subscribe(openModal => {
-      console.log("main open modal");
-      if (openModal == 0) {
-        console.log("close modal 0");
-        this.openModal.open = false;
-      } else {
-        this.openModal.open = true;
-      }
-    });
-    this.modalService.subTask$.subscribe(subTask => {
+    //   if (subTask.level == 0 && subTask.todo) {
 
-      if (subTask.level == 0 && subTask.todo) {
+    //     console.log("subtask level 0");
+    //     this.newTodo.list!.push(subTask.todo);
+    //     //this.newSubTodo = new Todo();
 
-        console.log("subtask level 0");
-        this.newTodo.list!.push(subTask.todo);
-        //this.newSubTodo = new Todo();
-
-        setTimeout(() => {
+    //     setTimeout(() => {
           
-          console.log("timeout");
-          subTask.todo = null;
+    //       console.log("timeout");
+    //       subTask.todo = null;
           
-        } , 200);
-      }
-      console.log(this.newTodo);
-      //this.subTask = subTask;
-      // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
-    });
+    //     } , 200);
+    //   }
+    //   console.log(this.newTodo);
+    //   //this.subTask = subTask;
+    //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
+    // });
   }
 
   loadTodo(id : number){
@@ -119,8 +110,9 @@ export class AddPage implements OnInit {
 
   //Config
 
+  //Reset config au cas ou
   setConfig(){
-    this.configArray = [
+    let configArray = [
       { key: 'description', value: this.newTodo.description ? true : false },
       { key: 'date', value: this.newTodo.date ? true : false },
       { key: 'time', value: this.newTodo.time ? true : false },
@@ -128,17 +120,18 @@ export class AddPage implements OnInit {
       { key: 'sub tasks', value: this.newTodo.list?.length ? true : false },
     ];
 
+    this.newTodo.config = configArray;
   }
 
   
   findOnConfig(key: string): boolean {
-    const configItem = this.configArray.find(item => item.key === key);
+    const configItem = this.newTodo.config.find(item => item.key === key);
     
     return configItem ? configItem.value : false;
   }
 
   closeOnConfig(key: string) {
-    const configItem = this.configArray.find(item => item.key === key);
+    const configItem = this.newTodo.config.find(item => item.key === key);
     
     configItem!.value = false;
   }
@@ -238,19 +231,31 @@ export class AddPage implements OnInit {
   }
 
 
+  // Add on main Task
   addTaskOnList(){
-    //console.log(this.openModal);
-    this.openModal.task = new Todo();
-    this.openModal.open = true;
-    this.openModal.modify = false;
-    console.log(this.openModal);
+    this.modalConfig.task = new Todo();
+    this.modalConfig.open = true;
+    this.modalConfig.modify = false;
+    this.modalConfig.parentTask = this.newTodo;
+    console.log(this.modalConfig);
   }
 
+  // Add on sub Task
+
+  // addTaskOnSubTask(){
+  //   this.modalConfig.task = new Todo();
+  //   this.modalConfig.open = true;
+  //   this.modalConfig.modify = false;
+  //   this.modalConfig.parentTask = this.newTodo;
+  //   console.log(this.modalConfig);
+  // }
+
+  // Modify sub task
 
   modifyTaskOnList(subTask : any){
-    this.openModal.task = subTask;
-    this.openModal.open = true;
-    this.openModal.modify = true;
+    this.modalConfig.task = subTask;
+    this.modalConfig.open = true;
+    this.modalConfig.modify = true;
   }
 
 

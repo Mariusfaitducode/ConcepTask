@@ -14,40 +14,42 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 })
 export class AddModalComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('child') childComponentRef!: ElementRef;
+  //@ViewChild('child') childComponentRef!: ElementRef;
 
-  // @Input() openModal : boolean = true;
+  @Input() modalConfig: any = {};
 
-  @Input() subTodo! : Todo;
+  //@Input() subTodo! : Todo;
+  subTask!: Todo;
 
-  @Input() level! : number;
+  //@Input() level! : number;
 
   // newSubTodo: Todo = new Todo();
 
 
-  configArray: { key: string, value: boolean }[] = [
-    { key: 'description', value: false },
-    { key: 'date', value: false },
-    { key: 'time', value: false },
-    { key: 'repetition', value: false },
-    { key: 'sub tasks', value: true },
-    // { key: 'sub tasks', value: false },
+  // configArray: { key: string, value: boolean }[] = [
+  //   { key: 'description', value: false },
+  //   { key: 'date', value: false },
+  //   { key: 'time', value: false },
+  //   { key: 'repetition', value: false },
+  //   { key: 'sub tasks', value: true },
+  //   // { key: 'sub tasks', value: false },
 
-  ];
+  // ];
 
-  @Input() modify : boolean = false;
+  //@Input() modify : boolean = false;
+  modify : boolean = false;
 
-  newTodoOnListTitle: string = "";
+  // newTodoOnListTitle: string = "";
 
   showDate: boolean = false;
 
   subType: string = 'customize';
 
-  openModal: any = {
+  /*openModal: any = {
     open: false,
     task: new Todo(),
     modify: false
-  };
+  };*/
 
   constructor(private modalService: ModalService) { }
 
@@ -71,79 +73,69 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    console.log(this.level)
+    this.subTask = this.modalConfig.task;
+    this.modify = this.modalConfig.modify;
+
+    //console.log(this.level)
 
     // this.onTypeChange();
 
-    this.modalService.openModal$.subscribe(openModal => {
+    // this.modalService.openModal$.subscribe(openModal => {
 
-      console.log("sub open modal");
-      if (openModal == this.level) {
-        this.openModal.open = false;
-      } 
-    });
-    this.modalService.subTask$.subscribe(subTask => {
+    //   console.log("sub open modal");
+    //   if (openModal == this.level) {
+    //     this.openModal.open = false;
+    //   } 
+    // });
+    // this.modalService.subTask$.subscribe(subTask => {
 
-      if (subTask.level == this.level && subTask.todo) {
+    //   if (subTask.level == this.level && subTask.todo) {
 
-        console.log("add sub task in level : " + this.level)
+    //     console.log("add sub task in level : " + this.level)
 
-        this.subTodo.list!.push(subTask.todo);
+    //     this.subTodo.list!.push(subTask.todo);
         
-        //this.newSubTodo = new Todo();
+    //     //this.newSubTodo = new Todo();
 
-        console.log(this.subTodo);
+    //     console.log(this.subTodo);
 
-        setTimeout(() => {
-          console.log(this.subTodo.list);
-          console.log("timeout");
-          subTask.todo = null;
+    //     setTimeout(() => {
+    //       console.log(this.subTodo.list);
+    //       console.log("timeout");
+    //       subTask.todo = null;
           
-        } , 200);
+    //     } , 200);
 
-      }
-      //this.subTask = subTask;
-      // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
-    });
+    //   }
+    //   //this.subTask = subTask;
+    //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
+    // });
 
     this.setConfig();
   }
 
   setConfig(){
-    this.configArray = [
-      { key: 'description', value: this.subTodo.description ? true : false },
-      { key: 'date', value: this.subTodo.date ? true : false },
-      { key: 'time', value: this.subTodo.time ? true : false },
-      { key: 'repetition', value: this.subTodo.repetition ? true : false },
-      { key: 'sub tasks', value: this.subTodo.list?.length ? true : false },
+    let configArray = [
+      { key: 'description', value: this.subTask.description ? true : false },
+      { key: 'date', value: this.subTask.date ? true : false },
+      { key: 'time', value: this.subTask.time ? true : false },
+      { key: 'repetition', value: this.subTask.repetition ? true : false },
+      { key: 'sub tasks', value: this.subTask.list?.length ? true : false },
     ];
+
+    this.subTask.config = configArray;
   }
 
   // openModal() {
   //   this.modalService.setOpenModal(true);
   // }
-
-  // getMaxHeight(){
-  //   let classes = document.getElementsByClassName('content');
-
-  //   let max = 0;
-
-  //   for (let c of Array.from(classes)) {
-  //     console.log("size list page")
-
-  //     console.log(c.clientHeight);
-
-  //     if(c.clientHeight > max){
-  //       max = c.clientHeight;
-  //     }
-  //   }
-  //   return max + 60 + 60;
-  // }
   
   closeModal() {
-    console.log("close modal" + this.level);
+    //console.log("close modal" + this.level);
 
-    this.modalService.setOpenModal(this.decrementLevel());
+    // this.modalService.setOpenModal(0);
+
+    this.modalConfig.open = false;
   }
 
 
@@ -163,64 +155,31 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
 
   addSubTask(){
+
+    this.modalConfig.parentTask.list!.push(this.subTask);
+
     this.closeModal();
-    this.modalService.setSubTask({level: this.decrementLevel(), todo: this.subTodo});
-    this.subTodo = new Todo();
+    // this.modalService.setSubTask(this.subTodo);
+    // this.subTodo = new Todo();
     // this.newSubTodo = new Todo();
   }
 
 
-  incrementLevel(){
-    const level = this.level;
-    return level + 1;
-  }
-
-  decrementLevel(){
-    const level = this.level;
-    return level - 1;
-  }
-
 
   findOnConfig(key: string): boolean {
-    const configItem = this.configArray.find(item => item.key === key);
+    const configItem = this.subTask.config.find(item => item.key === key);
     
     return configItem ? configItem.value : false;
   }
 
   closeOnConfig(key: string) {
-    const configItem = this.configArray.find(item => item.key === key);
+    const configItem = this.subTask.config.find(item => item.key === key);
     
     configItem!.value = false;
   }
 
 
-  addOnList(){
-
-    /*this.subTask.list.push({
-      title: this.newTodoOnListTitle,
-    });*/
-
-    this.newTodoOnListTitle = '';
-    // console.log(this.newTodo);
-  }
-
-
-  addTodoOnList(){
-
-    let newTodoOnList = new Todo(this.newTodoOnListTitle, 'todo');
-
-    this.subTodo.list?.push(newTodoOnList);
-
-    this.newTodoOnListTitle = '';
-    console.log(this.subTodo);
-  }
-
-  addTaskOnList(){
-    console.log(this.openModal);
-    this.openModal.task = new Todo();
-    this.openModal.open = true;
-    this.openModal.modify = false;
-  }
+  
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     // The `from` and `to` properties contain the index of the item
@@ -230,9 +189,9 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     // Finish the reorder and position the item in the DOM based on
     // where the gesture ended. This method can also be called directly
     // by the reorder group
-    ev.detail.complete(this.subTodo.list);
+    ev.detail.complete(this.subTask.list);
 
-    console.log(this.subTodo.list);
+    console.log(this.subTask.list);
   }
 
 
@@ -242,13 +201,13 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     console.log("click")
 
     console.log("manage notification")
-    console.log(this.subTodo.reminder);
+    console.log(this.subTask.reminder);
     // this.newTodo.sayHello();
-    if (this.subTodo.reminder) {
-      Todo.scheduleNotification(this.subTodo);
+    if (this.subTask.reminder) {
+      Todo.scheduleNotification(this.subTask);
     }
     else{
-      Todo.cancelNotification(this.subTodo);
+      Todo.cancelNotification(this.subTask);
     }
   }
 }

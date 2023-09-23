@@ -27,7 +27,9 @@ export class SubTaskComponent  implements OnInit {
 
   subType : string = "customize";
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.setConfig();
+  }
 
   // deleteSubTask(){
   //   this.todo.list.splice(this.index, 1);
@@ -50,6 +52,26 @@ export class SubTaskComponent  implements OnInit {
   developSubTaskPressed(event: Event){
     event.stopPropagation();
     this.developped = true;
+  }
+
+
+  setConfig(){
+    let configArray = [
+      { key: 'description', value: this.subTask.description ? true : false },
+      { key: 'date', value: this.subTask.date ? true : false },
+      { key: 'time', value: this.subTask.time ? true : false },
+      { key: 'repetition', value: this.subTask.repetition ? true : false },
+      { key: 'sub tasks', value: this.subTask.list?.length ? true : false },
+    ];
+
+    this.subTask.config = configArray;
+  }
+
+
+  findOnConfig(key: string): boolean {
+    const configItem = this.subTask.config.find(item => item.key === key);
+    
+    return configItem ? configItem.value : false;
   }
 
 

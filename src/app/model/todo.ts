@@ -1,15 +1,18 @@
-
+ 
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { Config } from './config';
 
 
 export class Todo {
 
+    public config!: { key: string, value: boolean }[];
+
     public subId?: number;
     public parentId?: number;
+    public main: boolean;
 
     public isDone: boolean = false;
-
-    public main: boolean;
+    
     public title!: string;
     public category: string;
 
@@ -39,7 +42,13 @@ export class Todo {
         this.title = title || '';
         this.list = [];
 
-        // this.description = description;
+        this.config = [
+          { key: 'description', value: false },
+          { key: 'date', value: false },
+          { key: 'time', value: false },
+          { key: 'repetition', value: false },
+          { key: 'sub tasks', value: false },
+        ];
        
     }
 
@@ -140,70 +149,3 @@ export class Todo {
 
 }
 
-
-
-
-
-
-
-
-
-
-// export class TypeTodo{
-    
-//         public type: string;
-//         public color: string;
-
-//         // Config could be on type
-    
-//         constructor() {
-//             this.type = 'customize';
-//             this.color = '';
-//         }
-    
-// }
-
-// export class Config{
-
-//     public description?: boolean;
-//     public isChecked?: boolean;
-//     public date?: boolean
-//     public reminder?: boolean;
-//     public repetition?: boolean;
-//     public list?: boolean;
-    
-
-//     constructor() {
-//         this.description = false;
-//         this.date = false;
-//         this.reminder = false;
-//         this.repetition = false;
-//         this.list = false;
-//     }
-
-//     customizedConfig(){
-//         this.description = false;
-//         this.date = false;
-//         this.reminder = false;
-//         this.repetition = false;
-//         this.list = false;
-//     }
-
-//     todoConfig(){
-//         this.description = false;
-//         this.date = false;
-//         this.reminder = false;
-//         this.repetition = false;
-//         this.list = false;
-//     }
-
-//     todoListConfig(){
-//         this.description = true;
-//         this.date = true;
-//         this.reminder = true;
-//         this.repetition = false;
-//         this.list = true;
-//     }
-
-    
-// }

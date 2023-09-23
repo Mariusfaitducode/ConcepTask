@@ -8,18 +8,18 @@ import { Todo } from '../model/todo';
 export class ModalService {
 
   private openModalSubject = new BehaviorSubject<number>(0);
-  private subTaskSubject = new BehaviorSubject<{level: number, todo:Todo | null} >( {level: 0, todo: null});
+  private subTaskSubject = new BehaviorSubject<Todo | null >(null);
 
   openModal$ = this.openModalSubject.asObservable();
   subTask$ = this.subTaskSubject.asObservable();
 
   constructor() { }
 
-  setOpenModal(value: number) {
-    this.openModalSubject.next(value);
-  }
+  // setOpenModal(value: number) {
+  //   this.openModalSubject.next(value);
+  // }
 
-  setSubTask(subTask: {level: number, todo:Todo}) {
-    this.subTaskSubject.next(subTask);
-  }
+  // setSubTask(subTask: Todo) {
+  //   this.subTaskSubject.next(subTask);
+  // }
 }

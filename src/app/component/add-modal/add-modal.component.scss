@@ -82,6 +82,7 @@ ion-list, ion-item{
     min-height: 500px;
     
     padding-top: 60px;
+    // border-bottom: none;
 }
 
 .title-type-header{
@@ -144,4 +145,8 @@ ion-row{
 .new-sub-todo ion-icon{
     font-size: 30px;
     color: var(--ion-color-step-600);
+}
+
+.info-sub-task{
+    padding: 15px;
 }
