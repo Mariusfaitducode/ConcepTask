@@ -78,7 +78,7 @@
       
       <div *ngIf="subType == 'customize'">
         <ion-buttons class="add-button-container" >
-          <button class="add-button">
+          <button class="add-button" (click)="addSubTaskOnList()">
             <ion-icon name="add"></ion-icon>
           </button>
         </ion-buttons>

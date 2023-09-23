@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { SubTaskComponent } from '../component/sub-task/sub-task.component';
 import { CustomConfigComponent } from '../component/custom-config/custom-config.component';
 import { LeftMenuComponent } from '../component/left-menu/left-menu.component';
+import { ButtonAddSubTaskComponent } from '../component/button-add-sub-task/button-add-sub-task.component';
 
 
 
@@ -27,8 +28,15 @@ import { LeftMenuComponent } from '../component/left-menu/left-menu.component';
     AddModalComponent,
     CustomConfigComponent,
     LeftMenuComponent,
-    
+    ButtonAddSubTaskComponent,
   ],
-  exports:[TodoCardComponent, SubTodoComponent, AddModalComponent, SubTaskComponent, CustomConfigComponent, LeftMenuComponent]
+  exports:[
+    TodoCardComponent, 
+    SubTodoComponent, 
+    AddModalComponent, 
+    SubTaskComponent, 
+    CustomConfigComponent, 
+    LeftMenuComponent, 
+    ButtonAddSubTaskComponent]
 })
 export class SharedModule { }

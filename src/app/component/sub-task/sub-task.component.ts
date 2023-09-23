@@ -12,6 +12,8 @@ export class SubTaskComponent  implements OnInit {
   constructor(private router : Router) { }
 
   @Input() subTask: Todo = new Todo();
+
+  //Main Todo
   @Input() todo: Todo = new Todo();
   @Input() index: any;
   @Input() page: string = "";
@@ -21,7 +23,7 @@ export class SubTaskComponent  implements OnInit {
 
   @Input() openModal: any = {
     open: false,
-    task: new Todo(),
+    task: Todo,
     modify: false
   };
 
@@ -55,6 +57,7 @@ export class SubTaskComponent  implements OnInit {
   }
 
 
+  // Use to have no erros but should be remove on new todos
   setConfig(){
     let configArray = [
       { key: 'description', value: this.subTask.description ? true : false },
@@ -103,6 +106,7 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.task = new Todo();
     this.openModal.open = true;
     this.openModal.modify = false;
+    this.openModal.parentTask = this.subTask;
   }
 
 }
