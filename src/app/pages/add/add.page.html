@@ -90,7 +90,8 @@
       <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
 
       <!-- Faire un component ? -->
-      
+
+      <app-button-add-sub-task [modalConfig]="modalConfig" [parentTask]="newTodo"></app-button-add-sub-task>
 
       <ion-list>
         <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">

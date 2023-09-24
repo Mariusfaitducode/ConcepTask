@@ -61,7 +61,10 @@
 
   <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && developped" [style.background-color]="backgroundColor()">
 
-    <div class="new-sub-task" *ngIf="page === 'add'">
+    <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
+
+
+    <!-- <div class="new-sub-task" *ngIf="page === 'add'">
       <ion-row class="sub-type">
         <ion-select label="Type" label-placement="floating"  aria-label="Type" [(ngModel)]="subType">
           <ion-select-option value="customize">Customize</ion-select-option>
@@ -83,7 +86,7 @@
           </button>
         </ion-buttons>
       </div>
-    </div>
+    </div> -->
     
 
     <div *ngFor="let sub of subTask.list" >

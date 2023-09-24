@@ -47,7 +47,7 @@ export class AddPage implements OnInit {
 
   // todoList: any[] = [];
 
-  newTodoOnListTitle: string = "";
+  
 
   showDate: boolean = false;
   modalConfig: any = {
@@ -206,15 +206,6 @@ export class AddPage implements OnInit {
 
   //List 
 
-  addTodoOnList(){
-
-    let newTodoOnList = new Todo(this.newTodoOnListTitle, 'todo');
-
-    this.newTodo.list?.push(newTodoOnList);
-
-    this.newTodoOnListTitle = '';
-    console.log(this.newTodo);
-  }
 
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
@@ -230,15 +221,6 @@ export class AddPage implements OnInit {
     //console.log(this.newTodo.list);
   }
 
-
-  // Add on main Task
-  addTaskOnList(){
-    this.modalConfig.task = new Todo();
-    this.modalConfig.open = true;
-    this.modalConfig.modify = false;
-    this.modalConfig.parentTask = this.newTodo;
-    console.log(this.modalConfig);
-  }
 
   // Add on sub Task
 

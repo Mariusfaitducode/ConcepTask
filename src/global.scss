@@ -79,75 +79,7 @@ ion-list{
 
 // ADD sub task elements
 
-.new-sub-todo{
-    
-    padding: 0px 16px;
-    font-size: 18px;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.new-sub-todo ion-input{
-    
-    width: 80%;
-}
-
-.new-sub-todo ion-icon{
-    font-size: 30px;
-    color: var(--ion-color-step-600);
-}
-
-.new-sub-task{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    
-}
-
-.new-sub-task .sub-type{
-    width: 35%;
-    margin-left: 16px;
-}
-
-
-
-// .new-sub-task .sub-task-input{
-//     width: 60%;
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: space-between;
-//     align-items: center;
-// }
-
-.new-sub-task ion-text{
-    margin-left: 20px;
-    font-size: 18px;
- }
-
-.add-button-container{
-    display: flex;
-    justify-content: flex-end;
-}
-
-.add-button{
-    background: var(--ion-color-step-50);
-    border-radius: 50%;
-
-    padding: 10;
-
-    width: 50px;
-    height: 50px;
-
-    font-size: 25px;
-
-    margin-right: 15px;
-
-    background-color: var(--ion-color-primary);
-}
 
 .hideHeader{
     pointer-events: none;
