@@ -139,7 +139,7 @@ export class TodoPage implements OnInit {
 
     if (this.todo.main == true){
       console.log("main")
-      this.todos.filter(todo => todo.mainId != this.todo.mainId);
+      this.todos = this.todos.filter(todo => todo.mainId != this.todo.mainId);
     }
     else{
 
