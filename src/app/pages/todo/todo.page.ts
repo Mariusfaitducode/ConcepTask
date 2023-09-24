@@ -71,15 +71,13 @@ export class TodoPage implements OnInit {
     this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
     console.log(this.todos)
     this.todo = this.todos.find(todo => todo.mainId == id)!;
-    this.mainTodo = this.todos[id]
+    this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
   }
 
   
   findSubTodo(subId : number){
 
     let copyList = [...this.mainTodo.list!];
-
-    // let queue = [{ list: copyList, parentId: 0 }];
 
     // Bfs algorithm
     while (copyList.length > 0) {
@@ -129,29 +127,40 @@ export class TodoPage implements OnInit {
     this.router.navigate(['/add', this.index]);
   }
 
+  deleteSubTodo(){
+
+
+  }
+
   deleteTodo(){
     // this.todos.splice(this.index, 1);
 
     console.log("delete");
 
-    if (this.todo.parentId){
-      let parentTodo = this.findSubTodo(this.todo.parentId);
-
-      console.log("parent");
-      console.log(parentTodo);
-
-      for (let i = 0; i < parentTodo.list!.length; i++) {
-        if (parentTodo.list![i].subId == this.todo.subId) {
-          parentTodo.list?.splice(i, 1);
-          break;
-        }
-      }
+    if (this.todo.main == true){
+      console.log("main")
+      this.todos.filter(todo => todo.mainId != this.todo.mainId);
     }
     else{
-      this.todos.splice(this.index, 1);
-    }
 
-    
+      Todo.deleteTodoById(this.mainTodo, this.todo.subId!);
+      
+
+      console.log(this.mainTodo.list)
+      
+
+
+      // if (this.todo.parentId == 0){
+      //   console.log("first sub todo")
+        
+      //   this.mainTodo.list?.filter(todo => todo.subId != this.todo.subId);
+      // }
+      // else{
+      //   console.log("sub todo")
+      //   let parentTodo = this.findSubTodo(this.todo.parentId!);
+      //   parentTodo.list?.filter(todo => todo.subId != this.todo.subId);
+      // }
+    }
     localStorage.setItem('todos', JSON.stringify(this.todos));
 
     this.navCtrl.back();

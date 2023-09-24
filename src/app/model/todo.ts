@@ -144,15 +144,37 @@ export class Todo {
       }
 
 
-      public static async cancelNotification(todo : Todo) {
-        try {
-          console.log("remove notification");
+    public static async cancelNotification(todo : Todo) {
+      try {
+        console.log("remove notification");
 
-          await LocalNotifications.cancel({ notifications: [{ id: todo.notifId! }] });
-        } catch (error) {
-          console.error('Erreur lors de l`annulation de la notification', error);
-        }
+        await LocalNotifications.cancel({ notifications: [{ id: todo.notifId! }] });
+      } catch (error) {
+        console.error('Erreur lors de l`annulation de la notification', error);
       }
+    }
+
+
+    public static deleteTodoById(rootTodo: Todo, idToDelete: number): Todo {
+    
+      // Créez une copie du todo actuel
+      const updatedTodo: Todo = { ...rootTodo };
+    
+      // Parcourez les sous-todos récursivement
+      rootTodo.list!.forEach((subTodo) => {
+
+        if (subTodo.subId === idToDelete) {
+          // Supprimer le todo
+          updatedTodo.list!.splice(updatedTodo.list!.indexOf(subTodo), 1);
+        } else {
+          // Sinon, parcourez les sous-todos de ce todo
+          Todo.deleteTodoById(subTodo, idToDelete);
+        }
+      });
+    
+      // Renvoyez le todo mis à jour (ou null s'il doit être supprimé)
+      return updatedTodo;
+    }
 
 }
 
