@@ -26,28 +26,11 @@ export class AddPage implements OnInit {
   newTodo!: Todo;
   index?: number = undefined;
 
-  //newSubTodo!: Todo;
-
   date: any = {date: '', time: ''};
 
 
   subType: string = 'customize';
 
-
-  // configArray: { key: string, value: boolean }[] = [
-  //   { key: 'description', value: false },
-  //   { key: 'date', value: false },
-  //   { key: 'time', value: false },
-  //   { key: 'repetition', value: false },
-  //   { key: 'sub tasks', value: false },
-  //   // { key: 'sub tasks', value: false },
-  // ];
-
-  // configCustomizedArray: { key: string, value: boolean }[] = this.configArray;
-
-  // todoList: any[] = [];
-
-  
 
   showDate: boolean = false;
   modalConfig: any = {
@@ -65,53 +48,55 @@ export class AddPage implements OnInit {
     // Récupère chemins et paramètres de la route active -> provenance : Todo / Home  
     this.route.params.subscribe((params) => {
 
+      // Modification d'un Todo existant
       if (params['id'] != undefined) {
         
         this.index = +params['id'];
 
         this.loadTodo(this.index);
       }
-      else{
+      else{ // Nouveau todo
         this.newTodo = new Todo();
       }
+      this.setMainTodoId();
       this.setConfig();
-
-      
     });
-
-    // this.modalService.subTask$.subscribe(subTask => {
-
-    //   if (subTask.level == 0 && subTask.todo) {
-
-    //     console.log("subtask level 0");
-    //     this.newTodo.list!.push(subTask.todo);
-    //     //this.newSubTodo = new Todo();
-
-    //     setTimeout(() => {
-          
-    //       console.log("timeout");
-    //       subTask.todo = null;
-          
-    //     } , 200);
-    //   }
-    //   console.log(this.newTodo);
-    //   //this.subTask = subTask;
-    //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
-    // });
   }
+
+  
 
   loadTodo(id : number){
     this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
     console.log(this.todos)
-    this.newTodo = this.todos[id]
-    console.log(this.newTodo)
+    this.newTodo = this.todos.find((todo:Todo) => todo.mainId == id)!;
+    
     // this.mainTodo = this.todos[id] 
   }
+
+  //A vérifier si on en a besoin
+  setMainTodoId(){
+    let todoId = JSON.parse(localStorage.getItem('mainTodoId') || '0');
+
+    if (this.newTodo.mainId) {
+      this.newTodo.main = true;
+    }
+    else{
+      this.newTodo.main = true;
+      this.newTodo.mainId = todoId++;
+    }
+
+    localStorage.setItem('mainTodoId', JSON.stringify(todoId));
+  }
+
+  // getId(){
+  //   return this.todos.length + 1;
+  // }
 
   //Config
 
   //Reset config au cas ou
   setConfig(){
+    console.log("set config")
     let configArray = [
       { key: 'description', value: this.newTodo.description ? true : false },
       { key: 'date', value: this.newTodo.date ? true : false },
@@ -139,11 +124,18 @@ export class AddPage implements OnInit {
   saveTodo(){
     console.log(this.newTodo);
 
-    this.assignIds(this.newTodo.list!);
+    this.assignIds();
 
 
     if (this.index != undefined) {
-      this.todos[this.index] = this.newTodo;
+      // this.todos[this.index] = this.newTodo;
+
+      this.todos.forEach((todo: Todo, index: number) => {
+        if (todo.mainId === this.newTodo.mainId) {
+          // Remplacez l'élément par le nouveau todo
+          this.todos[index] = this.newTodo;
+        }
+      });
 
       localStorage.setItem('todos', JSON.stringify(this.todos));
       this.newTodo = new Todo();
@@ -162,16 +154,15 @@ export class AddPage implements OnInit {
     }
     //this.todos.push(this.newTodo);
 
-    
   }
 
 
   //Id 
 
-    // Fonction pour parcourir l'arbre et attribuer des IDs
-  assignIds(list : Todo[]): void {
+  // Fonction pour parcourir l'arbre et attribuer des IDs
+  assignIds(): void {
 
-    let copyList = [...list];
+    let copyList = [...this.newTodo.list!];
 
     let queue = [{ list: copyList, parentId: 0 }];
 
@@ -182,6 +173,8 @@ export class AddPage implements OnInit {
 
         let todo = queue[i].list.shift()!;
 
+        todo.main = false;
+        todo.mainId = this.newTodo.mainId;
         todo.subId = id++;
         todo.parentId = queue[i].parentId;
 
@@ -194,9 +187,7 @@ export class AddPage implements OnInit {
 
 
 
-  getId(){
-    return this.todos.length + 1;
-  }
+
 
 
   findTodoById(id: number): Todo {
@@ -219,25 +210,6 @@ export class AddPage implements OnInit {
     //ev.detail.complete(this.newTodo.list);
 
     //console.log(this.newTodo.list);
-  }
-
-
-  // Add on sub Task
-
-  // addTaskOnSubTask(){
-  //   this.modalConfig.task = new Todo();
-  //   this.modalConfig.open = true;
-  //   this.modalConfig.modify = false;
-  //   this.modalConfig.parentTask = this.newTodo;
-  //   console.log(this.modalConfig);
-  // }
-
-  // Modify sub task
-
-  modifyTaskOnList(subTask : any){
-    this.modalConfig.task = subTask;
-    this.modalConfig.open = true;
-    this.modalConfig.modify = true;
   }
 
 

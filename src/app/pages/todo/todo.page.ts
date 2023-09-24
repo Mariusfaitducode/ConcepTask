@@ -46,6 +46,7 @@ export class TodoPage implements OnInit {
         this.inSubTask = false;
         this.index = +params['id'];
 
+        //Détermine main todo
         this.loadTodo(this.index);
       }
       else{
@@ -54,14 +55,25 @@ export class TodoPage implements OnInit {
 
         this.inSubTask = true;
         this.index = +params['id'];
-        
+        //Détermine main todo
         this.loadTodo(this.index);
+
+        //Détermine sub todo
         this.todo = this.findSubTodo(+params['subId']!);
       }
 
       
     });
   }
+
+
+  loadTodo(id : number){
+    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    console.log(this.todos)
+    this.todo = this.todos.find(todo => todo.mainId == id)!;
+    this.mainTodo = this.todos[id]
+  }
+
   
   findSubTodo(subId : number){
 
@@ -111,12 +123,7 @@ export class TodoPage implements OnInit {
   }
 
 
-  loadTodo(id : number){
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    console.log(this.todos)
-    this.todo = this.todos[id]
-    this.mainTodo = this.todos[id]
-  }
+ 
 
   modifyTodo(){
     this.router.navigate(['/add', this.index]);

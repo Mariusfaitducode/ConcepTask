@@ -62,36 +62,11 @@
   <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && developped" [style.background-color]="backgroundColor()">
 
     <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
-
-
-    <!-- <div class="new-sub-task" *ngIf="page === 'add'">
-      <ion-row class="sub-type">
-        <ion-select label="Type" label-placement="floating"  aria-label="Type" [(ngModel)]="subType">
-          <ion-select-option value="customize">Customize</ion-select-option>
-          <ion-select-option value="todo">Todo</ion-select-option>
-        </ion-select>
-      </ion-row>
-
-      <div *ngIf="subType == 'todo'">
-        <ion-row class="new-sub-todo">
-          <ion-input  type="text"  placeholder="Sub todos"></ion-input>
-          <ion-icon name="add" ></ion-icon>
-        </ion-row>
-      </div>
-      
-      <div *ngIf="subType == 'customize'">
-        <ion-buttons class="add-button-container" >
-          <button class="add-button" (click)="addSubTaskOnList()">
-            <ion-icon name="add"></ion-icon>
-          </button>
-        </ion-buttons>
-      </div>
-    </div> -->
     
 
-    <div *ngFor="let sub of subTask.list" >
+    <div *ngFor="let sub of subTask.list; let id = index" >
   
-      <app-sub-task [todo]="todo" [subTask]="sub" [index]="index" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
+      <app-sub-task [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
     
     </div>
   

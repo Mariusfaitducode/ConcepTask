@@ -28,8 +28,10 @@
 
         <ion-buttons *ngIf="modify" slot="end">
 
-          
-          <!-- <ion-icon name="trash-outline" color="danger" class="delete-button"></ion-icon> -->
+          <ion-button (click)="showConfirm()">
+            <ion-icon name="trash-outline" color="danger" class="delete-button"></ion-icon>
+
+          </ion-button>
           
           
           <ion-button color="primary" class="save-button" fill="clear" (click)="closeModal()">

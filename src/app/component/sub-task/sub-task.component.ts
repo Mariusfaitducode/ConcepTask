@@ -14,7 +14,9 @@ export class SubTaskComponent  implements OnInit {
   @Input() subTask: Todo = new Todo();
 
   //Main Todo
-  @Input() todo: Todo = new Todo();
+  @Input() parentTask: Todo = new Todo();
+  
+  //Index = mainTodo in todo page / subTodo in add page
   @Input() index: any;
   @Input() page: string = "";
   @Input() level: number = 0;
@@ -100,6 +102,8 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.task = subTask;
     this.openModal.open = true;
     this.openModal.modify = true;
+    this.openModal.parentTask = this.parentTask;
+    this.openModal.index = this.index;
   }
 
   addSubTaskOnList(){

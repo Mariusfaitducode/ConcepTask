@@ -1,30 +1,36 @@
  
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { Config } from './config';
+
 
 
 export class Todo {
 
-    public config!: { key: string, value: boolean }[];
+    // 
 
     public subId?: number;
     public parentId?: number;
+
     public main: boolean;
+    public mainId?: number;
+
+    public notifId?: number;
 
     public isDone: boolean = false;
+
+    // Propriety to choose
+
+    public config!: { key: string, value: boolean }[];
     
     public title!: string;
     public category: string;
 
     public description?: string;
 
-    public isChecked?: boolean;
-
     public date?: Date;
     public time?: string;
 
     public reminder?: boolean;
-    public notifId?: number;
+    
 
     public repetition?: {
         startDate: Date,
@@ -37,9 +43,10 @@ export class Todo {
     constructor(title?: string, category?: string, main?: boolean) {
 
         //this.id = id;
-        this.main = main || true;
+        this.main = main || false;
         this.category = category || 'default';
         this.title = title || '';
+
         this.list = [];
 
         this.config = [

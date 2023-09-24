@@ -25,17 +25,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   // newSubTodo: Todo = new Todo();
 
-
-  // configArray: { key: string, value: boolean }[] = [
-  //   { key: 'description', value: false },
-  //   { key: 'date', value: false },
-  //   { key: 'time', value: false },
-  //   { key: 'repetition', value: false },
-  //   { key: 'sub tasks', value: true },
-  //   // { key: 'sub tasks', value: false },
-
-  // ];
-
   //@Input() modify : boolean = false;
   modify : boolean = false;
 
@@ -44,6 +33,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   showDate: boolean = false;
 
   subType: string = 'customize';
+
 
   /*openModal: any = {
     open: false,
@@ -54,14 +44,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   constructor(private modalService: ModalService) { }
 
   ngAfterViewInit() {
-    
-    let classes = document.getElementsByClassName('list-page');
-
-    for (let c of Array.from(classes)) {
-      console.log("size list page")
-
-      console.log(c.clientHeight);
-    }
     
     let doc = document.getElementsByClassName('content');
 
@@ -76,87 +58,62 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     this.subTask = this.modalConfig.task;
     this.modify = this.modalConfig.modify;
 
-    //console.log(this.level)
-
-    // this.onTypeChange();
-
-    // this.modalService.openModal$.subscribe(openModal => {
-
-    //   console.log("sub open modal");
-    //   if (openModal == this.level) {
-    //     this.openModal.open = false;
-    //   } 
-    // });
-    // this.modalService.subTask$.subscribe(subTask => {
-
-    //   if (subTask.level == this.level && subTask.todo) {
-
-    //     console.log("add sub task in level : " + this.level)
-
-    //     this.subTodo.list!.push(subTask.todo);
-        
-    //     //this.newSubTodo = new Todo();
-
-    //     console.log(this.subTodo);
-
-    //     setTimeout(() => {
-    //       console.log(this.subTodo.list);
-    //       console.log("timeout");
-    //       subTask.todo = null;
-          
-    //     } , 200);
-
-    //   }
-    //   //this.subTask = subTask;
-    //   // Vous pouvez effectuer des opérations supplémentaires avec l'objet SubTask ici
-    // });
-
-    this.setConfig();
+    //this.setConfig();
   }
 
   setConfig(){
-    let configArray = [
+
+    this.subTask.config = [
       { key: 'description', value: this.subTask.description ? true : false },
       { key: 'date', value: this.subTask.date ? true : false },
       { key: 'time', value: this.subTask.time ? true : false },
       { key: 'repetition', value: this.subTask.repetition ? true : false },
       { key: 'sub tasks', value: this.subTask.list?.length ? true : false },
     ];
-
-    this.subTask.config = configArray;
   }
 
-  // openModal() {
-  //   this.modalService.setOpenModal(true);
-  // }
   
   closeModal() {
-    //console.log("close modal" + this.level);
-
-    // this.modalService.setOpenModal(0);
 
     this.modalConfig.open = false;
   }
 
 
-  // showConfirm = async () => {
-  //   const { value } = await Dialog.confirm({
-  //     title: 'Confirm',
-  //     message: `Are you sure to delete `+ this.subTodo.title +` ?`,
-  //   });
+  showConfirm = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: `Are you sure to delete `+ this.subTask.title +` ?`,
+    });
   
-  //   console.log('Confirmed:', value);
+    console.log('Confirmed:', value);
 
-  //   if (value) {
-  //     //this.deleteTodo();
-  //   }
-  // };
+    if (value) {
+      this.deleteSubTask();
+    }
+  };
 
+
+  deleteSubTask(){
+    this.modalConfig.parentTask.list!.splice(this.modalConfig.index, 1);
+
+    //this.modalConfig.parentTask.list.filter((item: Todo) => item !== this.subTask)
+
+    
+    console.log( this.modalConfig.parentTask.list )
+
+    this.closeModal();
+  }
 
 
   addSubTask(){
 
-    this.modalConfig.parentTask.list!.push(this.subTask);
+    // let configArray = this.subTask.config;
+    // for (let i = 0; i < configArray.length; i++) {
+    //   this.subTask.config[i].value = configArray[i].value;
+    // }
+    console.log( this.subTask )
+
+    this.modalConfig.parentTask.list.push(this.subTask);
 
     this.closeModal();
     // this.modalService.setSubTask(this.subTodo);
@@ -165,30 +122,27 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   }
 
 
-
   findOnConfig(key: string): boolean {
+    
     const configItem = this.subTask.config.find(item => item.key === key);
     
     return configItem ? configItem.value : false;
   }
 
-  closeOnConfig(key: string) {
-    const configItem = this.subTask.config.find(item => item.key === key);
+
+  // closeOnConfig(key: string) {
+  //   const configItem = this.subTask.config.find(item => item.key === key);
     
-    configItem!.value = false;
-  }
+  //   configItem!.value = false;
+  // }
 
 
   
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-    // The `from` and `to` properties contain the index of the item
-    // when the drag started and ended, respectively
+    
     console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
 
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
     ev.detail.complete(this.subTask.list);
 
     console.log(this.subTask.list);
