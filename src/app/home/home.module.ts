@@ -6,7 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
-import { TodoCardComponent } from '../component/todo-card/todo-card.component';
+import { TodoCardComponent } from '../component/cards/todo-card/todo-card.component';
 import { SharedModule } from '../shared/shared.module';
 
 

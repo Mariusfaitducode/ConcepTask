@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { IonicStorageModule } from '@ionic/storage-angular';
 
-import { TodoCardComponent } from './component/todo-card/todo-card.component';
+import { TodoCardComponent } from './component/cards/todo-card/todo-card.component';
 
 
 @NgModule({

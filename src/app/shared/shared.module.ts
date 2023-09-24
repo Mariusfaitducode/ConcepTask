@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoCardComponent } from '../component/todo-card/todo-card.component';
+import { TodoCardComponent } from '../component/cards/todo-card/todo-card.component';
 import { IonicModule } from '@ionic/angular';
-import { SubTodoComponent } from '../component/sub-todo/sub-todo.component';
+import { SubTodoComponent } from '../component/cards/sub-todo/sub-todo.component';
 import { AddModalComponent } from '../component/add-modal/add-modal.component';
 import { FormsModule } from '@angular/forms';
-import { SubTaskComponent } from '../component/sub-task/sub-task.component';
-import { CustomConfigComponent } from '../component/custom-config/custom-config.component';
+import { SubTaskComponent } from '../component/cards/sub-task/sub-task.component';
+import { CustomConfigComponent } from '../component/selection/custom-config/custom-config.component';
 import { LeftMenuComponent } from '../component/left-menu/left-menu.component';
-import { ButtonAddSubTaskComponent } from '../component/button-add-sub-task/button-add-sub-task.component';
+import { ButtonAddSubTaskComponent } from '../component/selection/button-add-sub-task/button-add-sub-task.component';
+import { DateSelectorComponent } from '../component/selection/date-selector/date-selector.component';
 
 
 
@@ -29,6 +30,7 @@ import { ButtonAddSubTaskComponent } from '../component/button-add-sub-task/butt
     CustomConfigComponent,
     LeftMenuComponent,
     ButtonAddSubTaskComponent,
+    DateSelectorComponent,
   ],
   exports:[
     TodoCardComponent, 
@@ -37,6 +39,7 @@ import { ButtonAddSubTaskComponent } from '../component/button-add-sub-task/butt
     SubTaskComponent, 
     CustomConfigComponent, 
     LeftMenuComponent, 
-    ButtonAddSubTaskComponent]
+    ButtonAddSubTaskComponent,
+    DateSelectorComponent,]
 })
 export class SharedModule { }

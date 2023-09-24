@@ -6,7 +6,7 @@
 
     <div *ngIf="item.value == false">
 
-      <button class="customize-button open" (click)="item.value = true">
+      <button class="customize-button open" (click)="selectConfig(item)">
         {{ item.key }}
       </button>
     </div>

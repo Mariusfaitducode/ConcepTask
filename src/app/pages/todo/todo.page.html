@@ -54,7 +54,7 @@
       <ion-textarea [(ngModel)]="todo.description" placeholder="Description" autoGrow="true"></ion-textarea>
     </ion-item>
 
-    <div *ngIf="todo.date != undefined">
+    <!-- <div *ngIf="todo.date != undefined">
       <div class="date-selector" >
 
         <ion-item class="date-left">
@@ -68,10 +68,12 @@
         </ion-item>
       </div>
 
-      <ion-row class="rappel">
+      <ion-row>
         <ion-checkbox labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
       </ion-row>
-    </div>
+    </div> -->
+
+    <app-date-selector [todo]="todo"></app-date-selector>
 
 
     <div *ngIf="haveProperties() == false" [ngClass]="{'ecart' : true}">

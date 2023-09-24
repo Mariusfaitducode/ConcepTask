@@ -213,7 +213,7 @@ export class TodoPage implements OnInit {
   }
 
   haveProperties(){
-    return this.exist(this.todo.description) || this.exist(this.todo.date) || this.exist(this.todo.time) || this.exist(this.todo.repetition)
+    return this.exist(this.todo.description) || this.exist(this.todo.date) || this.exist(this.todo.time) || this.exist(this.todo.repeat)
   }
 
   exist(item : any){

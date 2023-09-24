@@ -67,7 +67,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
       { key: 'description', value: this.subTask.description ? true : false },
       { key: 'date', value: this.subTask.date ? true : false },
       { key: 'time', value: this.subTask.time ? true : false },
-      { key: 'repetition', value: this.subTask.repetition ? true : false },
+      { key: 'repetition', value: this.subTask.repeat ? true : false },
       { key: 'sub tasks', value: this.subTask.list?.length ? true : false },
     ];
   }

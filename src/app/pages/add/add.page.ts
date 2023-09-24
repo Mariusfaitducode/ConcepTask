@@ -59,7 +59,7 @@ export class AddPage implements OnInit {
         this.newTodo = new Todo();
       }
       this.setMainTodoId();
-      this.setConfig();
+      //this.setConfig();
     });
   }
 
@@ -99,9 +99,9 @@ export class AddPage implements OnInit {
     console.log("set config")
     let configArray = [
       { key: 'description', value: this.newTodo.description ? true : false },
+      { key: 'priority', value: this.newTodo.priority ? true : false },
       { key: 'date', value: this.newTodo.date ? true : false },
-      { key: 'time', value: this.newTodo.time ? true : false },
-      { key: 'repetition', value: this.newTodo.repetition ? true : false },
+      { key: 'repeat', value: this.newTodo.repeat ? true : false },
       { key: 'sub tasks', value: this.newTodo.list?.length ? true : false },
     ];
 
@@ -215,25 +215,5 @@ export class AddPage implements OnInit {
 
 // Notifications
 
-  manageNotification(){
-
-    console.log("click")
-
-    console.log("manage notification")
-    console.log(this.newTodo.reminder);
-    // this.newTodo.sayHello();
-    if (this.newTodo.reminder) {
-      Todo.scheduleNotification(this.newTodo);
-    }
-    else{
-      Todo.cancelNotification(this.newTodo);
-    }
-  }
-
-  async testNotification() 
-  {
-    console.log(this.newTodo.date);
-
-    Todo.scheduleNotification(this.newTodo);
-  }
+  
  }

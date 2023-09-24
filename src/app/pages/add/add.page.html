@@ -5,7 +5,7 @@
     </ion-buttons>
 
     <div>
-      <ion-title size="large">New task</ion-title>
+      <ion-title size="large">{{newTodo.title}}</ion-title>
     </div>
     
 
@@ -25,7 +25,7 @@
     <div class="title-type-header">
 
       <ion-item class="title">
-        <ion-label position="floating">Title</ion-label>
+        <ion-label position="floating" [color]="newTodo.title ? 'primary' : ''">Title</ion-label>
         <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
       </ion-item>
 
@@ -35,7 +35,7 @@
           <ion-select-option value="personnal">Personnal</ion-select-option>
           <ion-select-option value="project">Project</ion-select-option>
           <ion-select-option value="work">Work</ion-select-option>
-          <ion-select-option value="default">Event</ion-select-option>
+          <ion-select-option value="event">Event</ion-select-option>
           <ion-select-option value="wishlist">Wishlist</ion-select-option>
           <ion-select-option value="sport">Sport</ion-select-option>
           <ion-select-option value="shopping">Shopping</ion-select-option>
@@ -47,38 +47,27 @@
 
     <ion-item *ngIf="findOnConfig('description')">
 
-      <ion-label position="floating">Description</ion-label>
+      <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label>
       <ion-textarea [(ngModel)]="newTodo.description"></ion-textarea>
 
     </ion-item>
 
+    <ion-row *ngIf="findOnConfig('priority')">
+      <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
+      <ion-segment [(ngModel)]="newTodo.priority" color="primary">
+        <ion-segment-button value="low">
+          <ion-label>Low</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="medium">
+          <ion-label>Medium</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="high">
+          <ion-label>High</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
 
-    <div *ngIf="findOnConfig('date')">
-      <div class="date-selector" >
-
-        <ion-item class="date-left" >
-          <ion-label position="floating">Due date</ion-label>
-          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
-  
-          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="newTodo.date"></ion-input>  
-        </ion-item>
-  
-        <ion-item *ngIf="findOnConfig('time')">
-          <ion-label position="floating">Due time</ion-label>
-          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
-  
-          <ion-input type="time" placeholder="Time" [(ngModel)]="newTodo.time"></ion-input>
-        </ion-item>
-      </div>
-      
-      <ion-row *ngIf="newTodo.date != undefined">
-        <ion-checkbox labelPlacement="end" [(ngModel)]="newTodo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
-      </ion-row>
-
-    </div>
-    
-
-  
+    <app-date-selector [todo]="newTodo"></app-date-selector>
 
     <div *ngIf="findOnConfig('sub tasks')" class="sub-tasks">
 

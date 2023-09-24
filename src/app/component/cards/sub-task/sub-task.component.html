@@ -61,7 +61,10 @@
 
   <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && developped" [style.background-color]="backgroundColor()">
 
-    <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
+    <div *ngIf="page == 'add'">
+      <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
+
+    </div>
     
 
     <div *ngFor="let sub of subTask.list; let id = index" >

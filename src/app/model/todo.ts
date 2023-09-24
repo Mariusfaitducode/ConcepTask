@@ -26,15 +26,18 @@ export class Todo {
 
     public description?: string;
 
+    public priority?: string;
+
     public date?: Date;
     public time?: string;
 
     public reminder?: boolean;
     
 
-    public repetition?: {
-        startDate: Date,
-        delay: number,
+    public repeat?: {
+        startDate?: Date,
+        startTime?: string,
+        delayType?: string,
     };
 
     public list?: Todo[];
@@ -54,8 +57,11 @@ export class Todo {
           { key: 'date', value: false },
           { key: 'time', value: false },
           { key: 'repetition', value: false },
+          { key: 'note', value: false },
           { key: 'sub tasks', value: false },
         ];
+
+       
        
     }
 

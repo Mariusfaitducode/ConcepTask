@@ -1,8 +1,8 @@
 
-
-
 .list-page{
-    margin: 12px 10px 0px 10px;
+    // margin: 12px 10px 0px 10px;
+
+    margin-top: 12px;
 
     padding-top: 16px;
 }
@@ -12,19 +12,17 @@ ion-list, ion-item{
     background-color: var(--ion-background-color);
 }
 
-ion-checkbox{
-    padding: 20px 16px;
-}
+
 
 ion-select {
     padding-right: 16px;
     //--color:var(--ion-color-step-600);
 }
 
-
 ion-row{
     border-bottom: solid var(--ion-border-color) 1px;
 }
+
 
 .title-type-header{
     display: flex;
@@ -41,6 +39,8 @@ ion-row{
     width: 35%;
     
 }
+
+
 
 
 
