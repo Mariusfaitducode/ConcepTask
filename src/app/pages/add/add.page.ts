@@ -102,6 +102,7 @@ export class AddPage implements OnInit {
       { key: 'priority', value: this.newTodo.priority ? true : false },
       { key: 'date', value: this.newTodo.date ? true : false },
       { key: 'repeat', value: this.newTodo.repeat ? true : false },
+      // { key: 'note', value: false },
       { key: 'sub tasks', value: this.newTodo.list?.length ? true : false },
     ];
 

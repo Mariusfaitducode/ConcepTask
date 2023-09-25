@@ -28,7 +28,16 @@
   
   <ion-list class="list-page" >
 
-    <ion-row>
+    <ion-row class="list-header">
+
+      <div class="priority-icon">
+        <div  *ngIf="findOnConfig('priority')">
+          <ion-icon *ngIf="todo.priority == 'low'" name="alert-circle-outline" color="medium"></ion-icon>
+          <ion-icon *ngIf="todo.priority == 'medium'" name="alert-circle-outline" color="warning"></ion-icon>
+          <ion-icon *ngIf="todo.priority == 'high'" name="alert-circle-outline" color="danger"></ion-icon>
+        </div>
+      </div>
+
       <ion-buttons class="header-buttons">
 
         <button class="header-button" (click)="modifyTodo()">
@@ -49,29 +58,11 @@
       </ion-buttons>
     </ion-row>
 
-    <ion-item *ngIf="todo.description != undefined">
+    <ion-item *ngIf="findOnConfig('description')">
       <ion-label position="floating" color="primary">Description</ion-label>
       <ion-textarea [(ngModel)]="todo.description" placeholder="Description" autoGrow="true"></ion-textarea>
     </ion-item>
 
-    <!-- <div *ngIf="todo.date != undefined">
-      <div class="date-selector" >
-
-        <ion-item class="date-left">
-          <ion-label position="floating" color="primary">Due date</ion-label>
-          <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date"></ion-input>  
-        </ion-item>
-
-        <ion-item *ngIf="todo.time != undefined">
-          <ion-label position="floating" color="primary">Due time</ion-label>
-          <ion-input type="time" placeholder="Time" [(ngModel)]="todo.date"></ion-input>
-        </ion-item>
-      </div>
-
-      <ion-row>
-        <ion-checkbox labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
-      </ion-row>
-    </div> -->
 
     <app-date-selector [todo]="todo"></app-date-selector>
 
@@ -83,7 +74,7 @@
 
     <!-- List -->
 
-    <div *ngIf="todo.list != undefined && todo.list.length > 0"  >
+    <div *ngIf="findOnConfig('sub tasks') && todo.list!.length > 0"  >
 
       
 

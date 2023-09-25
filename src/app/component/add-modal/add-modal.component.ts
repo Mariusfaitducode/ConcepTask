@@ -158,10 +158,10 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     console.log(this.subTask.reminder);
     // this.newTodo.sayHello();
     if (this.subTask.reminder) {
-      Todo.scheduleNotification(this.subTask);
+      // Todo.scheduleNotification(this.subTask);
     }
     else{
-      Todo.cancelNotification(this.subTask);
+      // Todo.cancelNotification(this.subTask);
     }
   }
 }

@@ -3,14 +3,14 @@
 <div *ngIf="findOnConfig('date')">
   <div class="date-selector" >
 
-    <ion-item class="date-left" >
+    <ion-item class="date-left" [ngClass]="{'modal-item' : page == 'modal'}">
       <ion-label position="floating"  [color]="todo.date ? 'primary' : ''">Due date</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date"></ion-input>  
     </ion-item>
 
-    <ion-item>
+    <ion-item [ngClass]="{'modal-item' : page == 'modal'}">
       <ion-label position="floating" [color]="todo.time ? 'primary' : ''">Due time</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
@@ -27,14 +27,14 @@
 <div *ngIf="findOnConfig('repeat')">
   <div class="date-selector" *ngIf="todo.repeat">
 
-    <ion-item class="date-left" >
+    <ion-item class="date-left" [ngClass]="{'modal-item' : page == 'modal'}">
       <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">Start date</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <ion-input type="date" placeholder="MM/DD/YYYY"  [(ngModel)]="todo.repeat.startDate"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item [ngClass]="{'modal-item' : page == 'modal'}">
       <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">Time</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
@@ -43,13 +43,14 @@
   </div>
   
   <div class="date-selector" >
-    <ion-row class="repeat">
-      <ion-select label="Repeat" label-placement="floating" aria-label="Type">
-        <ion-select-option value="default">Every day</ion-select-option>
-        <ion-select-option value="personnal">Week days</ion-select-option>
-        <ion-select-option value="project">Every week</ion-select-option>
-        <ion-select-option value="work">Every month</ion-select-option>
-        <ion-select-option value="event">every year</ion-select-option>
+    <ion-row class="repeat" *ngIf="todo.repeat">
+      <ion-select label="Repeat" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type">
+        <ion-select-option value="day">Every days</ion-select-option>
+        <!-- <ion-select-option value="personnal">Week days</ion-select-option> -->
+        <ion-select-option value="week">Every weeks</ion-select-option>
+        <ion-select-option value="two-weeks">Every two weeks</ion-select-option>
+        <ion-select-option value="month">Every months</ion-select-option>
+        <ion-select-option value="year">every years</ion-select-option>
         
       </ion-select>
     </ion-row>

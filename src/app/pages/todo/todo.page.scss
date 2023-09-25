@@ -44,9 +44,9 @@ ion-label{
 }
 
 .list-page{
-    margin: 12px 0px 0px 0px;
+    // margin: 12px 0px 0px 0px;
 
-    padding-top: 16px;
+    padding-top: 14px;
 }
 
 ion-item{
@@ -63,15 +63,28 @@ ion-item{
     // padding-bottom: 15px;
 }
 
+.list-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // align-items: center;
+
+}
+
+.priority-icon{
+    margin-left: 16px;
+    // margin-top: 5px;
+    font-size: 30px;
+}
+
 .header-buttons{
 
-    position: absolute;
+    // position: absolute;
+    // top: 5px;
+    // right: -5px;
+    // z-index: 20;
 
-    top: 5px;
-    right: -5px;
-    z-index: 20;
-
-    width: 100%;
+    width: 80%;
 
     display: flex;
     flex-direction: row;

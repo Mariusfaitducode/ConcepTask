@@ -79,28 +79,7 @@
   
       </ion-item>
   
-      <div *ngIf="findOnConfig('date')">
-        <div class="date-selector" >
-  
-          <ion-item class="date-left" >
-            <ion-label position="floating">Due date</ion-label>
-            <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
-    
-            <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="subTask.date"></ion-input>  
-          </ion-item>
-    
-          <ion-item *ngIf="findOnConfig('time')">
-            <ion-label position="floating">Due time</ion-label>
-            <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
-    
-            <ion-input type="time" placeholder="Time"></ion-input>
-          </ion-item>
-        </div>
-  
-        <ion-row *ngIf="subTask.date">
-          <ion-checkbox labelPlacement="end" [(ngModel)]="subTask.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
-        </ion-row>
-      </div>
+      <app-date-selector [todo]="subTask" [page]="'modal'"></app-date-selector>
   
   
       <div *ngIf="findOnConfig('sub tasks')">

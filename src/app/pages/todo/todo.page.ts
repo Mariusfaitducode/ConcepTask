@@ -127,10 +127,6 @@ export class TodoPage implements OnInit {
     this.router.navigate(['/add', this.index]);
   }
 
-  deleteSubTodo(){
-
-
-  }
 
   deleteTodo(){
     // this.todos.splice(this.index, 1);
@@ -147,19 +143,7 @@ export class TodoPage implements OnInit {
       
 
       console.log(this.mainTodo.list)
-      
-
-
-      // if (this.todo.parentId == 0){
-      //   console.log("first sub todo")
-        
-      //   this.mainTodo.list?.filter(todo => todo.subId != this.todo.subId);
-      // }
-      // else{
-      //   console.log("sub todo")
-      //   let parentTodo = this.findSubTodo(this.todo.parentId!);
-      //   parentTodo.list?.filter(todo => todo.subId != this.todo.subId);
-      // }
+    
     }
     localStorage.setItem('todos', JSON.stringify(this.todos));
 
@@ -186,6 +170,15 @@ export class TodoPage implements OnInit {
     localStorage.setItem('todos', JSON.stringify(this.todos));
     console.log(this.todos);
   }
+
+
+
+  findOnConfig(key: string): boolean {
+    const configItem = this.todo.config.find(item => item.key === key);
+    
+    return configItem ? configItem.value : false;
+  }
+
 
   unvalidateTodo(){
     this.todo.isDone = false;
@@ -223,23 +216,21 @@ export class TodoPage implements OnInit {
   goToConceptor(){
     this.router.navigate(['/conceptor', this.index]);
   }
-  
-
  
 
-  manageNotification(){
+  // manageNotification(){
 
-    console.log("click")
+  //   console.log("click")
 
-    console.log("manage notification")
-    console.log(this.todo.reminder);
-    // this.newTodo.sayHello();
-    if (this.todo.reminder) {
-      Todo.scheduleNotification(this.todo);
-    }
-    else{
-      Todo.cancelNotification(this.todo);
-    }
-  }
+  //   console.log("manage notification")
+  //   console.log(this.todo.reminder);
+  //   // this.newTodo.sayHello();
+  //   if (this.todo.reminder) {
+  //     Todo.scheduleNotification(this.todo);
+  //   }
+  //   else{
+  //     Todo.cancelNotification(this.todo);
+  //   }
+  // }
 
 }
