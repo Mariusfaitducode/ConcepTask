@@ -37,7 +37,8 @@ export class Todo {
         delayType?: ScheduleEvery,
     };
 
-    public list?: Todo[];
+    public list: Todo[];
+    public developped?: boolean = false;
 
 
     constructor(title?: string, category?: string, main?: boolean) {

@@ -26,10 +26,10 @@
         
 
         <div *ngIf="findOnConfig('sub tasks')" class="develop">
-          <div  *ngIf="!developped">
+          <div  *ngIf="!this.subTask.developped">
             <ion-icon name="chevron-down-outline" (click)="developSubTask($event)"></ion-icon>
           </div>
-          <div *ngIf="developped">
+          <div *ngIf="this.subTask.developped">
             <ion-icon name="chevron-up-outline" (click)="developSubTask($event)"></ion-icon>
           </div>
         </div>
@@ -59,7 +59,7 @@
 
   
 
-  <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && developped" [style.background-color]="backgroundColor()">
+  <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && this.subTask.developped" [style.background-color]="backgroundColor()">
 
     <div *ngIf="page == 'add'">
       <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
@@ -69,7 +69,7 @@
 
     <div *ngFor="let sub of subTask.list; let id = index" >
   
-      <app-sub-task [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
+      <app-sub-task [todos]="todos" [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
     
     </div>
   

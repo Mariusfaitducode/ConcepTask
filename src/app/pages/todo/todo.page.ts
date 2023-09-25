@@ -61,9 +61,25 @@ export class TodoPage implements OnInit {
         //Détermine sub todo
         this.todo = this.findSubTodo(+params['subId']!);
       }
-
-      
     });
+
+    this.setConfig();
+  }
+
+
+  //Reset config au cas ou
+  setConfig(){
+    console.log("set config")
+    let configArray = [
+      { key: 'description', value: this.todo.description ? true : false },
+      { key: 'priority', value: this.todo.priority ? true : false },
+      { key: 'date', value: this.todo.date ? true : false },
+      { key: 'repeat', value: this.todo.repeat ? true : false },
+      // { key: 'note', value: false },
+      { key: 'sub tasks', value: this.todo.list?.length ? true : false },
+    ];
+
+    this.todo.config = configArray;
   }
 
 

@@ -11,6 +11,7 @@ export class SubTaskComponent  implements OnInit {
 
   constructor(private router : Router) { }
 
+  @Input() todos?: Todo[];
   @Input() subTask: Todo = new Todo();
 
   //Main Todo
@@ -21,7 +22,7 @@ export class SubTaskComponent  implements OnInit {
   @Input() page: string = "";
   @Input() level: number = 0;
 
-  developped: boolean = false;
+  // developped: boolean = false;
 
   @Input() openModal: any = {
     open: false,
@@ -55,7 +56,7 @@ export class SubTaskComponent  implements OnInit {
 
   developSubTaskPressed(event: Event){
     event.stopPropagation();
-    this.developped = true;
+    this.subTask.developped = true;
   }
 
 
@@ -82,13 +83,18 @@ export class SubTaskComponent  implements OnInit {
 
   developSubTask(event: Event){
     event.stopPropagation();
-    this.developped = !this.developped;
+    this.subTask.developped = !this.subTask.developped;
   }
 
   clickSubTask(){
     // [routerLink]="'/todo/' + this.index + '/' + subTodo.subId"
 
     if (this.page == "todo") {
+
+      if (this.todos){
+        console.log(this.todos);
+        localStorage.setItem('todos', JSON.stringify(this.todos));
+      }
 
       this.router.navigate(['/todo', this.subTask.mainId, this.subTask.subId]);
     }
