@@ -119,4 +119,5 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.parentTask = this.subTask;
   }
 
+  
 }
