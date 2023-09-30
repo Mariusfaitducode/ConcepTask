@@ -49,11 +49,20 @@ export class AddPage implements OnInit {
     this.route.params.subscribe((params) => {
 
       // Modification d'un Todo existant
-      if (params['id'] != undefined) {
-        
-        this.index = +params['id'];
+      if (params['id']) {
 
+        this.index = +params['id'];
         this.loadTodo(this.index);
+
+        if (params['subId']){
+
+          this.modalConfig.open = true
+          this.modalConfig.task = Todo.findSubTodoById(this.newTodo, params['subId'])
+          this.modalConfig.modify = true
+          this.modalConfig.parentTask = undefined
+        }
+        
+        
       }
       else{ // Nouveau todo
         this.newTodo = new Todo();
@@ -191,9 +200,9 @@ export class AddPage implements OnInit {
 
 
 
-  findTodoById(id: number): Todo {
-    return this.todos.find((todo: { id: number; }) => todo.id === id)!;
-  }
+  // findTodoById(id: number): Todo {
+  //   return this.todos.find((todo: { id: number; }) => todo.id === id)!;
+  // }
 
 
   //List 

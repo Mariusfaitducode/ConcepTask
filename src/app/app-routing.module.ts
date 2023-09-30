@@ -24,6 +24,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
   },
   {
+    path: 'add/:id/:subId',
+    loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
+  },
+  {
     path: 'todo/:id',
     loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
   },
@@ -34,7 +38,8 @@ const routes: Routes = [
   {
     path: 'conceptor/:id',
     loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
-  },  {
+  },
+  {
     path: 'calendar',
     loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
   },

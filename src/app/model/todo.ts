@@ -83,6 +83,27 @@ export class Todo {
     }
 
 
+    public static findSubTodoById(rootTodo: Todo, subId : number){
+
+      let copyList = [...rootTodo.list!];
+  
+      // Bfs algorithm
+      while (copyList.length > 0) {
+  
+        let todo = copyList.shift()!;
+  
+        if (todo.subId == subId) {
+          return todo;
+        }
+  
+        for (let subTodo of todo.list!) {
+          copyList.push(subTodo);
+        }
+      }
+      return null;
+    }
+
+
 
     public static typeColor(type : string) {
       switch (type) {

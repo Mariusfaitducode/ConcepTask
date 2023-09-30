@@ -28,7 +28,7 @@
 
         <ion-buttons *ngIf="modify" slot="end">
 
-          <ion-button (click)="showConfirm()">
+          <ion-button *ngIf="modalConfig.parentTask" (click)="showConfirm()">
             <ion-icon name="trash-outline" color="danger" class="delete-button"></ion-icon>
 
           </ion-button>
