@@ -14,6 +14,8 @@ import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 import { set } from 'firebase/database';
 
+import { Dialog } from '@capacitor/dialog';
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -28,8 +30,9 @@ export class AddPage implements OnInit {
 
   date: any = {date: '', time: ''};
 
-
   subType: string = 'customize';
+
+  changeTodo: boolean = false;
 
 
   showDate: boolean = false;
@@ -165,6 +168,27 @@ export class AddPage implements OnInit {
     //this.todos.push(this.newTodo);
 
   }
+
+  showCloseConfirm = async () => {
+
+    if (this.changeTodo){
+
+      const { value } = await Dialog.confirm({
+        title: 'Confirm',
+        message: `Your change will be loosed ?`,
+      });
+    
+      console.log('Confirmed:', value);
+  
+      if (value) {
+        this.navCtrl.navigateForward('/home');
+        
+      }
+    }
+    else{
+      this.navCtrl.navigateForward('/home');
+    }
+  };
 
 
   //Id 

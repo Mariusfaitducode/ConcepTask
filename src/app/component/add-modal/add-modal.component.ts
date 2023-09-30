@@ -34,6 +34,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   subType: string = 'customize';
 
+  changeTodo: boolean = false;
+
 
   /*openModal: any = {
     open: false,
@@ -72,12 +74,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  
-  closeModal() {
-
-    this.modalConfig.open = false;
-  }
-
 
   showConfirm = async () => {
     const { value } = await Dialog.confirm({
@@ -93,6 +89,29 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   };
 
 
+  showCloseConfirm = async () => {
+
+    if (this.changeTodo){
+
+      const { value } = await Dialog.confirm({
+        title: 'Confirm',
+        message: `Your change will be loosed ?`,
+      });
+    
+      console.log('Confirmed:', value);
+  
+      if (value) {
+        this.modalConfig.open = false;
+        
+      }
+    }
+    else{
+      this.modalConfig.open = false;
+    }
+  };
+
+
+
   deleteSubTask(){
     this.modalConfig.parentTask.list!.splice(this.modalConfig.index, 1);
 
@@ -100,8 +119,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
     
     console.log( this.modalConfig.parentTask.list )
-
-    this.closeModal();
+    this.modalConfig.open = false;
   }
 
 
@@ -115,7 +133,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
     this.modalConfig.parentTask.list.push(this.subTask);
 
-    this.closeModal();
+    this.modalConfig.open = false;
     // this.modalService.setSubTask(this.subTodo);
     // this.subTodo = new Todo();
     // this.newSubTodo = new Todo();

@@ -10,7 +10,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-icon name="close-outline" class="close-icon" (click)="closeModal()"></ion-icon>
+          <ion-icon name="close-outline" class="close-icon" (click)="showCloseConfirm()"></ion-icon>
         </ion-buttons>
         <!-- level: {{level}} -->
     
@@ -34,7 +34,7 @@
           </ion-button>
           
           
-          <ion-button color="primary" class="save-button" fill="clear" (click)="closeModal()">
+          <ion-button color="primary" class="save-button" fill="clear" (click)="modalConfig.open = false;">
             Done
           </ion-button >
         </ion-buttons>
@@ -53,12 +53,12 @@
       <div class="title-type-header">
   
         <ion-item class="title">
-          <ion-label position="floating">Title</ion-label>
-          <ion-input type="text" [(ngModel)]="subTask.title"></ion-input>
+          <ion-label position="floating" >Title</ion-label>
+          <ion-input type="text" [(ngModel)]="subTask.title" (ionChange)="changeTodo = true"></ion-input>
         </ion-item>
   
         <ion-row  class="type">
-          <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type">
+          <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type" (ionChange)="changeTodo = true">
             <ion-select-option value="default">Default</ion-select-option>
             <ion-select-option value="personnal">Personnal</ion-select-option>
             <ion-select-option value="project">Project</ion-select-option>
@@ -75,7 +75,7 @@
       <ion-item *ngIf="findOnConfig('description')">
   
         <ion-label position="floating">Description</ion-label>
-        <ion-textarea [(ngModel)]="subTask.description"></ion-textarea>
+        <ion-textarea [(ngModel)]="subTask.description" (ionChange)="changeTodo = true"></ion-textarea>
   
       </ion-item>
   
