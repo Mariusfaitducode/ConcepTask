@@ -79,7 +79,6 @@ export class SubTaskComponent  implements OnInit {
     else{
       this.modifyTaskOnList(this.subTask);
     }
-
   }
 
   modifyTaskOnList(subTask : any){
@@ -97,5 +96,12 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.parentTask = this.subTask;
   }
 
+
+  numberOfDoneSubTask(){
+    if (this.subTask.list) {
+      return this.subTask.list.filter((subTodo : any) => subTodo.isDone).length;
+    }
+    return 0;
+  }
   
 }
