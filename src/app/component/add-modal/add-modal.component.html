@@ -34,7 +34,7 @@
           </ion-button>
           
           
-          <ion-button color="primary" class="save-button" fill="clear" (click)="modalConfig.open = false;">
+          <ion-button color="primary" class="save-button" fill="clear" (click)="closeSubTask()">
             Done
           </ion-button >
         </ion-buttons>
@@ -79,7 +79,7 @@
   
       </ion-item>
   
-      <app-date-selector [todo]="subTask" [page]="'modal'"></app-date-selector>
+      <app-date-selector [todo]="subTask" [page]="'modal'" (childModified)="changeTodo = true"></app-date-selector>
   
   
       <div *ngIf="this.subTask.config.subtasks">

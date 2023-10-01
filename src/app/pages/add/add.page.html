@@ -1,7 +1,9 @@
 <ion-header [translucent]="true" >
   <ion-toolbar [ngClass]="{'hideHeader': modalConfig.open == true }">
-    <ion-buttons slot="start">
-      <ion-back-button default-href="#" (click)="showCloseConfirm()"></ion-back-button>
+    <ion-buttons slot="start" >
+      <ion-button (click)="showCloseConfirm()" class="back-button">
+        <ion-icon name="arrow-back-outline" ></ion-icon>
+      </ion-button>
     </ion-buttons>
 
     <div>
@@ -67,7 +69,7 @@
       </ion-segment>
     </ion-row>
 
-    <app-date-selector [todo]="newTodo"></app-date-selector>
+    <app-date-selector [todo]="newTodo" (childModified)="changeTodo = true"></app-date-selector>
 
     <div *ngIf="this.newTodo.config.subtasks" class="sub-tasks">
 
@@ -102,7 +104,7 @@
 
 
   <div *ngIf="modalConfig.open">
-    <app-add-modal [modalConfig]="modalConfig"></app-add-modal>
+    <app-add-modal [modalConfig]="modalConfig" (childModified)="changeTodo = true"></app-add-modal>
 
   </div>
 

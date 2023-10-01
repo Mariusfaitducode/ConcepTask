@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Notif } from 'src/app/model/notif';
 import { Todo } from 'src/app/model/todo';
 
@@ -13,6 +13,8 @@ export class DateSelectorComponent  implements OnInit {
 
   @Input() page?: string;
 
+  @Output() childModified = new EventEmitter<boolean>();
+
   constructor() { }
 
   ngOnInit() {
@@ -21,14 +23,9 @@ export class DateSelectorComponent  implements OnInit {
     }
   }
 
-  findOnConfig(key: string): boolean {
-
-    // const configItem = this.todo.config.find(item => item.key === key);
-    // return configItem ? configItem.value : false;
-    return true
-  }
-
   manageNotification(){
+
+    this.childModified.emit(true)
 
     console.log("click")
 
@@ -48,6 +45,8 @@ export class DateSelectorComponent  implements OnInit {
   }
 
   manageRepeatNotification(){
+
+    this.childModified.emit(true)
     if (this.todo.reminder) {
       Notif.scheduleRecurringNotification(this.todo);
     }

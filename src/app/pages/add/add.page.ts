@@ -148,6 +148,10 @@ export class AddPage implements OnInit {
 
   }
 
+
+ 
+
+
   showCloseConfirm = async () => {
 
     if (this.changeTodo){
@@ -160,11 +164,17 @@ export class AddPage implements OnInit {
       console.log('Confirmed:', value);
   
       if (value) {
+
+        console.log("change")
+
         this.navCtrl.back();
         
       }
     }
     else{
+
+      console.log("no change")
+
       this.navCtrl.back();
     }
   };

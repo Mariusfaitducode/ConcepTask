@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
 import { set } from 'firebase/database';
 import { Todo } from 'src/app/model/todo';
@@ -17,6 +17,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   //@ViewChild('child') childComponentRef!: ElementRef;
 
   @Input() modalConfig: any = {};
+
+  @Output() childModified = new EventEmitter<boolean>();
 
   //@Input() subTodo! : Todo;
   subTask!: Todo;
@@ -116,26 +118,21 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   addSubTask(){
 
-    // let configArray = this.subTask.config;
-    // for (let i = 0; i < configArray.length; i++) {
-    //   this.subTask.config[i].value = configArray[i].value;
-    // }
+    
+    
     console.log( this.subTask )
 
     this.modalConfig.parentTask.list.push(this.subTask);
 
-    this.modalConfig.open = false;
-    // this.modalService.setSubTask(this.subTodo);
-    // this.subTodo = new Todo();
-    // this.newSubTodo = new Todo();
+    this.closeSubTask();
+    
   }
 
+  closeSubTask(){
+    this.childModified.emit(true)
+    this.modalConfig.open = false;
+  }
 
-  // closeOnConfig(key: string) {
-  //   const configItem = this.subTask.config.find(item => item.key === key);
-    
-  //   configItem!.value = false;
-  // }
 
 
   
