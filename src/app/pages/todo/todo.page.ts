@@ -132,7 +132,7 @@ export class TodoPage implements OnInit {
       }
     }
     else{
-      this.router.navigate(['/home']);
+      this.navCtrl.back();
     }
   }
 
