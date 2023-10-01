@@ -1,6 +1,6 @@
 
 
-<div *ngIf="findOnConfig('date')">
+<div *ngIf="this.todo.config.date">
   <div class="date-selector" >
 
     <ion-item class="date-left" [ngClass]="{'modal-item' : page == 'modal'}">
@@ -24,7 +24,7 @@
 </div>
 
 
-<div *ngIf="findOnConfig('repeat')">
+<div *ngIf="this.todo.config.repeat">
   <div class="date-selector" *ngIf="todo.repeat">
 
     <ion-item class="date-left" [ngClass]="{'modal-item' : page == 'modal'}">

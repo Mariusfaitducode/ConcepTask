@@ -31,7 +31,7 @@
     <ion-row class="list-header">
 
       <div class="priority-icon">
-        <div  *ngIf="findOnConfig('priority')">
+        <div  *ngIf="this.todo.config.priority">
           <ion-icon *ngIf="todo.priority == 'low'" name="alert-circle-outline" color="medium"></ion-icon>
           <ion-icon *ngIf="todo.priority == 'medium'" name="alert-circle-outline" color="warning"></ion-icon>
           <ion-icon *ngIf="todo.priority == 'high'" name="alert-circle-outline" color="danger"></ion-icon>
@@ -58,7 +58,7 @@
       </ion-buttons>
     </ion-row>
 
-    <ion-item *ngIf="findOnConfig('description')">
+    <ion-item *ngIf="this.todo.config.description">
       <ion-label position="floating" color="primary">Description</ion-label>
       <ion-textarea [(ngModel)]="todo.description" placeholder="Description" autoGrow="true"></ion-textarea>
     </ion-item>
@@ -74,7 +74,7 @@
 
     <!-- List -->
 
-    <div *ngIf="findOnConfig('sub tasks') && todo.list!.length > 0"  >
+    <div *ngIf="this.todo.config.subtasks && todo.list!.length > 0"  >
 
       
 

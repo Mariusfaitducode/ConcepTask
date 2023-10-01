@@ -63,16 +63,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     //this.setConfig();
   }
 
-  setConfig(){
-
-    this.subTask.config = [
-      { key: 'description', value: this.subTask.description ? true : false },
-      { key: 'date', value: this.subTask.date ? true : false },
-      { key: 'time', value: this.subTask.time ? true : false },
-      { key: 'repetition', value: this.subTask.repeat ? true : false },
-      { key: 'sub tasks', value: this.subTask.list?.length ? true : false },
-    ];
-  }
+ 
 
 
   showConfirm = async () => {
@@ -137,14 +128,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     // this.modalService.setSubTask(this.subTodo);
     // this.subTodo = new Todo();
     // this.newSubTodo = new Todo();
-  }
-
-
-  findOnConfig(key: string): boolean {
-    
-    const configItem = this.subTask.config.find(item => item.key === key);
-    
-    return configItem ? configItem.value : false;
   }
 
 

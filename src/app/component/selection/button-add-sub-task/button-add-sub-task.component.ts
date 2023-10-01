@@ -18,12 +18,6 @@ export class ButtonAddSubTaskComponent  implements OnInit {
 
   ngOnInit() {}
 
-  findOnConfig(key: string): boolean {
-    const configItem = this.parentTask.config.find(item => item.key === key);
-    
-    return configItem ? configItem.value : false;
-  }
-
 
   addTodoOnList(){
 

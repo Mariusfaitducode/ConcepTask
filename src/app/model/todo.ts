@@ -16,7 +16,7 @@ export class Todo {
 
     // Propriety to choose
 
-    public config!: { key: string, value: boolean }[];
+    public config!: any;
     
     public title!: string;
     public category: string;
@@ -50,15 +50,30 @@ export class Todo {
 
         this.list = [];
 
-        this.config = [
-          { key: 'description', value: false },
-          { key: 'priority', value: false },
-          { key: 'date', value: false },
-          { key: 'repeat', value: false },
-          // { key: 'note', value: false },
-          { key: 'sub tasks', value: false },
-        ];
+        this.config = {
+          description: false,
+          priority: false,
+          date: false,
+          repeat: false,
+          subtasks: false,
+        };
+        
     }
+
+
+    public static setConfig(todo : Todo){
+      console.log("set config")
+      let configArray = {
+         description: todo.description ? true : false ,
+         priority: todo.priority ? true : false,
+         date: todo.date ? true : false ,
+         repeat: todo.repeat ? true : false ,
+        // { key: 'note', value: false },
+         subtasks: todo.list?.length ? true : false ,
+      };
+  
+      todo.config = configArray;
+    };
 
 
     public static deleteTodoById(rootTodo: Todo, idToDelete: number): Todo {
@@ -102,6 +117,9 @@ export class Todo {
       }
       return null;
     }
+
+
+    
 
 
 

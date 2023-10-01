@@ -45,14 +45,14 @@
 
     <app-custom-config [configArray]="this.newTodo.config"></app-custom-config>
 
-    <ion-item *ngIf="findOnConfig('description')">
+    <ion-item *ngIf="this.newTodo.config.description">
 
       <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label>
       <ion-textarea [(ngModel)]="newTodo.description" (ionChange)="changeTodo = true"></ion-textarea>
 
     </ion-item>
 
-    <ion-row *ngIf="findOnConfig('priority')">
+    <ion-row *ngIf="this.newTodo.config.priority">
       <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
       <ion-segment [(ngModel)]="newTodo.priority" color="primary" (ionChange)="changeTodo = true">
         <ion-segment-button value="low">
@@ -69,7 +69,7 @@
 
     <app-date-selector [todo]="newTodo"></app-date-selector>
 
-    <div *ngIf="findOnConfig('sub tasks')" class="sub-tasks">
+    <div *ngIf="this.newTodo.config.subtasks" class="sub-tasks">
 
       <!-- <ion-row class="new-sub-todo" *ngIf="newTodo.type == 'todo list'">
         <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>

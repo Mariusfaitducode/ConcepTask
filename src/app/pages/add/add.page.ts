@@ -71,7 +71,7 @@ export class AddPage implements OnInit {
         this.newTodo = new Todo();
       }
       this.setMainTodoId();
-      //this.setConfig();
+      Todo.setConfig(this.newTodo);
     });
   }
 
@@ -107,32 +107,7 @@ export class AddPage implements OnInit {
   //Config
 
   //Reset config au cas ou
-  setConfig(){
-    console.log("set config")
-    let configArray = [
-      { key: 'description', value: this.newTodo.description ? true : false },
-      { key: 'priority', value: this.newTodo.priority ? true : false },
-      { key: 'date', value: this.newTodo.date ? true : false },
-      { key: 'repeat', value: this.newTodo.repeat ? true : false },
-      // { key: 'note', value: false },
-      { key: 'sub tasks', value: this.newTodo.list?.length ? true : false },
-    ];
 
-    this.newTodo.config = configArray;
-  }
-
-  
-  findOnConfig(key: string): boolean {
-    const configItem = this.newTodo.config.find(item => item.key === key);
-    
-    return configItem ? configItem.value : false;
-  }
-
-  closeOnConfig(key: string) {
-    const configItem = this.newTodo.config.find(item => item.key === key);
-    
-    configItem!.value = false;
-  }
 
   saveTodo(){
     console.log(this.newTodo);

@@ -2,20 +2,72 @@
 
   <!-- Personnalisation du Todo -->
 
-  <div *ngFor="let item of configArray">
 
-    <div *ngIf="item.value == false">
+  <div *ngIf="configArray.description == false">
+    <button class="customize-button open" (click)="toggleConfig('description')">
+      description
+    </button>
+  </div>
 
-      <button class="customize-button open" (click)="selectConfig(item)">
-        {{ item.key }}
-      </button>
-    </div>
+  <div *ngIf="configArray.description== true">
+    <button class="customize-button close" (click)="toggleConfig('description')">
+      description
+      <ion-icon name="close-outline" class="close-item"></ion-icon>
+    </button>
+  </div>
 
-    <div *ngIf="item.value == true">
-      <button class="customize-button close" (click)="item.value = false" >
-        {{ item.key }} 
-        <ion-icon name="close-outline" class="close-item"></ion-icon>
-      </button>
-    </div>
+  <div *ngIf="configArray.priority == false">
+    <button class="customize-button open" (click)="toggleConfig('priority')">
+      prority
+    </button>
+  </div>
+
+  <div *ngIf="configArray.priority == true">
+    <button class="customize-button close" (click)="toggleConfig('priority')">
+      priority
+      <ion-icon name="close-outline" class="close-item"></ion-icon>
+    </button>
+  </div>
+
+  <div *ngIf="configArray.date == false">
+
+    <button class="customize-button open" (click)="toggleConfig('date')">
+      date
+    </button>
+  </div>
+
+  <div *ngIf="configArray.date == true">
+    <button class="customize-button close" (click)="toggleConfig('date')">
+      date
+      <ion-icon name="close-outline" class="close-item"></ion-icon>
+    </button>
+  </div>
+
+  <div *ngIf="configArray.repeat == false">
+
+    <button class="customize-button open" (click)="toggleConfig('repeat')">
+      repeat
+    </button>
+  </div>
+
+  <div *ngIf="configArray.repeat == true">
+    <button class="customize-button close" (click)="toggleConfig('repeat')">
+      repeat
+      <ion-icon name="close-outline" class="close-item"></ion-icon>
+    </button>
+  </div>
+
+  <div *ngIf="configArray.subtasks == false">
+
+    <button class="customize-button open" (click)="toggleConfig('subtasks')">
+      sub tasks
+    </button>
+  </div>
+
+  <div *ngIf="configArray.subtasks == true">
+    <button class="customize-button close" (click)="toggleConfig('subtasks')">
+      sub tasks
+      <ion-icon name="close-outline" class="close-item"></ion-icon>
+    </button>
   </div>
 </div>

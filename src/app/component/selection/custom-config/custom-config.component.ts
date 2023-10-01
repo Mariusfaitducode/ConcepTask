@@ -8,29 +8,17 @@ import { Component, OnInit, Input } from '@angular/core';
 export class CustomConfigComponent  implements OnInit {
 
 
-  @Input() configArray: { key: string, value: boolean }[] = [
-    { key: 'description', value: false },
-    { key: 'date', value: false },
-    { key: 'time', value: false },
-    { key: 'repeat', value: false },
-    { key: 'sub tasks', value: false },
-    // { key: 'sub tasks', value: false },
-  ];
+  @Input() configArray: any;
 
   constructor() { }
 
   ngOnInit() {}
 
 
-  selectConfig(item : { key: string, value: boolean}){
-    item.value = true;
+  toggleConfig(key : string){
+    
+    this.configArray[key] = !this.configArray[key];
 
-    if (item.key == 'date'){
-      this.configArray.find(item => item.key === 'repeat')!.value = false;
-    }
-    if (item.key == 'repeat'){
-      this.configArray.find(item => item.key === 'date')!.value = false;
-    }
   }
 
 }

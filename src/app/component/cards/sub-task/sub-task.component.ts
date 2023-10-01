@@ -33,12 +33,8 @@ export class SubTaskComponent  implements OnInit {
   subType : string = "customize";
 
   ngOnInit() {
-    this.setConfig();
+    Todo.setConfig(this.subTask);
   }
-
-  // deleteSubTask(){
-  //   this.todo.list.splice(this.index, 1);
-  // }
 
   backgroundColor(){
     const levelShade = 200 + (this.level * 50);
@@ -61,24 +57,6 @@ export class SubTaskComponent  implements OnInit {
 
 
   // Use to have no erros but should be remove on new todos
-  setConfig(){
-    let configArray = [
-      { key: 'description', value: this.subTask.description ? true : false },
-      { key: 'date', value: this.subTask.date ? true : false },
-      { key: 'time', value: this.subTask.time ? true : false },
-      { key: 'repetition', value: this.subTask.repeat ? true : false },
-      { key: 'sub tasks', value: this.subTask.list?.length ? true : false },
-    ];
-
-    this.subTask.config = configArray;
-  }
-
-
-  findOnConfig(key: string): boolean {
-    const configItem = this.subTask.config.find(item => item.key === key);
-    
-    return configItem ? configItem.value : false;
-  }
 
 
   developSubTask(event: Event){

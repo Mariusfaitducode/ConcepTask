@@ -72,7 +72,7 @@
   
       <app-custom-config [configArray]="subTask.config"></app-custom-config>
   
-      <ion-item *ngIf="findOnConfig('description')">
+      <ion-item *ngIf="this.subTask.config.description">
   
         <ion-label position="floating">Description</ion-label>
         <ion-textarea [(ngModel)]="subTask.description" (ionChange)="changeTodo = true"></ion-textarea>
@@ -82,7 +82,7 @@
       <app-date-selector [todo]="subTask" [page]="'modal'"></app-date-selector>
   
   
-      <div *ngIf="findOnConfig('sub tasks')">
+      <div *ngIf="this.subTask.config.subtasks">
   
         <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
         <div *ngIf="!modify" class="info-sub-task">

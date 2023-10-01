@@ -63,21 +63,21 @@ export class TodoPage implements OnInit {
       }
     });
 
-    this.setConfig();
+    //this.setConfig();
   }
 
 
   //Reset config au cas ou
   setConfig(){
     console.log("set config")
-    let configArray = [
-      { key: 'description', value: this.todo.description ? true : false },
-      { key: 'priority', value: this.todo.priority ? true : false },
-      { key: 'date', value: this.todo.date ? true : false },
-      { key: 'repeat', value: this.todo.repeat ? true : false },
+    let configArray = {
+       description: this.todo.description ? true : false ,
+       priority: this.todo.priority ? true : false,
+       date: this.todo.date ? true : false ,
+       repeat: this.todo.repeat ? true : false ,
       // { key: 'note', value: false },
-      { key: 'sub tasks', value: this.todo.list?.length ? true : false },
-    ];
+       subtasks: this.todo.list?.length ? true : false ,
+    };
 
     this.todo.config = configArray;
   }
@@ -137,23 +137,15 @@ export class TodoPage implements OnInit {
   }
 
 
- 
-
   modifyTodo(){
-
     this.route.params.subscribe((params) => {
-
       if (params['subId'] == undefined) {
         this.router.navigate(['/add', this.index]);
       }
       else{
         this.router.navigate(['/add', this.index, params['subId']]);
       }
-
     });
-
-    
-    
   }
 
 
@@ -198,14 +190,6 @@ export class TodoPage implements OnInit {
     this.todo.isDone = true;
     localStorage.setItem('todos', JSON.stringify(this.todos));
     console.log(this.todos);
-  }
-
-
-
-  findOnConfig(key: string): boolean {
-    const configItem = this.todo.config.find(item => item.key === key);
-    
-    return configItem ? configItem.value : false;
   }
 
 

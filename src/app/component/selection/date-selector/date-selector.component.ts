@@ -23,8 +23,9 @@ export class DateSelectorComponent  implements OnInit {
 
   findOnConfig(key: string): boolean {
 
-    const configItem = this.todo.config.find(item => item.key === key);
-    return configItem ? configItem.value : false;
+    // const configItem = this.todo.config.find(item => item.key === key);
+    // return configItem ? configItem.value : false;
+    return true
   }
 
   manageNotification(){

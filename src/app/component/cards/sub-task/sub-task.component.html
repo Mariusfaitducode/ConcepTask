@@ -25,7 +25,7 @@
         </div>  
         
 
-        <div *ngIf="findOnConfig('sub tasks')" class="develop">
+        <div *ngIf="this.subTask.config.subtasks" class="develop">
           <div  *ngIf="!this.subTask.developped">
             <ion-icon name="chevron-down-outline" (click)="developSubTask($event)"></ion-icon>
           </div>
@@ -59,7 +59,7 @@
 
   
 
-  <ion-list class="sub-sub-task" *ngIf="findOnConfig('sub tasks') && this.subTask.developped" [style.background-color]="backgroundColor()">
+  <ion-list class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped" [style.background-color]="backgroundColor()">
 
     <div *ngIf="page == 'add'">
       <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
