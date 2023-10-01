@@ -33,7 +33,7 @@ export class SubTaskComponent  implements OnInit {
   subType : string = "customize";
 
   ngOnInit() {
-    Todo.setConfig(this.subTask);
+    // Todo.setConfig(this.subTask);
   }
 
   backgroundColor(){

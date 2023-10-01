@@ -71,7 +71,7 @@ export class AddPage implements OnInit {
         this.newTodo = new Todo();
       }
       this.setMainTodoId();
-      Todo.setConfig(this.newTodo);
+      // Todo.setConfig(this.newTodo);
     });
   }
 
@@ -121,6 +121,9 @@ export class AddPage implements OnInit {
       this.todos.forEach((todo: Todo, index: number) => {
         if (todo.mainId === this.newTodo.mainId) {
           // Remplacez l'élément par le nouveau todo
+
+          console.log("find id")
+
           this.todos[index] = this.newTodo;
         }
       });
@@ -129,6 +132,7 @@ export class AddPage implements OnInit {
       this.newTodo = new Todo();
       //this.newSubTodo = new Todo();
 
+      console.log("navigate to todo page")
       this.navCtrl.navigateForward('/todo/' + this.index);
     }
     else{
@@ -156,12 +160,12 @@ export class AddPage implements OnInit {
       console.log('Confirmed:', value);
   
       if (value) {
-        this.navCtrl.navigateForward('/home');
+        this.navCtrl.back();
         
       }
     }
     else{
-      this.navCtrl.navigateForward('/home');
+      this.navCtrl.back();
     }
   };
 

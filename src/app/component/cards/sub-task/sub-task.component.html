@@ -25,7 +25,7 @@
         </div>  
         
 
-        <div *ngIf="this.subTask.config.subtasks" class="develop">
+        <div *ngIf="this.subTask.config.subtasks && (this.subTask.list.length != 0 || page == 'add')" class="develop">
           <div  *ngIf="!this.subTask.developped">
             <ion-icon name="chevron-down-outline" (click)="developSubTask($event)"></ion-icon>
           </div>

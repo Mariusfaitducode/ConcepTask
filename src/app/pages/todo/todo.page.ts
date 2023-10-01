@@ -138,14 +138,14 @@ export class TodoPage implements OnInit {
 
 
   modifyTodo(){
-    this.route.params.subscribe((params) => {
-      if (params['subId'] == undefined) {
-        this.router.navigate(['/add', this.index]);
-      }
-      else{
-        this.router.navigate(['/add', this.index, params['subId']]);
-      }
-    });
+
+    const params = this.route.snapshot.params;
+
+    if (params['subId'] == undefined) {
+      this.router.navigate(['/add', this.index]);
+    } else {
+      this.router.navigate(['/add', this.index, params['subId']]);
+    }
   }
 
 
