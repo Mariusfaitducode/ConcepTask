@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" >
-  <ion-toolbar >
+  <ion-toolbar [ngClass]="{'doneHeader': todo.isDone == true }">
     <ion-buttons slot="start">
       <ion-button (click)="goBackTodo()" class="back-button">
         <ion-icon name="arrow-back-outline" ></ion-icon>

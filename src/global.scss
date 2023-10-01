@@ -43,9 +43,20 @@ ion-list{
 }
 
 
+
+//Is done style
+
+.doneHeader{
+    --background: #21ce275e !important;
+    
+}
+
 .isDone{
-    background-color: #4caf4f5e;
+    background-color: #21ce275e;
  }
+
+
+//
 
  .back-button{
      font-size: 18px;
@@ -71,11 +82,7 @@ ion-list{
 
 
 
-.hideHeader{
-    pointer-events: none;
-    opacity: 0.4;
-    
-}
+
 
 
 //CALENDAR 

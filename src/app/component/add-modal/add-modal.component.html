@@ -8,7 +8,7 @@
   <div class="content">
 
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar [ngClass]="{'doneHeader': subTask.isDone == true }">
         <ion-buttons slot="start">
           <ion-icon name="close-outline" class="close-icon" (click)="showCloseConfirm()"></ion-icon>
         </ion-buttons>

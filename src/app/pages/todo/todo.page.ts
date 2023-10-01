@@ -124,7 +124,7 @@ export class TodoPage implements OnInit {
 
       if (this.todo.parentId != undefined && this.todo.parentId != 0){
         console.log("parent")
-        // this.router.navigate(['/todo', this.index , this.todo.parentId]);
+        this.navCtrl.back();
       }
       else{
         console.log("no parent")
@@ -132,7 +132,7 @@ export class TodoPage implements OnInit {
       }
     }
     else{
-      this.navCtrl.back();
+      this.router.navigate(['/home']);
     }
   }
 
