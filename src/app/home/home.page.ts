@@ -25,6 +25,8 @@ export class HomePage {
 
   todos : Todo[] = []
 
+  results : Todo[] = []
+
   openLeftMenu = false;
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class HomePage {
     });
 
     this.loadTodos();
+    this.results = [...this.todos];
   }
 
   ngOnChange(){  
@@ -86,4 +89,13 @@ export class HomePage {
   }
  }
   // app = initializeApp(environnement.firebaseConfig);
+
+
+  handleInput(event : any) {
+    const query = event.target.value.toLowerCase();
+
+    this.results = [...this.todos.filter((d) => {
+      d.title.toLowerCase().indexOf(query) > -1
+    })];
+  }
 }

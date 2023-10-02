@@ -18,11 +18,25 @@
 
 
 <ion-content [fullscreen]="true">
+
+
+  <ion-row class="research-header">
+    <ion-searchbar (ionInput)="handleInput($event)"  placeholder="Search"></ion-searchbar>
+
+    <ion-buttons>
+      <ion-button>
+        <ion-icon name="funnel-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+  </ion-row>
+
   
   <ion-list>
 
   <!-- How to iterate object + index -->
-    <ion-row *ngFor="let todo of todos">
+    <ion-row *ngFor="let todo of results">
       
       <app-todo-card [todo]="todo" [color]="typeColor(todo.category)" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
     </ion-row >
