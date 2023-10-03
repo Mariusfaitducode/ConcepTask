@@ -29,6 +29,21 @@ export class HomePage {
 
   openLeftMenu = false;
 
+
+  filters = {
+
+    today: false,
+    week: false,
+    month: false,
+    overdue: false,
+
+    priority: false,
+    priorityChoosed: '',
+    category: false,
+    categoryChoosed: '',
+  };
+  
+
   ngOnInit() {
 
     console.log("HOME PAGEEEE")
@@ -93,9 +108,6 @@ export class HomePage {
 
   handleInput(event : any) {
     const query = event.target.value.toLowerCase();
-
-    this.results = [...this.todos.filter((d) => {
-      d.title.toLowerCase().indexOf(query) > -1
-    })];
+    this.results = [...this.todos.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.toLowerCase().indexOf(query) > -1)];
   }
 }
