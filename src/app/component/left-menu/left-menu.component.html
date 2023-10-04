@@ -7,37 +7,59 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
+
+    <div class="menu">
+
+      <ion-list>
+        <ion-row>
+          <div class="menu-link" (click)="goToCalendar()">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-nav-link >Calendar</ion-nav-link>
+          </div>
+          
+        </ion-row>
+        <!-- <ion-row id="open-modal" expand="block">
+          <div class="menu-link" >
+            <ion-icon name="funnel-outline"></ion-icon>
+            Filter
+          </div>
+          
+        </ion-row> -->
+        <ion-row>
+          <div class="menu-link">
+            <ion-icon name="settings-outline"></ion-icon>
+            Settings
+          </div>
+          
+        </ion-row>
+      </ion-list>
+  
+      <ion-list>
+        <ion-row>
+          <div class="menu-link">
+            <ion-icon name="share-social-outline"></ion-icon>
+            Share
+          </div>
+          
+        </ion-row>
+        <ion-row>
+          <div class="menu-link">
+            <ion-icon name="information-outline"></ion-icon>
+            About this app
+          </div>
+          
+        </ion-row>
+        <ion-row>
+          <div class="menu-link">
+            <ion-icon name="cafe-outline"></ion-icon>
+            Feedback
+          </div>
+          
+        </ion-row>
+      </ion-list>
+    </div>
     
-    <ion-list>
-      <ion-row>
-        <div class="menu-link" (click)="goToCalendar()">
-          <ion-icon name="calendar-outline"></ion-icon>
-          <ion-nav-link >Calendar</ion-nav-link>
-        </div>
-        
-      </ion-row>
-      <ion-row>
-        <div class="menu-link">
-          <ion-icon name="funnel-outline"></ion-icon>
-          Filter
-        </div>
-        
-      </ion-row>
-      <ion-row>
-        <div class="menu-link">
-          <ion-icon name="settings-outline"></ion-icon>
-          Settings
-        </div>
-        
-      </ion-row>
-      <ion-row>
-        <div class="menu-link">
-          <ion-icon name="cafe-outline"></ion-icon>
-          Feedback
-        </div>
-        
-      </ion-row>
-    </ion-list>
+    
 
   </ion-content>
 

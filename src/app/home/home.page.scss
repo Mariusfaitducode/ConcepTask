@@ -83,3 +83,10 @@ ion-modal ion-toolbar {
   --background: var(--ion-color-step-50);
   --color: var(--ion-text-color);
 }
+
+
+ion-badge{
+  position: absolute;
+  top: 5px;
+  right: 8px;
+}

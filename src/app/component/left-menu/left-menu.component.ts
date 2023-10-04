@@ -16,4 +16,6 @@ export class LeftMenuComponent  implements OnInit {
   goToCalendar(){
     this.router.navigate(['/calendar']);
   }
+
+  
 }

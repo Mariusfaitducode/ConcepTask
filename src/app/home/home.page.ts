@@ -36,7 +36,7 @@ export class HomePage {
     week: false,
     month: false,
     overdue: false,
-
+    done: false,
     priority: false,
     priorityChoosed: '',
     category: false,
@@ -108,6 +108,74 @@ export class HomePage {
 
   handleInput(event : any) {
     const query = event.target.value.toLowerCase();
-    this.results = [...this.todos.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.toLowerCase().indexOf(query) > -1)];
+    this.results = [...this.results.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.toLowerCase().indexOf(query) > -1)];
+  }
+
+
+  dateFilters(on: boolean, off1:boolean, off2:boolean) {
+    // on = !on;
+
+    if (on) {
+      console.log("on")
+      off1 = false;
+      off2 = false;
+    }
+  }
+
+
+  filterResults() {
+
+    // if (this.filters.today) {
+    //   this.filters.week = false;
+    //   this.filters.month = false;
+    //   this.filters.overdue = false;
+    // }
+    // if (this.filters.week) {
+    //   this.filters.today = false;
+    //   this.filters.month = false;
+    //   this.filters.overdue = false;
+    // }
+    // if (this.filters.overdue) {
+    //   this.filters.week = false;
+    //   this.filters.today = false;
+    //   this.filters.month = false;
+    // }
+
+    this.results = [...this.todos];
+
+    if (this.filters.week) {
+      const nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+      this.results = [...this.results.filter((d) => d.date && new Date(d.date) < nextWeek && new Date(d.date) >= new Date())];
+    }
+
+    if (this.filters.today) {
+      this.results = [...this.results.filter((d) => d.date && new Date(d.date) == new Date())];
+    }
+
+    if (this.filters.overdue) {
+      this.results = [...this.todos.filter((d) => d.date && new Date(d.date) < new Date())];
+    }
+
+    if (this.filters.priority) {
+      this.results = [...this.results.filter((d) => d.priority == this.filters.priorityChoosed)];
+    }
+
+    if (this.filters.category) {
+      this.results = [...this.results.filter((d) => d.category == this.filters.categoryChoosed)];
+    }
+    if (this.filters.done) {
+      this.results = [...this.results.filter((d) => d.isDone == true)];
+    }
+    
+  }
+
+  countFilters(){
+    let count = 0;
+    for (const [key, value] of Object.entries(this.filters)) {
+      if (value) {
+        count++;
+      }
+    }
+    return count;
   }
 }

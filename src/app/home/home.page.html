@@ -25,9 +25,13 @@
 
     <ion-buttons>
       <ion-button id="open-modal" expand="block">
-        <ion-icon name="funnel-outline"></ion-icon>
+        <ion-icon name="funnel-outline">
+        </ion-icon>
       </ion-button>
+      <ion-badge color="primary" *ngIf="countFilters() != 0">{{countFilters()}}</ion-badge>
+      
     </ion-buttons>
+    
 
 
   </ion-row>
@@ -57,9 +61,7 @@
 
 
   <div>
-
     <app-left-menu></app-left-menu>
-  
   </div>
 
 
@@ -76,8 +78,8 @@
 
           <ion-item>
             <ion-label>Category</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.category"></ion-checkbox>
-            <ion-select [(ngModel)]="filters.categoryChoosed">
+            <ion-checkbox slot="start" [(ngModel)]="filters.category" (ionChange)="filterResults()"></ion-checkbox>
+            <ion-select [(ngModel)]="filters.categoryChoosed" (ionChange)="filterResults()">
               <ion-select-option value="default">Default</ion-select-option>
               <ion-select-option value="personnal">Personnal</ion-select-option>
               <ion-select-option value="project">Project</ion-select-option>
@@ -91,27 +93,32 @@
 
           <ion-item>
             <ion-label>Priority</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.priority"></ion-checkbox>
-            <ion-select [(ngModel)]="filters.priorityChoosed">
-              <ion-select-option value="apple">Low</ion-select-option>
-              <ion-select-option value="banana">Medium</ion-select-option>
-              <ion-select-option value="orange">High</ion-select-option>
+            <ion-checkbox slot="start" [(ngModel)]="filters.priority" (ionChange)="filterResults()"></ion-checkbox>
+            <ion-select [(ngModel)]="filters.priorityChoosed" (ionChange)="filterResults()">
+              <ion-select-option value="low">Low</ion-select-option>
+              <ion-select-option value="medium">Medium</ion-select-option>
+              <ion-select-option value="high">High</ion-select-option>
             </ion-select>
           </ion-item>
 
           <ion-item>
             <ion-label>Today</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.today"></ion-checkbox>
+            <ion-checkbox slot="start" [(ngModel)]="filters.today" (ionChange)="filterResults()"></ion-checkbox>
           </ion-item>
 
           <ion-item>
-            <ion-label>This week</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.week"></ion-checkbox>
+            <ion-label>This week</ion-label >
+            <ion-checkbox slot="start" [(ngModel)]="filters.week" (ionChange)="filterResults()"></ion-checkbox>
           </ion-item>
 
           <ion-item>
             <ion-label>Overdue</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.overdue"></ion-checkbox>
+            <ion-checkbox slot="start" [(ngModel)]="filters.overdue" (ionChange)="filterResults()"></ion-checkbox>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Done</ion-label>
+            <ion-checkbox slot="start" [(ngModel)]="filters.done" (ionChange)="filterResults()"></ion-checkbox>
           </ion-item>
           
           <!-- <ion-item>
