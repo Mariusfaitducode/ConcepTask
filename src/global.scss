@@ -122,3 +122,15 @@ thead[_ngcontent-ng-c613479738] tr th{
 .table-bordered[_ngcontent-ng-c613479738],  th[_ngcontent-ng-c613479738], .table-bordered[_ngcontent-ng-c613479738], tr[_ngcontent-ng-c613479738], td[_ngcontent-ng-c613479738]{
     border: 1px solid var(--ion-color-step-100) !important;
 }
+
+
+
+.nodes g{
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+    background: red;
+    color: rebeccapurple;
+    fill: blue;
+}
