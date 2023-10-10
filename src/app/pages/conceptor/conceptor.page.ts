@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // import { d3 } from 'src/assets/d3/d3.js';
@@ -40,10 +40,21 @@ export class ConceptorPage implements OnInit {
 
         let graph = {nodes: this.nodes, links: this.links};
 
+        let width = window.innerWidth
+        let height = window.innerHeight - 100
+
+        console.log(graph)
+
 
         let svg = d3.select("#graph-container");
-        let width = +svg.attr("width");
-        let height = +svg.attr("height");
+        // let width = svg.attr("width");
+        // let height = svg.attr("height");
+
+
+        let container = svg.node() as HTMLElement
+
+        console.log()
+        console.log(window.innerHeight)
 
         var simulation = d3
           .forceSimulation(graph.nodes)
@@ -60,18 +71,8 @@ export class ConceptorPage implements OnInit {
           .force("charge", d3.forceManyBody().strength(-30))
           .force("center", d3.forceCenter(width / 2, height / 2))
           .on("tick", ticked);
-
-        //  let link = svg
-        //   .append("g")
-        //   .attr("class", "links")
-        //   .selectAll("line")
-        //   .data(graph.links)
-        //   .enter()
-        //   .append("line");
-        //   // .attr("stroke-width", 3);
-        //   // .style("stroke", "pink");
           
-          var link = svg
+        var link = svg
           .append("g")
           .attr("class", "links")
           .selectAll("line")
@@ -80,110 +81,88 @@ export class ConceptorPage implements OnInit {
           .append("line")
           .attr("stroke-width", function(d) {
             return 3;
-          });
-          
-          
-        // let node = svg
-        //   .append("g")
-        //   .attr("class", "nodes")
-        //   .selectAll("g")
-        //   .data(graph.nodes)
-        //   .enter()
-        //   .append("circle");
-        //   // .attr("r", "5")
-        //   // .attr("fill", "red");
+          })
+          .attr("stroke", function(){
+            return "red"
+          })
 
-          var node = svg
-            .append("g")
-            .attr("class", "nodes")
-            .selectAll("circle")
-            .data(graph.nodes)
-            .enter()
-            .append("circle")
-            .attr("r", 5)
-            .attr("fill", function(d) {
-              return "red";
+        const drag = d3.drag()
+        .on('start', dragStarted)
+        .on('drag', dragged)
+        .on('end', dragEnded);
+
+
+
+        var node = svg
+          .append("g")
+          .attr("class", "nodes")
+          .selectAll<SVGCircleElement, any>("circle")
+          .data(graph.nodes)
+          .enter()
+          .append("circle")
+          .attr("r", 5)
+          .attr("fill", function(d) {
+            return "red";
+          })
+          .call(drag as any)
+
+        
+        function ticked() {
+          link
+            .attr("x1", function(d) {
+              return d.source.x;
             })
-            // .call(
-            //   d3.drag()
-                
-            //     .on("start", dragstarted)
-            //     .on("drag", dragged)
-            //     .on("end", dragended)
-                
-            // );
-
-            // const drag = d3.drag();
-
-            // d3.selectAll(".node").call(d3.drag().on("start", started));
-
-
-            // function started(event : any) {
-            //   const circle = d3.select(this).classed("dragging", true);
-            //   const dragged = (event, d) => circle.raise().attr("cx", d.x = event.x).attr("cy", d.y = event.y);
-            //   const ended = () => circle.classed("dragging", false);
-            //   event.on("drag", dragged).on("end", ended);
-            // }
-        
-            function ticked() {
-              link
-                .attr("x1", function(d) {
-                  return d.source.x;
-                })
-                .attr("y1", function(d) {
-                  return d.source.y;
-                })
-                .attr("x2", function(d) {
-                  return d.target.x;
-                })
-                .attr("y2", function(d) {
-                  return d.target.y;
-                });
-          
-              node
-                .attr("cx", function(d) {
-                  return d.x;
-                })
-                .attr("cy", function(d) {
-                  return d.y;
-                });
-            }
-
-            function dragstarted(event : any, d : any) {
-
-              if (!event.active) simulation.alphaTarget(0.3).restart();
-          
-              d.fx = d.x;
-          
-              d.fy = d.y;
-          
-          }
-          
-          
-          
-          function dragged(event : any, d : any) {
-          
-              d.fx = event.x;
-          
-              d.fy = event.y;
-          
-          }
-          
-          
-          
-          function dragended(event : any, d : any) {
-          
-              if (!event.active) simulation.alphaTarget(0);
-          
-              d.fx = null;
-          
-              d.fy = null;
-          
-          }
-          
-        
-        
+            .attr("y1", function(d) {
+              return d.source.y;
+            })
+            .attr("x2", function(d) {
+              return d.target.x;
+            })
+            .attr("y2", function(d) {
+              return d.target.y;
+            });
       
+          node
+            .attr("cx", function(d) {
+              return d.x;
+            })
+            .attr("cy", function(d) {
+              return d.y;
+            });
+        }
+
+
+        function dragStarted(event : any, d : any) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        
+        function dragged(event : any, d : any) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        
+        function dragEnded(event : any, d : any) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+          
+        let zoom = d3.zoom()
+          .scaleExtent([0.1, 10]) // Définissez les limites du zoom
+          .on("zoom", zoomed);
+        
+        function zoomed(event : any) {
+          let transform = event.transform;
+          // Appliquez la transformation au groupe racine de votre graphe SVG
+          // Par exemple, si vous avez un groupe g comme racine, faites quelque chose comme :
+          svg.attr("transform", transform);
+        }
+
+        svg.call(zoom as any);
     });
   }
 
