@@ -71,10 +71,11 @@ export class ConceptorPage implements OnInit {
           .force("charge", d3.forceManyBody().strength(-30))
           .force("center", d3.forceCenter(width / 2, height / 2))
           .on("tick", ticked);
+
+
+        var g = svg.append("g");
           
-        var link = svg
-          .append("g")
-          .attr("class", "links")
+        var link = g    
           .selectAll("line")
           .data(graph.links)
           .enter()
@@ -93,18 +94,62 @@ export class ConceptorPage implements OnInit {
 
 
 
-        var node = svg
-          .append("g")
-          .attr("class", "nodes")
+        var node = g
           .selectAll<SVGCircleElement, any>("circle")
           .data(graph.nodes)
           .enter()
-          .append("circle")
-          .attr("r", 5)
-          .attr("fill", function(d) {
-            return "red";
-          })
-          .call(drag as any)
+            .append("circle")
+            .attr("r", 10)
+            .attr("fill", function(d) {
+              return "red";
+            })
+            .attr("class", "nodes")
+            .call(drag as any)
+            .on("click", function(d : any){
+              console.log(d)
+            })
+
+
+
+        node.append("title")
+            .attr("class", "node-label")
+            .attr("color", "white")
+            .attr("x", function(d) {
+              return d.x + 10; 
+            })
+            .attr("y", function(d) {
+              return d.y - 10;
+            })
+            .text(function(d) {
+              return d.name;
+        });  
+
+            // .append("title")
+            //   .attr("class", "node-label")
+            //   .attr("cx", function(d) {
+            //     return d.x + 10; // Ajustez ces valeurs pour positionner le texte à votre convenance
+            //   })
+            //   .attr("cy", function(d) {
+            //     return d.y - 10; // Ajustez ces valeurs pour positionner le texte à votre convenance
+            //   })
+            //   .text(function(d) {
+            //     return d.name;
+            //   })
+              
+              
+
+
+              // var nodeLabels = g
+              //   .selectAll("circle")
+              //   .data(graph.nodes)
+              //   .enter()
+              //   .append("text")
+              //   .attr("class", "node-label")
+              //   .attr("dx", 10) // Ajustez ces valeurs pour positionner le texte par rapport au nœud
+              //   .attr("dy", -10) // Ajustez ces valeurs pour positionner le texte par rapport au nœud
+              //   .text(function(d) {
+              //     return d.name; // Utilisez la propriété 'title' de vos données pour le texte de l'étiquette
+              //   });
 
         
         function ticked() {
@@ -154,12 +199,15 @@ export class ConceptorPage implements OnInit {
         let zoom = d3.zoom()
           .scaleExtent([0.1, 10]) // Définissez les limites du zoom
           .on("zoom", zoomed);
+
+
+        
         
         function zoomed(event : any) {
           let transform = event.transform;
           // Appliquez la transformation au groupe racine de votre graphe SVG
           // Par exemple, si vous avez un groupe g comme racine, faites quelque chose comme :
-          svg.attr("transform", transform);
+          g.attr("transform", transform);
         }
 
         svg.call(zoom as any);

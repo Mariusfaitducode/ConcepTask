@@ -125,12 +125,19 @@ thead[_ngcontent-ng-c613479738] tr th{
 
 
 
-.nodes g{
-    width: 100px;
-    height: 100px;
+.nodes{
+    
+    font-size: large;
+    font-weight: bold;
+    color: white;
+    fill: aqua;
+}
 
-    border-radius: 50%;
-    background: red;
-    color: rebeccapurple;
-    fill: blue;
+.node-label{
+    width: 20px;
+    background-color: #FF5722;
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
 }
