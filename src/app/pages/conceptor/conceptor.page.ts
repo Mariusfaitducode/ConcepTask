@@ -68,7 +68,7 @@ export class ConceptorPage implements OnInit {
               .links(graph.links)
           )
 
-          .force("charge", d3.forceManyBody().strength(-30))
+          .force("charge", d3.forceManyBody().strength(-60))
           .force("center", d3.forceCenter(width / 2, height / 2))
           .on("tick", ticked);
 
@@ -87,14 +87,17 @@ export class ConceptorPage implements OnInit {
             return "red"
           })
 
+
         const drag = d3.drag()
         .on('start', dragStarted)
         .on('drag', dragged)
         .on('end', dragEnded);
 
 
+        
 
-        var node = g
+        var circle = g.append("g")
+            .attr("class", "nodes")
           .selectAll<SVGCircleElement, any>("circle")
           .data(graph.nodes)
           .enter()
@@ -103,54 +106,30 @@ export class ConceptorPage implements OnInit {
             .attr("fill", function(d) {
               return "red";
             })
-            .attr("class", "nodes")
+            .attr("class", "node")
             .call(drag as any)
             .on("click", function(d : any){
               console.log(d)
             })
 
 
+        // var newNodes = circle.enter()
+        // .append("circle")
+        // .attr("r", 5)
+        // .attr("fill", function(d) { return "blue"; })
+        // .call(drag as any);
 
-        node.append("title")
+        // node.append()
+
+        var text = g.append("g")
+            .attr("class", "labels")
+          .selectAll("text")
+            .data(graph.nodes)
+          .enter().append("text")
             .attr("class", "node-label")
-            .attr("color", "white")
-            .attr("x", function(d) {
-              return d.x + 10; 
-            })
-            .attr("y", function(d) {
-              return d.y - 10;
-            })
-            .text(function(d) {
-              return d.name;
-        });  
-
-            // .append("title")
-            //   .attr("class", "node-label")
-            //   .attr("cx", function(d) {
-            //     return d.x + 10; // Ajustez ces valeurs pour positionner le texte à votre convenance
-            //   })
-            //   .attr("cy", function(d) {
-            //     return d.y - 10; // Ajustez ces valeurs pour positionner le texte à votre convenance
-            //   })
-            //   .text(function(d) {
-            //     return d.name;
-            //   })
-              
-              
-
-
-              // var nodeLabels = g
-              //   .selectAll("circle")
-              //   .data(graph.nodes)
-              //   .enter()
-              //   .append("text")
-              //   .attr("class", "node-label")
-              //   .attr("dx", 10) // Ajustez ces valeurs pour positionner le texte par rapport au nœud
-              //   .attr("dy", -10) // Ajustez ces valeurs pour positionner le texte par rapport au nœud
-              //   .text(function(d) {
-              //     return d.name; // Utilisez la propriété 'title' de vos données pour le texte de l'étiquette
-              //   });
-
+            
+            .text(function(d) { return d.name });
+        
         
         function ticked() {
           link
@@ -167,13 +146,22 @@ export class ConceptorPage implements OnInit {
               return d.target.y;
             });
       
-          node
+          circle
             .attr("cx", function(d) {
               return d.x;
             })
             .attr("cy", function(d) {
               return d.y;
             });
+
+          text
+            .attr("x", function(d) {
+              return d.x;
+            })
+            .attr("y", function(d) {
+              return d.y;
+            });
+            
         }
 
 
@@ -211,6 +199,9 @@ export class ConceptorPage implements OnInit {
         }
 
         svg.call(zoom as any);
+
+
+        
     });
   }
 
