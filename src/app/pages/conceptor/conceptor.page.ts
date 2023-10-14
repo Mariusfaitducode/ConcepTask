@@ -368,18 +368,20 @@ export class ConceptorPage implements OnInit {
 
     let copyList =[...this.todo.list!];
 
-    // while (copyList.length > 0) {
+    while (copyList.length > 0) {
   
-    //   let todo = copyList.shift()!;
+      let todo = copyList.shift()!;
 
-    //   this.nodes.push({id: todo.subId, name: todo.title});
+      this.nodes.push({id: todo.subId, level : 1, todo: todo});
 
-    //   this.links.push({source: todo.parentId, target: todo.subId});
+      this.links.push({source: todo.parentId, target: todo.subId});
 
-    //   for (let subTodo of todo.list!) {
-    //     copyList.push(subTodo);
-    //   }
-    // }
+      if (todo.developped){
+        for (let subTodo of todo.list!) {
+          copyList.push(subTodo);
+        }
+      }
+    }
 
   }
 
