@@ -24,9 +24,12 @@ export class ConceptorPage implements OnInit {
   nodes : any[] = []
   links : any[] = []
 
+  alreadyOpen : boolean = false;
+
   constructor(private route : ActivatedRoute, private router : Router) { }
 
   ngOnInit() {
+
 
     this.route.params.subscribe((params) => {
 
@@ -47,7 +50,15 @@ export class ConceptorPage implements OnInit {
         console.log(graph)
 
         let svg = d3.select("#graph-container");
-        var g = svg.append("g");
+
+
+        if (svg.selectChildren("g").size() > 0) return;
+
+
+        let g = svg.append("g");
+
+        let maxLevel = 0;
+        let linkColor = "var(--ion-color-step-700)";
 
         let zoom = d3.zoom()
           .scaleExtent([0.1, 10]) // Définissez les limites du zoom
@@ -82,9 +93,7 @@ export class ConceptorPage implements OnInit {
             .attr("stroke-width", function(d) {
               return 3;
             })
-            .attr("stroke", function(){
-              return "red"
-            })
+            .attr("stroke", linkColor)
 
 
         const drag = d3.drag()
@@ -100,12 +109,21 @@ export class ConceptorPage implements OnInit {
           .enter()
             .append("circle")
             .attr("r", 10)
-            .attr("fill", function(d) {
-              return "red";
-            })
+            .attr("fill", nodeColor)
+            .attr("stroke", linkColor)
             .attr("class", "node")
             .call(drag as any)
             .on("click", onClickCircle)
+
+
+        // var rect = g.append("g")
+        //     .attr("class", "rects")
+        //   .selectAll("rect")
+        //     .data(graph.nodes)
+        //   .enter().append("rect")
+        //     .attr("width", function(d) { return d.todo.title.length * 5; }) // Ajustez la largeur en fonction de la longueur du texte
+        //     .attr("height", 12) // Ajustez la hauteur en fonction de vos besoins
+        //     .attr("fill", "var(--ion-color-step-150)")
 
 
         var text = g.append("g")
@@ -116,6 +134,10 @@ export class ConceptorPage implements OnInit {
             .attr("class", "node-label")
             .text(function(d) { return d.todo.title });
 
+        
+
+        
+
 
           
         
@@ -124,27 +146,35 @@ export class ConceptorPage implements OnInit {
 
         function onClickCircle(event : any, d : any){
 
-
           //Développer sous todo
           console.log(d)
 
           let newChildNodes : any[] = [];
 
           for (let subTodo of d.todo.list!) {
-            graph.nodes.push({id: subTodo.subId, todo: subTodo});
 
-            graph.links.push({ source: d.id, target: subTodo.subId });
 
+            if (graph.nodes.find(node => node.id == subTodo.subId)) {
+
+              // Enlever tous les sous todos
+
+              // graph.nodes = graph.nodes.filter(node => node.id != subTodo.subId);
+              // graph.links = graph.links.filter(link => link.target.id != subTodo.subId);
+
+            }
+            else{
+
+              if (d.level + 1 > maxLevel) {
+                maxLevel = d.level + 1;
+              }
+
+              graph.nodes.push({id: subTodo.subId, level : d.level + 1, todo: subTodo});
+
+              graph.links.push({ source: d.id, target: subTodo.subId });
+            }
+
+            
           }
-
-          // graph.nodes = graph.nodes.concat(newChildNodes);
-
-          console.log(graph)
-          // Ajoutez des liens entre le nœud parent et les nœuds enfants
-          // const parentLink = { source: d.id, target: newChildNodes[0].id };
-          
-
-          console.log(graph)
 
           updateGraph();
         }
@@ -158,9 +188,7 @@ export class ConceptorPage implements OnInit {
             .attr("stroke-width", function(d) {
             return 3;
             })
-            .attr("stroke", function(){
-              return "red"
-            })
+            .attr("stroke", linkColor)
         }
           
 
@@ -170,14 +198,22 @@ export class ConceptorPage implements OnInit {
           circle = circle.enter().append("circle")
             .merge(circle)
             .attr("r", 10)
-            .attr("fill", function(d) {
-              return "red";
-            })
+            .attr("stroke", linkColor)
+            .attr("fill", nodeColor)
             .attr("class", "node")
             .call(drag as any)
             .on("click", onClickCircle)
         }
 
+        // function updateRect(){
+        //   rect = rect.data(graph.nodes, (d: any) => d.id);
+        //   rect.exit().remove();
+        //   rect = rect.enter().append("rect")
+        //     .merge(rect)
+        //     .attr("width", function(d) { return d.todo.title.length * 5; }) // Ajustez la largeur en fonction de la longueur du texte
+        //     .attr("height", 12) // Ajustez la hauteur en fonction de vos besoins
+        //     .attr("fill", "var(--ion-color-step-150)")
+        // }
 
         function updateText(){
           text = text.data(graph.nodes, (d: any) => d.id);
@@ -200,6 +236,7 @@ export class ConceptorPage implements OnInit {
           updateCircle();
       
           // Mettez à jour le texte (labels)
+          // updateRect();
           updateText();
       
           // Mettez à jour la simulation
@@ -222,11 +259,27 @@ export class ConceptorPage implements OnInit {
           .on("tick", ticked);
 
           simulation.restart();
-
         }
 
 
+        // Propriété visuelles des éléments du graphique
 
+
+        function nodeColor(d : any) {
+          if (d.todo.isDone) {
+            return "var(--is-done-color-node)";
+          } else {
+
+            const levelShade = 500 - ((maxLevel - d.level) * 50);
+
+            if (levelShade < 50) return 'var(--ion-color-step-50)';
+            
+            return 'var(--ion-color-step-' + levelShade + ')';
+          }
+        }
+
+
+        // Fonction de mise à jour des positions des éléments du graphique
 
         function ticked() {
           link
@@ -251,13 +304,25 @@ export class ConceptorPage implements OnInit {
               return d.y;
             });
 
+
+          let textOffsetX = 5;
+          let textOffsetY = 8;
+
           text
             .attr("x", function(d) {
-              return d.x;
+              return d.x + textOffsetX;
             })
             .attr("y", function(d) {
-              return d.y;
+              return d.y + textOffsetY;
             });
+
+          // rect
+          //   .attr("x", function(d) {
+          //     return d.x + textOffsetX - 3;
+          //   })
+          //   .attr("y", function(d) {
+          //     return d.y + textOffsetY - 8;
+          //   });
             
         }
 
@@ -299,7 +364,7 @@ export class ConceptorPage implements OnInit {
     this.nodes = [];
     
     //Main todo
-    this.nodes.push({id: 0, todo: this.todo});
+    this.nodes.push({id: 0, level : 0, todo: this.todo});
 
     let copyList =[...this.todo.list!];
 

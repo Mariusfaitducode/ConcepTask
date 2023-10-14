@@ -50,12 +50,12 @@ ion-label{
 //Is done style
 
 .doneHeader{
-    --background: #2a862d !important;
+    --background: var(--is-done-color-header) !important;
     
 }
 
 .isDone{
-    background-color: #21ce2779;
+    background-color: var(--is-done-color);
  }
 
 
@@ -125,19 +125,11 @@ thead[_ngcontent-ng-c613479738] tr th{
 
 
 
-.node{
-    
-    font-size: large;
-    font-weight: bold;
-    color: white;
-    // fill: aqua;
-}
+
 
 .node-label{
-    width: 20px;
-    background-color: #FF5722;
-    position: absolute;
+    
     font-size: 8px;
     font-weight: bold;
-    fill: white;
+    fill: var(--ion-text-color);
 }
