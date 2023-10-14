@@ -118,11 +118,7 @@ export class Todo {
       return null;
     }
 
-
     
-
-
-
     public static typeColor(type : string) {
       switch (type) {
 

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import { d3 } from 'src/assets/d3/d3.js';
 
 import * as d3 from 'd3';
+import { update } from 'firebase/database';
+import { GraphConceptor } from 'src/app/model/graph-conceptor';
 import { Todo } from 'src/app/model/todo';
 
 
@@ -28,14 +30,11 @@ export class ConceptorPage implements OnInit {
 
     this.route.params.subscribe((params) => {
 
+        //Init data
+
         this.index = +params['id'];
 
-
         this.loadTodo(this.index);
-
-        // var d3 = require("d3");
-
-
         this.initData();
 
         let graph = {nodes: this.nodes, links: this.links};
@@ -43,18 +42,20 @@ export class ConceptorPage implements OnInit {
         let width = window.innerWidth
         let height = window.innerHeight - 100
 
+        // Initialiser le graphique
+
         console.log(graph)
 
-
         let svg = d3.select("#graph-container");
-        // let width = svg.attr("width");
-        // let height = svg.attr("height");
+        var g = svg.append("g");
 
+        let zoom = d3.zoom()
+          .scaleExtent([0.1, 10]) // Définissez les limites du zoom
+          .on("zoom", zoomed);
+        
 
-        let container = svg.node() as HTMLElement
+        svg.call(zoom as any);
 
-        console.log()
-        console.log(window.innerHeight)
 
         var simulation = d3
           .forceSimulation(graph.nodes)
@@ -67,33 +68,29 @@ export class ConceptorPage implements OnInit {
               })
               .links(graph.links)
           )
-
           .force("charge", d3.forceManyBody().strength(-60))
           .force("center", d3.forceCenter(width / 2, height / 2))
           .on("tick", ticked);
 
-
-        var g = svg.append("g");
           
-        var link = g    
+        var link = g.append("g")
+        .attr("class", "links")    
           .selectAll("line")
           .data(graph.links)
           .enter()
-          .append("line")
-          .attr("stroke-width", function(d) {
-            return 3;
-          })
-          .attr("stroke", function(){
-            return "red"
-          })
+            .append("line")
+            .attr("stroke-width", function(d) {
+              return 3;
+            })
+            .attr("stroke", function(){
+              return "red"
+            })
 
 
         const drag = d3.drag()
         .on('start', dragStarted)
         .on('drag', dragged)
         .on('end', dragEnded);
-
-
         
 
         var circle = g.append("g")
@@ -108,18 +105,8 @@ export class ConceptorPage implements OnInit {
             })
             .attr("class", "node")
             .call(drag as any)
-            .on("click", function(d : any){
-              console.log(d)
-            })
+            .on("click", onClickCircle)
 
-
-        // var newNodes = circle.enter()
-        // .append("circle")
-        // .attr("r", 5)
-        // .attr("fill", function(d) { return "blue"; })
-        // .call(drag as any);
-
-        // node.append()
 
         var text = g.append("g")
             .attr("class", "labels")
@@ -127,10 +114,120 @@ export class ConceptorPage implements OnInit {
             .data(graph.nodes)
           .enter().append("text")
             .attr("class", "node-label")
-            
-            .text(function(d) { return d.name });
+            .text(function(d) { return d.todo.title });
+
+
+          
         
+        // Fonction de mise à jour du graphique
+
+
+        function onClickCircle(event : any, d : any){
+
+
+          //Développer sous todo
+          console.log(d)
+
+          let newChildNodes : any[] = [];
+
+          for (let subTodo of d.todo.list!) {
+            graph.nodes.push({id: subTodo.subId, todo: subTodo});
+
+            graph.links.push({ source: d.id, target: subTodo.subId });
+
+          }
+
+          // graph.nodes = graph.nodes.concat(newChildNodes);
+
+          console.log(graph)
+          // Ajoutez des liens entre le nœud parent et les nœuds enfants
+          // const parentLink = { source: d.id, target: newChildNodes[0].id };
+          
+
+          console.log(graph)
+
+          updateGraph();
+        }
+
+
+        function updateLink(){
+          link = link.data(graph.links);
+          link.exit().remove();
+          link = link.enter().append("line")
+            .merge(link)
+            .attr("stroke-width", function(d) {
+            return 3;
+            })
+            .attr("stroke", function(){
+              return "red"
+            })
+        }
+          
+
+        function updateCircle(){
+          circle = circle.data(graph.nodes, (d: any) => d.id);
+          circle.exit().remove();
+          circle = circle.enter().append("circle")
+            .merge(circle)
+            .attr("r", 10)
+            .attr("fill", function(d) {
+              return "red";
+            })
+            .attr("class", "node")
+            .call(drag as any)
+            .on("click", onClickCircle)
+        }
+
+
+        function updateText(){
+          text = text.data(graph.nodes, (d: any) => d.id);
+          text.exit().remove();
+          text = text.enter().append("text")
+            .merge(text)
+            .attr("class", "node-label")
+            .text(function(d) { return d.todo.title });
+        }
         
+
+
+        function updateGraph() {
+          // Mettez à jour le graphique en fonction des données actuelles, y compris les nœuds enfants
+      
+          // Mettez à jour les liens
+          updateLink();
+      
+          // Mettez à jour les cercles (nœuds)
+          updateCircle();
+      
+          // Mettez à jour le texte (labels)
+          updateText();
+      
+          // Mettez à jour la simulation
+
+          simulation.stop();
+
+          simulation = d3
+          .forceSimulation(graph.nodes)
+          .force(
+            "link",
+            d3
+              .forceLink()
+              .id(function(d: any) {
+                return d.id;
+              })
+              .links(graph.links)
+          )
+          .force("charge", d3.forceManyBody().strength(-60))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .on("tick", ticked);
+
+          simulation.restart();
+
+        }
+
+
+
+
         function ticked() {
           link
             .attr("x1", function(d) {
@@ -183,22 +280,14 @@ export class ConceptorPage implements OnInit {
             d.fx = null;
             d.fy = null;
         }
-          
-        let zoom = d3.zoom()
-          .scaleExtent([0.1, 10]) // Définissez les limites du zoom
-          .on("zoom", zoomed);
 
 
-        
-        
         function zoomed(event : any) {
           let transform = event.transform;
-          // Appliquez la transformation au groupe racine de votre graphe SVG
-          // Par exemple, si vous avez un groupe g comme racine, faites quelque chose comme :
           g.attr("transform", transform);
         }
 
-        svg.call(zoom as any);
+        
 
 
         
@@ -210,22 +299,22 @@ export class ConceptorPage implements OnInit {
     this.nodes = [];
     
     //Main todo
-    this.nodes.push({id: 0, name: this.todo.title});
+    this.nodes.push({id: 0, todo: this.todo});
 
     let copyList =[...this.todo.list!];
 
-    while (copyList.length > 0) {
+    // while (copyList.length > 0) {
   
-      let todo = copyList.shift()!;
+    //   let todo = copyList.shift()!;
 
-      this.nodes.push({id: todo.subId, name: todo.title});
+    //   this.nodes.push({id: todo.subId, name: todo.title});
 
-      this.links.push({source: todo.parentId, target: todo.subId});
+    //   this.links.push({source: todo.parentId, target: todo.subId});
 
-      for (let subTodo of todo.list!) {
-        copyList.push(subTodo);
-      }
-    }
+    //   for (let subTodo of todo.list!) {
+    //     copyList.push(subTodo);
+    //   }
+    // }
 
   }
 
