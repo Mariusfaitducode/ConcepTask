@@ -24,7 +24,12 @@ export class ConceptorPage implements OnInit {
   nodes : any[] = []
   links : any[] = []
 
-  alreadyOpen : boolean = false;
+  modalNode: any = {
+    open: false,
+    task: Todo,
+    // modify: false,
+    // parentTask: Todo,
+  };
 
   constructor(private route : ActivatedRoute, private router : Router) { }
 
@@ -113,7 +118,7 @@ export class ConceptorPage implements OnInit {
             .attr("stroke", linkColor)
             .attr("class", "node")
             .call(drag as any)
-            .on("click", onClickCircle)
+            .on("click", onClickCircleModal)
 
 
         // var rect = g.append("g")
@@ -135,21 +140,31 @@ export class ConceptorPage implements OnInit {
             .text(function(d) { return d.todo.title });
 
         
-
-        
-
-
-          
-        
         // Fonction de mise à jour du graphique
+
+
+        function onClickCircleModal(d : any){
+
+          var modal = document.getElementById("modal-node");
+
+          var modalContent = document.getElementById("modal-content");
+          modalContent!.innerHTML = "Nom : " + d.name; // Personnalisez ceci avec les données de votre node
+
+          modal!.style.transform = "translate("+d.x+"px, "+d.y+"px)"
+          
+
+          modal!.style.display = "block";
+
+         
+
+
+        }
 
 
         function onClickCircle(event : any, d : any){
 
           //Développer sous todo
           console.log(d)
-
-          let newChildNodes : any[] = [];
 
           for (let subTodo of d.todo.list!) {
 
