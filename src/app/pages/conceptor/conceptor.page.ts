@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AngularDelegate } from '@ionic/angular';
+import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
 
 // import { d3 } from 'src/assets/d3/d3.js';
 
@@ -119,6 +121,7 @@ export class ConceptorPage implements OnInit {
             .attr("class", "node")
             .call(drag as any)
             .on("click", onClickCircleModal)
+            .on("dblclick", onClickCircle)
 
 
         // var rect = g.append("g")
@@ -143,17 +146,113 @@ export class ConceptorPage implements OnInit {
         // Fonction de mise à jour du graphique
 
 
-        function onClickCircleModal(d : any){
+        function onClickCircleModal(event : any, d : any){
+
 
           var modal = document.getElementById("modal-node");
 
-          var modalContent = document.getElementById("modal-content");
-          modalContent!.innerHTML = "Nom : " + d.name; // Personnalisez ceci avec les données de votre node
+          console.log(modal)
 
-          modal!.style.transform = "translate("+d.x+"px, "+d.y+"px)"
+
+          // if (modal?.hasAttribute("todo")) {
+          //   console.log("has attribute")
+          //   // modal!.removeAttribute("todo");
+          //   modal.setAttribute("todo", JSON.stringify(d.todo));
+          // }
+
+          // modal!.todo = d.todo;
+
+          // var modalAngular = angular.element(modal).scope();
+
+          var nodeTitle = document.getElementById("node-title");
+          nodeTitle!.innerHTML = d.todo.title;
+
+          if (d.todo.description) {
+            let modalDescription = document.getElementById("modal-description");
+            modalDescription!.classList.remove('hide');
+
+            let nodeDescription = document.getElementById("node-description");
+            nodeDescription!.setAttribute('value',d.todo.description);
+          }
+          else{
+            let modalDescription = document.getElementById("modal-description");
+            modalDescription!.classList.add('hide');
+          }
+
+          if (d.todo.date) {
+            let modalDate = document.getElementById("modal-date");
+            modalDate!.classList.remove('hide');
+
+            let nodeDate = document.getElementById("node-date");
+            nodeDate!.setAttribute('value',d.todo.date);
+
+            let nodeTime = document.getElementById("node-time");
+            nodeTime!.setAttribute('value',d.todo.time);
+          }
+          else{
+            let modalDate = document.getElementById("modal-date");
+            modalDate!.classList.add('hide');
+
+          }
+
+          console.log(d.todo)
+
+          if (d.todo.list.length > 0) {
+
+            let modalSubTask = document.getElementById("modal-subs");
+            modalSubTask!.classList.remove('hide');
+
+            let nodeSubTask = document.getElementById("node-subs");
+            nodeSubTask!.classList.remove('hide');
+            nodeSubTask!.innerHTML = "Sub tasks : "+ d.todo.list.length;
+
+            if (d.todo.developped){
+              let nodeClose = document.getElementById("node-close");
+              nodeClose!.classList.remove('hide');
+
+              let nodeExpand = document.getElementById("node-expand");
+              nodeExpand!.classList.add('hide');
+            }
+            else if (d.todo.developped === false){
+              let nodeClose = document.getElementById("node-close");
+              nodeClose!.classList.add('hide');
+
+              let nodeExpand = document.getElementById("node-expand");
+              nodeExpand!.classList.remove('hide');
+              console.log(nodeExpand)
+
+              nodeExpand!.onclick = function() {
+                console.log("expand")
+                onClickCircle(event, d);
+              }
+            }
+            else{
+              let nodeClose = document.getElementById("node-close");
+              nodeClose!.classList.add('hide');
+
+              let nodeExpand = document.getElementById("node-expand");
+              nodeExpand!.classList.add('hide');
+            }
+          }
+          else{
+            let modalSubTask = document.getElementById("modal-subs");
+            modalSubTask!.classList.add('hide');
+
+            let nodeSubTask = document.getElementById("node-subs");
+            nodeSubTask!.classList.add('hide');
+
+            let nodeClose = document.getElementById("node-close");
+            nodeClose!.classList.add('hide');
+
+            let nodeExpand = document.getElementById("node-expand");
+            nodeExpand!.classList.add('hide');
+          }
+
+
           
 
-          modal!.style.display = "block";
+
+          modal!.classList.remove('close-modal');
 
          
 
@@ -217,7 +316,8 @@ export class ConceptorPage implements OnInit {
             .attr("fill", nodeColor)
             .attr("class", "node")
             .call(drag as any)
-            .on("click", onClickCircle)
+            .on("click", onClickCircleModal)
+            .on("dblclick", onClickCircle)
         }
 
         // function updateRect(){

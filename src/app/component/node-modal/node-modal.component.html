@@ -1,0 +1,89 @@
+
+<div>
+  <!-- <div class="background">
+  </div> -->
+
+
+
+  <div class="content start-effect">
+
+    <ion-header>
+      <ion-toolbar>
+
+        <ion-buttons slot="start" (click)="closeModal()">
+          <ion-icon name="close-outline" class="close-icon" ></ion-icon>
+        </ion-buttons>
+
+        <div>
+          <ion-title size="large" id="node-title">Node modal</ion-title>
+        </div>
+        
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- <div *ngIf="openModal.open == true" [style.margin-bottom.px]="getMaxHeight()">
+
+    </div> -->
+    
+    
+    <ion-list class="list-page">
+  
+
+  
+      <ion-item id="modal-description">
+        <ion-label position="floating" color="primary">Description</ion-label>
+        <ion-textarea id="node-description" autoGrow="true"></ion-textarea>
+      </ion-item>
+  
+      <div id="modal-date" class="date-selector" >
+    
+        <ion-item class="date-left" >
+          <ion-label position="floating"  [color]="'primary'">Due date</ion-label>
+          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
+    
+          <ion-input id="node-date" type="date" placeholder="MM/DD/YYYY" ></ion-input>  
+        </ion-item>
+    
+        <ion-item>
+          <ion-label position="floating" [color]="'primary'">Due time</ion-label>
+          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
+    
+          <ion-input id="node-time" type="time" placeholder="Time" ></ion-input>
+        </ion-item>
+      </div>
+      
+  
+  
+      <div id="modal-subs">
+        <ion-label id="node-subs" class="sub-label" color="primary">Sub Tasks : </ion-label>
+
+        <ion-button class="button" color="medium" id="node-expand">
+          expand
+        </ion-button>
+
+        <ion-button class="button hide" color="medium" id="node-close">
+          remove
+        </ion-button>
+
+        
+  
+      </div>
+    </ion-list>
+  
+    <!-- <div  #child>
+      <div *ngIf="openModal.open">
+      
+        <app-add-modal [subTodo]="openModal.task" [level]="incrementLevel()" [modify]="openModal.modify"></app-add-modal>
+    
+      </div>
+
+    </div> -->
+   
+  
+  </div>
+
+</div>
+
+
+
+   

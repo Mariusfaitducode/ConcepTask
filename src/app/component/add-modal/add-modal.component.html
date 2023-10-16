@@ -8,16 +8,16 @@
   <div class="content">
 
     <ion-header>
-      <ion-toolbar [ngClass]="{'doneHeader': subTask.isDone == true }">
+      <ion-toolbar [ngClass]="{'doneHeader': subTask.isDone === true }">
         <ion-buttons slot="start">
           <ion-icon name="close-outline" class="close-icon" (click)="showCloseConfirm()"></ion-icon>
         </ion-buttons>
         <!-- level: {{level}} -->
     
-        <div *ngIf="subTask.title == ''">
+        <div *ngIf="subTask.title === ''">
           <ion-title size="large">New task</ion-title>
         </div>
-        <div *ngIf="subTask.title != ''">
+        <div *ngIf="subTask.title !== ''">
           <ion-title size="large">{{subTask.title}}</ion-title>
         </div>
         <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->

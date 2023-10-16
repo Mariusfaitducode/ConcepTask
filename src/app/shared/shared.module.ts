@@ -10,23 +10,22 @@ import { CustomConfigComponent } from '../component/selection/custom-config/cust
 import { LeftMenuComponent } from '../component/left-menu/left-menu.component';
 import { ButtonAddSubTaskComponent } from '../component/selection/button-add-sub-task/button-add-sub-task.component';
 import { DateSelectorComponent } from '../component/selection/date-selector/date-selector.component';
+import { NodeModalComponent } from '../component/node-modal/node-modal.component';
 
 
 
 @NgModule({
   imports: [
-    
     CommonModule,
     FormsModule,
     IonicModule,
-    
-
   ],
   declarations: [
     TodoCardComponent,
     SubTodoComponent,
     SubTaskComponent,
     AddModalComponent,
+    NodeModalComponent,
     CustomConfigComponent,
     LeftMenuComponent,
     ButtonAddSubTaskComponent,
@@ -36,6 +35,7 @@ import { DateSelectorComponent } from '../component/selection/date-selector/date
     TodoCardComponent, 
     SubTodoComponent, 
     AddModalComponent, 
+    NodeModalComponent,
     SubTaskComponent, 
     CustomConfigComponent, 
     LeftMenuComponent, 
