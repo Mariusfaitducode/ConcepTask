@@ -47,16 +47,28 @@ ion-label{
 }
 
 
+//Passed style
+
+.passedHeader{
+    --background: var(--is-passed-color-header) !important;
+}
+
+.passed{
+    background-color: var(--is-passed-color);
+ }
+
 //Is done style
 
 .doneHeader{
     --background: var(--is-done-color-header) !important;
-    
 }
 
 .isDone{
     background-color: var(--is-done-color);
  }
+
+
+
 
 
 //

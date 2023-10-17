@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" >
-  <ion-toolbar *ngIf="modalConfig.open == false" [ngClass]="{'doneHeader': newTodo.isDone == true }">
+  <ion-toolbar *ngIf="modalConfig.open == false" [ngClass]="{'doneHeader': newTodo.isDone == true, 'passedHeader' : passedDate()}">
     <ion-buttons slot="start" >
       <ion-button (click)="showCloseConfirm()" class="back-button">
         <ion-icon name="arrow-back-outline" ></ion-icon>

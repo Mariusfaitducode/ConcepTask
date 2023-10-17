@@ -1,7 +1,7 @@
 
 <ion-card [style.margin-right]="marginLeft()">
 
-  <ion-card-content (click)="clickSubTask()" (press)="developSubTaskPressed($event)" [ngClass]="{isDone: subTask.isDone}">
+  <ion-card-content (click)="clickSubTask()" (press)="developSubTaskPressed($event)" [ngClass]="{isDone: subTask.isDone, passed : passedDate()}">
 
     <!-- <ion-icon name="menu-outline"></ion-icon> -->
 

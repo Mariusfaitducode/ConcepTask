@@ -189,6 +189,21 @@ export class Todo {
     }
 
 
+    public static passedDate(todo : Todo){
+
+      if (todo.date) {
+        let date = new Date(todo.date);
+        let now = new Date();
+  
+        if (date < now) {
+          return true;
+        }
+      }
+      return false;
+
+    }
+
+
     
 }
 

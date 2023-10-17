@@ -162,4 +162,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
       // Todo.cancelNotification(this.subTask);
     }
   }
+
+  passedDate(){
+    return Todo.passedDate(this.subTask);
+  }
 }

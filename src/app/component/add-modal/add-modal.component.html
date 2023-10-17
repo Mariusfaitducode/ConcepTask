@@ -8,7 +8,7 @@
   <div class="content">
 
     <ion-header>
-      <ion-toolbar [ngClass]="{'doneHeader': subTask.isDone === true }">
+      <ion-toolbar [ngClass]="{'doneHeader': subTask.isDone === true, 'passedHeader' : passedDate()}">
         <ion-buttons slot="start">
           <ion-icon name="close-outline" class="close-icon" (click)="showCloseConfirm()"></ion-icon>
         </ion-buttons>
@@ -78,6 +78,21 @@
         <ion-textarea [(ngModel)]="subTask.description" (ionChange)="changeTodo = true"></ion-textarea>
   
       </ion-item>
+
+      <ion-row *ngIf="this.subTask.config.priority">
+        <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
+        <ion-segment [(ngModel)]="subTask.priority" color="primary" (ionChange)="changeTodo = true">
+          <ion-segment-button value="low">
+            <ion-label>Low</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="medium">
+            <ion-label>Medium</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="high">
+            <ion-label>High</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-row>
   
       <app-date-selector [todo]="subTask" [page]="'modal'" (childModified)="changeTodo = true"></app-date-selector>
   

@@ -235,6 +235,9 @@ export class AddPage implements OnInit {
     //console.log(this.newTodo.list);
   }
 
+  passedDate(){
+    return Todo.passedDate(this.newTodo);
+  }
 
 // Notifications
 

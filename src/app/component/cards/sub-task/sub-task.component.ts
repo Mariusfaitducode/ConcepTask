@@ -104,4 +104,7 @@ export class SubTaskComponent  implements OnInit {
     return 0;
   }
   
+  passedDate(){
+    return Todo.passedDate(this.subTask);
+  }
 }

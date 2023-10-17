@@ -230,6 +230,9 @@ export class TodoPage implements OnInit {
     this.router.navigate(['/conceptor', this.index]);
   }
  
+  passedDate(){
+    return Todo.passedDate(this.todo);
+  }
 
   // manageNotification(){
 
