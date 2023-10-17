@@ -19,6 +19,12 @@ export class NodeModalComponent implements OnInit {
     //this.modalService.closeModal();
     var modal = document.getElementById("modal-node");
     modal!.classList.add('close-modal');
+
+    let selectedNodes = document.getElementsByClassName('selected');
+
+    for (let i = 0; i < selectedNodes.length; i++) {
+      selectedNodes[i].classList.remove('selected');
+    }
   }
 
 }

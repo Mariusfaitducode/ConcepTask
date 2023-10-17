@@ -7,9 +7,11 @@ import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-deleg
 
 import * as d3 from 'd3';
 import { update } from 'firebase/database';
+import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/model/graph-conceptor';
 import { Todo } from 'src/app/model/todo';
 
+// import 'font-awesome';
 
 @Component({
   selector: 'app-conceptor',
@@ -66,6 +68,7 @@ export class ConceptorPage implements OnInit {
 
         let maxLevel = 0;
         let linkColor = "var(--ion-color-step-700)";
+        let lastSelectedNode : any = null;
 
         let zoom = d3.zoom()
           .scaleExtent([0.1, 10]) // Définissez les limites du zoom
@@ -86,7 +89,7 @@ export class ConceptorPage implements OnInit {
               })
               .links(graph.links)
           )
-          .force("charge", d3.forceManyBody().strength(-60))
+          .force("charge", d3.forceManyBody().strength(-100))
           .force("center", d3.forceCenter(width / 2, height / 2))
           .on("tick", ticked);
 
@@ -115,7 +118,7 @@ export class ConceptorPage implements OnInit {
           .data(graph.nodes)
           .enter()
             .append("circle")
-            .attr("r", 10)
+            .attr("r", sizeNode)
             .attr("fill", nodeColor)
             .attr("stroke", linkColor)
             .attr("class", "node")
@@ -124,14 +127,19 @@ export class ConceptorPage implements OnInit {
             .on("dblclick", onClickCircle)
 
 
-        // var rect = g.append("g")
-        //     .attr("class", "rects")
-        //   .selectAll("rect")
-        //     .data(graph.nodes)
-        //   .enter().append("rect")
-        //     .attr("width", function(d) { return d.todo.title.length * 5; }) // Ajustez la largeur en fonction de la longueur du texte
-        //     .attr("height", 12) // Ajustez la hauteur en fonction de vos besoins
-        //     .attr("fill", "var(--ion-color-step-150)")
+        var nodeIcon = g.append("g")
+            .attr("class", "emoji")
+            .attr("width", '10px')
+            .attr("height", '10px')
+          .selectAll("text")
+            .data(graph.nodes)
+          .enter().append("text")
+            .text(emojiNode) // Utilisez un emoji pour une icône
+            .attr('font-size', '10px')
+            .attr('letter-spacing', '-3px')
+
+        
+            
 
 
         var text = g.append("g")
@@ -148,22 +156,19 @@ export class ConceptorPage implements OnInit {
 
         function onClickCircleModal(event : any, d : any){
 
+          console.log(event)
+
+          if (lastSelectedNode) {
+            lastSelectedNode.classList.remove('selected');
+          }
+          lastSelectedNode = event.target;
+          event.target.classList.add('selected');
 
           var modal = document.getElementById("modal-node");
 
           console.log(modal)
 
-
-          // if (modal?.hasAttribute("todo")) {
-          //   console.log("has attribute")
-          //   // modal!.removeAttribute("todo");
-          //   modal.setAttribute("todo", JSON.stringify(d.todo));
-          // }
-
-          // modal!.todo = d.todo;
-
-          // var modalAngular = angular.element(modal).scope();
-
+          // Title
           var nodeTitle = document.getElementById("node-title");
           nodeTitle!.innerHTML = d.todo.title;
 
@@ -179,6 +184,7 @@ export class ConceptorPage implements OnInit {
             modalDescription!.classList.add('hide');
           }
 
+          // Date
           if (d.todo.date) {
             let modalDate = document.getElementById("modal-date");
             modalDate!.classList.remove('hide');
@@ -192,11 +198,9 @@ export class ConceptorPage implements OnInit {
           else{
             let modalDate = document.getElementById("modal-date");
             modalDate!.classList.add('hide');
-
           }
 
-          console.log(d.todo)
-
+          // Sub tasks
           if (d.todo.list.length > 0) {
 
             let modalSubTask = document.getElementById("modal-subs");
@@ -248,9 +252,14 @@ export class ConceptorPage implements OnInit {
             nodeExpand!.classList.add('hide');
           }
 
-
-          
-
+          if (d.todo.isDone) {
+            let modalHeader = document.getElementById("modal-header");
+            modalHeader!.classList.add('doneHeader');
+          }
+          else{
+            let modalHeader = document.getElementById("modal-header");
+            modalHeader!.classList.remove('doneHeader');
+          }
 
           modal!.classList.remove('close-modal');
 
@@ -311,7 +320,7 @@ export class ConceptorPage implements OnInit {
           circle.exit().remove();
           circle = circle.enter().append("circle")
             .merge(circle)
-            .attr("r", 10)
+            .attr("r", sizeNode)
             .attr("stroke", linkColor)
             .attr("fill", nodeColor)
             .attr("class", "node")
@@ -320,15 +329,15 @@ export class ConceptorPage implements OnInit {
             .on("dblclick", onClickCircle)
         }
 
-        // function updateRect(){
-        //   rect = rect.data(graph.nodes, (d: any) => d.id);
-        //   rect.exit().remove();
-        //   rect = rect.enter().append("rect")
-        //     .merge(rect)
-        //     .attr("width", function(d) { return d.todo.title.length * 5; }) // Ajustez la largeur en fonction de la longueur du texte
-        //     .attr("height", 12) // Ajustez la hauteur en fonction de vos besoins
-        //     .attr("fill", "var(--ion-color-step-150)")
-        // }
+        function updateEmoji(){
+          nodeIcon = nodeIcon.data(graph.nodes, (d: any) => d.id);
+          nodeIcon.exit().remove();
+          nodeIcon = nodeIcon.enter().append("text")
+            .merge(nodeIcon)
+            .text(emojiNode) // Utilisez un emoji pour une icône
+            .attr('font-size', '10px')
+            .attr('letter-spacing', '-3px')
+        }
 
         function updateText(){
           text = text.data(graph.nodes, (d: any) => d.id);
@@ -383,14 +392,57 @@ export class ConceptorPage implements OnInit {
         function nodeColor(d : any) {
           if (d.todo.isDone) {
             return "var(--is-done-color-node)";
-          } else {
+          }
+          else if (new Date(d.todo.date) < new Date()) {
+            return "var(--ion-color-danger)";
+          }
+          else {
 
-            const levelShade = 500 - ((maxLevel - d.level) * 50);
+            const levelShade = 500 - ((maxLevel - d.level) * 100);
 
             if (levelShade < 50) return 'var(--ion-color-step-50)';
             
             return 'var(--ion-color-step-' + levelShade + ')';
           }
+        }
+
+
+        function sizeNode(d : any){
+
+          if (d.todo.main){
+            return 12;
+          }
+          else{
+            return 10;
+          }
+        }
+
+        function emojiNode(d : any){
+
+          let emoji = '';
+
+          if (d.todo.isDone){
+            emoji += '✅';
+          }
+          else {
+            if (d.todo.date && new Date(d.todo.date) < new Date()){
+              emoji+= '⏰';
+            }
+            if (d.todo.date && new Date(d.todo.date) > new Date()){
+              emoji+= '📅';
+            }
+            if (d.todo.priority == 'high'){
+              emoji += '‼️';
+            }
+            if (d.todo.priority == 'medium'){
+              emoji += '❗';
+            }
+            if (d.todo.priority == 'low'){
+              emoji += '❕';
+            }
+          }
+
+          return emoji;
         }
 
 
@@ -429,6 +481,14 @@ export class ConceptorPage implements OnInit {
             })
             .attr("y", function(d) {
               return d.y + textOffsetY;
+            });
+
+          nodeIcon
+            .attr("x", function(d) {
+              return d.x + 3;
+            })
+            .attr("y", function(d) {
+              return d.y - 2;
             });
 
           // rect
