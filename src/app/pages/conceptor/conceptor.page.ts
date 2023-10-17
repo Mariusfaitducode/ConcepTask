@@ -216,6 +216,11 @@ export class ConceptorPage implements OnInit {
 
               let nodeExpand = document.getElementById("node-expand");
               nodeExpand!.classList.add('hide');
+
+              nodeClose!.onclick = function() {
+                onClickCircle(event, d);
+                modal!.classList.add('close-modal');
+              }
             }
             else if (d.todo.developped === false){
               let nodeClose = document.getElementById("node-close");
@@ -223,11 +228,11 @@ export class ConceptorPage implements OnInit {
 
               let nodeExpand = document.getElementById("node-expand");
               nodeExpand!.classList.remove('hide');
-              console.log(nodeExpand)
 
               nodeExpand!.onclick = function() {
                 console.log("expand")
                 onClickCircle(event, d);
+                modal!.classList.add('close-modal');
               }
             }
             else{
@@ -262,10 +267,6 @@ export class ConceptorPage implements OnInit {
           }
 
           modal!.classList.remove('close-modal');
-
-         
-
-
         }
 
 
@@ -279,13 +280,18 @@ export class ConceptorPage implements OnInit {
 
             if (graph.nodes.find(node => node.id == subTodo.subId)) {
 
+              d.todo.developped = false;
+
               // Enlever tous les sous todos
 
-              // graph.nodes = graph.nodes.filter(node => node.id != subTodo.subId);
-              // graph.links = graph.links.filter(link => link.target.id != subTodo.subId);
+              graph.nodes = graph.nodes.filter(node => node.id != subTodo.subId);
+              graph.links = graph.links.filter(link => link.target.id != subTodo.subId);
+              removeSubTodos(subTodo);
 
             }
             else{
+
+              d.todo.developped = true;
 
               if (d.level + 1 > maxLevel) {
                 maxLevel = d.level + 1;
@@ -295,11 +301,25 @@ export class ConceptorPage implements OnInit {
 
               graph.links.push({ source: d.id, target: subTodo.subId });
             }
-
-            
           }
 
           updateGraph();
+        }
+
+        function removeSubTodos(todo : Todo){
+            
+          for (let subTodo of todo.list!) {
+
+            if (graph.nodes.find(node => node.id == subTodo.subId)) {
+
+              // Enlever tous les sous todos
+
+              graph.nodes = graph.nodes.filter(node => node.id != subTodo.subId);
+              graph.links = graph.links.filter(link => link.target.id != subTodo.subId);
+
+              removeSubTodos(subTodo);
+            }
+          }
         }
 
 
@@ -348,23 +368,7 @@ export class ConceptorPage implements OnInit {
             .text(function(d) { return d.todo.title });
         }
         
-
-
-        function updateGraph() {
-          // Mettez à jour le graphique en fonction des données actuelles, y compris les nœuds enfants
-      
-          // Mettez à jour les liens
-          updateLink();
-      
-          // Mettez à jour les cercles (nœuds)
-          updateCircle();
-      
-          // Mettez à jour le texte (labels)
-          // updateRect();
-          updateText();
-      
-          // Mettez à jour la simulation
-
+        function updateSimulation(){
           simulation.stop();
 
           simulation = d3
@@ -383,6 +387,16 @@ export class ConceptorPage implements OnInit {
           .on("tick", ticked);
 
           simulation.restart();
+        }
+
+
+        function updateGraph() {
+          // Mettez à jour le graphique en fonction des données actuelles, y compris les nœuds enfants
+          updateLink();
+          updateCircle();
+          updateEmoji();
+          updateText();
+          updateSimulation();
         }
 
 
@@ -405,7 +419,6 @@ export class ConceptorPage implements OnInit {
             return 'var(--ion-color-step-' + levelShade + ')';
           }
         }
-
 
         function sizeNode(d : any){
 
@@ -490,15 +503,6 @@ export class ConceptorPage implements OnInit {
             .attr("y", function(d) {
               return d.y - 2;
             });
-
-          // rect
-          //   .attr("x", function(d) {
-          //     return d.x + textOffsetX - 3;
-          //   })
-          //   .attr("y", function(d) {
-          //     return d.y + textOffsetY - 8;
-          //   });
-            
         }
 
 
