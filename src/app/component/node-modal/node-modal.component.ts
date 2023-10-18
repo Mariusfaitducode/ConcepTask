@@ -8,7 +8,7 @@ import { Todo } from 'src/app/model/todo';
 })
 export class NodeModalComponent implements OnInit {
 
-  @Input() todo : any;
+  
 
   constructor() { }
 
@@ -26,5 +26,13 @@ export class NodeModalComponent implements OnInit {
       selectedNodes[i].classList.remove('selected');
     }
   }
+
+  showConfirm(){}
+
+  validateTodo(){}
+
+  unvalidateTodo(){}
+
+  modifyTodo(){}
 
 }

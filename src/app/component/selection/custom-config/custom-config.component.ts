@@ -19,6 +19,13 @@ export class CustomConfigComponent  implements OnInit {
     
     this.configArray[key] = !this.configArray[key];
 
+    if (this.configArray['date'] && key == 'date') {
+      this.configArray['repeat'] = false;
+    }
+    else if (this.configArray['repeat']) {
+      this.configArray['date'] = false;
+    }
+
   }
 
 }

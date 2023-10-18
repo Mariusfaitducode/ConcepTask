@@ -7,19 +7,30 @@ export class Notif {
 
     public static async scheduleNotification(todo : Todo) {
         try {
+          console.log("schedule notification")
           let date = Todo.getDate(todo.date!, todo.time);
           
           // Vérifier si les notifications sont disponibles
           const available = await LocalNotifications.requestPermissions();
     
+          // console.log("search notifId")
           let notifId = Todo.getNotifId(todo);
   
+          // console.log("notifId : " + notifId)
+
           let description = todo.description;
           if (!todo.description){
             description = '';
           }
+
+
   
           if (available) {
+
+          console.log("notification available")
+
+
+            console.log(date)
     
             // Planifier la notification
             await LocalNotifications.schedule({
@@ -31,12 +42,12 @@ export class Notif {
                   schedule: { at: date }, // Date et heure de la notification
                   //sound: null, // Chemin vers un fichier audio de notification (facultatif)
                   //attachments: null, // Pièces jointes (facultatif)
-                  actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
-                },
+                }
               ],
             });
           }
-        } catch (error) {
+        } 
+        catch (error) {
           console.error('Erreur lors de la planification de la notification', error);
         }
       }
@@ -44,7 +55,7 @@ export class Notif {
   
       public static async scheduleRecurringNotification(todo: Todo) {
         try {
-          let date = Todo.getDate(todo.date!, todo.time);
+          let date = Todo.getDate(todo.repeat!.startDate!, todo.repeat!.startTime);
           
           // Vérifier si les notifications sont disponibles
           const available = await LocalNotifications.requestPermissions();
@@ -60,6 +71,8 @@ export class Notif {
 
   
           if (available) {
+
+            console.log(date)
   
             // Planifier la notification
             await LocalNotifications.schedule({
@@ -71,10 +84,7 @@ export class Notif {
                   schedule: { at: date,
                               every: repeat,
                              }, // Date et heure de la notification
-                  //sound: null, // Chemin vers un fichier audio de notification (facultatif)
-                  //attachments: null, // Pièces jointes (facultatif)
-                  actionTypeId: '', // Identifiant d'action personnalisée (facultatif)
-                },
+                }
               ],
             });
           }

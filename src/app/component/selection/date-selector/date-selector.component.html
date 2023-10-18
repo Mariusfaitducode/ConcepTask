@@ -3,14 +3,14 @@
 <div *ngIf="this.todo.config.date">
   <div class="date-selector" >
 
-    <ion-item class="date-left" [ngClass]="{'modal-item' : page == 'modal'}">
+    <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
       <ion-label position="floating"  [color]="todo.date ? 'primary' : ''">Due date</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date" (ionChange)="childModified.emit(true)"></ion-input>  
     </ion-item>
 
-    <ion-item [ngClass]="{'modal-item' : page == 'modal'}">
+    <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
       <ion-label position="floating" [color]="todo.time ? 'primary' : ''">Due time</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
@@ -18,8 +18,8 @@
     </ion-item>
   </div>
   
-  <ion-row *ngIf="todo.date != undefined && todo.time != undefined" >
-    <ion-checkbox labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">Reminder</ion-checkbox>
+  <ion-row *ngIf="todo.date !== undefined && todo.time !== undefined" >
+    <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">Reminder</ion-toggle>
   </ion-row>
 </div>
 
@@ -27,14 +27,14 @@
 <div *ngIf="this.todo.config.repeat">
   <div class="date-selector" *ngIf="todo.repeat">
 
-    <ion-item class="date-left" [ngClass]="{'modal-item' : page == 'modal'}">
+    <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
       <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">Start date</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <ion-input type="date" placeholder="MM/DD/YYYY"  [(ngModel)]="todo.repeat.startDate" (ionChange)="childModified.emit(true)"></ion-input>
     </ion-item>
 
-    <ion-item [ngClass]="{'modal-item' : page == 'modal'}">
+    <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
       <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">Time</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
@@ -56,7 +56,7 @@
     </ion-row>
 
     <ion-row *ngIf="repeatReminderPossible()">
-      <ion-checkbox labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageRepeatNotification()">Reminder</ion-checkbox>
+      <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageRepeatNotification()">Reminder</ion-toggle>
     </ion-row>
 
   </div>

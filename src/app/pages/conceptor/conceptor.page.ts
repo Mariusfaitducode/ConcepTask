@@ -260,10 +260,22 @@ export class ConceptorPage implements OnInit {
           if (d.todo.isDone) {
             let modalHeader = document.getElementById("modal-header");
             modalHeader!.classList.add('doneHeader');
+
+            let nodeValidateButton = document.getElementById("node-validate-button");
+            nodeValidateButton!.classList.add('hide');
+
+            let nodeUnvalidateButton = document.getElementById("node-unvalidate-button");
+            nodeUnvalidateButton!.classList.remove('hide');
           }
           else{
             let modalHeader = document.getElementById("modal-header");
             modalHeader!.classList.remove('doneHeader');
+
+            let nodeValidateButton = document.getElementById("node-validate-button");
+            nodeValidateButton!.classList.remove('hide');
+
+            let nodeUnvalidateButton = document.getElementById("node-unvalidate-button");
+            nodeUnvalidateButton!.classList.add('hide');
           }
 
           modal!.classList.remove('close-modal');
@@ -443,6 +455,9 @@ export class ConceptorPage implements OnInit {
             }
             if (d.todo.date && new Date(d.todo.date) > new Date()){
               emoji+= '📅';
+            }
+            if (d.todo.repeat && d.todo.reminder){
+              emoji += '🔁';
             }
             if (d.todo.priority == 'high'){
               emoji += '‼️';

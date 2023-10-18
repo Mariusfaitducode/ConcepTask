@@ -169,21 +169,30 @@ export class Todo {
     public static getNotifId(todo : Todo){
 
       if (!todo.notifId) {
-        let notifId = JSON.parse(localStorage.getItem('notifId') || '');
+
+        console.log("get notifId")
+        console.log(localStorage.getItem('notifId') || '0')
+
+        let notifId = JSON.parse(localStorage.getItem('notifId') || '0');
+
+        console.log("notifId : " + notifId)
   
-        if (!notifId) {
+        if (notifId == 0) {
           notifId = 1;
         }
         else{
           notifId++;
         }
         todo.notifId = notifId;
+
+        console.log("set notifId : " + notifId)
     
         localStorage.setItem('notifId', JSON.stringify(notifId));
 
         return notifId;
       }
       else{
+        console.log("already notifId")
         return todo.notifId;
       }
     }

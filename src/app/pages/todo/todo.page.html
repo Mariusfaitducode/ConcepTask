@@ -35,9 +35,9 @@
 
       <div class="priority-icon">
         <div  *ngIf="this.todo.config.priority">
-          <ion-icon *ngIf="todo.priority == 'low'" name="alert-circle-outline" color="medium"></ion-icon>
-          <ion-icon *ngIf="todo.priority == 'medium'" name="alert-circle-outline" color="warning"></ion-icon>
-          <ion-icon *ngIf="todo.priority == 'high'" name="alert-circle-outline" color="danger"></ion-icon>
+          <ion-icon *ngIf="todo.priority === 'low'" name="alert-circle-outline" color="medium"></ion-icon>
+          <ion-icon *ngIf="todo.priority === 'medium'" name="alert-circle-outline" color="warning"></ion-icon>
+          <ion-icon *ngIf="todo.priority === 'high'" name="alert-circle-outline" color="danger"></ion-icon>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
     <app-date-selector [todo]="todo"></app-date-selector>
 
 
-    <div *ngIf="haveProperties() == false" [ngClass]="{'ecart' : true}">
+    <div *ngIf="haveProperties() === false" [ngClass]="{'ecart' : true}">
 
     </div>
     
