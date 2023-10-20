@@ -40,9 +40,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
   },
   {
+    path: 'conceptor/:id/:modalId',
+    loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
+  },
+  {
     path: 'calendar',
     loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
-  },  {
+  },
+  {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
   },

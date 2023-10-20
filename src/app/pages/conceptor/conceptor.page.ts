@@ -138,10 +138,6 @@ export class ConceptorPage implements OnInit {
             .attr('font-size', '10px')
             .attr('letter-spacing', '-3px')
 
-        
-            
-
-
         var text = g.append("g")
             .attr("class", "labels")
           .selectAll("text")
@@ -155,6 +151,22 @@ export class ConceptorPage implements OnInit {
 
 
         function onClickCircleModal(event : any, d : any){
+
+          var nodeId = d.id;
+
+          let pathAr = window.location.pathname.split('/');
+
+        if (pathAr.length > 3) {
+            pathAr.pop();
+          }
+
+          let path = pathAr.join('/');
+
+          var newUrl = path + '/'+ nodeId;
+
+
+
+          window.history.pushState(null, '', newUrl);
 
           console.log(event)
 

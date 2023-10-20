@@ -159,12 +159,8 @@ export class TodoPage implements OnInit {
       this.todos = this.todos.filter(todo => todo.mainId != this.todo.mainId);
     }
     else{
-
       Todo.deleteTodoById(this.mainTodo, this.todo.subId!);
-      
-
       console.log(this.mainTodo.list)
-    
     }
     localStorage.setItem('todos', JSON.stringify(this.todos));
 
