@@ -11,7 +11,7 @@ import { LeftMenuComponent } from '../component/left-menu/left-menu.component';
 import { ButtonAddSubTaskComponent } from '../component/selection/button-add-sub-task/button-add-sub-task.component';
 import { DateSelectorComponent } from '../component/selection/date-selector/date-selector.component';
 import { NodeModalComponent } from '../component/node-modal/node-modal.component';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -19,6 +19,7 @@ import { NodeModalComponent } from '../component/node-modal/node-modal.component
     CommonModule,
     FormsModule,
     IonicModule,
+    DragDropModule,
   ],
   declarations: [
     TodoCardComponent,

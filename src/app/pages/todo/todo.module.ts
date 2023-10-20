@@ -8,6 +8,7 @@ import { TodoPageRoutingModule } from './todo-routing.module';
 
 import { TodoPage } from './todo.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    TodoPageRoutingModule
+    TodoPageRoutingModule,
+    DragDropModule,
   ],
   declarations: [TodoPage]
 })

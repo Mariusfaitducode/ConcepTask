@@ -77,9 +77,7 @@
 
     <!-- List -->
 
-    <div *ngIf="this.todo.config.subtasks && todo.list!.length > 0"  >
-
-      
+    <div *ngIf="this.todo.config.subtasks && todo.list!.length > 0" >
 
       <ion-list class="sub-todo-list">
         <ion-label class="sub-todos-label" color="primary">Sub Todos</ion-label>
@@ -91,13 +89,9 @@
           
         </button>
   
-        <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+        <div cdkDropListGroup>
+          
           <div *ngFor="let subTodo of todo.list">
-
-            <!-- SubTodo -->
-            <!-- <div *ngIf="subTodo.type == 'todo'">
-              <app-sub-todo [todo]="todo" [subTodo]="subTodo" [index]="id" [page]="'todo'"></app-sub-todo>
-            </div> -->
 
             <!-- SubTask -->
             <div>
@@ -105,7 +99,7 @@
             </div>
             
           </div > 
-        </ion-reorder-group>
+        </div>
       </ion-list> 
 
       <!-- <ion-row class="new-sub-todo">

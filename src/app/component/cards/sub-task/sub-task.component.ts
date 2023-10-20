@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Todo } from 'src/app/model/todo';
 
+import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+
 @Component({
   selector: 'app-sub-task',
   templateUrl: './sub-task.component.html',
@@ -22,6 +24,8 @@ export class SubTaskComponent  implements OnInit {
   @Input() page: string = "";
   @Input() level: number = 0;
 
+  
+
   // developped: boolean = false;
 
   @Input() openModal: any = {
@@ -34,6 +38,22 @@ export class SubTaskComponent  implements OnInit {
 
   ngOnInit() {
     // Todo.setConfig(this.subTask);
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    console.log(event);
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      return;
+    }
+    else{
+      // event.container.data.push(event.previousContainer.data[event.previousIndex])
+      event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
+      event.previousContainer.data.splice(event.previousIndex, 1);
+      
+    }
+    // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
   backgroundColor(){

@@ -60,24 +60,27 @@
     </div>
 
   </ion-card-content>
-
   
+    <div cdkDropList [cdkDropListData]="subTask.list" (cdkDropListDropped)="drop($event)">
+      <ion-list  class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped" [style.background-color]="backgroundColor()">
 
-  <ion-list class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped" [style.background-color]="backgroundColor()">
-
-    <div *ngIf="page === 'add'">
-      <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
-
+        <div *ngIf="page === 'add'">
+          <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
+  
+        </div>
+        
+  
+        <div *ngFor="let sub of subTask.list; let id = index" >
+      
+          <app-sub-task cdkDrag [todos]="todos" [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
+        
+        </div>
+      
+      </ion-list>
     </div>
-    
-
-    <div *ngFor="let sub of subTask.list; let id = index" >
+   
   
-      <app-sub-task [todos]="todos" [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
-    
-    </div>
   
-  </ion-list>
  
 </ion-card>
 
