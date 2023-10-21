@@ -89,44 +89,24 @@
           
         </button>
   
-        <div cdkDropListGroup>
-          
-          <div *ngFor="let subTodo of todo.list">
-
-            <!-- SubTask -->
-            <div>
-              <app-sub-task [todos]="todos" [parentTask]="todo" [subTask]="subTodo" [index]="index" [page]="'todo'"></app-sub-task>
+        <div>
+          <!-- <div cdkDropList [cdkDropListData]="todo.list" (cdkDropListDropped)="drop($event)"> -->
+            <div cdkDropListGroup>
+              <div *ngFor="let subTodo of todo.list; let index = index" >
+                <div cdkDropList [cdkDropListData]="subTasksList[index]" (cdkDropListDropped)="drop($event)">
+                  index : {{index}}
+                  <app-sub-task 
+                  [todos]="todos" [parentTask]="todo" [subTask]="subTodo" [index]="index" [page]="'todo'"></app-sub-task>
+                </div>
+              </div >
             </div>
-            
-          </div > 
+
+           
         </div>
       </ion-list> 
 
-      <!-- <ion-row class="new-sub-todo">
-        <ion-input  type="text" [(ngModel)]="newTodoOnListTitle" placeholder="Sub todos"></ion-input>
-        <ion-icon name="add" (click)="addTodoOnList()"></ion-icon>
-      </ion-row>
-
-      <ion-row class="new-sub-task">
-
-        <ion-text>Sub tasks</ion-text>
-        <ion-buttons class="add-button-container" >
-          <button class="add-button" (click)="openModal = true">
-            <ion-icon name="add"></ion-icon>
-          </button>
-        </ion-buttons>
-
-      </ion-row> -->
-
     </div>
 
-    
-
   </ion-list>
-
-  <!-- <div *ngIf="openModal">
-    <app-add-modal></app-add-modal>
-
-  </div> -->
 
 </ion-content>

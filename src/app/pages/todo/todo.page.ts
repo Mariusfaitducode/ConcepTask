@@ -6,6 +6,8 @@ import { ModalService } from 'src/app/service/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-todo',
@@ -22,6 +24,8 @@ export class TodoPage implements OnInit {
   todo! : Todo;
   index : number = 0;
 
+
+  subTasksList : any[] = [];
 
   // originalIndex : number = 0;
 
@@ -63,7 +67,48 @@ export class TodoPage implements OnInit {
       }
     });
 
+
+    this.initializeSubTasksList();
+
+    console.log(this.subTasksList);
+    
+
     //this.setConfig();
+  }
+
+  findSubTaskList(id : number){
+    let list = this.subTasksList.find(list => list[0].subId == id);
+    console.log(list);
+    return list;
+  }
+
+  initializeSubTasksList(){
+
+    for (let subTask of this.todo.list!) {
+      this.subTasksList.push(Todo.transformTodoInListByDepth(subTask));
+    }
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+
+    console.log("Element dropped")
+    console.log(event)
+
+    console.log(event.item.data.title)
+    console.log(event.previousContainer.id);
+    console.log(event.container.id);
+
+    // if (event.previousContainer === event.container) {
+    //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    //   return;
+    // }
+    // else{
+    //   // event.container.data.push(event.previousContainer.data[event.previousIndex])
+    //   event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
+    //   event.previousContainer.data.splice(event.previousIndex, 1);
+      
+    // }
+    // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
 

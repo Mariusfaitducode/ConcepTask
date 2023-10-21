@@ -41,7 +41,9 @@ export class SubTaskComponent  implements OnInit {
   }
 
   drop(event: CdkDragDrop<any[]>) {
-    console.log(event);
+    console.log("Element dropped")
+    console.log(event.previousContainer.id);
+    console.log(event.container.id);
 
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -49,12 +51,19 @@ export class SubTaskComponent  implements OnInit {
     }
     else{
       // event.container.data.push(event.previousContainer.data[event.previousIndex])
-      event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
-      event.previousContainer.data.splice(event.previousIndex, 1);
+      //event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
+      //event.previousContainer.data.splice(event.previousIndex, 1);
       
     }
     // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
+
+  dragStart(event: any) {
+    console.log("Element dragStart")
+    console.log(event);
+  }
+
+
 
   backgroundColor(){
     const levelShade = 200 + (this.level * 50);

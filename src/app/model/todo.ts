@@ -213,6 +213,21 @@ export class Todo {
     }
 
 
+    public static transformTodoInListByDepth(rootTodo : Todo, level : number = 0, list : any[] = []){
+
+      list.push({todo: rootTodo, level: level});
+
+      let copyList = [...rootTodo.list!];
+      // Dfs algorithm
+
+      while(copyList.length > 0){
+
+        let todo = copyList.shift()!;
+        
+        Todo.transformTodoInListByDepth(todo, level + 1, list)
+      }
+      return list
+    }
     
 }
 
