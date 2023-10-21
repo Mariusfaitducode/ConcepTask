@@ -1,18 +1,6 @@
 
-.title-input{
-    width: 100%;
-    font-size: 20px;
 
-    margin-left: 15px;
-    
-}
-
-.select-right{
-    // align-self: flex-end;
-
-    margin-right: 20px;
-    width: fit-content;
-}
+//Header
 
 .toolbar-content{
     display: flex;
@@ -20,6 +8,29 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.title-input{
+    width: fit-content;
+    font-size: 20px;
+
+    margin: auto;
+    margin-left: 15px;
+    // height: 30px;
+    // padding: 6px 16px;
+}
+
+.chip-category{
+    // align-self: flex-end;
+
+    // background-color: ;
+
+    padding: 6px 16px;
+    border-radius: 16px;
+    margin-right: 20px;
+    width: fit-content;
+}
+
+
 
 
 .description{
@@ -114,8 +125,22 @@ ion-item{
     fill: none;
 }
 
-.header-button:hover{
-    background: var(--ion-color-step-100);
+// .header-button:hover{
+//     background: var(--ion-color-step-100);
+// }
+
+.validate-button{
+    background: var(--is-done-color-header) ;
+}
+
+.validate-icon{
+    color: var(--white);
+    // font-size: 30px;
+    --ionicon-stroke-width: 40px;
+}
+
+.unvalidate-button{
+    background: var(--ion-color-primary);
 }
 
 .conceptor-button{

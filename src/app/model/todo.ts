@@ -56,8 +56,7 @@ export class Todo {
           date: false,
           repeat: false,
           subtasks: false,
-        };
-        
+        };   
     }
 
 
@@ -138,6 +137,8 @@ export class Todo {
           return "var(--ion-color-primary)";
       }
     }
+
+    
 
 
     // public static findOnConfig(todo: Todo, key: string): boolean {

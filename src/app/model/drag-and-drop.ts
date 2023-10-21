@@ -27,7 +27,9 @@ export class DragAndDrop {
         let parentTodo = event.container.data[newIndex].todo;
     
         console.log("parent todo")
-        console.log(parentTodo.title)
+        // console.log(parentTodo.title)
+
+        if (!parentTodo) return;
 
         if (parentTodo.subId == item.subId) return;
 

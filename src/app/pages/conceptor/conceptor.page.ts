@@ -60,8 +60,10 @@ export class ConceptorPage implements OnInit {
 
         let svg = d3.select("#graph-container");
 
+        console.log(svg)
 
-        if (svg.selectChildren("g").size() > 0) return;
+
+        if (svg.selectChildren("g").size() > 0) window.location.reload();
 
 
         let g = svg.append("g");
@@ -183,6 +185,10 @@ export class ConceptorPage implements OnInit {
           // Title
           var nodeTitle = document.getElementById("node-title");
           nodeTitle!.innerHTML = d.todo.title;
+
+          var nodeCategory = document.getElementById("node-category");
+          nodeCategory!.innerHTML = d.todo.category;
+          nodeCategory!.style.backgroundColor = Todo.typeColor(d.todo.category);
 
           if (d.todo.description) {
             let modalDescription = document.getElementById("modal-description");

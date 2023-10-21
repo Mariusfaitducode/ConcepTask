@@ -67,9 +67,6 @@ export class TodoPage implements OnInit {
         this.todo = this.findSubTodo(+params['subId']!);
       }
     });
-
-    
-
     this.initializeSubTasksList();
 
     console.log(this.subTasksList);
@@ -80,6 +77,7 @@ export class TodoPage implements OnInit {
     this.actualizeWhenDeveloppedClicked();
   }
 
+
   actualizeWhenDeveloppedClicked(){
     let developTask = Array.from(document.getElementsByClassName("develop-task"));
 
@@ -88,6 +86,7 @@ export class TodoPage implements OnInit {
       dev.addEventListener("click", () => this.initializeSubTasksList());
     }
   }
+
 
   initializeSubTasksList(){
 
@@ -102,13 +101,12 @@ export class TodoPage implements OnInit {
     }
   }
 
+
   async drop(event: CdkDragDrop<any[]>) {
 
     await DragAndDrop.drop(event, this.mainTodo);
     this.initializeSubTasksList();
   }
-
-  
 
 
   //Reset config au cas ou
@@ -272,6 +270,10 @@ export class TodoPage implements OnInit {
  
   passedDate(){
     return Todo.passedDate(this.todo);
+  }
+
+  categoryColor(){
+    return Todo.typeColor(this.todo.category);
   }
 
   // manageNotification(){

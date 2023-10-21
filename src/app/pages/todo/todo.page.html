@@ -9,17 +9,12 @@
 
     <div class="toolbar-content">
 
-      <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input>
+      <!-- <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input> -->
+      <h1 class="title-input">{{todo.title}}</h1>
 
-      <ion-select aria-label="Type" [(ngModel)]="todo.category" class="select-right">
-        <ion-select-option value="default">Default</ion-select-option>
-        <ion-select-option value="personnal">Personnal</ion-select-option>
-        <ion-select-option value="project">Project</ion-select-option>
-        <ion-select-option value="work">Work</ion-select-option>
-        <ion-select-option value="wishlist">Wishlist</ion-select-option>
-        <ion-select-option value="sport">Sport</ion-select-option>
-        <ion-select-option value="shopping">Shopping</ion-select-option>
-      </ion-select>
+      <div class="chip-category" [style.background-color]="categoryColor()">
+        {{todo.category}}
+      </div>
 
     </div>
     <!-- <ion-title>{{todo.title}}</ion-title> -->
@@ -51,11 +46,11 @@
           <ion-icon name="trash-outline" color="danger" ></ion-icon>
         </button>
 
-        <button class="header-button" disabled *ngIf="!todo.isDone">
-          <ion-icon name="checkmark-outline" color="primary" (click)="validateTodo()"></ion-icon>
+        <button class="header-button validate-button" *ngIf="!todo.isDone" (click)="validateTodo()">
+          <ion-icon name="checkmark-outline" class="validate-icon" ></ion-icon>
         </button>
-        <button class="header-button" disabled *ngIf="todo.isDone">
-          <ion-icon name="refresh-outline" color="primary" (click)="unvalidateTodo()"></ion-icon>
+        <button class="header-button unvalidate-button" *ngIf="todo.isDone" (click)="unvalidateTodo()">
+          <ion-icon name="refresh-outline" class="validate-icon"></ion-icon>
         </button>
 
       </ion-buttons>
