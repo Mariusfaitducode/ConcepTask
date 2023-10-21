@@ -1,10 +1,10 @@
 
 <ion-card [style.margin-right]="marginLeft()">
 
-  <div >
+  <div cdkDrag [cdkDragData]="subTask">
     <ion-card-content 
-  (click)="clickSubTask()" (press)="developSubTaskPressed($event)"
-   [ngClass]="{isDone: subTask.isDone, passed : passedDate()}">
+      (click)="clickSubTask()" (press)="developSubTaskPressed($event)"
+      [ngClass]="{isDone: subTask.isDone, passed : passedDate()}">
 
     <!-- <ion-icon name="menu-outline"></ion-icon> -->
 
@@ -54,7 +54,7 @@
   
         <div *ngFor="let sub of subTask.list; let id = index" >
       
-          <app-sub-task cdkDrag [cdkDragData]="sub"
+          <app-sub-task 
           [todos]="todos" [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
         
         </div>

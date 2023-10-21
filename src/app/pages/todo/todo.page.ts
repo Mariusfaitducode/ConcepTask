@@ -76,11 +76,11 @@ export class TodoPage implements OnInit {
     //this.setConfig();
   }
 
-  findSubTaskList(id : number){
-    let list = this.subTasksList.find(list => list[0].subId == id);
-    console.log(list);
-    return list;
-  }
+  // findSubTaskList(id : number){
+  //   let list = this.subTasksList.find(list => list[0].subId == id);
+  //   console.log(list);
+  //   return list;
+  // }
 
   initializeSubTasksList(){
 
@@ -95,19 +95,51 @@ export class TodoPage implements OnInit {
     console.log(event)
 
     console.log(event.item.data.title)
-    console.log(event.previousContainer.id);
-    console.log(event.container.id);
+    console.log(event.previousContainer.id, event.previousIndex);
+    console.log(event.container.id, event.currentIndex);
 
-    // if (event.previousContainer === event.container) {
-    //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    //   return;
-    // }
-    // else{
-    //   // event.container.data.push(event.previousContainer.data[event.previousIndex])
-    //   event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
-    //   event.previousContainer.data.splice(event.previousIndex, 1);
+    console.log(event.container.data[0])
+
+    let item : Todo = event.item.data;
+
+
+    if (event.previousContainer === event.container ) {
+      console.log("same container")
+
+      let parentTodo = event.container.data[event.currentIndex].todo;
+
+      console.log("parent todo")
+      console.log(parentTodo.title)
+      // Show confirm then
+      Todo.deleteTodoById(this.mainTodo, item.subId!);
+
+      let parent = Todo.findSubTodoById(this.mainTodo, parentTodo.subId!);
+
+      parent!.list.splice(0, 0, item);
       
-    // }
+    }
+    else{
+      console.log("different container")
+
+      let newIndex = event.currentIndex == 0 ? 0 : event.currentIndex - 1; 
+      let parentTodo = event.container.data[newIndex].todo;
+
+      console.log("parent todo")
+      console.log(parentTodo.title)
+
+      Todo.deleteTodoById(this.mainTodo, item.subId!);
+
+      let parent = Todo.findSubTodoById(this.mainTodo, parentTodo.subId!);
+
+      parent!.list.splice(0, 0, item);
+      
+
+
+      // event.container.data.push(event.previousContainer.data[event.previousIndex])
+      // event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
+      // event.previousContainer.data.splice(event.previousIndex, 1);
+      
+    }
     // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
