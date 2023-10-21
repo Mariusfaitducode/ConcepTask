@@ -7,6 +7,7 @@ import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DragAndDrop } from 'src/app/model/drag-and-drop';
 
 
 @Component({
@@ -84,64 +85,20 @@ export class TodoPage implements OnInit {
 
   initializeSubTasksList(){
 
+    this.subTasksList = [];
+
     for (let subTask of this.todo.list!) {
       this.subTasksList.push(Todo.transformTodoInListByDepth(subTask));
     }
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  async drop(event: CdkDragDrop<any[]>) {
 
-    console.log("Element dropped")
-    console.log(event)
-
-    console.log(event.item.data.title)
-    console.log(event.previousContainer.id, event.previousIndex);
-    console.log(event.container.id, event.currentIndex);
-
-    console.log(event.container.data[0])
-
-    let item : Todo = event.item.data;
-
-
-    if (event.previousContainer === event.container ) {
-      console.log("same container")
-
-      let parentTodo = event.container.data[event.currentIndex].todo;
-
-      console.log("parent todo")
-      console.log(parentTodo.title)
-      // Show confirm then
-      Todo.deleteTodoById(this.mainTodo, item.subId!);
-
-      let parent = Todo.findSubTodoById(this.mainTodo, parentTodo.subId!);
-
-      parent!.list.splice(0, 0, item);
-      
-    }
-    else{
-      console.log("different container")
-
-      let newIndex = event.currentIndex == 0 ? 0 : event.currentIndex - 1; 
-      let parentTodo = event.container.data[newIndex].todo;
-
-      console.log("parent todo")
-      console.log(parentTodo.title)
-
-      Todo.deleteTodoById(this.mainTodo, item.subId!);
-
-      let parent = Todo.findSubTodoById(this.mainTodo, parentTodo.subId!);
-
-      parent!.list.splice(0, 0, item);
-      
-
-
-      // event.container.data.push(event.previousContainer.data[event.previousIndex])
-      // event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
-      // event.previousContainer.data.splice(event.previousIndex, 1);
-      
-    }
-    // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    await DragAndDrop.drop(event, this.mainTodo);
+    this.initializeSubTasksList();
   }
+
+  
 
 
   //Reset config au cas ou
