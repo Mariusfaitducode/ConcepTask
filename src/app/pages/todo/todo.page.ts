@@ -68,22 +68,32 @@ export class TodoPage implements OnInit {
       }
     });
 
+    
 
     this.initializeSubTasksList();
 
     console.log(this.subTasksList);
-    
-
-    //this.setConfig();
   }
 
-  // findSubTaskList(id : number){
-  //   let list = this.subTasksList.find(list => list[0].subId == id);
-  //   console.log(list);
-  //   return list;
-  // }
+
+  ngAfterViewInit() {
+    this.actualizeWhenDeveloppedClicked();
+  }
+
+  actualizeWhenDeveloppedClicked(){
+    let developTask = Array.from(document.getElementsByClassName("develop-task"));
+
+    for (let dev of developTask) {
+      dev.removeEventListener("click", () => this.initializeSubTasksList());
+      dev.addEventListener("click", () => this.initializeSubTasksList());
+    }
+  }
 
   initializeSubTasksList(){
+
+    this.actualizeWhenDeveloppedClicked();
+
+    console.log("initialize subtask list")
 
     this.subTasksList = [];
 

@@ -220,12 +220,16 @@ export class Todo {
       let copyList = [...rootTodo.list!];
       // Dfs algorithm
 
-      while(copyList.length > 0){
+      if (rootTodo.developped) {
+        while(copyList.length > 0){
 
-        let todo = copyList.shift()!;
+          let todo = copyList.shift()!;
+          
+          Todo.transformTodoInListByDepth(todo, level + 1, list)
+        }
         
-        Todo.transformTodoInListByDepth(todo, level + 1, list)
       }
+
       return list
     }
     

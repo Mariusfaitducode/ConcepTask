@@ -28,6 +28,10 @@ export class DragAndDrop {
     
         console.log("parent todo")
         console.log(parentTodo.title)
+
+        if (parentTodo.subId == item.subId) return;
+
+        if (parentTodo.subId == item.parentId) return;
         
         await this.moveItem(item, parentTodo, mainTodo);
     
