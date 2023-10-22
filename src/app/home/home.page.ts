@@ -52,19 +52,18 @@ export class HomePage {
     this.route.queryParams.subscribe(params =>{
 
       console.log("HOME PAGEEEE CHANGE")
-
+      // window.location.reload();
       this.loadTodos();
+      this.results = [...this.todos];
     });
 
     this.loadTodos();
     this.results = [...this.todos];
   }
 
-  ngOnChange(){  
- }
-
 
  loadTodos(){
+  this.todos = []
    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
    console.log(this.todos)
  }

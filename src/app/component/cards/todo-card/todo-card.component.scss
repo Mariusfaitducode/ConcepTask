@@ -7,6 +7,111 @@ ion-card{
     // background: linear-gradient(to bottom, yellow 50%, white 50%);
 }
 
+.home-card{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // padding-bottom: 10px;
+}
+
+// .left-card{
+//     // width: 50%;
+//     height: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+// }
+
+.type-card{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0px 10px;
+    padding-bottom: 2px;
+    
+
+    border-radius: 0 0px 5px 0px;
+   
+    color: var(--ion-color-dark);
+    font-weight: bold;
+}  
+
+.date-card{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px 10px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}  
+
+.percent-card{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 2px 10px;
+    padding-bottom: 4px;
+    color: var(--is-done-color-node);
+    font-weight: bold;
+
+}  
+
+.done-card{
+    // position: absolute;
+    // bottom: 0;
+    // right: 0;
+    // padding: 2px 10px;
+    // padding-bottom: 4px;
+    // color: var(--is-done-color-node);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.done-text{
+    // margin-right: 5px;
+    padding-left: 2px;
+    padding-top: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    // color: var(--is-done-color-node);
+}
+
+.passed-date{
+    color: var(--ion-color-danger);
+}
+
+// .passed-card{
+
+//     padding-top: 5px;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     align-items: center;
+// }
+
+// .passed-text{
+//     // margin-right: 5px;
+//     padding-left: 8px;
+//     padding-top: 16px;
+//     font-size: 16px;
+//     font-weight: bold;
+//     // color: var(--is-done-color-node);
+// }
+
+ion-card-title{
+    margin-top: 20px;
+}
+
+
+
+
+//Test style
+
 .custom-card {
     position: relative;
     // background: transparent;
@@ -15,31 +120,8 @@ ion-card{
   
     /* Hauteur de la card */
     height: 70px; /* Ajustez la hauteur selon vos besoins */
-  
-    /* Dégradé vertical */
-    // background: linear-gradient(to bottom, yellow 50%, white 50%);
   }
 
-
-.type-card{
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-
-    border-radius: 0 0px 5px 0px;
-   
-    color: var(--ion-color-dark);
-    // font-weight: bold;
-
-    // background-color: aqua;
-
-    
-
-    /* Dégradé vertical */
-    // background: linear-gradient(to bottom, yellow 50%, white 50%);
-}  
 
 .custom-background{
     position: absolute;
@@ -52,31 +134,4 @@ ion-card{
 
     /* Dégradé vertical */
     // background: linear-gradient(to bottom, yellow 50%, white 50%);
-}
-  
-
-
-ion-card-content{
-    display: flex;
-}
-
-
-ion-card-title{
-    margin-top: 20px;
-}
-
-.home-card{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.left-card{
-    // width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }

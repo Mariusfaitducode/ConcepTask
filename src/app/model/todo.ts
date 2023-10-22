@@ -233,6 +233,34 @@ export class Todo {
 
       return list
     }
+
+
+    public static getDoneTasksPercent(todo : Todo){
+        
+        let doneTasks = 0;
+        let totalTasks = 0;
+  
+        let copyList = [...todo.list!];
+        // Bfs algorithm
+        while(copyList.length > 0){
+  
+          let todo = copyList.shift()!;
+  
+          if (todo.isDone) {
+            doneTasks++;
+          }
+          totalTasks++;
+  
+          for (let subTodo of todo.list!) {
+            copyList.push(subTodo);
+          }
+        }
+  
+        if (totalTasks == 0) {
+          return 0;
+        }
+        return doneTasks / totalTasks * 100;
+    }
     
 }
 
