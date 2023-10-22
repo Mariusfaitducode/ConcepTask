@@ -24,6 +24,7 @@ export class SubTaskComponent  implements OnInit {
   @Input() page: string = "";
   @Input() level: number = 0;
 
+  @Input() hideSubTasks: boolean = false;
   
 
   // developped: boolean = false;

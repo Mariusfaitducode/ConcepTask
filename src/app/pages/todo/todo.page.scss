@@ -175,48 +175,55 @@ ion-item{
 }
 
 
-
 .sub-todo-list{
     margin-top: 10px;
-    padding-top: 30px;
+    // padding-top: 30px;
     padding-bottom: 0px;
 }
 
-.sub-todos-label{
-    font-size: 12px;
-    margin-left: 26px;
+.toggle-done-tasks{
+    margin-top: 10px;
+    margin-left: 16px;
+    margin-bottom: 10px;
 }
 
-.new-sub-todo{
+
+
+// .sub-todos-label{
+//     font-size: 12px;
+//     margin-left: 26px;
+// }
+
+// .new-sub-todo{
     
-    padding: 0px 16px;
-    font-size: 18px;
+//     padding: 0px 16px;
+//     font-size: 18px;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     align-items: center;
+// }
 
-.new-sub-todo ion-input{
-    width: 80%;
+// .new-sub-todo ion-input{
+//     width: 80%;
 
-    margin-left: 10px;
-}
+//     margin-left: 10px;
+// }
 
-.new-sub-todo ion-icon{
-    font-size: 30px;
-    color: var(--ion-color-step-600);
-    margin-right: 10px;
-}
+// .new-sub-todo ion-icon{
+//     font-size: 30px;
+//     color: var(--ion-color-step-600);
+//     margin-right: 10px;
+// }
 
-.new-sub-task{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0px 10px 26px;
-}
+// .new-sub-task{
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: 10px 0px 10px 26px;
+// }
 
 
 

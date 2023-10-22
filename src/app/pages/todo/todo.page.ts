@@ -35,6 +35,7 @@ export class TodoPage implements OnInit {
 
   configMode : boolean = false;
 
+  hideSubTasks : boolean = false;
   
 
   newTodoOnListTitle: string = "";

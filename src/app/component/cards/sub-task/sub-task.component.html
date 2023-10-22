@@ -54,8 +54,14 @@
   
         <div *ngFor="let sub of subTask.list; let id = index" >
       
-          <app-sub-task 
-          [todos]="todos" [parentTask]="subTask" [subTask]="sub" [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
+          <div *ngIf="!hideSubTasks || sub.isDone === false">
+
+            <app-sub-task 
+            [todos]="todos" [parentTask]="subTask" [subTask]="sub" 
+            [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal"></app-sub-task>
+
+          </div>
+         
         
         </div>
       
