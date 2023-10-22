@@ -28,6 +28,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
   },
   {
+    path: 'add/:day/:month/:year',
+    loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
+  },
+  {
     path: 'todo/:id',
     loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
   },

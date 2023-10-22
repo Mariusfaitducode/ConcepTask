@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 // import { NgCalendarModule } from 'ionic2-calendar'; 
 // import { CalendarComponent } from 'ionic2-calendar/calendar';
 
@@ -27,7 +28,7 @@ export class CalendarPage implements OnInit {
 
   selectedDay = new Date();
 
-  constructor() { }
+  constructor(private router : Router) { }
 
   ngOnInit() {
 
@@ -132,4 +133,40 @@ export class CalendarPage implements OnInit {
     //this.currentMonth = moment(this.myCalendar.currentDate).format('MMMM YYYY');
   }
 
+
+  onViewTitleChanged(title: string) {
+    console.log(title)
+    this.viewTitle = title;
+  }
+
+
+  // eventsBackgroundColor(length : number){
+
+  //   if (length > 0){
+  //     return 'primary !important';
+  //   }
+  //   return 'light !important';
+  // }
+
+  formatDateToCustomString(calendarDate: Date) {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+
+    let date = calendarDate;
+
+    const day = daysOfWeek[date!.getDay()];
+    const dayOfMonth = date!.getDate();
+    const month = months[date!.getMonth()];
+  
+    return `${day}, ${dayOfMonth} ${month}`;
+    
+  }
+
+  addTodoOnDate(date : Date){
+    console.log(date) 
+    this.router.navigate(['/add', date.getDate(), date.getMonth(), date.getFullYear() ]);
+
+  }
+  
 }

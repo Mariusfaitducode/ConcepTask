@@ -7,7 +7,8 @@
       <ion-label position="floating"  [color]="todo.date ? 'primary' : ''">Due date</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
-      <ion-input type="date" placeholder="MM/DD/YYYY" [(ngModel)]="todo.date" (ionChange)="childModified.emit(true)"></ion-input>  
+      <!-- {{todo.date}} -->
+      <ion-input id="datePicker" type="date" [(ngModel)]="todo.date" (ionChange)="childModified.emit(true)"></ion-input>  
     </ion-item>
 
     <ion-item [ngClass]="{'modal-item' : page === 'modal'}">

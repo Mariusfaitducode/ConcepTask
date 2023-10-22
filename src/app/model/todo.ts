@@ -25,7 +25,7 @@ export class Todo {
 
     public priority?: string;
 
-    public date?: Date;
+    public date?: Date | string;
     public time?: string;
 
     public reminder?: boolean;
@@ -148,7 +148,7 @@ export class Todo {
     // }
 
 
-    public static getDate(newDate: Date, newTime?: string) {
+    public static getDate(newDate: Date | string, newTime?: string) {
       let date = new Date(newDate);
 
         if (newTime) {
@@ -201,7 +201,7 @@ export class Todo {
 
     public static passedDate(todo : Todo){
 
-      if (todo.date) {
+      if (todo.config.date && todo.date) {
         let date = new Date(todo.date);
         let now = new Date();
   
@@ -259,7 +259,7 @@ export class Todo {
         if (totalTasks == 0) {
           return 0;
         }
-        return doneTasks / totalTasks * 100;
+        return Math.floor(doneTasks / totalTasks * 100);
     }
 
 

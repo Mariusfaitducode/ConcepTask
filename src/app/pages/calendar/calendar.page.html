@@ -14,19 +14,17 @@
 
   <ion-row class="month-row">
     
-    <ion-button fill="clear" (click)="previousMonth()">
+    <!-- <ion-button fill="clear" (click)="previousMonth()">
       <ion-icon name="arrow-back-outline" slot="icon-only" ></ion-icon>
-
-
-    </ion-button>
+    </ion-button> -->
   
   
     <h2>{{viewTitle}}</h2>
-  
+<!--   
     <ion-button fill="clear" (click)="nextMonth()">
     <ion-icon name="arrow-forward-outline" slot="icon-only"></ion-icon>
 
-    </ion-button>
+    </ion-button> -->
     
 
   </ion-row>
@@ -35,22 +33,31 @@
     [eventSource]="eventSource"  
     [startingDayMonth]="1" 
     [showEventDetail] = "false" 
-    (onTitleChanged)="viewTitle = $event"  
+    (onTitleChanged)="onViewTitleChanged($event)"  
+    [monthviewDisplayEventTemplate]="eventDay"
     >
   </calendar>
 
 
-  <div *ngIf="myCalendar && eventSource.length != 0">
+  <ng-template #eventDay let-view="view" let-row="row" let-col="col">
+    <div [class.with-event]="view.dates[row*7+col].events.length" >
+        {{view.dates[row*7+col].date | date:'d'}}
+    </div>
 
-    <!-- <ion-text>{{myCalendar.currentDate | date: 'dd/MM/YYYY' }} todos :</ion-text> -->
+  </ng-template>
+
+
+  <div *ngIf="myCalendar && eventSource.length !== 0">
+
+    <div *ngIf="findTodosByDate(myCalendar.currentDate).length > 0">  
+      <ion-title class="currentDate-title">{{formatDateToCustomString(myCalendar.currentDate)}}</ion-title>
+    </div>
 
     <ion-list>
-      
       <ion-row *ngFor="let todo of findTodosByDate(myCalendar.currentDate)">
         <app-todo-card [todo]="todo" [color]="todoColor(todo)" [routerLink]="'/todo/'+ todo.mainId"></app-todo-card>
       </ion-row>
     </ion-list>
-
   </div>
   
 
@@ -58,7 +65,7 @@
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     
-    <ion-fab-button routerLink="/add">
+    <ion-fab-button (click)="addTodoOnDate(myCalendar.currentDate)">
       <ion-icon name="add" ></ion-icon>
     </ion-fab-button>
   </ion-fab>

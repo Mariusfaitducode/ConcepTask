@@ -64,8 +64,23 @@ export class AddPage implements OnInit {
           this.modalConfig.modify = true
           this.modalConfig.parentTask = undefined
         }
-        
-        
+      }
+      else if (params['day'] && params['month'] && params['year']){
+
+        console.log(params['day'], params['month'], params['year'])
+
+        this.newTodo = new Todo();
+        this.newTodo.config.date = true;
+        let date = new Date(params['year'], params['month'], params['day'])
+
+        const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
+        const month = (date.getMonth()).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
+        const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
+
+        const formattedDate = `${year}-${month}-${day}`;
+
+        this.newTodo.date = formattedDate;
+        document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
       }
       else{ // Nouveau todo
         this.newTodo = new Todo();
