@@ -261,6 +261,32 @@ export class Todo {
         }
         return doneTasks / totalTasks * 100;
     }
+
+
+    public static formatDateToCustomString(todo : Todo) {
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+      if (todo.config.date){
+  
+        let date = Todo.getDate(todo.date!, todo.time);
+  
+        const day = daysOfWeek[date!.getDay()];
+        const dayOfMonth = date!.getDate();
+        const month = months[date!.getMonth()];
+        const hours = String(date!.getHours()).padStart(2, '0');
+        const minutes = String(date!.getMinutes()).padStart(2, '0');
+      
+        return `${day}, ${dayOfMonth} ${month} ${hours}:${minutes}`;
+      }
+      if (todo.config.repeat && todo.repeat!.delayType){
+  
+        // let startDate = Todo.getDate(this.todo.repeat!.startDate!, this.todo.repeat!.startTime!);
+        // let repeat = this.todo.repeat!.delayType;
+        return `Repeat every ${todo.repeat!.delayType}`;
+      }
+      return null; 
+    }
     
 }
 

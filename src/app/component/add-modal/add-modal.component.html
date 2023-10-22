@@ -71,13 +71,12 @@
       </div>
   
       <app-custom-config [configArray]="subTask.config"></app-custom-config>
-  
-      <ion-item *ngIf="this.subTask.config.description">
-  
-        <ion-label position="floating">Description</ion-label>
-        <ion-textarea [(ngModel)]="subTask.description" (ionChange)="changeTodo = true"></ion-textarea>
-  
-      </ion-item>
+
+      <div *ngIf="this.subTask.config.description" class="description-textarea">
+        <ion-textarea [(ngModel)]="subTask.description" (ionChange)="changeTodo = true" [autoGrow]="true"
+        label="Description" labelPlacement="floating"
+        fill="outline" placeholder="Enter text"></ion-textarea>
+      </div>
 
       <ion-row *ngIf="this.subTask.config.priority">
         <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>

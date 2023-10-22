@@ -203,18 +203,33 @@ export class ConceptorPage implements OnInit {
           }
 
           // Date
-          if (d.todo.date) {
+          if (d.todo.config.date && d.todo.date) {
             let modalDate = document.getElementById("modal-date");
             modalDate!.classList.remove('hide');
 
             let nodeDate = document.getElementById("node-date");
-            nodeDate!.setAttribute('value',d.todo.date);
+            nodeDate!.setAttribute('value', Todo.formatDateToCustomString(d.todo)!);
 
-            let nodeTime = document.getElementById("node-time");
-            nodeTime!.setAttribute('value',d.todo.time);
+            // let nodeTime = document.getElementById("node-time");
+            // nodeTime!.setAttribute('value',d.todo.time);
           }
           else{
             let modalDate = document.getElementById("modal-date");
+            modalDate!.classList.add('hide');
+          }
+
+          if (d.todo.config.repeat && d.todo.repeat) {
+            let modalDate = document.getElementById("modal-repeat");
+            modalDate!.classList.remove('hide');
+
+            let nodeDate = document.getElementById("node-repeat");
+            nodeDate!.setAttribute('value', Todo.formatDateToCustomString(d.todo)!);
+
+            // let nodeTime = document.getElementById("node-time");
+            // nodeTime!.setAttribute('value',d.todo.time);
+          }
+          else{
+            let modalDate = document.getElementById("modal-repeat");
             modalDate!.classList.add('hide');
           }
 
@@ -468,13 +483,13 @@ export class ConceptorPage implements OnInit {
             emoji += '✅';
           }
           else {
-            if (d.todo.date && new Date(d.todo.date) < new Date()){
+            if (d.todo.config.date && new Date(d.todo.date) < new Date()){
               emoji+= '⏰';
             }
-            if (d.todo.date && new Date(d.todo.date) > new Date()){
+            if (d.todo.config.date && new Date(d.todo.date) > new Date()){
               emoji+= '📅';
             }
-            if (d.todo.repeat && d.todo.reminder){
+            if (d.todo.config.repeat && d.todo.reminder){
               emoji += '🔁';
             }
             if (d.todo.priority == 'high'){

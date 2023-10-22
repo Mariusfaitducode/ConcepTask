@@ -32,7 +32,11 @@
       </ion-item>
 
       <ion-row  class="type">
-        <ion-select label="Category" label-placement="floating"  [(ngModel)]="newTodo.category" aria-label="Type" (ionChange)="changeTodo = true">
+        <ion-select 
+          [(ngModel)]="newTodo.category" (ionChange)="changeTodo = true"
+          label="Category" label-placement="floating"
+          [interfaceOptions]="{'cssClass': 'label-select-color'}">
+
           <ion-select-option value="default">Default</ion-select-option>
           <ion-select-option value="personnal">Personnal</ion-select-option>
           <ion-select-option value="project">Project</ion-select-option>
@@ -47,12 +51,15 @@
 
     <app-custom-config [configArray]="this.newTodo.config"></app-custom-config>
 
-    <ion-item *ngIf="this.newTodo.config.description">
+    <div *ngIf="this.newTodo.config.description" class="description-textarea">
 
-      <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label>
-      <ion-textarea [(ngModel)]="newTodo.description" (ionChange)="changeTodo = true"></ion-textarea>
+      <!-- <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label> -->
 
-    </ion-item>
+      <ion-textarea [(ngModel)]="newTodo.description" (ionChange)="changeTodo = true" [autoGrow]="true"
+      label="Description" labelPlacement="floating"
+      fill="outline" placeholder="Enter text"></ion-textarea>
+
+    </div>
 
     <ion-row *ngIf="this.newTodo.config.priority">
       <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
@@ -79,8 +86,6 @@
       </ion-row> -->
 
       <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
-
-      <!-- Faire un component ? -->
 
       <app-button-add-sub-task [modalConfig]="modalConfig" [parentTask]="newTodo"></app-button-add-sub-task>
 

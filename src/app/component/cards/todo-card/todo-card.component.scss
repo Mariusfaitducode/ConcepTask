@@ -81,9 +81,7 @@ ion-card{
     // color: var(--is-done-color-node);
 }
 
-.passed-date{
-    color: var(--ion-color-danger);
-}
+
 
 // .passed-card{
 
@@ -105,6 +103,7 @@ ion-card{
 
 ion-card-title{
     margin-top: 20px;
+    color: var(--ion-text-color);
 }
 
 

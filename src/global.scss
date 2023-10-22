@@ -57,6 +57,10 @@ ion-label{
     background-color: var(--is-passed-color);
  }
 
+ .passed-date{
+    color: var(--ion-color-danger);
+}
+
 //Is done style
 
 .doneHeader{
@@ -88,6 +92,7 @@ ion-label{
 
 .sub-todos-label{
     font-size: 12px;
+    font-weight: 500;
     margin-left: 16px;
     padding-top: 10px;
 }
@@ -177,4 +182,41 @@ thead[_ngcontent-ng-c613479738] tr th{
 
 .cdk-drag-animating{
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+
+//Selection elements style
+
+
+ion-select::part(label){
+    color: var(--ion-color-primary) !important;
+}
+
+
+.description-textarea{
+    // padding-left: 10px;
+    // --padding-start: 50px;
+    padding: 8px;
+    padding-top: 12px;
+}
+
+
+.has-value .label-text-wrapper{
+    color: var(--ion-color-primary) !important;
+}
+
+.label-padding .label-text.sc-ion-textarea-md{
+    // color: var(--ion-color-primary) !important;
+    padding-bottom: 20px;
+}
+
+.label-padding .native-wrapper.sc-ion-input-md{
+    // color: var(--ion-color-primary) !important;
+    padding-top: 15px;
+    padding-bottom: 8px;
+}
+
+.description-textarea ion-textarea.has-focus.sc-ion-textarea-md-h{
+    --border-color: var(--ion-color-primary) !important;
 }

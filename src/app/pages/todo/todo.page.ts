@@ -291,4 +291,22 @@ export class TodoPage implements OnInit {
   //   }
   // }
 
+  formatDateToCustomString() {
+    
+    return Todo.formatDateToCustomString(this.todo); 
+  }
+
+
+  validDate(){
+    if (this.todo.config.date){
+      let date = Todo.getDate(this.todo.date!, this.todo.time);
+      let now = new Date();
+      return date! > now;
+    }
+    if (this.todo.config.repeat && this.todo.repeat!.delayType){
+      return true;
+    }
+    return false;
+  }
+
 }
