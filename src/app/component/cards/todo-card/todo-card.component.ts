@@ -68,4 +68,14 @@ export class TodoCardComponent  implements OnInit {
   }
 
 
+  contrastColor(){
+
+    console.log(this.todo.category.color)
+    let color = Todo.getCorrectTextColor(this.todo.category.color);
+    
+    console.log(color)
+    return color
+  
+  }
+
 }

@@ -35,7 +35,17 @@ export class ConceptorPage implements OnInit {
     // parentTask: Todo,
   };
 
-  constructor(private route : ActivatedRoute, private router : Router) { }
+  constructor(private route : ActivatedRoute, private router : Router) { 
+
+    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+    if (settings.darkMode) {
+      document.body.setAttribute('color-theme', 'dark');
+    }
+    else{
+      document.body.setAttribute('color-theme', 'light');
+    }
+  }
 
   ngOnInit() {
 
@@ -187,8 +197,14 @@ export class ConceptorPage implements OnInit {
           nodeTitle!.innerHTML = d.todo.title;
 
           var nodeCategory = document.getElementById("node-category");
-          nodeCategory!.innerHTML = d.todo.category;
-          nodeCategory!.style.backgroundColor = Todo.typeColor(d.todo.category);
+
+          if (d.todo.category.name) {
+            nodeCategory!.innerHTML = d.todo.category.name;
+            nodeCategory!.style.backgroundColor = d.todo.category.color;
+            nodeCategory!.style.color = Todo.getCorrectTextColor(d.todo.category.color);
+          }
+          // nodeCategory!.innerHTML = d.todo.category.name;
+          // nodeCategory!.style.backgroundColor = d.todo.category.color;
 
           if (d.todo.description) {
             let modalDescription = document.getElementById("modal-description");

@@ -38,6 +38,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   changeTodo: boolean = false;
 
+  categories : any[] = [];
 
   /*openModal: any = {
     open: false,
@@ -58,6 +59,9 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+
+    this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
+
 
     this.subTask = this.modalConfig.task;
     this.modify = this.modalConfig.modify;

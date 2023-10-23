@@ -59,13 +59,8 @@
   
         <ion-row  class="type">
           <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type" (ionChange)="changeTodo = true">
-            <ion-select-option value="default">Default</ion-select-option>
-            <ion-select-option value="personnal">Personnal</ion-select-option>
-            <ion-select-option value="project">Project</ion-select-option>
-            <ion-select-option value="work">Work</ion-select-option>
-            <ion-select-option value="wishlist">Wishlist</ion-select-option>
-            <ion-select-option value="sport">Sport</ion-select-option>
-            <ion-select-option value="shopping">Shopping</ion-select-option>
+            
+            <ion-select-option  *ngFor="let cat of categories" [value]="cat">{{cat.name}}</ion-select-option>
           </ion-select>
         </ion-row>
       </div>

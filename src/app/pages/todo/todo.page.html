@@ -12,7 +12,7 @@
       <!-- <ion-input type="text" [(ngModel)]="todo.title" class="title-input"></ion-input> -->
       <h1 class="title-input">{{todo.title}}</h1>
 
-      <div class="chip-category" [style.background-color]="todo.category.color">
+      <div class="chip-category" [style.background-color]="todo.category.color" [style.color]="contrastColor()">
         {{todo.category.name}}
       </div>
 

@@ -29,6 +29,7 @@ export class SettingsPage implements OnInit {
   }
 
 
+
   showConfirmDelete(cat : any) {
     Dialog.confirm({
       title: 'Delete category',
@@ -45,7 +46,7 @@ export class SettingsPage implements OnInit {
 
   removeCategory(cat : any){
     this.categories = this.categories.filter((c) => c.id !== cat.id);
-    this.save();
+    this.saveCategory();
   }
 
   addCategory(){
@@ -58,7 +59,7 @@ export class SettingsPage implements OnInit {
     });
 
     this.newCategory = {};
-    this.save();
+    this.saveCategory();
   }
 
 
@@ -66,10 +67,27 @@ export class SettingsPage implements OnInit {
     const colorInput = event.target as HTMLInputElement;
     const selectedColor = colorInput.value;
     cat.color = selectedColor;
+
+    this.updateColorCategory(cat);
+
+    this.saveCategory();
   }
 
 
-  save(){
+  updateColorCategory(cat : any){
+    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+
+    todos.forEach((todo : any) => {
+      if (todo.category.name == cat.name){
+        todo.category.color = cat.color;
+      }
+    });
+
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
+
+
+  saveCategory(){
     console.log(this.categories);
     localStorage.setItem('categories', JSON.stringify(this.categories));
   }

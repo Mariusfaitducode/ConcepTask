@@ -19,7 +19,7 @@
 
     <ion-card-content class="home-card" >
 
-      <ion-card-subtitle class="type-card" [style.background-color]="todo.category.color">{{todo.category.name}}</ion-card-subtitle>
+      <ion-card-subtitle class="type-card" [style.background-color]="todo.category.color" [style.color]="contrastColor()">{{todo.category.name}}</ion-card-subtitle>
 
       <ion-card-title >{{todo.title}}</ion-card-title>
       

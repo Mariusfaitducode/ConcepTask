@@ -46,7 +46,16 @@ export class AddPage implements OnInit {
   };
 
   constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) 
-  {}
+  {
+    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+    if (settings.darkMode) {
+      document.body.setAttribute('color-theme', 'dark');
+    }
+    else{
+      document.body.setAttribute('color-theme', 'light');
+    }
+  }
 
   ngOnInit() {
 

@@ -40,7 +40,16 @@ export class TodoPage implements OnInit {
 
   newTodoOnListTitle: string = "";
 
-  constructor(private navCtrl: NavController, private route : ActivatedRoute, private router : Router, private modalService : ModalService) { }
+  constructor(private navCtrl: NavController, private route : ActivatedRoute, private router : Router, private modalService : ModalService) { 
+    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+    if (settings.darkMode) {
+      document.body.setAttribute('color-theme', 'dark');
+    }
+    else{
+      document.body.setAttribute('color-theme', 'light');
+    }
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -310,6 +319,16 @@ export class TodoPage implements OnInit {
       return true;
     }
     return false;
+  }
+
+  contrastColor(){
+
+    console.log(this.todo.category.color)
+    let color = Todo.getCorrectTextColor(this.todo.category.color);
+    
+    console.log(color)
+    return color
+  
   }
 
 }
