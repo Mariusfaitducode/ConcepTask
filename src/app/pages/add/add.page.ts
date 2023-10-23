@@ -34,6 +34,8 @@ export class AddPage implements OnInit {
 
   changeTodo: boolean = false;
 
+  categories : any[] = [];
+
 
   showDate: boolean = false;
   modalConfig: any = {
@@ -44,9 +46,11 @@ export class AddPage implements OnInit {
   };
 
   constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) 
-  { }
+  {}
 
   ngOnInit() {
+
+    this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
     // Récupère chemins et paramètres de la route active -> provenance : Todo / Home  
     this.route.params.subscribe((params) => {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 
 import { FirebaseService } from '../service/firebase.service';
 
@@ -8,6 +8,7 @@ import { MenuController } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
 import { Todo } from '../model/todo';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 //import { AngularFireDatabase } from '@angular/fire/database';
 
@@ -21,7 +22,74 @@ export class HomePage {
 
   constructor(
     private menuCtrl : MenuController,
-    private route : ActivatedRoute) {}
+    private route : ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+
+    let categories = JSON.parse(localStorage.getItem('categories') || '[]');
+    if (categories.length === 0){
+      categories = [
+        {
+          id: 0,
+          name: 'task',
+          color: '#e83c53',
+        },
+        {
+          id: 1,
+          name: 'project',
+          color: '#428cff',
+        },
+        {
+          id: 2,
+          name: 'work',
+          color: '#ffd948',
+        },
+        {
+          id: 3,
+          name: 'personnal',
+          color: '#29c467',
+        },
+        {
+          id: 4,
+          name: 'event',
+          color: '#5d58e0',
+        },
+      ];
+      localStorage.setItem('categories', JSON.stringify(categories));
+    }
+
+    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+    console.log(settings)
+
+    if (!settings.darkMode) {
+      if (isPlatformBrowser(this.platformId)) {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        if (prefersDark.matches) {
+          console.log("DARK MODE")
+          // document.body.setAttribute('color-theme', 'dark');
+          settings.darkMode = true;
+        }
+        else{
+          console.log("LIGHT MODE")
+          // document.body.setAttribute('color-theme', 'light');
+          settings.darkMode = false;
+        }
+      }
+    }
+
+    if (settings.darkMode) {
+      document.body.setAttribute('color-theme', 'dark');
+    }
+    else{
+      document.body.setAttribute('color-theme', 'light');
+    }
+
+    localStorage.setItem('settings', JSON.stringify(settings));
+
+
+      
+    }
 
   todos : Todo[] = []
 
@@ -107,7 +175,7 @@ export class HomePage {
 
   handleInput(event : any) {
     const query = event.target.value.toLowerCase();
-    this.results = [...this.results.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.toLowerCase().indexOf(query) > -1)];
+    this.results = [...this.results.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.name.toLowerCase().indexOf(query) > -1)];
   }
 
 
@@ -160,7 +228,7 @@ export class HomePage {
     }
 
     if (this.filters.category) {
-      this.results = [...this.results.filter((d) => d.category == this.filters.categoryChoosed)];
+      this.results = [...this.results.filter((d) => d.category.name == this.filters.categoryChoosed)];
     }
     if (this.filters.done) {
       this.results = [...this.results.filter((d) => d.isDone == true)];

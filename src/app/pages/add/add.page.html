@@ -37,14 +37,16 @@
           label="Category" label-placement="floating"
           [interfaceOptions]="{'cssClass': 'label-select-color'}">
 
-          <ion-select-option value="default">Default</ion-select-option>
+          <ion-select-option  *ngFor="let cat of categories" [value]="cat">{{cat.name}}</ion-select-option>
+
+          <!-- <ion-select-option value="default">Default</ion-select-option>
           <ion-select-option value="personnal">Personnal</ion-select-option>
           <ion-select-option value="project">Project</ion-select-option>
           <ion-select-option value="work">Work</ion-select-option>
           <ion-select-option value="event">Event</ion-select-option>
           <ion-select-option value="wishlist">Wishlist</ion-select-option>
           <ion-select-option value="sport">Sport</ion-select-option>
-          <ion-select-option value="shopping">Shopping</ion-select-option>
+          <ion-select-option value="shopping">Shopping</ion-select-option> -->
         </ion-select>
       </ion-row>
     </div>

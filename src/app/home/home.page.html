@@ -28,7 +28,7 @@
         <ion-icon name="funnel-outline">
         </ion-icon>
       </ion-button>
-      <ion-badge color="primary" *ngIf="countFilters() != 0">{{countFilters()}}</ion-badge>
+      <ion-badge color="primary" *ngIf="countFilters() !== 0">{{countFilters()}}</ion-badge>
       
     </ion-buttons>
     
@@ -45,7 +45,7 @@
   <!-- How to iterate object + index -->
     <ion-row *ngFor="let todo of results">
       
-      <app-todo-card [todo]="todo" [color]="typeColor(todo.category)" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
+      <app-todo-card [todo]="todo" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
     </ion-row >
   </ion-list>
   <ion-infinite-scroll>

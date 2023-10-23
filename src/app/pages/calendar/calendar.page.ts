@@ -41,9 +41,9 @@ export class CalendarPage implements OnInit {
   }
 
 
-  todoColor(todo : Todo){
-    return Todo.typeColor(todo.category);
-  }
+  // todoColor(todo : Todo){
+  //   return Todo.typeColor(todo.category);
+  // }
 
   initTodoList(){
 

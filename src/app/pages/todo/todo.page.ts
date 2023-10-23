@@ -71,6 +71,8 @@ export class TodoPage implements OnInit {
     this.initializeSubTasksList();
 
     console.log(this.subTasksList);
+
+    console.log(this.todo)
   }
 
 
@@ -273,9 +275,9 @@ export class TodoPage implements OnInit {
     return Todo.passedDate(this.todo);
   }
 
-  categoryColor(){
-    return Todo.typeColor(this.todo.category);
-  }
+  // categoryColor(){
+  //   return Todo.typeColor(this.todo.category);
+  // }
 
   // manageNotification(){
 

@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>settings</ion-title>
+    <ion-title>Settings</ion-title>
+
+<!-- 
+    <ion-button class="save-button" slot="end" fill="clear" (click)="save()">
+      Save
+    </ion-button> -->
   </ion-toolbar>
 </ion-header>
 
@@ -15,12 +20,43 @@
       <ion-label>Categories</ion-label>
 
       
-      
     </ion-item>
+    <ion-list>
+      <div *ngFor="let cat of categories">
+
+        <ion-row class="category-row">
+          <div class="category-content">
+            
+            <input type="color" id="colorPicker" class="color-category" value="{{cat.color}}" (input)="onColorChange($event, cat)">
+
+            <!-- <div class="color-category" [style.background-color]="cat.color"></div> -->
+
+            <ion-label>{{cat.name}}</ion-label>
+          </div>
+          
+          <ion-icon class="remove-category" name="close-outline" (click)="showConfirmDelete(cat)"></ion-icon>
+          
+        </ion-row>
+
+      </div>
+
+      <ion-row class="category-row">
+        <div class="category-content">
+          <input type="color" id="colorPicker" class="color-category" value="{{newCategory.color}}" (input)="onColorChange($event, newCategory)">
+
+          <ion-input [(ngModel)]="newCategory.name" class="new-category" placeholder="add category"></ion-input>
+        </div>
+        
+        <ion-icon class="remove-category" name="add-outline" (click)="addCategory()"></ion-icon>
+        
+      </ion-row>
+      
+      
+    </ion-list>
   </ion-list>
     
 
-  <ion-list>
+  <!-- <ion-list>
     <ion-item>
       
       <ion-select label="Language">
@@ -28,19 +64,19 @@
         <ion-select-option value="fr">Français</ion-select-option>
       </ion-select>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 
   <ion-list>
     <!-- Theme -->
     <ion-item>
       <ion-label>Dark mode</ion-label>
-      <ion-toggle></ion-toggle>
+      <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
     </ion-item>
   </ion-list>
 
   
 
-  <ion-list>
+  <ion-list class="version-app">
     <ion-item>
       <ion-label>Version</ion-label>
       <ion-text>1.0.0</ion-text>

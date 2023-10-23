@@ -19,7 +19,7 @@ export class Todo {
     public config!: any;
     
     public title!: string;
-    public category: string;
+    public category: { name: string, color: string, id: number};
 
     public description?: string;
 
@@ -41,11 +41,11 @@ export class Todo {
     public developped?: boolean = false;
 
 
-    constructor(title?: string, category?: string, main?: boolean) {
+    constructor(title?: string, category?: any, main?: boolean) {
 
         //this.id = id;
         this.main = main || false;
-        this.category = category || 'default';
+        this.category = category || { name: 'task', color: 'var(--ion-color-tertiary)', id: 0};
         this.title = title || '';
 
         this.list = [];
@@ -281,9 +281,30 @@ export class Todo {
       }
       if (todo.config.repeat && todo.repeat!.delayType){
   
-        // let startDate = Todo.getDate(this.todo.repeat!.startDate!, this.todo.repeat!.startTime!);
-        // let repeat = this.todo.repeat!.delayType;
-        return `Repeat every ${todo.repeat!.delayType}`;
+        let date = Todo.getDate(todo.repeat?.startDate!, todo.repeat?.startTime);
+  
+        const day = daysOfWeek[date!.getDay()];
+        const dayOfMonth = date!.getDate();
+        const month = months[date!.getMonth()];
+        const hours = String(date!.getHours()).padStart(2, '0');
+        const minutes = String(date!.getMinutes()).padStart(2, '0');
+
+        if (todo.repeat!.delayType == "day") {
+          return `Repeat every day at ${hours}:${minutes}`;
+        }
+        if (todo.repeat!.delayType == "week") {
+          return `Repeat every week on ${day} at ${hours}:${minutes}`;
+        }
+        if (todo.repeat!.delayType == "two-weeks") {
+          return `Repeat every two weeks on ${day} at ${hours}:${minutes}`;
+        }
+        if (todo.repeat!.delayType == "month") {
+          return `Repeat every month on ${dayOfMonth} at ${hours}:${minutes}`;
+        }
+        if (todo.repeat!.delayType == "year") {
+          return `Repeat every year on ${dayOfMonth} ${month} at ${hours}:${minutes}`;
+        }
+        // return `Repeat every ${todo.repeat!.delayType}`;
       }
       return null; 
     }
