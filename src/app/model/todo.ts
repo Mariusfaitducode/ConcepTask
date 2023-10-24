@@ -1,5 +1,4 @@
 import { ScheduleEvery } from "@capacitor/local-notifications";
-import * as ContrastColor from "contrast-color";
 
 export class Todo {
 
@@ -137,21 +136,6 @@ export class Todo {
         default:
           return "var(--ion-color-primary)";
       }
-    }
-
-
-    public static getContrastColor(hexColor: any) {
-
-      const cc = new ContrastColor({
-        bgColor: hexColor,
-      });
-
-      const contrast = cc.contrastColor();
-
-      console.log(contrast)
-    
-      // Si le contraste est supérieur à 4.5, retournez la couleur noire, sinon retournez la couleur blanche
-      return contrast;
     }
 
 

@@ -15,6 +15,8 @@ import { ModalService } from 'src/app/service/modal.service';
 import { set } from 'firebase/database';
 
 import { Dialog } from '@capacitor/dialog';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { DragAndDrop } from 'src/app/model/drag-and-drop';
 
 @Component({
   selector: 'app-add',
@@ -35,6 +37,8 @@ export class AddPage implements OnInit {
   changeTodo: boolean = false;
 
   categories : any[] = [];
+
+  subTasksList : any[] = [];
 
 
   showDate: boolean = false;
@@ -99,8 +103,43 @@ export class AddPage implements OnInit {
         this.newTodo = new Todo();
       }
       this.setMainTodoId();
+      this.initializeSubTasksList();
       // Todo.setConfig(this.newTodo);
     });
+  }
+
+  ngAfterViewInit() {
+    this.actualizeWhenDeveloppedClicked();
+  }
+
+
+  actualizeWhenDeveloppedClicked(){
+    let developTask = Array.from(document.getElementsByClassName("develop-task"));
+
+    for (let dev of developTask) {
+      dev.removeEventListener("click", () => this.initializeSubTasksList());
+      dev.addEventListener("click", () => this.initializeSubTasksList());
+    }
+  }
+
+
+  initializeSubTasksList(){
+
+    this.actualizeWhenDeveloppedClicked();
+
+    console.log("initialize subtask list")
+
+    this.subTasksList = [];
+
+    for (let subTask of this.newTodo.list!) {
+      this.subTasksList.push(Todo.transformTodoInListByDepth(subTask));
+    }
+  }
+
+  async drop(event: CdkDragDrop<any[]>) {
+
+    await DragAndDrop.drop(event, this.newTodo);
+    this.initializeSubTasksList();
   }
 
   
@@ -250,18 +289,7 @@ export class AddPage implements OnInit {
 
 
 
-  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-    // The `from` and `to` properties contain the index of the item
-    // when the drag started and ended, respectively
-    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-
-    // Finish the reorder and position the item in the DOM based on
-    // where the gesture ended. This method can also be called directly
-    // by the reorder group
-    //ev.detail.complete(this.newTodo.list);
-
-    //console.log(this.newTodo.list);
-  }
+  
 
   passedDate(){
     return Todo.passedDate(this.newTodo);

@@ -90,11 +90,7 @@
   --is-passed-color-icon: #ca0000;
 }
 
-@media (prefers-color-scheme: dark) {
-  /*
-   * Dark Colors
-   * -------------------------------------------
-   */
+
 
   body[color-theme="dark"] {
     --ion-color-primary: #428cff;
@@ -247,14 +243,9 @@
 
     --ion-card-background: #1e1e1e;
   }
-}
 
-@media (prefers-color-scheme: light) {
 
-  /*
-   * iOS Light Theme
-   * -------------------------------------------
-   */
+
 
   .ios body[color-theme="light"] {
     --ion-background-color: #ffffff;
@@ -337,4 +328,4 @@
 
     --ion-card-background: #e6e6e6;
   }
-}
+

@@ -34,6 +34,8 @@ export class DragAndDrop {
         if (parentTodo.subId == item.subId) return;
 
         if (parentTodo.subId == item.parentId) return;
+
+        if (Todo.findSubTodoById(item, parentTodo.subId!)) return;
         
         await this.moveItem(item, parentTodo, mainTodo);
     
@@ -58,6 +60,7 @@ export class DragAndDrop {
               Todo.deleteTodoById(mainTodo, item.subId!);
               let parent = Todo.findSubTodoById(mainTodo, parentTodo.subId!);
               parent!.list.splice(0, 0, item);
+              item.parentId = parentTodo.subId;
             
         }
     }

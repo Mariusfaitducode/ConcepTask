@@ -101,6 +101,7 @@ export class SettingsPage implements OnInit {
     else{
       document.body.setAttribute('color-theme', 'light');
     }
+    this.settings.darkMode = this.darkMode;
     localStorage.setItem('settings', JSON.stringify(this.settings));
   }
 

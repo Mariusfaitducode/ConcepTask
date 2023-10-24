@@ -2,7 +2,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 
 import { FirebaseService } from '../service/firebase.service';
 
-import { MenuController } from '@ionic/angular';
+import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
 // import { NavParams } from '@ionic/angular';
 
@@ -63,7 +63,8 @@ export class HomePage {
     console.log(settings)
 
     if (!settings.darkMode) {
-      if (isPlatformBrowser(this.platformId)) {
+      console.log("no settings")
+      
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
         if (prefersDark.matches) {
           console.log("DARK MODE")
@@ -75,13 +76,13 @@ export class HomePage {
           // document.body.setAttribute('color-theme', 'light');
           settings.darkMode = false;
         }
-      }
     }
 
     if (settings.darkMode) {
       document.body.setAttribute('color-theme', 'dark');
     }
     else{
+      console.log("LIGHT MODE SET")
       document.body.setAttribute('color-theme', 'light');
     }
 
@@ -150,27 +151,20 @@ export class HomePage {
  closeMenu() {
    this.menuCtrl.close();
  }
-
- typeColor(type : string){
-  switch (type) {
-
-    case "default":
-      return "var(--ion-color-tertiary)";
-      
-    case "personnal":
-      return "var(--ion-color-danger)";
-      
-    case "project":
-      return "var(--ion-color-warning)";
-      
-    case "work":
-      return "var(--ion-color-success)";
-      
-    default:
-      return "var(--ion-color-primary)";
-  }
- }
   // app = initializeApp(environnement.firebaseConfig);
+
+
+  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+
+    
+    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+    ev.detail.complete(this.results);
+    console.log();
+    ev.stopPropagation();
+
+    this.todos = [...this.results];
+    this.setTodos();
+  }
 
 
   handleInput(event : any) {

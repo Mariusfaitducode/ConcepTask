@@ -1,7 +1,6 @@
 
 <div class="ion-page">
 
-
   <ion-header id="openMenu">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -13,9 +12,6 @@
       <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
     </ion-toolbar>
   </ion-header>
-
-
-
 
 <ion-content [fullscreen]="true">
 
@@ -31,23 +27,19 @@
       <ion-badge color="primary" *ngIf="countFilters() !== 0">{{countFilters()}}</ion-badge>
       
     </ion-buttons>
-    
-
-
   </ion-row>
-
-
-  
-
   
   <ion-list>
+    <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+      <ion-row *ngFor="let todo of results">
+        <app-todo-card [todo]="todo" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
+      </ion-row >
+    </ion-reorder-group>
 
-  <!-- How to iterate object + index -->
-    <ion-row *ngFor="let todo of results">
       
-      <app-todo-card [todo]="todo" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
-    </ion-row >
   </ion-list>
+
+
   <ion-infinite-scroll>
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>

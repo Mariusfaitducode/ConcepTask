@@ -7,22 +7,30 @@ ion-card{
     // background: linear-gradient(to bottom, yellow 50%, white 50%);
 }
 
+ion-card-title{
+    // margin-top: 20px;
+    color: var(--ion-text-color);
+    margin-left: 5px;
+}
+
 .home-card{
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-left: 5px;
     // padding-bottom: 10px;
 }
 
-// .left-card{
-//     // width: 50%;
-//     height: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-// }
+.title-reorder{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 20px;
+}
 
 .type-card{
     position: absolute;
@@ -101,10 +109,7 @@ ion-card{
 //     // color: var(--is-done-color-node);
 // }
 
-ion-card-title{
-    margin-top: 20px;
-    color: var(--ion-text-color);
-}
+
 
 
 

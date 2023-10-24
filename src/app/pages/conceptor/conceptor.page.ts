@@ -203,6 +203,9 @@ export class ConceptorPage implements OnInit {
             nodeCategory!.style.backgroundColor = d.todo.category.color;
             nodeCategory!.style.color = Todo.getCorrectTextColor(d.todo.category.color);
           }
+          else{
+            nodeCategory!.classList.add('hide');
+          }
           // nodeCategory!.innerHTML = d.todo.category.name;
           // nodeCategory!.style.backgroundColor = d.todo.category.color;
 
