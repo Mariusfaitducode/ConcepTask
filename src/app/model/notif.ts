@@ -56,6 +56,8 @@ export class Notif {
       public static async scheduleRecurringNotification(todo: Todo) {
         try {
           let date = Todo.getDate(todo.repeat!.startDate!, todo.repeat!.startTime);
+
+          console.log(date)
           
           // Vérifier si les notifications sont disponibles
           const available = await LocalNotifications.requestPermissions();
@@ -68,6 +70,8 @@ export class Notif {
           }
 
           let repeat : ScheduleEvery = todo.repeat!.delayType!;
+
+          console.log(repeat)
 
   
           if (available) {

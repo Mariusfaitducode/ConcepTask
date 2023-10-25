@@ -149,6 +149,12 @@ ion-label{
     background-color: var(--ion-color-step-200) !important; 
 }
 
+.monthview-secondary-with-event { 
+    // background-color: #FF9800 !important;
+    background-color: var(--background) !important; 
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
 
 .monthview-primary-with-event { 
     // background-color: #FF9800 !important;
@@ -189,18 +195,22 @@ ion-label{
 
 }
 
-
-
-thead[_ngcontent-ng-c613479738]{
-    // border: 2px solid var(--ion-color-step-100)  !important;
-    border: none !important;
+.table-bordered, .th, thead, tr, td, th{
+    border: 0px !important;
 }
 
 
-.table-bordered[_ngcontent-ng-c613479738],  th[_ngcontent-ng-c613479738], .table-bordered[_ngcontent-ng-c613479738], tr[_ngcontent-ng-c613479738], td[_ngcontent-ng-c613479738]{
-    // border: 1px solid var(--ion-color-step-100) !important;
-    border: none !important;
-}
+
+// thead[_ngcontent-ng-c613479738]{
+//     // border: 2px solid var(--ion-color-step-100)  !important;
+//     border: 0px !important;
+// }
+
+
+// .table-bordered[_ngcontent-ng-c613479738],  th[_ngcontent-ng-c613479738], .table-bordered[_ngcontent-ng-c613479738], tr[_ngcontent-ng-c613479738], td[_ngcontent-ng-c613479738]{
+//     // border: 1px solid var(--ion-color-step-100) !important;
+//     border: 0px !important;
+// }
 
 
 

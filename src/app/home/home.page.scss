@@ -27,13 +27,19 @@
 // }
 
 
+.logo-title{
+  width: 65%;
+  margin-left: 15px;
+  padding: 5px;
+}
+
 .research-header{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
- 
-  
+  // margin-top: 5px;
+
 }
 
 .research-header ion-searchbar{

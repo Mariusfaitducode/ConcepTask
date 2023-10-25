@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">ToDoList</string>
-    <string name="title_activity_main">ToDoList</string>
+    <string name="app_name">ConcepTask</string>
+    <string name="title_activity_main">ConcepTask</string>
     <string name="package_name">fr.marscode.todolist</string>
     <string name="custom_url_scheme">fr.marscode.todolist</string>
 </resources>

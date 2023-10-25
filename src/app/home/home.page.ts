@@ -9,6 +9,7 @@ import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Todo } from '../model/todo';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { WelcomeTodo } from '../model/welcome-todo';
 
 //import { AngularFireDatabase } from '@angular/fire/database';
 
@@ -62,28 +63,44 @@ export class HomePage {
 
     console.log(settings)
 
+
+    if (!settings.firstVisiteDone) {
+
+      let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+      let firstTodo = WelcomeTodo.getWelcomeTodo();
+      todos.push(firstTodo);
+      localStorage.setItem('todos', JSON.stringify(todos));
+
+      settings.firstVisiteDone = true;
+    }
+
+
     if (!settings.darkMode) {
       console.log("no settings")
       
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
         if (prefersDark.matches) {
           console.log("DARK MODE")
-          // document.body.setAttribute('color-theme', 'dark');
+          document.body.setAttribute('color-theme', 'dark');
           settings.darkMode = true;
+          // this.darkMode = true;
         }
         else{
           console.log("LIGHT MODE")
-          // document.body.setAttribute('color-theme', 'light');
+          document.body.setAttribute('color-theme', 'light');
           settings.darkMode = false;
+          // this.darkMode = false;
         }
     }
 
     if (settings.darkMode) {
       document.body.setAttribute('color-theme', 'dark');
+      // this.darkMode = true;
     }
     else{
       console.log("LIGHT MODE SET")
       document.body.setAttribute('color-theme', 'light');
+      // this.darkMode = false;
     }
 
     localStorage.setItem('settings', JSON.stringify(settings));
@@ -93,8 +110,9 @@ export class HomePage {
     }
 
   todos : Todo[] = []
-
   results : Todo[] = []
+
+  darkMode = false;
 
   openLeftMenu = false;
 
@@ -116,11 +134,14 @@ export class HomePage {
   ngOnInit() {
 
     console.log("HOME PAGEEEE")
+
+    this.darkMode = JSON.parse(localStorage.getItem('settings') || '{}').darkMode;
     
 
     this.route.queryParams.subscribe(params =>{
 
       console.log("HOME PAGEEEE CHANGE")
+      this.darkMode = JSON.parse(localStorage.getItem('settings') || '{}').darkMode;
       // window.location.reload();
       this.loadTodos();
       this.results = [...this.todos];
