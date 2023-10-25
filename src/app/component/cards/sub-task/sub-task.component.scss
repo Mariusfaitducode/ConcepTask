@@ -15,8 +15,8 @@
 
 
 .isDone-icon{
-    margin-right: 10px;
-    padding-top: 3px;
+    // margin-right: 3px;
+    padding-top: 5px;
 }
 
 
@@ -69,8 +69,9 @@ ion-card-content{
 }
 
 svg{
-    margin-right: 10px;
-    fill: var(--ion-color-primary);
+    margin-right: 5px;
+    margin-top: 5px;
+    // fill: var(--ion-color-primary);
 }
 
 .todo-page ion-label{

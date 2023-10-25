@@ -141,7 +141,7 @@ export class WelcomeTodo {
                            "subId": 8,
                            "parentId": 2,
                            "priority":"high",
-                           "description":"You' ve probably already seen it. \ nThe button with the green links. \ nDon 't hesitate, click it !"
+                           "description":"You' ve probably already seen it. \nThe button with the green links. \nDon 't hesitate, click it !"
                         }, {
                            "isDone": false,
                            "developped": false,
@@ -345,7 +345,7 @@ export class WelcomeTodo {
                        "subtasks": false
                     },
                    "repeat": {},
-                   "description":"This is my very first application and the very first version. \ nI created it based on my needs.I hope it will meet yours! \ nI have lots of ideas for future versions and I 'm sure you will too.\nI look forward to your feedback !",
+                   "description":"This is my very first application and the very first version. \nI created it based on my needs.I hope it will meet yours! \nI have lots of ideas for future versions and I 'm sure you will too.\nMany thanks to Raphaël Perrin, who designed the application logos.\nI look forward to your feedback !",
                    "mainId": 148,
                    "subId": 4,
                    "parentId": 0
@@ -360,7 +360,7 @@ export class WelcomeTodo {
             },
            "mainId": 148,
            "repeat": {},
-           "description":"Welcome to the ConcepTask application.\nThis is a todo list application like no other.\nIt' s been designed to let you manage your projects in a different way. \ nMore flexible, intuitive and complete",
+           "description":"Welcome to the ConcepTask application.\nThis is a todo list application like no other.\nIt' s been designed to let you manage your projects in a different way. \nMore flexible, intuitive and complete",
            "priority":"high",
            "date":"2023 - 11 - 05",
            "time":"21: 00"
