@@ -13,6 +13,8 @@
     justify-content: space-between;
     align-items: center;
 
+    height: fit-content;
+
     padding: 10px 5px;
 }
 
@@ -49,6 +51,28 @@
     padding-bottom: 5px;
 
 }
+
+/* Classe pour l'apparition de l'en-tête */
+.header-appear {
+    opacity: 1;
+    transform: translateY(0);
+
+    height: 100%;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Classe pour la disparition de l'en-tête */
+  .header-disappear {
+    opacity: 0;
+    transform: translateY(-100%);
+
+    // scale: 0;
+    // transform: scaleY(0);
+    // transform-origin: top;
+    height: 0px;
+    // padding: 0px;
+    // transition: all 5s ease;
+  }
 
 .header-buttons{
     width: fit-content;

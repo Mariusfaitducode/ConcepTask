@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail, NavController } from '@ionic/angular';
 import { Todo } from 'src/app/model/todo';
@@ -16,6 +16,8 @@ import { DragAndDrop } from 'src/app/model/drag-and-drop';
   styleUrls: ['./todo.page.scss'],
 })
 export class TodoPage implements OnInit {
+
+  // @ViewChild ('.sub-toolbar') subToolbar!: HTMLElement;
 
 
   todos: Todo[] = [];
@@ -36,6 +38,9 @@ export class TodoPage implements OnInit {
   configMode : boolean = false;
 
   hideSubTasks : boolean = false;
+
+  lastScrollPosition: number = 0;
+  hideSubToolbar: boolean = false;
   
 
   newTodoOnListTitle: string = "";
@@ -65,28 +70,40 @@ export class TodoPage implements OnInit {
         this.loadTodo(this.index);
       }
       else{
-
         //In a subTodo
-
         this.inSubTask = true;
         this.index = +params['id'];
         //Détermine main todo
         this.loadTodo(this.index);
 
         //Détermine sub todo
-        this.todo = this.findSubTodo(+params['subId']!);
+        this.todo = Todo.findSubTodoById(this.mainTodo, +params['subId']!)!;
       }
     });
     this.initializeSubTasksList();
 
     console.log(this.subTasksList);
-
     console.log(this.todo)
   }
 
-
   ngAfterViewInit() {
     this.actualizeWhenDeveloppedClicked();
+  }
+
+  onContentScroll(event : any){
+    // console.log(event)
+
+    // let currentScrollPosition = event.detail.scrollTop;
+
+    if (event.detail.scrollTop > this.lastScrollPosition && event.detail.scrollTop > 100) {
+        // this.subToolbar.style.top = "-90px"; // Masquer le menu
+        this.hideSubToolbar = true;
+    }
+    else {
+        // this.subToolbar.style.top = "0"; // Afficher le menu
+        this.hideSubToolbar = false;
+    }
+    this.lastScrollPosition = event.detail.scrollTop;
   }
 
 
@@ -142,27 +159,6 @@ export class TodoPage implements OnInit {
     console.log(this.todos)
     this.todo = this.todos.find(todo => todo.mainId == id)!;
     this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
-  }
-
-  
-  findSubTodo(subId : number){
-
-    let copyList = [...this.mainTodo.list!];
-
-    // Bfs algorithm
-    while (copyList.length > 0) {
-
-      let todo = copyList.shift()!;
-
-      if (todo.subId == subId) {
-        return todo;
-      }
-
-      for (let subTodo of todo.list!) {
-        copyList.push(subTodo);
-      }
-    }
-    return new Todo();
   }
 
 
@@ -323,10 +319,10 @@ export class TodoPage implements OnInit {
 
   contrastColor(){
 
-    console.log(this.todo.category.color)
+    // console.log(this.todo.category.color)
     let color = Todo.getCorrectTextColor(this.todo.category.color);
     
-    console.log(color)
+    // console.log(color)
     return color
   
   }
