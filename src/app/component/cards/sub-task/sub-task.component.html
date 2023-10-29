@@ -13,7 +13,7 @@
         <ion-reorder cdkDragHandle></ion-reorder>
   
         <div class="task-title">
-          <ion-card-title >{{subTask.title}}</ion-card-title>
+          <div class="subtask-title">{{subTask.title}}</div>
         </div>
       </div>
   
@@ -46,7 +46,7 @@
   
   <div>
     <div>
-      <ion-list  class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped" [style.background-color]="backgroundColor()">
+      <ion-list  class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped" [style.background-color]="'var(--ion-background-color)'">
 
         <div *ngIf="page === 'add'">
           <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>

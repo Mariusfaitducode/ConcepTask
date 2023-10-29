@@ -256,8 +256,8 @@ export class WelcomeTodo {
                            "mainId": 148,
                            "subId": 10,
                            "parentId": 3,
-                           "date":"2023 - 10 - 18",
-                           "time":"15: 00",
+                           "date":"2023-10-18",
+                           "time":"15:00",
                            "priority":"medium",
                            "reminder": false,
                            "notifId": 70
@@ -280,7 +280,7 @@ export class WelcomeTodo {
                                "subtasks": false
                             },
                            "repeat": {},
-                           "date":"2023 - 10 - 24",
+                           "date":"2023-10-24",
                            "time":"10: 00",
                            "mainId": 148,
                            "subId": 11,
@@ -304,7 +304,7 @@ export class WelcomeTodo {
                                "subtasks": false
                             },
                            "repeat": {
-                               "startDate":"2023 - 10 - 25",
+                               "startDate":"2023-10-25",
                                "startTime":"19: 00",
                                "delayType":"week"
                             },
@@ -360,10 +360,10 @@ export class WelcomeTodo {
             },
            "mainId": 148,
            "repeat": {},
-           "description":"Welcome to the ConcepTask application.\nThis is a todo list application like no other.\nIt' s been designed to let you manage your projects in a different way. \nMore flexible, intuitive and complete",
+           "description":"Welcome to the ConcepTask application.\nThis is a todo list application like no other. \nIt' s been designed to let you manage your projects in a different way. \nMore flexible, intuitive and complete",
            "priority":"high",
-           "date":"2023 - 11 - 05",
-           "time":"21: 00"
+           "date":"2023-11-05",
+           "time":"21:00"
         }
     }
 }
