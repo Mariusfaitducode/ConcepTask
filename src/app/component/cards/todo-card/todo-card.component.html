@@ -4,7 +4,15 @@
 
     <ion-card-content class="home-card" >
 
-      <ion-card-subtitle *ngIf="todo.category.name" class="type-card" [style.background-color]="todo.category.color || ''" [style.color]="contrastColor()">{{todo.category.name || ''}}</ion-card-subtitle>
+
+      <div class="infos">
+        <ion-card-subtitle *ngIf="todo.category.name" class="type-card" [style.background-color]="todo.category.color || ''" [style.color]="contrastColor()">{{todo.category.name || ''}}</ion-card-subtitle>
+
+        <ion-card-subtitle class="percent-card">{{doneTasksPercent()}}</ion-card-subtitle>
+
+      </div>
+
+      
 
       <div class="title-reorder">
         <ion-reorder></ion-reorder>
@@ -17,7 +25,7 @@
         
         <ion-label class="date-card" [ngClass]="{'passed-date' : !validDate()}"> {{formatDateToCustomString()}}</ion-label>
 
-        <ion-label class="percent-card">{{doneTasksPercent()}}</ion-label>
+        
       </div>
 
       <div *ngIf="todo.isDone ">
