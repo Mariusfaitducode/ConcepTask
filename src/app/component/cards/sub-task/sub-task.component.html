@@ -4,6 +4,7 @@
   <div cdkDrag [cdkDragData]="subTask">
     <ion-card-content 
       (click)="clickSubTask()" (press)="developSubTaskPressed($event)"
+      class="sub-task-card"
       [ngClass]="{isDone: subTask.isDone, passed : passedDate()}">
 
     <!-- <ion-icon name="menu-outline"></ion-icon> -->

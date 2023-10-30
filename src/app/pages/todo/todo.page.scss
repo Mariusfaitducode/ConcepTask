@@ -52,6 +52,13 @@
 
 }
 
+.sub-task-mode{
+
+    min-height: 48px;
+    height: 48px;
+    max-height: 40px !important;
+}
+
 /* Classe pour l'apparition de l'en-tête */
 .header-appear {
     opacity: 1;

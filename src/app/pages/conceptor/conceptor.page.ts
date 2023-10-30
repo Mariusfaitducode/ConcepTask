@@ -631,9 +631,12 @@ export class ConceptorPage implements OnInit {
 
   }
 
+  goToTree(){
+    this.router.navigate(['/todo', this.index]);
+  }
 
   goBackTodo(){
-    this.router.navigate(['/todo', this.index]);
+    this.router.navigate(['/home']);
   }
 
   loadTodo(id : number){

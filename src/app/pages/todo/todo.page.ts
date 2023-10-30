@@ -41,6 +41,9 @@ export class TodoPage implements OnInit {
 
   lastScrollPosition: number = 0;
   hideSubToolbar: boolean = false;
+
+  changePositionSubMode : boolean = false;
+  subMode : string = "tree";
   
 
   newTodoOnListTitle: string = "";
@@ -94,6 +97,30 @@ export class TodoPage implements OnInit {
     // console.log(event)
 
     // let currentScrollPosition = event.detail.scrollTop;
+
+    const subTaskMode = document.getElementById('sub-task-mode')!;
+    const header = document.getElementById('header')!;
+
+    console.log(subTaskMode)
+    console.log(event.detail.scrollTop)
+
+    let top = subTaskMode.getBoundingClientRect().top + header.clientHeight;
+
+
+    if (event.detail.scrollTop > top) {
+
+      this.changePositionSubMode = true;
+
+      // subTaskMode.style.position = "fixed";
+      // subTaskMode.style.top = header.clientHeight + "px"; // Masquer le menu
+    }
+    else {
+      
+      this.changePositionSubMode = false;
+
+      // subTaskMode.style.position = "relative";
+      // subTaskMode.style.top = "0"; // Afficher le menu
+    }
 
     if (event.detail.scrollTop > this.lastScrollPosition && event.detail.scrollTop > 100) {
         // this.subToolbar.style.top = "-90px"; // Masquer le menu
@@ -274,6 +301,7 @@ export class TodoPage implements OnInit {
 
   goToConceptor(){
     this.router.navigate(['/conceptor', this.index]);
+    this.subMode = "tree";
   }
  
   passedDate(){

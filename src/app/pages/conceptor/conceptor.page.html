@@ -1,11 +1,27 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="toolbar-parent">
+    <div class="toolbar-content">
 
-    <ion-buttons slot="start">
-      <ion-back-button default-href="#" (click)="goBackTodo()"></ion-back-button>
-    </ion-buttons>
-    
-    <ion-title>conceptor</ion-title>
+      <ion-buttons slot="start">
+        <ion-button (click)="goBackTodo()" class="back-button">
+          <ion-icon name="arrow-back-outline" ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+        <h1 class="title-input">{{todo.title}}</h1>
+
+        <div class="center-title">
+        </div>
+    </div>
+
+    <ion-segment value="graph" id="sub-task-mode" class="sub-task-mode">
+      <ion-segment-button value="default" (click)="goToTree()" class="sub-task-mode">
+        <div>Tree</div>
+      </ion-segment-button>
+      <ion-segment-button value="graph" >
+        <div>Graph</div>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
