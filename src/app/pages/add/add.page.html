@@ -26,7 +26,7 @@
   
   <ion-list class="list-page">
 
-    <div class="title-type-header">
+    <div class="title-type-header item-margin">
 
       <ion-item class="title">
         <ion-label position="floating" [color]="newTodo.title ? 'primary' : ''">Title</ion-label>
@@ -41,21 +41,16 @@
 
           <ion-select-option  *ngFor="let cat of categories" [value]="cat">{{cat.name}}</ion-select-option>
 
-          <!-- <ion-select-option value="default">Default</ion-select-option>
-          <ion-select-option value="personnal">Personnal</ion-select-option>
-          <ion-select-option value="project">Project</ion-select-option>
-          <ion-select-option value="work">Work</ion-select-option>
-          <ion-select-option value="event">Event</ion-select-option>
-          <ion-select-option value="wishlist">Wishlist</ion-select-option>
-          <ion-select-option value="sport">Sport</ion-select-option>
-          <ion-select-option value="shopping">Shopping</ion-select-option> -->
         </ion-select>
       </ion-row>
     </div>
 
-    <app-custom-config [configArray]="this.newTodo.config"></app-custom-config>
+    <!-- <div class="item-margin"> -->
+      <app-custom-config [configArray]="this.newTodo.config" ></app-custom-config>
+    <!-- </div> -->
 
-    <div *ngIf="this.newTodo.config.description" class="description-textarea">
+
+    <div *ngIf="this.newTodo.config.description" class="description-textarea item-margin">
 
       <!-- <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label> -->
 
@@ -65,7 +60,7 @@
 
     </div>
 
-    <ion-row *ngIf="this.newTodo.config.priority">
+    <ion-row *ngIf="this.newTodo.config.priority" class="item-margin">
       <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
       <ion-segment [(ngModel)]="newTodo.priority" color="primary" (ionChange)="changeTodo = true">
         <ion-segment-button value="low">
@@ -80,22 +75,25 @@
       </ion-segment>
     </ion-row>
 
-    <app-date-selector [todo]="newTodo" (childModified)="changeTodo = true"></app-date-selector>
+    <div class="item-margin">
+      <app-date-selector [todo]="newTodo" (childModified)="changeTodo = true"></app-date-selector>
 
-    <div *ngIf="this.newTodo.config.subtasks" class="sub-tasks">
+    </div>
+
+    <div *ngIf="this.newTodo.config.subtasks" class="sub-tasks item-padding">
 
       <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
 
       <app-button-add-sub-task [modalConfig]="modalConfig" [parentTask]="newTodo"></app-button-add-sub-task>
 
-      <ion-list cdkDropListGroup>
-          <div *ngFor="let subTodo of newTodo.list; let id = index">
+      <div cdkDropListGroup>
+        <div *ngFor="let subTodo of newTodo.list; let id = index">
 
-            <div cdkDropList [cdkDropListData]="subTasksList[id]" (cdkDropListDropped)="drop($event)">
-              <app-sub-task [parentTask]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'" [openModal]="modalConfig"></app-sub-task>
-            </div>
-          </div> 
-      </ion-list> 
+          <div cdkDropList [cdkDropListData]="subTasksList[id]" (cdkDropListDropped)="drop($event)">
+            <app-sub-task [parentTask]="newTodo" [subTask]="subTodo" [index]="id" [page]="'add'" [openModal]="modalConfig"></app-sub-task>
+          </div>
+        </div> 
+      </div> 
 
     </div>
   </ion-list>
