@@ -44,6 +44,8 @@ export class TodoPage implements OnInit {
 
   changePositionSubMode : boolean = false;
   subMode : string = "tree";
+
+  subTaskModePosY = 0;
   
 
   newTodoOnListTitle: string = "";
@@ -104,12 +106,16 @@ export class TodoPage implements OnInit {
     console.log(subTaskMode)
     console.log(event.detail.scrollTop)
 
-    let top = subTaskMode.getBoundingClientRect().top + header.clientHeight;
+    if (subTaskMode){
+      this.subTaskModePosY = subTaskMode.getBoundingClientRect().top + header.clientHeight;
+
+    }
 
 
-    if (event.detail.scrollTop > top) {
+    if (event.detail.scrollTop > this.subTaskModePosY) {
 
       this.changePositionSubMode = true;
+      this.hideSubToolbar = true;
 
       // subTaskMode.style.position = "fixed";
       // subTaskMode.style.top = header.clientHeight + "px"; // Masquer le menu
@@ -117,19 +123,20 @@ export class TodoPage implements OnInit {
     else {
       
       this.changePositionSubMode = false;
+      this.hideSubToolbar = false;
 
       // subTaskMode.style.position = "relative";
       // subTaskMode.style.top = "0"; // Afficher le menu
     }
 
-    if (event.detail.scrollTop > this.lastScrollPosition && event.detail.scrollTop > 100) {
-        // this.subToolbar.style.top = "-90px"; // Masquer le menu
-        this.hideSubToolbar = true;
-    }
-    else {
-        // this.subToolbar.style.top = "0"; // Afficher le menu
-        this.hideSubToolbar = false;
-    }
+    // if (event.detail.scrollTop > this.lastScrollPosition && event.detail.scrollTop > 100) {
+    //     // this.subToolbar.style.top = "-90px"; // Masquer le menu
+        
+    // }
+    // else {
+    //     // this.subToolbar.style.top = "0"; // Afficher le menu
+        
+    // }
     this.lastScrollPosition = event.detail.scrollTop;
   }
 

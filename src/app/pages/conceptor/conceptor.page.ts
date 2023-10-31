@@ -49,7 +49,6 @@ export class ConceptorPage implements OnInit {
 
   ngOnInit() {
 
-
     this.route.params.subscribe((params) => {
 
         //Init data
@@ -72,9 +71,7 @@ export class ConceptorPage implements OnInit {
 
         console.log(svg)
 
-
         if (svg.selectChildren("g").size() > 0) window.location.reload();
-
 
         let g = svg.append("g");
 
@@ -632,7 +629,7 @@ export class ConceptorPage implements OnInit {
   }
 
   goToTree(){
-    this.router.navigate(['/todo', this.index]);
+    this.router.navigate(['/todo', this.index], {fragment: 'sub-task-mode'});
   }
 
   goBackTodo(){
