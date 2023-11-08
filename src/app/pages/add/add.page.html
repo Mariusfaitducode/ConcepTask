@@ -1,7 +1,9 @@
 
 
 <ion-header [translucent]="true" >
-  <ion-toolbar *ngIf="modalConfig.open === false" [ngClass]="{'doneHeader': newTodo.isDone === true, 'passedHeader' : passedDate()}">
+  <!-- <ion-toolbar *ngIf="modalConfig.open === false" [ngClass]="{'doneHeader': newTodo.isDone === true, 'passedHeader' : passedDate()}"> -->
+  <ion-toolbar *ngIf="modalConfig.open === false" >
+
     <ion-buttons slot="start" >
       <ion-button (click)="showCloseConfirm()" class="back-button">
         <ion-icon name="arrow-back-outline" ></ion-icon>
@@ -34,6 +36,7 @@
       </ion-item>
 
       <ion-row  class="type">
+        <!-- {{newTodo.category.name}} -->
         <ion-select 
           [(ngModel)]="newTodo.category" (ionChange)="changeTodo = true"
           label="Category" label-placement="floating"
