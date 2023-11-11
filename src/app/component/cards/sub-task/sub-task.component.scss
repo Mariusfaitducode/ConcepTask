@@ -19,6 +19,12 @@
 }
 
 
+.priority-icon{
+    font-size: 30px;
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
 
 .isDone-icon{
     // margin-right: 3px;
@@ -68,6 +74,8 @@ ion-card-content{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+    // margin: auto 0px;
 
     // margin-top: 5px;
     // padding: 0 10px;
