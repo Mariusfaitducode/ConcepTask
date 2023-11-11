@@ -50,7 +50,7 @@ export class TodoPage implements OnInit {
 
   newTodoOnListTitle: string = "";
 
-  constructor(private navCtrl: NavController, private route : ActivatedRoute, private router : Router, private modalService : ModalService) { 
+  constructor(private navCtrl: NavController, private route : ActivatedRoute, private router : Router) { 
     let settings = JSON.parse(localStorage.getItem('settings') || '{}');
 
     if (settings.darkMode) {
@@ -62,7 +62,25 @@ export class TodoPage implements OnInit {
   }
 
   ngOnInit() {
+
+
+    this.route.fragment.subscribe((fragment) => {
+
+      console.log(fragment)
+
+
+      if (fragment == "conceptor") {
+    
+        this.subMode = "tree";
+
+        window.location.hash = "sub-task-mode";
+        location.reload();      
+      }
+    });
+
     this.route.params.subscribe((params) => {
+
+      
 
       if (params['subId'] == undefined) {
 
@@ -96,15 +114,12 @@ export class TodoPage implements OnInit {
   }
 
   onContentScroll(event : any){
-    // console.log(event)
-
-    // let currentScrollPosition = event.detail.scrollTop;
 
     const subTaskMode = document.getElementById('sub-task-mode')!;
     const header = document.getElementById('header')!;
 
-    console.log(subTaskMode)
-    console.log(event.detail.scrollTop)
+    // console.log(subTaskMode)
+    // console.log(event.detail.scrollTop)
 
     if (subTaskMode){
       this.subTaskModePosY = subTaskMode.getBoundingClientRect().top + header.clientHeight;
@@ -116,27 +131,14 @@ export class TodoPage implements OnInit {
 
       this.changePositionSubMode = true;
       this.hideSubToolbar = true;
-
-      // subTaskMode.style.position = "fixed";
-      // subTaskMode.style.top = header.clientHeight + "px"; // Masquer le menu
     }
     else {
       
       this.changePositionSubMode = false;
       this.hideSubToolbar = false;
 
-      // subTaskMode.style.position = "relative";
-      // subTaskMode.style.top = "0"; // Afficher le menu
     }
 
-    // if (event.detail.scrollTop > this.lastScrollPosition && event.detail.scrollTop > 100) {
-    //     // this.subToolbar.style.top = "-90px"; // Masquer le menu
-        
-    // }
-    // else {
-    //     // this.subToolbar.style.top = "0"; // Afficher le menu
-        
-    // }
     this.lastScrollPosition = event.detail.scrollTop;
   }
 
@@ -287,12 +289,8 @@ export class TodoPage implements OnInit {
     console.log(this.todo.list);
   }
 
-  addTodoOnList(){
 
-    // this.todo.list.push({
-    //   type: 'todo',
-    //   title: this.newTodoOnListTitle,
-    // });
+  addTodoOnList(){
 
     this.newTodoOnListTitle = '';
     console.log(this.todo);
@@ -306,33 +304,27 @@ export class TodoPage implements OnInit {
     return item != undefined && item != '';
   }
 
+
   goToConceptor(){
-    this.router.navigate(['/conceptor', this.index]);
+    console.log("go to conceptor")
+
+    if (this.subMode == "graph"){
+      this.subMode = "tree";
+      console.log(this.subMode)
+
+      this.router.navigate(['/conceptor', this.index]);
+    }
     this.subMode = "tree";
+
+    
+    
   }
  
+
   passedDate(){
     return Todo.passedDate(this.todo);
   }
 
-  // categoryColor(){
-  //   return Todo.typeColor(this.todo.category);
-  // }
-
-  // manageNotification(){
-
-  //   console.log("click")
-
-  //   console.log("manage notification")
-  //   console.log(this.todo.reminder);
-  //   // this.newTodo.sayHello();
-  //   if (this.todo.reminder) {
-  //     Todo.scheduleNotification(this.todo);
-  //   }
-  //   else{
-  //     Todo.cancelNotification(this.todo);
-  //   }
-  // }
 
   formatDateToCustomString() {
     

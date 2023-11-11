@@ -629,7 +629,7 @@ export class ConceptorPage implements OnInit {
   }
 
   goToTree(){
-    this.router.navigate(['/todo', this.index], {fragment: 'sub-task-mode'});
+    this.router.navigate(['/todo', this.index], {fragment: 'conceptor'});
   }
 
   goBackTodo(){
