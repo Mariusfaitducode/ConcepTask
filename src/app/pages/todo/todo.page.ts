@@ -59,24 +59,20 @@ export class TodoPage implements OnInit {
     else{
       document.body.setAttribute('color-theme', 'light');
     }
+
+    // this.route.fragment.subscribe((fragment) => {
+
+    //   console.log(fragment)
+
+    //   if (fragment == "conceptor") {    
+    //     this.subMode = "tree";
+    //     window.location.hash = "sub-task-mode";
+    //     location.reload();      
+    //   }
+    // });
   }
 
   ngOnInit() {
-
-
-    this.route.fragment.subscribe((fragment) => {
-
-      console.log(fragment)
-
-
-      if (fragment == "conceptor") {
-    
-        this.subMode = "tree";
-
-        window.location.hash = "sub-task-mode";
-        location.reload();      
-      }
-    });
 
     this.route.params.subscribe((params) => {
 
@@ -308,16 +304,21 @@ export class TodoPage implements OnInit {
   goToConceptor(){
     console.log("go to conceptor")
 
-    if (this.subMode == "graph"){
+    const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
+
+    
+
+    
       this.subMode = "tree";
       console.log(this.subMode)
 
       this.router.navigate(['/conceptor', this.index]);
-    }
-    this.subMode = "tree";
 
-    
-    
+      segment!.forEach((seg) => {
+        console.log(seg)
+        seg!.value = "tree";
+      })
+  
   }
  
 

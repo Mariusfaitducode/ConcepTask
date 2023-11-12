@@ -594,11 +594,6 @@ export class ConceptorPage implements OnInit {
           let transform = event.transform;
           g.attr("transform", transform);
         }
-
-        
-
-
-        
     });
   }
 
