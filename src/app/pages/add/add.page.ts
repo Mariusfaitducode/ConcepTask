@@ -30,16 +30,15 @@ export class AddPage implements OnInit {
   newTodo!: Todo;
   index?: number = undefined;
 
-  date: any = {date: '', time: ''};
-
   subType: string = 'customize';
 
   changeTodo: boolean = false;
 
   categories : any[] = [];
+  categoryName : string = "";
+
 
   subTasksList : any[] = [];
-
 
   showDate: boolean = false;
 
@@ -81,6 +80,8 @@ export class AddPage implements OnInit {
 
         this.index = +params['id'];
         this.loadTodo(this.index);
+
+        this.categoryName = this.newTodo.category.name;
 
         if (params['subId']){
 
@@ -160,6 +161,7 @@ export class AddPage implements OnInit {
     // this.mainTodo = this.todos[id] 
   }
 
+
   //A vérifier si on en a besoin
   setMainTodoId(){
     let todoId = JSON.parse(localStorage.getItem('mainTodoId') || '0');
@@ -222,9 +224,6 @@ export class AddPage implements OnInit {
     //this.todos.push(this.newTodo);
 
   }
-
-
- 
 
 
   showCloseConfirm = async () => {
@@ -297,6 +296,11 @@ export class AddPage implements OnInit {
 
 
 
+  changeCategory(){
+    console.log(this.categoryName)
+    this.newTodo.category = this.categories.find((category: any) => category.name === this.categoryName)!;
+    this.changeTodo = true;
+  }
   
 
   passedDate(){
