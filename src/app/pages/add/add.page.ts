@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 
 import { ModalController } from '@ionic/angular';
 
@@ -17,6 +17,7 @@ import { set } from 'firebase/database';
 import { Dialog } from '@capacitor/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { DragAndDrop } from 'src/app/model/drag-and-drop';
+
 
 @Component({
   selector: 'app-add',
@@ -56,7 +57,7 @@ export class AddPage implements OnInit {
     parentTask: Todo,
   };
 
-  constructor(private navCtrl: NavController, private route : ActivatedRoute, private modalService: ModalService) 
+  constructor(private navCtrl: NavController, private route : ActivatedRoute, private platform : Platform) 
   {
     let settings = JSON.parse(localStorage.getItem('settings') || '{}');
 
@@ -69,6 +70,8 @@ export class AddPage implements OnInit {
   }
 
   ngOnInit() {
+
+    this.setupBackButtonHandler();
 
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
@@ -242,6 +245,7 @@ export class AddPage implements OnInit {
         console.log("change")
 
         this.navCtrl.back();
+        this.changeTodo = false;
         
       }
     }
@@ -252,6 +256,33 @@ export class AddPage implements OnInit {
       this.navCtrl.back();
     }
   };
+
+  private setupBackButtonHandler() {
+    this.platform.backButton.subscribeWithPriority(0, async () => {
+      
+      if (this.changeTodo){
+
+        const { value } = await Dialog.confirm({
+          title: 'Confirm',
+          message: `Your change will be loosed ?`,
+        });
+      
+        console.log('Confirmed:', value);
+    
+        if (value) {
+          console.log("change")
+          this.navCtrl.back();
+          this.changeTodo = false;
+        }
+      }
+      else{
+  
+        console.log("no change")
+  
+        this.navCtrl.back();
+      }
+    });
+  }
 
 
   //Id 

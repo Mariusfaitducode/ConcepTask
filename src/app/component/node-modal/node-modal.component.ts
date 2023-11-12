@@ -23,6 +23,19 @@ export class NodeModalComponent implements OnInit {
     // console.log(this.todos)
     // this.todo = this.todos.find(todo => todo.mainId == id)!;
     // this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
+
+
+    this.route.paramMap.subscribe(params => {
+
+      console.log("CHANGE MODAAAAL")
+
+      console.log(params)
+
+
+      // if (params['modalId']) {
+      //   console.log(params['modalId'])
+      // }
+    });
   }
 
 

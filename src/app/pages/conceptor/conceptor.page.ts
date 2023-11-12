@@ -165,7 +165,7 @@ export class ConceptorPage implements OnInit {
 
           let pathAr = window.location.pathname.split('/');
 
-        if (pathAr.length > 3) {
+          if (pathAr.length > 3) {
             pathAr.pop();
           }
 
@@ -307,24 +307,69 @@ export class ConceptorPage implements OnInit {
           }
 
           if (d.todo.isDone) {
-            let modalHeader = document.getElementById("modal-header");
-            modalHeader!.classList.add('doneHeader');
+            // let modalHeader = document.getElementById("modal-header");
+            // modalHeader!.classList.add('doneHeader');
+
+            let nodeValidateIcon = document.getElementById("node-done-icon");
+            nodeValidateIcon!.classList.remove('hide');
 
             let nodeValidateButton = document.getElementById("node-validate-button");
             nodeValidateButton!.classList.add('hide');
 
             let nodeUnvalidateButton = document.getElementById("node-unvalidate-button");
             nodeUnvalidateButton!.classList.remove('hide');
+
+            let nodePriority = document.getElementById("node-priority");
+            nodePriority!.classList.add('hide');
+
+            let nodePassedIcon = document.getElementById("node-passed-icon");
+            nodePassedIcon!.classList.add('hide');
           }
           else{
-            let modalHeader = document.getElementById("modal-header");
-            modalHeader!.classList.remove('doneHeader');
+            // let modalHeader = document.getElementById("modal-header");
+            // modalHeader!.classList.remove('doneHeader');
+
+            let nodeValidateIcon = document.getElementById("node-done-icon");
+            nodeValidateIcon!.classList.add('hide');
+
 
             let nodeValidateButton = document.getElementById("node-validate-button");
             nodeValidateButton!.classList.remove('hide');
 
             let nodeUnvalidateButton = document.getElementById("node-unvalidate-button");
             nodeUnvalidateButton!.classList.add('hide');
+
+            if (d.todo.config.priority){
+              let nodePriority = document.getElementById("node-priority");
+              nodePriority!.classList.remove('hide');
+
+              if (d.todo.priority == 'high'){
+                let nodePriorityIcon = document.getElementById("node-priority-icon") as HTMLIonIconElement;
+                nodePriorityIcon!.color = 'danger';
+              }
+              else if (d.todo.priority == 'medium'){
+                let nodePriorityIcon = document.getElementById("node-priority-icon") as HTMLIonIconElement;
+                nodePriorityIcon!.color = 'warning';
+              }
+              else if (d.todo.priority == 'low'){
+                let nodePriorityIcon = document.getElementById("node-priority-icon") as HTMLIonIconElement;
+                nodePriorityIcon!.color = 'medium';
+              }
+            }
+            else{
+              let nodePriority = document.getElementById("node-priority");
+              nodePriority!.classList.add('hide');
+            }
+
+            if (Todo.passedDate(d.todo)) {
+              let nodePassedIcon = document.getElementById("node-passed-icon");
+              nodePassedIcon!.classList.remove('hide');
+            }
+            else{
+              let nodePassedIcon = document.getElementById("node-passed-icon");
+              nodePassedIcon!.classList.add('hide');
+            }
+            
           }
 
           modal!.classList.remove('close-modal');

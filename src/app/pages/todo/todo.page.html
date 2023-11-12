@@ -20,7 +20,7 @@
     <div  [ngClass]="{ 'header-appear': !hideSubToolbar, 'header-disappear': hideSubToolbar }">
       <ion-row class="sub-toolbar" id="sub-toolbar">
 
-        <ion-row>
+        <ion-row class="header-infos">
           <div *ngIf="todo.category.name" class="chip-category" [style.background-color]="todo.category.color || ''" [style.color]="contrastColor()">
             {{todo.category.name || ''}}
           </div>

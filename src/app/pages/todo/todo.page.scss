@@ -60,10 +60,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    // align-items: center;
+    align-items: center;
     padding: 10px;
 
+    padding-top: 5px;
     padding-bottom: 5px;
+    height: 48px;
 
 }
 
@@ -94,6 +96,11 @@
     height: 0px;
     // padding: 0px;
     // transition: all 5s ease;
+}
+
+.header-infos{
+    padding-top: 4px;
+    height: 40px;
 }
 
 .header-buttons{
