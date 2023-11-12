@@ -167,6 +167,7 @@ export class TodoPage implements OnInit {
 
     await DragAndDrop.drop(event, this.mainTodo);
     this.initializeSubTasksList();
+    localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 
 
@@ -306,9 +307,6 @@ export class TodoPage implements OnInit {
 
     const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
 
-    
-
-    
       this.subMode = "tree";
       console.log(this.subMode)
 
@@ -328,7 +326,6 @@ export class TodoPage implements OnInit {
 
 
   formatDateToCustomString() {
-    
     return Todo.formatDateToCustomString(this.todo); 
   }
 
