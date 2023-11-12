@@ -97,6 +97,9 @@ ion-label{
 
 //SUB TASKS ELEMENTS
 
+app-sub-task ion-card{
+    --margin-bottom: 0px !important;
+}
 
 .sub-tasks{
     margin-top: 16px;
@@ -300,6 +303,10 @@ ion-select::part(label){
     // color: var(--ion-color-primary) !important;
     padding-top: 15px;
     padding-bottom: 8px;
+}
+
+.no-padding{
+    padding: 0px !important;
 }
 
 .description-textarea ion-textarea.has-focus.sc-ion-textarea-md-h{

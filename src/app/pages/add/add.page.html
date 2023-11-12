@@ -103,7 +103,11 @@
 
 
   <div *ngIf="modalConfig.open">
-    <app-add-modal [modalConfig]="modalConfig" (childModified)="changeTodo = true"></app-add-modal>
+    <app-add-modal [modalConfig]="modalConfig" [newModalConfig]="newModalConfig"  (childModified)="changeTodo = true"></app-add-modal>
+
+  </div>
+  <div *ngIf="newModalConfig.open">
+    <app-add-modal [modalConfig]="newModalConfig" (childModified)="changeTodo = true"></app-add-modal>
 
   </div>
 

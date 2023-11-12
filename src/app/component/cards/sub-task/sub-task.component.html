@@ -1,5 +1,5 @@
 
-<ion-card [style.margin-right]="marginLeft()">
+<ion-card [style.margin-right]="marginLeft()" [style.margin-bottom]="'0px'">
 
   <div cdkDrag [cdkDragData]="subTask">
     <ion-card-content 
@@ -62,10 +62,10 @@
     <div>
       <ion-list  class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped" [style.background-color]="'var(--ion-background-color)'">
 
-        <div *ngIf="page === 'add'">
+        <!-- <div *ngIf="page === 'add'">
           <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
   
-        </div>
+        </div> -->
         
   
         <div *ngFor="let sub of subTask.list; let id = index" >

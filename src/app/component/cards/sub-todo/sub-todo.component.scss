@@ -1,20 +1,56 @@
 
+.sub-task-card{
+    padding: 8px;
+}
 
-ion-card-content{
+
+.main-content{
 
     width: 100%;
+
+    height: 30px;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
-    color: white;
+    color: var(--ion-text-color);
+}
+
+
+.priority-icon{
+    font-size: 30px;
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
+
+.isDone-icon{
+    // margin-right: 3px;
+    padding-top: 5px;
+}
+
+
+ion-card{
+    padding: 0;
+    // margin-right: 0;
 }
 
 ion-icon{
     font-size: 30px;
     color: var(--ion-color-step-600);
+}
+
+ion-card-content{
+    padding: 10px;
+}
+
+
+.subtask-title{
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 10px;
 }
 
 .left-card{
@@ -24,6 +60,7 @@ ion-icon{
     flex-direction: row;
 
     align-items: center;
+    
 }
 
 .task-title{
@@ -35,21 +72,64 @@ ion-icon{
 .todo-page{
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
 
-    padding: 0 10px;
+    // margin: auto 0px;
+
+    // margin-top: 5px;
+    // padding: 0 10px;
 }
 
-.todo-page ion-icon{
+.develop-task{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+}
 
-    margin-right: 20px;
+svg{
+    margin-right: 5px;
+    margin-top: 5px;
+    // fill: var(--ion-color-primary);
+}
+
+.todo-page ion-label{
+
+    color: var(--ion-color-step-600);
+}
+
+.sub-sub-task{
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 15px;
+    
+    // border-left: 2px solid var(--ion-color-step-100);
+}
+
+
+
+.add-button{
+    background: var(--ion-color-step-100);
+    border-radius: 50%;
+
+    padding: 10;
+
+    width: 40px;
+    height: 40px;
+
     font-size: 25px;
+
+    margin-right: 15px;
+
 }
 
-ion-title{
-    font-size: 18px;
-
-    max-width: 70%;
-    padding-left: 10px;
+.advancement{
+    margin-right: 10px;
 }
+
+
+
+
+
+

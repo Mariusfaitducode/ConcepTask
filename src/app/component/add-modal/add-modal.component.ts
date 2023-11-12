@@ -18,6 +18,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   @Input() modalConfig: any = {};
 
+  @Input() newModalConfig: any = {};
+
   @Output() childModified = new EventEmitter<boolean>();
 
   //@Input() subTodo! : Todo;

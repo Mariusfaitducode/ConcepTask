@@ -42,7 +42,15 @@ export class AddPage implements OnInit {
 
 
   showDate: boolean = false;
+
   modalConfig: any = {
+    open: false,
+    task: Todo,
+    modify: false,
+    parentTask: Todo,
+  };
+
+  newModalConfig: any = {
     open: false,
     task: Todo,
     modify: false,

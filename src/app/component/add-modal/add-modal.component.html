@@ -98,13 +98,26 @@
         <div *ngIf="!modify" class="info-sub-task">
           <ion-text>You can add subtasks to this task after creating it.</ion-text>
         </div>
-        
-        <ion-list>
-          <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-            <div *ngFor="let newSubTodo of subTask.list; let id = index">
-              <app-sub-todo [todo]="subTask" [subTodo]="newSubTodo" [index]="id" [page]="'add'"></app-sub-todo>
-            </div > 
-          </ion-reorder-group>
+
+        <div *ngIf="modify">
+         <app-button-add-sub-task [modalConfig]="newModalConfig" [parentTask]="subTask"></app-button-add-sub-task>
+        </div>
+        <ion-list class="no-padding">
+
+          <!-- <div *ngIf="page === 'add'">
+          <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
+  
+        </div> -->
+
+
+          
+
+          <div *ngFor="let newSubTodo of subTask.list; let id = index">
+
+            <app-sub-todo [todo]="subTask" [subTodo]="newSubTodo" [index]="id" [page]="'add'"></app-sub-todo>
+
+          </div > 
+
         </ion-list>
   
       </div>
