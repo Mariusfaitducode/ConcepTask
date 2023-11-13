@@ -8,14 +8,14 @@
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <!-- {{todo.date}} -->
-      <ion-input id="datePicker" type="date" [(ngModel)]="todo.date" (ionChange)="childModified.emit(true)"></ion-input>  
+      <ion-input id="datePicker" type="date" [(ngModel)]="todo.date" (ionChange)="updateNotification()"></ion-input>  
     </ion-item>
 
     <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
       <ion-label position="floating" [color]="todo.time ? 'primary' : ''">Due time</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
-      <ion-input type="time" placeholder="Time" [(ngModel)]="todo.time" (ionChange)="childModified.emit(true)"></ion-input>
+      <ion-input type="time" placeholder="Time" [(ngModel)]="todo.time" (ionChange)="updateNotification()"></ion-input>
     </ion-item>
   </div>
   
@@ -32,20 +32,20 @@
       <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">Start date</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
-      <ion-input type="date" placeholder="MM/DD/YYYY"  [(ngModel)]="todo.repeat.startDate" (ionChange)="childModified.emit(true)"></ion-input>
+      <ion-input type="date" placeholder="MM/DD/YYYY"  [(ngModel)]="todo.repeat.startDate" (ionChange)="updateNotification()"></ion-input>
     </ion-item>
 
     <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
       <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">Time</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
-      <ion-input type="time" placeholder="Time" [(ngModel)]="todo.repeat.startTime" (ionChange)="childModified.emit(true)"></ion-input>
+      <ion-input type="time" placeholder="Time" [(ngModel)]="todo.repeat.startTime" (ionChange)="updateRepeatNotification()"></ion-input>
     </ion-item>
   </div>
   
   <div class="date-selector" >
     <ion-row class="repeat" *ngIf="todo.repeat">
-      <ion-select label="Repeat" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type" (ionChange)="childModified.emit(true)">
+      <ion-select label="Repeat" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type" (ionChange)="updateNotification()">
         <ion-select-option value="day">Every days</ion-select-option>
         <!-- <ion-select-option value="personnal">Week days</ion-select-option> -->
         <ion-select-option value="week">Every weeks</ion-select-option>

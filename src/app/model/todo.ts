@@ -32,7 +32,7 @@ export class Todo {
     
 
     public repeat?: {
-        startDate?: Date,
+        startDate?: Date | string,
         startTime?: string,
         delayType?: ScheduleEvery,
     };

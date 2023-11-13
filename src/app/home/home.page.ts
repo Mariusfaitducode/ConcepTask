@@ -191,6 +191,10 @@ export class HomePage {
   handleInput(event : any) {
     const query = event.target.value.toLowerCase();
     this.results = [...this.results.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.name.toLowerCase().indexOf(query) > -1)];
+
+    if (query == '') {
+      this.results = [...this.todos];
+    }
   }
 
 

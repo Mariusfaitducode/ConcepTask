@@ -2,6 +2,7 @@
 import { LocalNotifications, ScheduleEvery } from '@capacitor/local-notifications';
 import { Todo } from './todo';
 
+// import { Actions } from '@ionic/angular';
 
 export class Notif {
 
@@ -23,12 +24,9 @@ export class Notif {
             description = '';
           }
 
-
-  
           if (available) {
 
           console.log("notification available")
-
 
             console.log(date)
     
@@ -36,19 +34,23 @@ export class Notif {
             await LocalNotifications.schedule({
               notifications: [
                 {
+                  smallIcon: 'res://drawable/check_mark_green',
+                  largeIcon: 'res://drawable/check_mark_green',
+
                   title: `${todo.title} reminder`,
                   body: `${description}`,
-                  id: notifId, // Un identifiant unique pour la notification
-                  schedule: { at: date }, // Date et heure de la notification
-                  //sound: null, // Chemin vers un fichier audio de notification (facultatif)
-                  //attachments: null, // Pièces jointes (facultatif)
+                  id: notifId,
+                  schedule: { at: date },
                 }
               ],
             });
           }
+          return true;
+
         } 
         catch (error) {
           console.error('Erreur lors de la planification de la notification', error);
+          return false;
         }
       }
   
@@ -82,18 +84,26 @@ export class Notif {
             await LocalNotifications.schedule({
               notifications: [
                 {
+                  smallIcon: 'res://drawable/check_mark_green',
+                  largeIcon: 'res://drawable/check_mark_green',
+
                   title: `${todo.title} reminder`,
                   body: `${description}`,
-                  id: notifId, // Un identifiant unique pour la notification
-                  schedule: { at: date,
-                              every: repeat,
-                             }, // Date et heure de la notification
+                  id: notifId,
+                  schedule: { 
+                    repeats: true,
+                    at: date,
+                    every: repeat},
+                  
                 }
               ],
             });
           }
+          return true;
+
         } catch (error) {
           console.error('Erreur lors de la planification de la notification', error);
+          return false;
         }
       }
   
@@ -103,9 +113,10 @@ export class Notif {
           console.log("remove notification");
   
           await LocalNotifications.cancel({ notifications: [{ id: todo.notifId! }] });
-  
+          return true;
         } catch (error) {
           console.error('Erreur lors de l`annulation de la notification', error);
+          return false;
         }
       }
 }

@@ -120,6 +120,7 @@ export class AddPage implements OnInit {
     });
   }
 
+
   ngAfterViewInit() {
     this.actualizeWhenDeveloppedClicked();
   }
@@ -148,6 +149,7 @@ export class AddPage implements OnInit {
     }
   }
 
+  
   async drop(event: CdkDragDrop<any[]>) {
 
     await DragAndDrop.drop(event, this.newTodo);
@@ -193,6 +195,8 @@ export class AddPage implements OnInit {
     console.log(this.newTodo);
 
     this.assignIds();
+
+    this.changeTodo = false;
 
 
     if (this.index != undefined) {
@@ -256,6 +260,7 @@ export class AddPage implements OnInit {
       this.navCtrl.back();
     }
   };
+
 
   private setupBackButtonHandler() {
     this.platform.backButton.subscribeWithPriority(0, async () => {
