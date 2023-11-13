@@ -89,7 +89,7 @@ export class CalendarPage implements OnInit {
       let todo : Todo = copyList.shift()!;
 
 
-      if (todo.date && this.sameDates(date, new Date(todo.date))){
+      if (todo.config.date && todo.date && this.sameDates(date, new Date(todo.date))){
         
         eventTodos.push(todo);
       }

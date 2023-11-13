@@ -8,6 +8,7 @@ import { Dialog } from '@capacitor/dialog';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragAndDrop } from 'src/app/model/drag-and-drop';
+import { Notif } from 'src/app/model/notif';
 
 
 @Component({
@@ -59,17 +60,6 @@ export class TodoPage implements OnInit {
     else{
       document.body.setAttribute('color-theme', 'light');
     }
-
-    // this.route.fragment.subscribe((fragment) => {
-
-    //   console.log(fragment)
-
-    //   if (fragment == "conceptor") {    
-    //     this.subMode = "tree";
-    //     window.location.hash = "sub-task-mode";
-    //     location.reload();      
-    //   }
-    // });
   }
 
   ngOnInit() {
@@ -122,17 +112,13 @@ export class TodoPage implements OnInit {
 
     }
 
-
     if (event.detail.scrollTop > this.subTaskModePosY) {
-
       this.changePositionSubMode = true;
       this.hideSubToolbar = true;
     }
     else {
-      
       this.changePositionSubMode = false;
       this.hideSubToolbar = false;
-
     }
 
     this.lastScrollPosition = event.detail.scrollTop;
@@ -246,6 +232,8 @@ export class TodoPage implements OnInit {
       console.log(this.mainTodo.list)
     }
     localStorage.setItem('todos', JSON.stringify(this.todos));
+
+    Notif.cancelNotification(this.todo);
 
     this.navCtrl.back();
   }
