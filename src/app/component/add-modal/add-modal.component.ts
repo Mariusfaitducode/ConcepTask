@@ -20,10 +20,11 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   @Input() newModalConfig: any = {};
 
-  @Output() childModified = new EventEmitter<boolean>();
 
   //@Input() subTodo! : Todo;
   subTask!: Todo;
+
+  initialSubTask : Todo = new Todo();
 
   //@Input() level! : number;
 
@@ -38,7 +39,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   subType: string = 'customize';
 
-  changeTodo: boolean = false;
 
   categories : any[] = [];
 
@@ -69,6 +69,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     this.modify = this.modalConfig.modify;
 
     //this.setConfig();
+    
+    this.initialSubTask = JSON.parse(JSON.stringify(this.subTask));
   }
 
  
@@ -88,26 +90,25 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   };
 
 
-  showCloseConfirm = async () => {
+  // showCloseConfirm = async () => {
 
-    if (this.changeTodo){
+  //   if (!Todo.areSameTodos(this.subTask, this.initialSubTask)){
 
-      const { value } = await Dialog.confirm({
-        title: 'Confirm',
-        message: `Your change will be loosed ?`,
-      });
+  //     const { value } = await Dialog.confirm({
+  //       title: 'Confirm',
+  //       message: `Your change will be loosed ?`,
+  //     });
     
-      console.log('Confirmed:', value);
+  //     console.log('Confirmed:', value);
   
-      if (value) {
-        this.modalConfig.open = false;
-        
-      }
-    }
-    else{
-      this.modalConfig.open = false;
-    }
-  };
+  //     if (value) {
+  //       this.modalConfig.open = false;
+  //     }
+  //   }
+  //   else{
+  //     this.modalConfig.open = false;
+  //   }
+  // };
 
 
 
@@ -135,7 +136,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   }
 
   closeSubTask(){
-    this.childModified.emit(true)
     this.modalConfig.open = false;
   }
 

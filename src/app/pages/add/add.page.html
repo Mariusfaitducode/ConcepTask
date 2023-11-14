@@ -32,7 +32,7 @@
 
       <ion-item class="title">
         <ion-label position="floating" [color]="newTodo.title ? 'primary' : ''">Title</ion-label>
-        <ion-input type="text" [(ngModel)]="newTodo.title" (ionChange)="changeTodo = true"></ion-input>
+        <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
       </ion-item>
 
       <ion-row  class="type">
@@ -57,7 +57,7 @@
 
       <!-- <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label> -->
 
-      <ion-textarea [(ngModel)]="newTodo.description" (ionChange)="changeTodo = true" [autoGrow]="true"
+      <ion-textarea [(ngModel)]="newTodo.description" [autoGrow]="true"
       label="Description" labelPlacement="floating"
       fill="outline" placeholder="Enter text"></ion-textarea>
 
@@ -65,7 +65,7 @@
 
     <ion-row *ngIf="this.newTodo.config.priority" class="item-margin">
       <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
-      <ion-segment [(ngModel)]="newTodo.priority" color="primary" (ionChange)="changeTodo = true">
+      <ion-segment [(ngModel)]="newTodo.priority" color="primary">
         <ion-segment-button value="low">
           <ion-label>Low</ion-label>
         </ion-segment-button>
@@ -79,7 +79,7 @@
     </ion-row>
 
     <div class="item-margin">
-      <app-date-selector [todo]="newTodo" (childModified)="changeTodo = true"></app-date-selector>
+      <app-date-selector [todo]="newTodo"></app-date-selector>
 
     </div>
 
@@ -103,11 +103,11 @@
 
 
   <div *ngIf="modalConfig.open">
-    <app-add-modal [modalConfig]="modalConfig" [newModalConfig]="newModalConfig"  (childModified)="changeTodo = true"></app-add-modal>
+    <app-add-modal [modalConfig]="modalConfig" [newModalConfig]="newModalConfig" ></app-add-modal>
 
   </div>
   <div *ngIf="newModalConfig.open">
-    <app-add-modal [modalConfig]="newModalConfig" (childModified)="changeTodo = true"></app-add-modal>
+    <app-add-modal [modalConfig]="newModalConfig"></app-add-modal>
 
   </div>
 

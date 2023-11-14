@@ -337,6 +337,70 @@ export class Todo {
       }
       return null; 
     }
+
+
+    public static areSameTodos(todo1 : any, todo2 : any){
+
+      console.log("verify todos")
+
+      const keys1 = Object.keys(todo1);
+      const keys2 = Object.keys(todo2);
     
-}
+      if (keys1.length !== keys2.length) {
+        console.log("length")
+        console.log(keys1.length, keys2.length)
+        return false;
+      }
+    
+      for (let key of keys1) {
+
+        if (key == "list") {
+
+          console.log("list")
+          
+          for (let i = 0; i < todo1.list.length; i++) {
+
+            console.log(todo1.list[i], todo2.list[i])
+
+            if (!Todo.areSameTodos(todo1.list[i], todo2.list[i])) {
+              return false;
+            }
+          }
+        }
+
+        else if (!this.compareObjects(todo1[key], todo2[key])) {
+          console.log(key)
+          console.log(todo1[key], todo2[key])
+          return false;
+        }
+      }
+    
+      return true;
+    }
+
+    public static compareObjects(object1 : any, object2 : any) {
+
+      const keys1 = Object.keys(object1);
+      const keys2 = Object.keys(object2);
+      
+      if (keys1.length !== keys2.length) {
+        console.log("length")
+        return false;
+      }
+
+      for (let key of keys1) {
+          if (object1[key] !== object2[key]) {
+            console.log(key)
+            console.log(object1[key], object2[key])
+            return false;
+          }
+      }
+
+      return true
+
+    }
+
+  }
+
+
 

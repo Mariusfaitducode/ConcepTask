@@ -33,10 +33,10 @@ export class AddPage implements OnInit {
 
   subType: string = 'customize';
 
-  changeTodo: boolean = false;
-
   categories : any[] = [];
   categoryName : string = "";
+
+  initialTodo : Todo = new Todo();
 
 
   subTasksList : any[] = [];
@@ -117,6 +117,8 @@ export class AddPage implements OnInit {
       this.setMainTodoId();
       this.initializeSubTasksList();
       // Todo.setConfig(this.newTodo);
+
+      this.initialTodo = JSON.parse(JSON.stringify(this.newTodo));
     });
   }
 
@@ -196,8 +198,6 @@ export class AddPage implements OnInit {
 
     this.assignIds();
 
-    this.changeTodo = false;
-
 
     if (this.index != undefined) {
       // this.todos[this.index] = this.newTodo;
@@ -235,7 +235,7 @@ export class AddPage implements OnInit {
 
   showCloseConfirm = async () => {
 
-    if (this.changeTodo){
+    if (!Todo.areSameTodos(this.newTodo, this.initialTodo)){
 
       const { value } = await Dialog.confirm({
         title: 'Confirm',
@@ -249,7 +249,6 @@ export class AddPage implements OnInit {
         console.log("change")
 
         this.navCtrl.back();
-        this.changeTodo = false;
         
       }
     }
@@ -265,7 +264,7 @@ export class AddPage implements OnInit {
   private setupBackButtonHandler() {
     this.platform.backButton.subscribeWithPriority(0, async () => {
       
-      if (this.changeTodo){
+      if (!Todo.areSameTodos(this.newTodo, this.initialTodo)){
 
         const { value } = await Dialog.confirm({
           title: 'Confirm',
@@ -277,7 +276,6 @@ export class AddPage implements OnInit {
         if (value) {
           console.log("change")
           this.navCtrl.back();
-          this.changeTodo = false;
         }
       }
       else{
@@ -335,7 +333,6 @@ export class AddPage implements OnInit {
   changeCategory(){
     console.log(this.categoryName)
     this.newTodo.category = this.categories.find((category: any) => category.name === this.categoryName)!;
-    this.changeTodo = true;
   }
   
 

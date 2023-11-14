@@ -15,7 +15,6 @@ export class DateSelectorComponent  implements OnInit {
 
   @Input() page?: string;
 
-  @Output() childModified = new EventEmitter<boolean>();
 
   // date : Date = new Date();
 
@@ -58,9 +57,6 @@ export class DateSelectorComponent  implements OnInit {
   }
 
   async manageNotification(){
-
-    this.childModified.emit(true)
-
     console.log("click")
 
     console.log("manage notification")
@@ -91,8 +87,6 @@ export class DateSelectorComponent  implements OnInit {
   }
 
   async manageRepeatNotification(){
-
-    this.childModified.emit(true)
     if (this.todo.reminder) {
       let result = await Notif.scheduleRecurringNotification(this.todo);
 
@@ -116,7 +110,6 @@ export class DateSelectorComponent  implements OnInit {
   async updateNotification(){
 
     console.log("update notification")
-    this.childModified.emit(true)
 
     if (this.todo.reminder){
       let result = await Notif.cancelNotification(this.todo);

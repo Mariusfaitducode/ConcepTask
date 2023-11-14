@@ -55,11 +55,11 @@
   
         <ion-item class="title">
           <ion-label position="floating" [color]="subTask.title ? 'primary' : ''">Title</ion-label>
-          <ion-input type="text" [(ngModel)]="subTask.title" (ionChange)="changeTodo = true"></ion-input>
+          <ion-input type="text" [(ngModel)]="subTask.title"></ion-input>
         </ion-item>
   
         <ion-row  class="type">
-          <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type" (ionChange)="changeTodo = true">
+          <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type">
             
             <ion-select-option  *ngFor="let cat of categories" [value]="cat">{{cat.name}}</ion-select-option>
           </ion-select>
@@ -69,14 +69,14 @@
       <app-custom-config [configArray]="subTask.config"></app-custom-config>
 
       <div *ngIf="this.subTask.config.description" class="description-textarea">
-        <ion-textarea [(ngModel)]="subTask.description" (ionChange)="changeTodo = true" [autoGrow]="true"
+        <ion-textarea [(ngModel)]="subTask.description" [autoGrow]="true"
         label="Description" labelPlacement="floating"
         fill="outline" placeholder="Enter text"></ion-textarea>
       </div>
 
       <ion-row *ngIf="this.subTask.config.priority">
         <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
-        <ion-segment [(ngModel)]="subTask.priority" color="primary" (ionChange)="changeTodo = true">
+        <ion-segment [(ngModel)]="subTask.priority" color="primary">
           <ion-segment-button value="low">
             <ion-label>Low</ion-label>
           </ion-segment-button>
@@ -89,7 +89,7 @@
         </ion-segment>
       </ion-row>
   
-      <app-date-selector [todo]="subTask" [page]="'modal'" (childModified)="changeTodo = true"></app-date-selector>
+      <app-date-selector [todo]="subTask" [page]="'modal'"></app-date-selector>
   
   
       <div *ngIf="this.subTask.config.subtasks">
