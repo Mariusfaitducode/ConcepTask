@@ -264,7 +264,7 @@ export class AddPage implements OnInit {
   private setupBackButtonHandler() {
     this.platform.backButton.subscribeWithPriority(0, async () => {
       
-      if (!Todo.areSameTodos(this.newTodo, this.initialTodo && window.location.pathname.includes("add"))){
+      if (!Todo.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){
 
         const { value } = await Dialog.confirm({
           title: 'Confirm',
