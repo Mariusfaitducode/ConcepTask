@@ -25,8 +25,8 @@ export class HomePage {
     private menuCtrl : MenuController,
     private route : ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-
+  )
+  {
     let categories = JSON.parse(localStorage.getItem('categories') || '[]');
     if (categories.length === 0){
       categories = [
@@ -63,7 +63,6 @@ export class HomePage {
 
     console.log(settings)
 
-
     if (!settings.firstVisiteDone) {
 
       let todos = JSON.parse(localStorage.getItem('todos') || '[]');
@@ -73,7 +72,6 @@ export class HomePage {
 
       settings.firstVisiteDone = true;
     }
-
 
     if (!settings.darkMode) {
       console.log("no settings")
@@ -101,6 +99,19 @@ export class HomePage {
       console.log("LIGHT MODE SET")
       document.body.setAttribute('color-theme', 'light');
       // this.darkMode = false;
+    }
+
+    if (settings.themeColor){
+      const style = document.createElement('style');
+      style.innerHTML = `
+        :root {
+          --ion-color-primary: ${settings.themeColor};
+          --ion-color-primary-contrast: #ffffff;
+          --ion-color-primary-shade: mix(black, var(--ion-color-primary), 15%);
+          --ion-color-primary-tint: mix(white, var(--ion-color-primary), 15%);
+        }
+      `;
+      document.head.appendChild(style);
     }
 
     localStorage.setItem('settings', JSON.stringify(settings));

@@ -17,6 +17,7 @@ export class SettingsPage implements OnInit {
 
   settings = JSON.parse(localStorage.getItem('settings') || '{}');
   darkMode : boolean = false;
+  themeColor : string = this.settings.themeColor || '#3880ff';
 
   categories : any[] = [];
 
@@ -27,7 +28,6 @@ export class SettingsPage implements OnInit {
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
     
   }
-
 
 
   showConfirmDelete(cat : any) {
@@ -48,6 +48,7 @@ export class SettingsPage implements OnInit {
     this.categories = this.categories.filter((c) => c.id !== cat.id);
     this.saveCategory();
   }
+
 
   addCategory(){
 
@@ -105,4 +106,33 @@ export class SettingsPage implements OnInit {
     localStorage.setItem('settings', JSON.stringify(this.settings));
   }
 
+
+  onThemeColorChange(event: Event) {
+    const colorInput = event.target as HTMLInputElement;
+    const selectedColor = colorInput.value;
+    this.themeColor = selectedColor;
+
+    this.settings.themeColor = this.themeColor;
+    localStorage.setItem('settings', JSON.stringify(this.settings));
+
+    this.applyTheme(this.themeColor)
+  }
+
+
+  applyTheme(color: string) {
+
+    console.log("applyTheme", color)
+
+    // Appliquer la couleur comme thème en modifiant les variables CSS
+    const style = document.createElement('style');
+    style.innerHTML = `
+      :root {
+        --ion-color-primary: ${color};
+        --ion-color-primary-contrast: #ffffff;
+        --ion-color-primary-shade: mix(black, var(--ion-color-primary), 15%);
+        --ion-color-primary-tint: mix(white, var(--ion-color-primary), 15%);
+      }
+    `;
+    document.head.appendChild(style);
+  }
 }

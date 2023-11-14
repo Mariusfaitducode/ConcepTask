@@ -46,6 +46,19 @@ ion-label{
     color: var(--ion-text-color);
 }
 
+ion-item{
+    --highlight-color-focused: var(--ion-color-primary);
+    --highlight-color-valid: var(--ion-color-primary);
+    --highlight-color: var(--ion-color-primary) !important;
+}
+
+.sc-ion-textarea-md-h{
+    --highlight-color : var(--ion-color-primary) !important;
+}
+
+.ion-valid{
+    --highlight-color : var(--ion-color-primary) !important;
+}
 
 //Global pages style
 
@@ -277,9 +290,7 @@ app-sub-task ion-card{
 //Selection elements style
 
 
-ion-select::part(label){
-    color: var(--ion-color-primary) !important;
-}
+
 
 
 .description-textarea{
@@ -287,11 +298,6 @@ ion-select::part(label){
     // --padding-start: 50px;
     padding: 8px;
     padding-top: 12px;
-}
-
-
-.has-value .label-text-wrapper{
-    color: var(--ion-color-primary) !important;
 }
 
 .label-padding .label-text.sc-ion-textarea-md{
@@ -311,4 +317,19 @@ ion-select::part(label){
 
 .description-textarea ion-textarea.has-focus.sc-ion-textarea-md-h{
     --border-color: var(--ion-color-primary) !important;
+}
+
+
+//Theme color
+
+.has-focus.ion-valid.sc-ion-input-md-h, .ion-valid.sc-ion-input-md-h{
+    --border-color: var(--ion-color-primary) !important;
+}
+
+.has-value .label-text-wrapper{
+    color: var(--ion-color-primary) !important;
+}
+
+ion-select::part(label){
+    color: var(--ion-color-primary) !important;
 }

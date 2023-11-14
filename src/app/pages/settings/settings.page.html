@@ -76,6 +76,13 @@
       <ion-label>Dark mode</ion-label>
       <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
     </ion-item>
+
+    <ion-item>
+      <ion-label>Theme color</ion-label>
+      <!-- <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle> -->
+      <input type="color" id="colorPicker" class="color-category" value="{{themeColor}}" (input)="onThemeColorChange($event)">
+
+    </ion-item>
   </ion-list>
 
   
