@@ -513,7 +513,7 @@ export class ConceptorPage implements OnInit {
           if (d.todo.isDone) {
             return "var(--is-done-color-node)";
           }
-          else if (new Date(d.todo.date) < new Date()) {
+          else if (d.todo.config.date && Todo.passedDate(d.todo)) {
             return "var(--ion-color-danger)";
           }
           else {
@@ -544,10 +544,10 @@ export class ConceptorPage implements OnInit {
             emoji += '✅';
           }
           else {
-            if (d.todo.config.date && new Date(d.todo.date) < new Date()){
+            if (d.todo.config.date && Todo.passedDate(d.todo)){
               emoji+= '⏰';
             }
-            if (d.todo.config.date && new Date(d.todo.date) > new Date()){
+            if (d.todo.config.date && !Todo.passedDate(d.todo)){
               emoji+= '📅';
             }
             if (d.todo.config.repeat && d.todo.reminder){

@@ -66,8 +66,6 @@ export class TodoPage implements OnInit {
 
     this.route.params.subscribe((params) => {
 
-      
-
       if (params['subId'] == undefined) {
 
         //In the main todo
@@ -107,12 +105,15 @@ export class TodoPage implements OnInit {
     // console.log(subTaskMode)
     // console.log(event.detail.scrollTop)
 
-    if (subTaskMode){
-      this.subTaskModePosY = subTaskMode.getBoundingClientRect().top + header.clientHeight;
+    let headerPosY = header.getBoundingClientRect().top;
 
+    if (subTaskMode){
+      this.subTaskModePosY = subTaskMode.getBoundingClientRect().top;
+      
+      console.log(this.subTaskModePosY, headerPosY)
     }
 
-    if (event.detail.scrollTop > this.subTaskModePosY) {
+    if (this.subTaskModePosY < -20) {
       this.changePositionSubMode = true;
       this.hideSubToolbar = true;
     }

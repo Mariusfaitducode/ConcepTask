@@ -56,14 +56,14 @@ export class CalendarPage implements OnInit {
 
       let todo : Todo = copyList.shift()!;
 
-      if (todo.date){
+      if (todo.config.date && todo.date){
 
         let endDate = new Date(todo.date);
         endDate.setDate(endDate.getDate() + 1);
 
         const newEvent = {
           title: todo.title,
-          startTime: new Date(todo.date),
+          startTime: endDate,
           endTime: endDate,
           allDay: true, // Définissez à true si l'événement dure toute la journée
   
@@ -76,6 +76,8 @@ export class CalendarPage implements OnInit {
         copyList.push(subTodo);
       }
     }
+
+    console.log(this.eventSource)
   }
 
   findTodosByDate(date : Date){
