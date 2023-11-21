@@ -28,7 +28,15 @@
         <ion-row class="category-row">
           <div class="category-content">
             
-            <input type="color" id="colorPicker" class="color-category" value="{{cat.color}}" (input)="onColorChange($event, cat)">
+            <!-- <input type="color" id="colorPicker" class="color-category" value="{{cat.color}}" (input)="onColorChange($event, cat)"> -->
+
+            <input [(colorPicker)]="cat.color" 
+                
+                [style.background]="cat.color" 
+                
+                
+                
+                />
 
             <!-- <div class="color-category" [style.background-color]="cat.color"></div> -->
 
@@ -67,7 +75,7 @@
     </ion-item>
   </ion-list> -->
 
-  <ion-list>
+  <div>
 
     <ion-label position="floating" color="primary" class="label-section">Theme</ion-label>
 
@@ -80,10 +88,18 @@
     <ion-item>
       <ion-label>Theme color</ion-label>
       <!-- <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle> -->
-      <input type="color" id="colorPicker" class="color-category" value="{{themeColor}}" (input)="onThemeColorChange($event)">
+      <!-- <input type="color" id="colorPicker" class="color-category" value="{{themeColor}}" (input)="onThemeColorChange($event)"> -->
+
+      <input class="color-category"
+       [colorPicker]="themeColor" 
+      (colorPickerChange)="themeColor=$event"
+       [style.background]="themeColor" 
+       [cpPositionRelativeToArrow]="true"
+       
+       />
 
     </ion-item>
-  </ion-list>
+  </div>
 
   
 
