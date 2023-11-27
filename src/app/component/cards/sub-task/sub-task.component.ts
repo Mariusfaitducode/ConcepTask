@@ -67,7 +67,7 @@ export class SubTaskComponent  implements OnInit {
 
 
   backgroundColor(){
-    const levelShade = 200 + (this.level * 50);
+    const levelShade = 50 + (this.level * 50);
 
     return 'var(--ion-color-step-' + levelShade + ')';
   }
@@ -77,7 +77,7 @@ export class SubTaskComponent  implements OnInit {
     if (this.level!=0) {
       return '-2px';
     }
-    return '10px';
+    return '8px';
   }
 
   developSubTaskPressed(event: Event){
