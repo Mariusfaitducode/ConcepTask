@@ -9,15 +9,15 @@
     <!-- <ion-icon name="menu-outline"></ion-icon> -->
 
     <div class="main-content">
-      <div class="left-card">
+      <div class="card-reorder-text">
         <ion-reorder cdkDragHandle></ion-reorder>
   
-        <div class="task-title">
+        <!-- <div class="task-title"> -->
           <div class="subtask-title">{{subTask.title}}</div>
-        </div>
+        <!-- </div> -->
       </div>
   
-      <div class="todo-page">
+      <div class="card-icons-develop">
 
         <div *ngIf="this.subTask.config.subtasks && this.subTask.list.length !== 0" class="advancement">
             {{numberOfDoneSubTask()}}/{{this.subTask.list.length}}
