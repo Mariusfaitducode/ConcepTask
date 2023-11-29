@@ -193,6 +193,16 @@ export class AddPage implements OnInit {
   //Reset config au cas ou
 
 
+  canSaveTodo(){
+
+    if (this.newTodo.title == undefined || this.newTodo.title == "") {
+      return false;
+    }
+
+    return true;
+  }
+
+
   saveTodo(){
     console.log(this.newTodo);
 

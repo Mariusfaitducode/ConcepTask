@@ -17,14 +17,20 @@
 
     <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
 
-    <ion-button class="save-button" slot="end" fill="clear" (click)="saveTodo()">
+    <!-- <ion-button class="save-button" slot="end" fill="clear" [disabled]="!canSaveTodo()" (click)="saveTodo()">
       Save
-    </ion-button>
+    </ion-button> -->
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [disabled]="!canSaveTodo()" (click)="saveTodo()">
+      <ion-icon name="checkmark-outline" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   
   <ion-list class="list-page">
 

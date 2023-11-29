@@ -9,6 +9,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragAndDrop } from 'src/app/model/drag-and-drop';
 import { Notif } from 'src/app/model/notif';
+import { set } from 'firebase/database';
 
 
 @Component({
@@ -133,6 +134,13 @@ export class TodoPage implements OnInit {
       dev.removeEventListener("click", () => this.initializeSubTasksList());
       dev.addEventListener("click", () => this.initializeSubTasksList());
     }
+  }
+
+
+  hideSubTasksClicked(){
+    setTimeout(() => {
+      this.initializeSubTasksList();
+    }, 1000);
   }
 
 
