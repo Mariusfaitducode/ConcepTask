@@ -119,4 +119,16 @@ export class Notif {
           return false;
         }
       }
+
+      public static async cancelNotificationById(id : number) {
+        try {
+          console.log("remove notification");
+  
+          await LocalNotifications.cancel({ notifications: [{ id: id }] });
+          return true;
+        } catch (error) {
+          console.error('Erreur lors de l`annulation de la notification', error);
+          return false;
+        }
+      }
 }

@@ -406,10 +406,26 @@ export class ConceptorPage implements OnInit {
               graph.nodes.push({id: subTodo.subId, level : d.level + 1, todo: subTodo});
 
               graph.links.push({ source: d.id, target: subTodo.subId });
+
+              if (subTodo.developped) addSubTodos(subTodo, d.level + 1);
             }
           }
 
           updateGraph();
+        }
+
+
+        function addSubTodos(todo : Todo, level : number){
+
+          for (let subTodo of todo.list!) {
+            if (level + 1 > maxLevel) {
+              maxLevel = level + 1;
+            }
+
+            graph.nodes.push({id: subTodo.subId, level : level + 1, todo: subTodo});
+
+            graph.links.push({ source: todo.subId, target: subTodo.subId });
+          }
         }
 
         function removeSubTodos(todo : Todo){
@@ -518,9 +534,12 @@ export class ConceptorPage implements OnInit {
           }
           else {
 
-            const levelShade = 500 - ((maxLevel - d.level) * 100);
+            console.log(d.level)
+            // const levelShade = 300 - ((maxLevel - d.level) * 100);
 
-            if (levelShade < 50) return 'var(--ion-color-step-50)';
+            const levelShade = (d.level * 150) + 100;
+
+            if (levelShade > 700) return 'var(--ion-color-step-700)';
             
             return 'var(--ion-color-step-' + levelShade + ')';
           }
@@ -645,28 +664,44 @@ export class ConceptorPage implements OnInit {
 
   initData(){
     this.nodes = [];
-    
-    //Main todo
+
     this.nodes.push({id: 0, level : 0, todo: this.todo});
 
-    let copyList =[...this.todo.list!];
+    this.traverseList(this.todo.list, 0);
+    
+    //Main todo
+    // this.nodes.push({id: 0, level : 0, todo: this.todo});
 
-    while (copyList.length > 0) {
+    // let copyList =[...this.todo.list!];
+
+    // while (copyList.length > 0) {
   
-      let todo = copyList.shift()!;
+    //   let todo = copyList.shift()!;
 
-      this.nodes.push({id: todo.subId, level : 1, todo: todo});
+    //   this.nodes.push({id: todo.subId, level : 1, todo: todo});
 
-      this.links.push({source: todo.parentId, target: todo.subId});
+    //   this.links.push({source: todo.parentId, target: todo.subId});
 
-      if (todo.developped){
-        for (let subTodo of todo.list!) {
-          copyList.push(subTodo);
-        }
-      }
-    }
-
+    //   if (todo.developped){
+    //     for (let subTodo of todo.list!) {
+    //       copyList.push(subTodo);
+    //     }
+    //   }
+    // }
   }
+
+  traverseList(list : any, level : any) {
+    if (!list || list.length === 0) return;
+
+    for (let todo of list) {
+        this.nodes.push({ id: todo.subId, level: level, todo: todo });
+        this.links.push({ source: todo.parentId, target: todo.subId });
+
+        if (todo.developped && todo.list && todo.list.length > 0) {
+            this.traverseList(todo.list, level + 1); // Appel récursif pour les sous-listes avec un niveau incrémenté
+        }
+    }
+}
 
   goToTree(){
     this.router.navigate(['/todo', this.index], {fragment: 'conceptor'});

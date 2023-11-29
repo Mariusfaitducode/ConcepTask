@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Notif } from './model/notif';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,20 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+
+    // for (let i = 0; i < 1000; i++) {
+    //   Notif.cancelNotificationById(i);
+    // }
+
+    // let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+
+    // for (let todo of todos) {
+    //   todo.developped = true;
+    //   console.log(todo)
+
+    // }
+
+    // localStorage.setItem('todos', JSON.stringify(todos));
+  }
 }

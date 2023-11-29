@@ -48,6 +48,8 @@ export class Todo {
         this.category = category || { name: 'task', color: 'var(--ion-color-tertiary)', id: 0};
         this.title = title || '';
 
+        this.developped = true;
+
         this.list = [];
 
         this.config = {
