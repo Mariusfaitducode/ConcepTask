@@ -141,7 +141,7 @@
           <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
 
           <div class="toggle-done-tasks">
-            <ion-toggle labelPlacement="end" [(ngModel)]="hideSubTasks">Hide done tasks</ion-toggle>
+            <ion-toggle labelPlacement="end" [(ngModel)]="hideSubTasks" (ionChange)="initializeSubTasksList()">Hide done tasks</ion-toggle>
           </div>
         </div>
         
