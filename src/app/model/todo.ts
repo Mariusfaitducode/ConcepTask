@@ -198,6 +198,54 @@ export class Todo {
     }
 
 
+    public static isDateInRepeat(todo : Todo, date : Date ){
+
+      let startDate = Todo.getDate(todo.repeat?.startDate!);
+
+      while(true){
+
+        if (this.sameDates(startDate, date)) {
+          return true;
+        }
+        else if (startDate < date) {
+
+          if (todo.repeat!.delayType == "day") {
+            startDate.setDate(startDate.getDate() + 1);
+          }
+          else if (todo.repeat!.delayType == "week") {
+            startDate.setDate(startDate.getDate() + 7);
+          }
+          else if (todo.repeat!.delayType == "two-weeks") {
+            startDate.setDate(startDate.getDate() + 14);
+          }
+          else if (todo.repeat!.delayType == "month") {
+            startDate.setMonth(startDate.getMonth() + 1);
+          }
+          else if (todo.repeat!.delayType == "year") {
+            startDate.setFullYear(startDate.getFullYear() + 1);
+          }
+        }
+        else{
+          return false;
+        }
+      }
+    }
+
+    public static sameDates(date1 : Date, date2 : Date){
+      // Extraire les parties de la date (année, mois, jour) pour chaque date
+      const annee1 = date1.getFullYear();
+      const mois1 = date1.getMonth();
+      const jour1 = date1.getDate();
+    
+      const annee2 = date2.getFullYear();
+      const mois2 = date2.getMonth();
+      const jour2 = date2.getDate();
+    
+      // Comparer les parties de la date
+      return annee1 === annee2 && mois1 === mois2 && jour1 === jour2;
+    }
+
+
     public static getNotifId(todo : Todo){
 
       if (!todo.notifId) {

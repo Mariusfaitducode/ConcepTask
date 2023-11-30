@@ -41,17 +41,16 @@
 
   <ng-template #eventDay let-view="view" let-row="row" let-col="col">
     <div [class.with-event]="view.dates[row*7+col].events.length" >
-        {{view.dates[row*7+col].date | date:'d'}}
+        {{view.dates[row*7+col].date | date:'d'}} + {{view.dates[row*7+col].events.length}}
     </div>
-
   </ng-template>
 
 
   <div *ngIf="myCalendar && eventSource.length !== 0">
 
-    <div *ngIf="findTodosByDate(myCalendar.currentDate).length > 0">  
-      <ion-title class="currentDate-title">{{formatDateToCustomString(myCalendar.currentDate)}}</ion-title>
-    </div>
+    <!-- <div *ngIf="findTodosByDate(myCalendar.currentDate).length > 0">   -->
+    <ion-title class="currentDate-title">{{formatDateToCustomString(myCalendar.currentDate)}}</ion-title>
+    <!-- </div> -->
 
     <ion-list>
       <ion-row *ngFor="let todo of findTodosByDate(myCalendar.currentDate)">

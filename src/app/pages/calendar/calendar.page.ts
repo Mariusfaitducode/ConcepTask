@@ -65,8 +65,23 @@ export class CalendarPage implements OnInit {
           title: todo.title,
           startTime: endDate,
           endTime: endDate,
+          allDay: true,
+        };
+
+        this.eventSource.push(newEvent);
+      }
+      else if (todo.config.repeat && todo.repeat){
+
+        console.log("todo repeat")
+
+        let endDate = new Date(todo.repeat.startDate!);
+        endDate.setDate(endDate.getDate() + 1);
+
+        const newEvent = {
+          title: todo.title,
+          startTime: endDate,
+          endTime: endDate,
           allDay: true, // Définissez à true si l'événement dure toute la journée
-  
         };
 
         this.eventSource.push(newEvent);
@@ -77,8 +92,9 @@ export class CalendarPage implements OnInit {
       }
     }
 
-    console.log(this.eventSource)
+    console.log("eventSource",this.eventSource)
   }
+
 
   findTodosByDate(date : Date){
     let copyList : Todo[] = [...this.todos!];
@@ -86,7 +102,7 @@ export class CalendarPage implements OnInit {
 
     while (copyList.length > 0) {
 
-      console.log("todo")
+      // console.log("todo")
 
       let todo : Todo = copyList.shift()!;
 
@@ -94,6 +110,16 @@ export class CalendarPage implements OnInit {
       if (todo.config.date && todo.date && this.sameDates(date, new Date(todo.date))){
         
         eventTodos.push(todo);
+      }
+      else if (todo.config.repeat && todo.repeat){
+
+        if (Todo.isDateInRepeat(todo, date)){
+          // console.log("FIND TODO")
+          eventTodos.push(todo);
+        }
+        else{
+          // console.log("NOT FIND TODO")
+        }
       }
 
       for (let subTodo of todo.list!) {
