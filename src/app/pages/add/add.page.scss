@@ -24,6 +24,28 @@ ion-row{
 }
 
 
+.toolbar-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    height: fit-content;
+
+    padding: 10px 5px;
+}
+
+.title-input{
+    width: fit-content;
+    font-size: 20px;
+
+    margin: 0 auto;
+}
+
+.center-title{
+    width: 36px;
+}
+
 
 
 
