@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 // import { NgCalendarModule } from 'ionic2-calendar'; 
 // import { CalendarComponent } from 'ionic2-calendar/calendar';
 
-import { CalendarComponent } from 'ionic6-calendar';
+import { CalendarComponent } from './src/calendar';
 import * as moment from 'moment';
 import { Todo } from 'src/app/model/todo';
 
