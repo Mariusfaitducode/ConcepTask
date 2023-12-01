@@ -29,7 +29,7 @@
 
   </ion-row>
 
-  <calendar  class="calendar-style" 
+  <calendar class="calendar-style" 
     [eventSource]="eventSource"  
     [startingDayMonth]="1" 
     [showEventDetail] = "false" 
@@ -40,8 +40,8 @@
 
 
   <ng-template #eventDay let-view="view" let-row="row" let-col="col">
-    <div [class.with-event]="view.dates[row*7+col].events.length" >
-        {{view.dates[row*7+col].date | date:'d'}} + {{view.dates[row*7+col].events.length}}
+    <div [class.with-event]="view.dates[row*7+col].events.length" (click)="show(view)">
+        {{view.dates[row*7+col].date | date:'d'}}
     </div>
   </ng-template>
 

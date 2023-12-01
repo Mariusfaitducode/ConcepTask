@@ -148,9 +148,11 @@ app-sub-task ion-card{
 }
 
 .with-event{
-    background-color: #FF9800 !important;
+    // background-color: #FF9800 !important;
 
-    // background-color: var(--ion-color-step-200) !important;
+    // background-color: var(--ion-color-primary) !important;
+
+    background-color: var(--ion-color-step-300) !important;
     color: var(--ion-text-color) !important;
     // padding: 5px;
     width: 35px;
@@ -330,4 +332,5 @@ app-sub-task ion-card{
 
 ion-select::part(label){
     color: var(--ion-color-primary) !important;
+    font-weight: bold;
 }

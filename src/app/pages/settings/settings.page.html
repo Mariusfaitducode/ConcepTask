@@ -20,7 +20,7 @@
     <ion-label position="floating" color="primary" class="label-section">Tasks</ion-label>
     
     <ion-item>
-      <ion-label>Categories</ion-label>
+      <div>Categories</div>
     </ion-item>
     <ion-list>
       <div *ngFor="let cat of categories">
@@ -40,7 +40,7 @@
 
             <!-- <div class="color-category" [style.background-color]="cat.color"></div> -->
 
-            <ion-label>{{cat.name}}</ion-label>
+            <div>{{cat.name}}</div>
           </div>
           
           <ion-icon class="remove-category" name="close-outline" (click)="showConfirmDelete(cat)"></ion-icon>
@@ -81,12 +81,12 @@
 
     <!-- Theme -->
     <ion-item>
-      <ion-label>Dark mode</ion-label>
+      <div>Dark mode</div>
       <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
     </ion-item>
 
     <ion-item>
-      <ion-label>Theme color</ion-label>
+      <div>Theme color</div>
       <!-- <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle> -->
       <!-- <input type="color" id="colorPicker" class="color-category" value="{{themeColor}}" (input)="onThemeColorChange($event)"> -->
 

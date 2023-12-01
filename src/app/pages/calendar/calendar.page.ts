@@ -58,8 +58,8 @@ export class CalendarPage implements OnInit {
 
       if (todo.config.date && todo.date){
 
-        let endDate = new Date(todo.date);
-        endDate.setDate(endDate.getDate() + 1);
+        let endDate = Todo.getDate(todo.date!);
+        endDate.setDate(endDate.getDate() );
 
         const newEvent = {
           title: todo.title,
@@ -74,8 +74,8 @@ export class CalendarPage implements OnInit {
 
         console.log("todo repeat")
 
-        let endDate = new Date(todo.repeat.startDate!);
-        endDate.setDate(endDate.getDate() + 1);
+        let endDate = Todo.getDate(todo.repeat.startDate!);
+        endDate.setDate(endDate.getDate() );
 
         const newEvent = {
           title: todo.title,
@@ -93,6 +93,18 @@ export class CalendarPage implements OnInit {
     }
 
     console.log("eventSource",this.eventSource)
+
+    // setTimeout(() => {
+    //   this.myCalendar.loadEvents();
+
+    //   console.log("loadEvents")
+
+    // }, 2000);
+    
+  }
+
+  show(event : any){
+    console.log(event)
   }
 
 
