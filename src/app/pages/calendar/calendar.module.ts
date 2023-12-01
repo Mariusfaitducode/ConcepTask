@@ -11,7 +11,7 @@ import { CalendarPage } from './calendar.page';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { NgCalendarModule } from 'ionic6-calendar';
+import { NgCalendarModule } from './src/calendar.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 
