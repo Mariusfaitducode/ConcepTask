@@ -20,7 +20,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-
+    
   ],
   declarations: [
     HomePage,

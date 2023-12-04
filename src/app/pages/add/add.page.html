@@ -48,7 +48,7 @@
     <div class="title-type-header item-margin">
 
       <ion-item class="title">
-        <ion-label position="floating" [color]="newTodo.title ? 'primary' : ''">Title</ion-label>
+        <ion-label position="floating" [color]="newTodo.title ? 'primary' : ''">{{'TITLE'| translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
       </ion-item>
 

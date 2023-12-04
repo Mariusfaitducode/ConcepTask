@@ -17,6 +17,7 @@ import { set } from 'firebase/database';
 import { Dialog } from '@capacitor/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { DragAndDrop } from 'src/app/model/drag-and-drop';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -57,7 +58,10 @@ export class AddPage implements OnInit {
     parentTask: Todo,
   };
 
-  constructor(private navCtrl: NavController, private route : ActivatedRoute, private platform : Platform) 
+  constructor(private navCtrl: NavController, 
+              private route : ActivatedRoute, 
+              private platform : Platform,
+              private translate: TranslateService) 
   {
     let settings = JSON.parse(localStorage.getItem('settings') || '{}');
 
@@ -67,6 +71,9 @@ export class AddPage implements OnInit {
     else{
       document.body.setAttribute('color-theme', 'light');
     }
+
+    this.translate.setDefaultLang(settings.language);
+    this.translate.use(settings.language); 
   }
 
   ngOnInit() {

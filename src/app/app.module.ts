@@ -12,10 +12,10 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { TodoCardComponent } from './component/cards/todo-card/todo-card.component';
 
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    
     BrowserModule, 
     IonicModule.forRoot(),
     AppRoutingModule, 

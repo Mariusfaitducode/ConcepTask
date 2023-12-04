@@ -1,0 +1,29 @@
+
+
+{
+    "SEARCH": "Search",
+    "FILTERS": "Filters",
+    "CLOSE": "Close",
+
+    "TITLE": "Title",
+   
+    "DESCRIPTION": "Description",
+    "PRIORITY": "Priority",
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "DUE DATE": "Due Date",
+    "DUE TIME": "Due Time",
+    "START DATE": "Start Date",
+    "TIME": "Time",
+    "SUB TASKS": "Sub Tasks",
+    "TYPE": "Type",
+    "CUSTOMIZE": "Customize",
+
+    "CATEGORY": "Category",
+    "TASK" : "Task",
+    "PERSONAL": "Personal",
+    "PROJECT": "Project",
+    "WORK": "Work",
+    "EVENT": "Event"
+}

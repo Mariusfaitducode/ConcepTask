@@ -18,12 +18,12 @@
       <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
     </ion-toolbar>
   </ion-header>
-
+   
 <ion-content [fullscreen]="true">
 
 
   <ion-row class="research-header">
-    <ion-searchbar (ionInput)="handleInput($event)"  placeholder="Search"></ion-searchbar>
+    <ion-searchbar (ionInput)="handleInput($event)"  placeholder="{{'SEARCH' | translate}}"></ion-searchbar>
 
     <ion-buttons>
       <ion-button id="open-modal" expand="block">
@@ -67,22 +67,22 @@
     <ng-template>
       <ion-content>
         <ion-toolbar>
-          <ion-title>Filters</ion-title>
+          <ion-title>{{'FILTERS' | translate}}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="modal.dismiss()">Close</ion-button>
+            <ion-button (click)="modal.dismiss()">{{'CLOSE'| translate}}</ion-button>
           </ion-buttons>
         </ion-toolbar>
         <ion-list>
 
           <ion-item>
-            <ion-label>Category</ion-label>
+            <ion-label>{{'CATEGORY' | translate}}</ion-label>
             <ion-checkbox slot="start" [(ngModel)]="filters.category" (ionChange)="filterResults()"></ion-checkbox>
             <ion-select [(ngModel)]="filters.categoryChoosed" (ionChange)="filterResults()">
-              <ion-select-option value="task">Task</ion-select-option>
-              <ion-select-option value="personnal">Personnal</ion-select-option>
-              <ion-select-option value="project">Project</ion-select-option>
-              <ion-select-option value="work">Work</ion-select-option>
-              <ion-select-option value="event">Event</ion-select-option>
+              <ion-select-option value="task">{{'TASK' | translate}}</ion-select-option>
+              <ion-select-option value="personnal">{{'PERSONAL' | translate}}</ion-select-option>
+              <ion-select-option value="project">{{'PROJECT' | translate}}</ion-select-option>
+              <ion-select-option value="work">{{'WORK' | translate}}</ion-select-option>
+              <ion-select-option value="event">{{'EVENT' | translate}}</ion-select-option>
             </ion-select>
           </ion-item>
 
@@ -95,11 +95,6 @@
               <ion-select-option value="high">High</ion-select-option>
             </ion-select>
           </ion-item>
-
-          <!-- <ion-item>
-            <ion-label>Today</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.today" (ionChange)="filterResults()"></ion-checkbox>
-          </ion-item> -->
 
           <ion-item>
             <ion-label>This week</ion-label >
@@ -116,14 +111,6 @@
             <ion-checkbox slot="start" [(ngModel)]="filters.done" (ionChange)="filterResults()"></ion-checkbox>
           </ion-item>
           
-          <!-- <ion-item>
-            <ion-label>This month</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="filters.month"></ion-checkbox>
-          </ion-item> -->
-          
-
-          
-
         </ion-list>
       </ion-content>
     </ng-template>

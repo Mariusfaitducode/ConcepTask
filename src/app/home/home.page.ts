@@ -13,6 +13,7 @@ import { WelcomeTodo } from '../model/welcome-todo';
 
 //import { AngularFireDatabase } from '@angular/fire/database';
 
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -22,11 +23,12 @@ import { WelcomeTodo } from '../model/welcome-todo';
 export class HomePage {
 
   constructor(
+    private translate: TranslateService,
     private menuCtrl : MenuController,
     private route : ActivatedRoute,
-    @Inject(PLATFORM_ID) private platformId: Object
   )
   {
+
     let categories = JSON.parse(localStorage.getItem('categories') || '[]');
     if (categories.length === 0){
       categories = [
@@ -73,6 +75,12 @@ export class HomePage {
       settings.firstVisiteDone = true;
     }
 
+    if (!settings.language) {
+      settings.language = 'en';
+    }
+    this.translate.setDefaultLang(settings.language);
+    this.translate.use(settings.language); 
+
     if (!settings.darkMode) {
       console.log("no settings")
       
@@ -116,8 +124,6 @@ export class HomePage {
 
     localStorage.setItem('settings', JSON.stringify(settings));
 
-
-      
     }
 
   todos : Todo[] = []

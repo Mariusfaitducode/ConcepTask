@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Notif } from './model/notif';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,11 @@ import { Notif } from './model/notif';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+
   constructor() {
 
+    // this.translate.setDefaultLang('en'); // Langue par défaut
+  
     // for (let i = 0; i < 1000; i++) {
     //   Notif.cancelNotificationById(i);
     // }
