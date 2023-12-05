@@ -20,7 +20,7 @@ ion-list{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 16px;
+    padding: 4px 16px;
     // border-bottom: 1px solid #ccc;
 }
 
@@ -65,4 +65,17 @@ ion-list{
 .color-picker{
     position: fixed;
     z-index: 1000;
+}
+
+.top-padding{
+    padding-top: 16px;
+}
+
+.label-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px;
+    // border-bottom: 1px solid #ccc;
 }

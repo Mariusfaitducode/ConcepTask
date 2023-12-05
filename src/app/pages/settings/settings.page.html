@@ -5,8 +5,7 @@
     </ion-buttons>
     <ion-title>{{'SETTINGS' | translate}}</ion-title>
 
-<!-- 
-    <ion-button class="save-button" slot="end" fill="clear" (click)="save()">
+<!-- <ion-button class="save-button" slot="end" fill="clear" (click)="save()">
       Save
     </ion-button> -->
   </ion-toolbar>
@@ -17,26 +16,21 @@
 
   <ion-list>
 
-    <ion-label position="floating" color="primary" class="label-section">Tasks</ion-label>
+    <ion-label position="floating" color="primary" class="label-section">{{'CATEGORIES' | translate}}</ion-label>
     
-    <ion-item>
+    <!-- <ion-item>
       <div>Categories</div>
-    </ion-item>
+    </ion-item> -->
     <ion-list>
       <div *ngFor="let cat of categories">
 
         <ion-row class="category-row">
           <div class="category-content">
             
-            <!-- <input type="color" id="colorPicker" class="color-category" value="{{cat.color}}" (input)="onColorChange($event, cat)"> -->
+            <input type="color" id="colorPicker" class="color-category" value="{{cat.color}}" (input)="onColorChange($event, cat)">
 
             <!-- <input [(colorPicker)]="cat.color" 
-                
-                [style.background]="cat.color" 
-                
-                
-                
-                /> -->
+                [style.background]="cat.color" /> -->
 
             <!-- <div class="color-category" [style.background-color]="cat.color"></div> -->
 
@@ -53,7 +47,7 @@
         <div class="category-content">
           <input type="color" id="colorPicker" class="color-category" value="{{newCategory.color}}" (input)="onColorChange($event, newCategory)">
 
-          <ion-input [(ngModel)]="newCategory.name" class="new-category" placeholder="add category"></ion-input>
+          <ion-input [(ngModel)]="newCategory.name" class="new-category" placeholder="{{'ADD CATEGORY' | translate}}"></ion-input>
         </div>
         
         <ion-icon class="remove-category" name="add-outline" (click)="addCategory()"></ion-icon>
@@ -78,10 +72,14 @@
   <div>
     <ion-label position="floating" color="primary" class="label-section">Language</ion-label>
 
-    <ion-select [(ngModel)]="this.settings.language">
-      <ion-select-option value="en">English</ion-select-option>
-      <ion-select-option value="fr">Français</ion-select-option>
-    </ion-select>
+    <ion-row class="category-row">
+      <ion-select [(ngModel)]="this.settings.language" (ionChange)="onLanguageChange()">
+        <ion-select-option value="en">English</ion-select-option>
+        <ion-select-option value="fr">Français</ion-select-option>
+      </ion-select>
+    </ion-row>
+
+    
     
   </div>
 
@@ -91,13 +89,13 @@
     <ion-label position="floating" color="primary" class="label-section">Theme</ion-label>
 
     <!-- Theme -->
-    <ion-item>
+    <ion-row class="label-row">
       <div>{{'DARK MODE' | translate}}</div>
       <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
-    </ion-item>
+    </ion-row>
 
-    <ion-item>
-      <div>{{'THEME COLOR' | translate}}</div>
+<!-- <ion-row class="category-row ">
+      <div>{{'THEME COLOR' | translate}}</div> -->
       <!-- <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle> -->
       <!-- <input type="color" id="colorPicker" class="color-category" value="{{themeColor}}" (input)="onThemeColorChange($event)"> -->
 
@@ -105,11 +103,9 @@
        [colorPicker]="themeColor" 
       (colorPickerChange)="themeColor=$event"
        [style.background]="themeColor" 
-       [cpPositionRelativeToArrow]="true"
-       
-       /> -->
+       [cpPositionRelativeToArrow]="true"   /> -->
 
-    </ion-item>
+    <!-- </ion-row> -->
   </div>
 
   

@@ -14,7 +14,7 @@
         <ion-row>
           <div class="menu-link" (click)="goToCalendar()">
             <ion-icon name="calendar-outline"></ion-icon>
-            <ion-nav-link >Calendar</ion-nav-link>
+            <ion-nav-link >{{'CALENDAR' | translate}}</ion-nav-link>
           </div>
           
         </ion-row>
@@ -28,7 +28,7 @@
         <ion-row>
           <div class="menu-link" (click)="goToSettings()">
             <ion-icon name="settings-outline"></ion-icon>
-            Settings
+            {{'SETTINGS' | translate}}
           </div>
           
         </ion-row>
@@ -38,11 +38,11 @@
         <ion-row>
           <div class="menu-link" >
             <ion-icon name="share-social-outline"></ion-icon>
-            Share
+            {{'SHARE' | translate}}
           </div>
           
         </ion-row>
-        <ion-row>
+        <!-- <ion-row>
           <div class="menu-link">
             <ion-icon name="information-outline"></ion-icon>
             About this app
@@ -55,7 +55,7 @@
             Feedback
           </div>
           
-        </ion-row>
+        </ion-row> -->
       </ion-list>
     </div>
     

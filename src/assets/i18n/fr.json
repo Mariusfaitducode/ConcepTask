@@ -6,8 +6,24 @@
     "CLOSE": "Fermer",
 
     "TITLE": "Titre",
+    "NEW TASK": "Nouvelle tâche",
+    "ADD" : "Ajouter",
+    "DONE_MODIFY" : "Terminé",
 
     "DESCRIPTION": "Description",
+
+    "DONE": "Fait",
+
+    "TREE": "Arbre",
+    "LIST": "Liste",
+    "CALENDAR": "Calendrier",
+    "GRAPH": "Graphique",
+
+    "EXPAND" : "Développer",
+    "COLLAPSE" : "Réduire",
+
+    "HIDE DONE TASKS": "Cacher les tâches faites",
+    "SUB TASKS WARNING": "Veuillez valider la tâche pour lui assigner des sous tâches ensuite.",
 
     "PRIORITY": "Priorité",
     "LOW": "Faible",
@@ -30,14 +46,16 @@
 
     "SUB TASKS": "Sous Tâches",
     "TYPE": "Type",
-    "CUSTOMIZE": "Customizé",
+    "CUSTOMIZE": "Custom",
 
+    "CATEGORIES": "Catégories",
     "CATEGORY": "Catégorie",
     "TASK" : "Tâche",
     "PERSONAL": "Personnel",
     "PROJECT": "Projet",
     "WORK": "Travail",
     "EVENT": "Evenement",
+    "ADD CATEGORY": "Ajouter une catégorie",
 
     "Task" : "Tâche",
     "Personal": "Personnel",
@@ -51,6 +69,7 @@
     "FRENCH": "Français",
 
     "DARK MODE": "Mode sombre",
-    "THEME COLOR": "Couleur du thème"
+    "THEME COLOR": "Couleur du thème",
 
+    "SHARE": "Partager"
 }

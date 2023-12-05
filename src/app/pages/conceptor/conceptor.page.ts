@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularDelegate } from '@ionic/angular';
 import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
+import { TranslateService } from '@ngx-translate/core';
 
 // import { d3 } from 'src/assets/d3/d3.js';
 
@@ -35,7 +36,9 @@ export class ConceptorPage implements OnInit {
     // parentTask: Todo,
   };
 
-  constructor(private route : ActivatedRoute, private router : Router) { 
+  constructor(private route : ActivatedRoute, 
+              private router : Router,
+              private translate : TranslateService) { 
 
     let settings = JSON.parse(localStorage.getItem('settings') || '{}');
 
@@ -45,6 +48,9 @@ export class ConceptorPage implements OnInit {
     else{
       document.body.setAttribute('color-theme', 'light');
     }
+
+     //Use good language 
+     this.translate.use(settings.language); 
   }
 
   ngOnInit() {

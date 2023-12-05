@@ -137,4 +137,11 @@ export class SettingsPage implements OnInit {
     `;
     document.head.appendChild(style);
   }
+
+
+  onLanguageChange() {
+    localStorage.setItem('settings', JSON.stringify(this.settings));
+
+    this.translate.use(this.settings.language); 
+  }
 }

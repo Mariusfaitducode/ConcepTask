@@ -10,6 +10,7 @@ import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@an
 import { DragAndDrop } from 'src/app/model/drag-and-drop';
 import { Notif } from 'src/app/model/notif';
 import { set } from 'firebase/database';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -52,7 +53,12 @@ export class TodoPage implements OnInit {
 
   newTodoOnListTitle: string = "";
 
-  constructor(private navCtrl: NavController, private route : ActivatedRoute, private router : Router) { 
+  constructor(private navCtrl: NavController, 
+              private route : ActivatedRoute, 
+              private router : Router,
+              private translate : TranslateService
+              ){ 
+
     let settings = JSON.parse(localStorage.getItem('settings') || '{}');
 
     if (settings.darkMode) {
@@ -61,6 +67,9 @@ export class TodoPage implements OnInit {
     else{
       document.body.setAttribute('color-theme', 'light');
     }
+
+    //Use good language 
+    this.translate.use(settings.language); 
   }
 
   ngOnInit() {

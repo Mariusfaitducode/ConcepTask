@@ -16,7 +16,7 @@
         <!-- level: {{level}} -->
     
         <div *ngIf="subTask.title === ''">
-          <ion-title size="large">New task</ion-title>
+          <ion-title size="large">{{'NEW TASK' | translate}}</ion-title>
         </div>
         <div *ngIf="subTask.title !== ''">
           <ion-title size="large">{{subTask.title}}</ion-title>
@@ -24,7 +24,7 @@
         <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
     
         <ion-button *ngIf="!modify" class="save-button" slot="end" fill="clear" (click)="addSubTask()">
-          Add
+          {{'ADD' | translate}}
         </ion-button >
 
         <ion-buttons *ngIf="modify" slot="end">
@@ -36,7 +36,7 @@
           
           
           <ion-button color="primary" class="save-button" fill="clear" (click)="closeSubTask()">
-            Done
+          {{'DONE_MODIFY' | translate}}
           </ion-button >
         </ion-buttons>
         
@@ -54,12 +54,12 @@
       <div class="title-type-header">
   
         <ion-item class="title">
-          <ion-label position="floating" [color]="subTask.title ? 'primary' : ''">Title</ion-label>
+          <ion-label position="floating" [color]="subTask.title ? 'primary' : ''">{{'TITLE' | translate}}</ion-label>
           <ion-input type="text" [(ngModel)]="subTask.title"></ion-input>
         </ion-item>
   
         <ion-row  class="type">
-          <ion-select label="Category" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type">
+          <ion-select label="{{'CATEGORY' | translate}}" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type">
             
             <ion-select-option  *ngFor="let cat of categories" [value]="cat">{{cat.name}}</ion-select-option>
           </ion-select>
@@ -70,21 +70,21 @@
 
       <div *ngIf="this.subTask.config.description" class="description-textarea">
         <ion-textarea [(ngModel)]="subTask.description" [autoGrow]="true"
-        label="Description" labelPlacement="floating"
+        label="{{'DESCRIPTION' | translate}}" labelPlacement="floating"
         fill="outline" placeholder="Enter text"></ion-textarea>
       </div>
 
       <ion-row *ngIf="this.subTask.config.priority">
-        <ion-label class="sub-todos-label" color="primary" >Priority</ion-label>
+        <ion-label class="sub-todos-label" color="primary" >{{'PRIORITY' | translate}}</ion-label>
         <ion-segment [(ngModel)]="subTask.priority" color="primary">
           <ion-segment-button value="low">
-            <ion-label>Low</ion-label>
+            <ion-label>{{'LOW' | translate}}</ion-label>
           </ion-segment-button>
           <ion-segment-button value="medium">
-            <ion-label>Medium</ion-label>
+            <ion-label>{{'MEDIUM' | translate}}</ion-label>
           </ion-segment-button>
           <ion-segment-button value="high">
-            <ion-label>High</ion-label>
+            <ion-label>{{'HIGH' | translate}}</ion-label>
           </ion-segment-button>
         </ion-segment>
       </ion-row>
@@ -92,11 +92,11 @@
       <app-date-selector [todo]="subTask" [page]="'modal'"></app-date-selector>
   
   
-      <div *ngIf="this.subTask.config.subtasks">
+      <div *ngIf="this.subTask.config.subtasks" class="sub-tasks item-padding">
   
-        <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
+        <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
         <div *ngIf="!modify" class="info-sub-task">
-          <ion-text>You can add subtasks to this task after creating it.</ion-text>
+          <ion-text>{{'SUB TASKS WARNING' | translate}}</ion-text>
         </div>
 
         <div *ngIf="modify">

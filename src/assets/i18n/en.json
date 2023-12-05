@@ -6,8 +6,24 @@
     "CLOSE": "Close",
 
     "TITLE": "Title",
+    "NEW TASK": "New task",
+    "ADD" : "Add",
+    "DONE_MODIFY" : "Done",
    
     "DESCRIPTION": "Description",
+
+    "DONE": "Done",
+
+    "TREE": "Tree",
+    "LIST": "List",
+    "CALENDAR": "Calendar",
+    "GRAPH": "Graph",
+    
+    "EXPAND" : "Expand",
+    "COLLAPSE" : "Collapse",
+
+    "HIDE DONE TASKS": "Hide done tasks",
+    "SUB TASKS WARNING": "You can add subtasks to this task after creating it.",
 
     "PRIORITY": "Priority",
     "LOW": "Low",
@@ -32,21 +48,28 @@
     "TYPE": "Type",
     "CUSTOMIZE": "Customize",
 
+    "CATEGORIES": "Categories",
     "CATEGORY": "Category",
     "TASK" : "Task",
     "PERSONAL": "Personal",
     "PROJECT": "Project",
     "WORK": "Work",
     "EVENT": "Event",
+    "ADD CATEGORY": "Add category",
 
-    "Task" : "Tâche",
-    "Personal": "Personnel",
-    "Project": "Projet",
-    "Work": "Travail",
-    "Event": "Evenement",
+    "Task" : "Task",
+    "Personal": "Personal",
+    "Project": "Project",
+    "Work": "Work",
+    "Event": "Event",
 
     "SETTINGS": "Settings",
     "LANGUAGE": "Language",
     "ENGLISH": "English",
-    "FRENCH": "French"
+    "FRENCH": "French",
+
+    "DARK MODE": "Dark mode",
+    "THEME COLOR": "Theme color",
+
+    "SHARE": "Share"
 }

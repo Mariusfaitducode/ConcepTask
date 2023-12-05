@@ -161,7 +161,11 @@ export class HomePage {
     this.route.queryParams.subscribe(params =>{
 
       console.log("HOME PAGEEEE CHANGE")
-      this.darkMode = JSON.parse(localStorage.getItem('settings') || '{}').darkMode;
+      let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+      this.darkMode = settings.darkMode;
+      this.translate.use(settings.language); 
+
       // window.location.reload();
       this.loadTodos();
       this.results = [...this.todos];
