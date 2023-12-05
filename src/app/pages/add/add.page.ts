@@ -39,7 +39,6 @@ export class AddPage implements OnInit {
 
   initialTodo : Todo = new Todo();
 
-
   subTasksList : any[] = [];
 
   showDate: boolean = false;
@@ -72,7 +71,7 @@ export class AddPage implements OnInit {
       document.body.setAttribute('color-theme', 'light');
     }
 
-    this.translate.setDefaultLang(settings.language);
+    //Use good language 
     this.translate.use(settings.language); 
   }
 

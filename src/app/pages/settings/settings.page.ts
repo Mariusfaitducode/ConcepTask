@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Dialog } from '@capacitor/dialog';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
@@ -9,10 +10,11 @@ import { Dialog } from '@capacitor/dialog';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() {
+  constructor(private translate: TranslateService) {
       // let settings = JSON.parse(localStorage.getItem('settings') || '{}');
 
       this.darkMode = this.settings.darkMode;
+      this.translate.use(this.settings.language); 
     }
 
   settings = JSON.parse(localStorage.getItem('settings') || '{}');

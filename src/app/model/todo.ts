@@ -50,6 +50,8 @@ export class Todo {
 
         this.developped = true;
 
+        this.repeat = {};
+
         this.list = [];
 
         this.config = {
@@ -392,6 +394,8 @@ export class Todo {
     public static areSameTodos(todo1 : any, todo2 : any){
 
       console.log("verify todos")
+
+      console.log(todo1, todo2)
 
       const keys1 = Object.keys(todo1);
       const keys2 = Object.keys(todo2);

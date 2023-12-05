@@ -8,14 +8,26 @@
     "TITLE": "Title",
    
     "DESCRIPTION": "Description",
+
     "PRIORITY": "Priority",
     "LOW": "Low",
     "MEDIUM": "Medium",
     "HIGH": "High",
+
+    "DATE": "Date",
     "DUE DATE": "Due Date",
     "DUE TIME": "Due Time",
     "START DATE": "Start Date",
     "TIME": "Time",
+    "REMINDER": "Reminder",
+
+    "REPEAT": "Repeat",
+    "EVERY DAY": "Every Day",
+    "EVERY WEEK": "Every Week",
+    "EVERY TWO WEEKS": "Every Two Weeks",
+    "EVERY MONTH": "Every Month",
+    "EVERY YEAR": "Every Year",
+
     "SUB TASKS": "Sub Tasks",
     "TYPE": "Type",
     "CUSTOMIZE": "Customize",
@@ -25,5 +37,16 @@
     "PERSONAL": "Personal",
     "PROJECT": "Project",
     "WORK": "Work",
-    "EVENT": "Event"
+    "EVENT": "Event",
+
+    "Task" : "Tâche",
+    "Personal": "Personnel",
+    "Project": "Projet",
+    "Work": "Travail",
+    "Event": "Evenement",
+
+    "SETTINGS": "Settings",
+    "LANGUAGE": "Language",
+    "ENGLISH": "English",
+    "FRENCH": "French"
 }

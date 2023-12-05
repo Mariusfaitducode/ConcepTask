@@ -5,26 +5,26 @@
 
   <div *ngIf="configArray.description === false">
     <button class="customize-button open" (click)="toggleConfig('description')">
-      description
+      {{'DESCRIPTION' | translate}}
     </button>
   </div>
 
   <div *ngIf="configArray.description=== true">
     <button class="customize-button close" (click)="toggleConfig('description')">
-      description
+      {{'DESCRIPTION' | translate}}
       <ion-icon name="close-outline" class="close-item"></ion-icon>
     </button>
   </div>
 
   <div *ngIf="configArray.priority === false">
     <button class="customize-button open" (click)="toggleConfig('priority')">
-      prority
+      {{'PRIORITY' | translate}}
     </button>
   </div>
 
   <div *ngIf="configArray.priority === true">
     <button class="customize-button close" (click)="toggleConfig('priority')">
-      priority
+      {{'PRIORITY' | translate}}
       <ion-icon name="close-outline" class="close-item"></ion-icon>
     </button>
   </div>
@@ -32,13 +32,13 @@
   <div *ngIf="configArray.date === false">
 
     <button class="customize-button open" (click)="toggleConfig('date')">
-      date
+      {{'DATE' | translate}}
     </button>
   </div>
 
   <div *ngIf="configArray.date === true">
     <button class="customize-button close" (click)="toggleConfig('date')">
-      date
+      {{'DATE' | translate}}
       <ion-icon name="close-outline" class="close-item"></ion-icon>
     </button>
   </div>
@@ -46,13 +46,13 @@
   <div *ngIf="configArray.repeat === false">
 
     <button class="customize-button open" (click)="toggleConfig('repeat')">
-      repeat
+      {{'REPEAT' | translate}}
     </button>
   </div>
 
   <div *ngIf="configArray.repeat === true">
     <button class="customize-button close" (click)="toggleConfig('repeat')">
-      repeat
+      {{'REPEAT' | translate}}
       <ion-icon name="close-outline" class="close-item"></ion-icon>
     </button>
   </div>
@@ -60,13 +60,13 @@
   <div *ngIf="configArray.subtasks === false">
 
     <button class="customize-button open" (click)="toggleConfig('subtasks')">
-      sub tasks
+      {{'SUB TASKS' | translate}}
     </button>
   </div>
 
   <div *ngIf="configArray.subtasks === true">
     <button class="customize-button close" (click)="toggleConfig('subtasks')">
-      sub tasks
+      {{'SUB TASKS' | translate}}
       <ion-icon name="close-outline" class="close-item"></ion-icon>
     </button>
   </div>

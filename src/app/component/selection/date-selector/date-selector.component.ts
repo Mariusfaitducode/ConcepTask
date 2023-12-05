@@ -21,9 +21,9 @@ export class DateSelectorComponent  implements OnInit {
   constructor(public toastController: ToastController) { }
 
   ngOnInit() {
-    if (!this.todo.repeat){
-      this.todo.repeat = {};
-    }
+    // if (!this.todo.repeat){
+    //   this.todo.repeat = {};
+    // }
 
     // let date = new Date();
 

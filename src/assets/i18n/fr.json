@@ -6,17 +6,51 @@
     "CLOSE": "Fermer",
 
     "TITLE": "Titre",
-    "CATEGORY": "Category",
+
     "DESCRIPTION": "Description",
-    "PRIORITY": "Priority",
-    "LOW": "Low",
-    "MEDIUM": "Medium",
-    "HIGH": "High",
-    "DUE DATE": "Due Date",
-    "DUE TIME": "Due Time",
-    "START DATE": "Start Date",
-    "TIME": "Time",
-    "SUB TASKS": "Sub Tasks",
+
+    "PRIORITY": "Priorité",
+    "LOW": "Faible",
+    "MEDIUM": "Moyen",
+    "HIGH": "Elevé",
+
+    "DATE": "Date",
+    "DUE DATE": "Date",
+    "DUE TIME": "Heure",
+    "START DATE": "Date de départ",
+    "TIME": "Heure",
+    "REMINDER": "Rappel",
+
+    "REPEAT": "Répétition",
+    "EVERY DAY": "Tous les jours",
+    "EVERY WEEK": "Toutes les semaines",
+    "EVERY TWO WEEKS": "Toutes les 2 semaines",
+    "EVERY MONTH": "Tous les mois",
+    "EVERY YEAR": "Tous les ans",
+
+    "SUB TASKS": "Sous Tâches",
     "TYPE": "Type",
-    "CUSTOMIZE": "Customize"
+    "CUSTOMIZE": "Customizé",
+
+    "CATEGORY": "Catégorie",
+    "TASK" : "Tâche",
+    "PERSONAL": "Personnel",
+    "PROJECT": "Projet",
+    "WORK": "Travail",
+    "EVENT": "Evenement",
+
+    "Task" : "Tâche",
+    "Personal": "Personnel",
+    "Project": "Projet",
+    "Work": "Travail",
+    "Event": "Evenement",
+
+    "SETTINGS": "Paramètres",
+    "LANGUAGE": "Language",
+    "ENGLISH": "Anglais",
+    "FRENCH": "Français",
+
+    "DARK MODE": "Mode sombre",
+    "THEME COLOR": "Couleur du thème"
+
 }

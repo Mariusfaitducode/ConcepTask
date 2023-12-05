@@ -34,27 +34,27 @@ export class HomePage {
       categories = [
         {
           id: 0,
-          name: 'task',
+          name: 'Task',
           color: '#e83c53',
         },
         {
           id: 1,
-          name: 'project',
+          name: 'Project',
           color: '#428cff',
         },
         {
           id: 2,
-          name: 'work',
+          name: 'Work',
           color: '#ffd948',
         },
         {
           id: 3,
-          name: 'personnal',
+          name: 'Personal',
           color: '#29c467',
         },
         {
           id: 4,
-          name: 'event',
+          name: 'Event',
           color: '#5d58e0',
         },
       ];
@@ -78,6 +78,9 @@ export class HomePage {
     if (!settings.language) {
       settings.language = 'en';
     }
+
+    // settings.language = 'fr';
+
     this.translate.setDefaultLang(settings.language);
     this.translate.use(settings.language); 
 

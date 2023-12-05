@@ -52,14 +52,14 @@
         <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
       </ion-item>
 
-      <ion-row  class="type">
+      <ion-row class="type">
         <!-- {{newTodo.category.name}} -->
         <ion-select 
           [(ngModel)]="categoryName" (ionChange)="changeCategory()"
-          label="Category" label-placement="floating"
+          label="{{ 'CATEGORY' | translate}}" label-placement="floating"
           [interfaceOptions]="{'cssClass': 'label-select-color'}">
 
-          <ion-select-option  *ngFor="let cat of categories" [value]="cat.name">{{cat.name}}</ion-select-option>
+          <ion-select-option  *ngFor="let cat of categories" [value]="cat.name">{{cat.name | translate}}</ion-select-option>
 
         </ion-select>
       </ion-row>
@@ -75,22 +75,22 @@
       <!-- <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label> -->
 
       <ion-textarea [(ngModel)]="newTodo.description" [autoGrow]="true"
-      label="Description" labelPlacement="floating"
+      label="{{'DESCRIPTION' | translate}}" labelPlacement="floating"
       fill="outline" placeholder="Enter text"></ion-textarea>
 
     </div>
 
     <ion-row *ngIf="this.newTodo.config.priority" class="item-margin">
-      <ion-label class="sub-todos-label" color="primary">Priority</ion-label>
+      <ion-label class="sub-todos-label" color="primary">{{'PRIORITY' | translate}}</ion-label>
       <ion-segment [(ngModel)]="newTodo.priority" color="primary">
         <ion-segment-button value="low">
-          <ion-label>Low</ion-label>
+          <ion-label>{{'LOW' | translate}}</ion-label>
         </ion-segment-button>
         <ion-segment-button value="medium">
-          <ion-label>Medium</ion-label>
+          <ion-label>{{'MEDIUM' | translate}}</ion-label>
         </ion-segment-button>
         <ion-segment-button value="high">
-          <ion-label>High</ion-label>
+          <ion-label>{{'HIGH' | translate}}</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-row>
@@ -102,7 +102,7 @@
 
     <div *ngIf="this.newTodo.config.subtasks" class="sub-tasks item-padding">
 
-      <ion-label class="sub-todos-label" color="primary">Sub Tasks</ion-label>
+      <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
 
       <app-button-add-sub-task [modalConfig]="modalConfig" [parentTask]="newTodo"></app-button-add-sub-task>
 

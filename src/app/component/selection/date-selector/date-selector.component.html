@@ -4,23 +4,23 @@
   <div class="date-selector" >
 
     <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
-      <ion-label position="floating"  [color]="todo.date ? 'primary' : ''">Due date</ion-label>
+      <ion-label position="floating"  [color]="todo.date ? 'primary' : ''">{{'DUE DATE' | translate}}</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <!-- {{todo.date}} -->
-      <ion-input id="datePicker" type="date" [(ngModel)]="todo.date" (ionChange)="updateNotification()"></ion-input>  
+      <ion-input id="datePicker" placeholder="MM/DD/YYYY" type="date" [(ngModel)]="todo.date" (ionChange)="updateNotification()"></ion-input>  
     </ion-item>
 
     <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
-      <ion-label position="floating" [color]="todo.time ? 'primary' : ''">Due time</ion-label>
+      <ion-label position="floating" [color]="todo.time ? 'primary' : ''">{{'DUE TIME' | translate}}</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
-      <ion-input type="time" placeholder="Time" [(ngModel)]="todo.time" (ionChange)="updateNotification()"></ion-input>
+      <ion-input type="time" placeholder="{{'TIME' | translate}}" [(ngModel)]="todo.time" (ionChange)="updateNotification()"></ion-input>
     </ion-item>
   </div>
   
   <ion-row *ngIf="todo.date !== undefined && todo.time !== undefined" >
-    <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">Reminder</ion-toggle>
+    <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">{{'REMINDER' | translate}}</ion-toggle>
   </ion-row>
 </div>
 
@@ -29,14 +29,14 @@
   <div class="date-selector" *ngIf="todo.repeat">
 
     <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
-      <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">Start date</ion-label>
+      <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">{{'START DATE' | translate}}</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
 
       <ion-input type="date" placeholder="MM/DD/YYYY"  [(ngModel)]="todo.repeat.startDate" (ionChange)="updateNotification()"></ion-input>
     </ion-item>
 
     <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
-      <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">Time</ion-label>
+      <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">{{'TIME' | translate}}</ion-label>
       <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
 
       <ion-input type="time" placeholder="Time" [(ngModel)]="todo.repeat.startTime" (ionChange)="updateRepeatNotification()"></ion-input>
@@ -45,19 +45,19 @@
   
   <div class="date-selector" >
     <ion-row class="repeat" *ngIf="todo.repeat">
-      <ion-select label="Repeat" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type" (ionChange)="updateNotification()">
-        <ion-select-option value="day">Every days</ion-select-option>
+      <ion-select label="{{'REPEAT' | translate}}" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type" (ionChange)="updateNotification()">
+        <ion-select-option value="day">{{'EVERY DAY' | translate}}</ion-select-option>
         <!-- <ion-select-option value="personnal">Week days</ion-select-option> -->
-        <ion-select-option value="week">Every weeks</ion-select-option>
-        <ion-select-option value="two-weeks">Every two weeks</ion-select-option>
-        <ion-select-option value="month">Every months</ion-select-option>
-        <ion-select-option value="year">Every years</ion-select-option>
+        <ion-select-option value="week">{{'EVERY WEEK' | translate}}</ion-select-option>
+        <ion-select-option value="two-weeks">{{'EVERY TWO WEEKS' | translate}}</ion-select-option>
+        <ion-select-option value="month">{{'EVERY MONTH' | translate}}</ion-select-option>
+        <ion-select-option value="year">{{'EVERY YEAR' | translate}}</ion-select-option>
         
       </ion-select>
     </ion-row>
 
     <ion-row *ngIf="repeatReminderPossible()">
-      <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageRepeatNotification()">Reminder</ion-toggle>
+      <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageRepeatNotification()">{{'REMINDER' | translate}}</ion-toggle>
     </ion-row>
 
   </div>
