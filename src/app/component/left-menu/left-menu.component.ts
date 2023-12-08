@@ -21,5 +21,9 @@ export class LeftMenuComponent  implements OnInit {
     this.router.navigate(['/settings']);
   }
 
+  goToDoneTasks(){
+    this.router.navigate(['/done-task']);
+  }
+
   
 }

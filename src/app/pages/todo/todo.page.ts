@@ -219,7 +219,12 @@ export class TodoPage implements OnInit {
       }
     }
     else{
-      this.router.navigate(['/home']);
+      if (this.todo.isDone){
+        this.router.navigate(['/done-task']);
+      }
+      else{
+        this.router.navigate(['/home']);
+      }
     }
   }
 
