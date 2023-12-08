@@ -295,7 +295,11 @@ export class Todo {
     }
 
 
-    public static transformTodoInListByDepth(rootTodo : Todo, level : number = 0, list : any[] = []){
+    public static transformTodoInListByDepth(rootTodo : Todo, hideSubTask : boolean = false, level : number = 0, list : any[] = []){
+
+      if (hideSubTask && rootTodo.isDone){
+        return list;
+      }
 
       list.push({todo: rootTodo, level: level});
 
@@ -307,7 +311,7 @@ export class Todo {
 
           let todo = copyList.shift()!;
           
-          Todo.transformTodoInListByDepth(todo, level + 1, list)
+          Todo.transformTodoInListByDepth(todo, hideSubTask, level + 1, list)
         }
         
       }

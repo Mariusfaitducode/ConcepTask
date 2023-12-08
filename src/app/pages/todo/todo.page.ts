@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemReorderEventDetail, NavController } from '@ionic/angular';
+import { ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
 import { Todo } from 'src/app/model/todo';
 import { ModalService } from 'src/app/service/modal.service';
 import { Dialog } from '@capacitor/dialog';
@@ -11,6 +11,7 @@ import { DragAndDrop } from 'src/app/model/drag-and-drop';
 import { Notif } from 'src/app/model/notif';
 import { set } from 'firebase/database';
 import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -56,7 +57,7 @@ export class TodoPage implements OnInit {
   constructor(private navCtrl: NavController, 
               private route : ActivatedRoute, 
               private router : Router,
-              private translate : TranslateService
+              private translate : TranslateService,
               ){ 
 
     let settings = JSON.parse(localStorage.getItem('settings') || '{}');
@@ -120,7 +121,7 @@ export class TodoPage implements OnInit {
     if (subTaskMode){
       this.subTaskModePosY = subTaskMode.getBoundingClientRect().top;
       
-      console.log(this.subTaskModePosY, headerPosY)
+      // console.log(this.subTaskModePosY, headerPosY)
     }
 
     if (this.subTaskModePosY < -20) {
@@ -162,8 +163,12 @@ export class TodoPage implements OnInit {
     this.subTasksList = [];
 
     for (let subTask of this.todo.list!) {
-      this.subTasksList.push(Todo.transformTodoInListByDepth(subTask));
+      if (!this.hideSubTasks || !subTask.isDone){
+        this.subTasksList.push(Todo.transformTodoInListByDepth(subTask, this.hideSubTasks));
+      }
     }
+
+    console.log(this.subTasksList)
   }
 
 
@@ -360,7 +365,48 @@ export class TodoPage implements OnInit {
     
     // console.log(color)
     return color
-  
   }
+
+  // async exportTodo(){
+  //   console.log("export")
+  //   // console.log(this.todo)
+  //   // let todo = Todo.transformTodoInListByDepth(this.todo);
+  //   // console.log(todo)
+  //   let todoString = JSON.stringify(this.todo);
+  //   console.log(todoString)
+
+  //   const blob = new Blob([todoString], { type: 'text/plain' });
+
+  //   const a = document.createElement('a');
+  //   a.href = window.URL.createObjectURL(blob);
+  //   a.download = this.todo.title + '.json';
+  //   // document.body.appendChild(a);
+  //   a.click();
+
+  //   // document.body.removeChild(a);
+
+
+  // //   const downloadPath = (
+  // //     this.platform.is('android')
+  // //  ) ? this.file.externalDataDirectory : this.file.documentsDirectory;
+   
+   
+  // //  let vm = this;
+   
+  // //  /** HttpClient - @angular/common/http */
+  // //  this.http.get(
+  // //     uri, 
+  // //     {
+  // //        responseType: 'blob', 
+  // //        headers: {
+  // //           'Authorization': 'Bearer ' + yourTokenIfYouNeed,
+  // //        }
+  // //     }
+  // //  ).subscribe((fileBlob: Blob) => {
+  // //     /** File - @ionic-native/file/ngx */
+  // //     vm.file.writeFile(downloadPath, "YourFileName.pdf", fileBlob, {replace: true});
+  // //  });
+
+  // }
 
 }
