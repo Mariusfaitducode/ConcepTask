@@ -44,6 +44,18 @@
     "EVERY MONTH": "Tous les mois",
     "EVERY YEAR": "Tous les ans",
 
+    "repeat.day": "Répéter chaque jour à {{hours}}:{{minutes}}",
+    "repeat.week": "Répéter chaque semaine le {{day}} à {{hours}}:{{minutes}}",
+    "repeat.two-weeks": "Répéter toutes les deux semaines le {{day}} à {{hours}}:{{minutes}}",
+    "repeat.month": "Répéter chaque mois le {{dayOfMonth}} à {{hours}}:{{minutes}}",
+    "repeat.year": "Répéter chaque année le {{dayOfMonth}} {{month}} à {{hours}}:{{minutes}}",
+    
+    "day": "jour",
+    "week": "semaine",
+    "two-weeks": "deux semaines",
+    "month": "mois",
+    "year": "année",
+    
     "SUB TASKS": "Sous Tâches",
     "TYPE": "Type",
     "CUSTOMIZE": "Custom",

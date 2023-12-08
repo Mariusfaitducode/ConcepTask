@@ -1,5 +1,6 @@
 import { SelectorContext } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Todo } from 'src/app/model/todo';
 
 @Component({
@@ -9,7 +10,7 @@ import { Todo } from 'src/app/model/todo';
 })
 export class TodoCardComponent  implements OnInit {
 
-  constructor() { }
+  constructor(public translate : TranslateService) { }
 
   @Input() todo!: Todo;
   @Input() color!: string;
@@ -38,7 +39,16 @@ export class TodoCardComponent  implements OnInit {
 
       // let startDate = Todo.getDate(this.todo.repeat!.startDate!, this.todo.repeat!.startTime!);
       // let repeat = this.todo.repeat!.delayType;
+
+      if (this.translate && this.translate.store.currentLang == "fr") {
+        return `Répété chaque ${this.translate.instant(this.todo.repeat!.delayType)}`;
+      }
+      else{
+        return `Repeat every ${this.todo.repeat!.delayType}`;
+
+      }
       return `Repeat every ${this.todo.repeat!.delayType}`;
+
     }
     return null; 
   }

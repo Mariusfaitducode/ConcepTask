@@ -332,7 +332,7 @@ export class TodoPage implements OnInit {
 
 
   formatDateToCustomString() {
-    return Todo.formatDateToCustomString(this.todo); 
+    return Todo.formatDateToCustomString(this.todo, this.translate); 
   }
 
 

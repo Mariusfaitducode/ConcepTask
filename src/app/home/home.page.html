@@ -23,16 +23,17 @@
 
 
   <ion-row class="research-header">
+  <!-- <ion-row> -->
     <ion-searchbar (ionInput)="handleInput($event)"  placeholder="{{'SEARCH' | translate}}"></ion-searchbar>
 
-    <ion-buttons>
+    <!-- <ion-buttons>
       <ion-button id="open-modal" expand="block">
         <ion-icon name="funnel-outline">
         </ion-icon>
       </ion-button>
       <ion-badge color="primary" *ngIf="countFilters() !== 0">{{countFilters()}}</ion-badge>
       
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-row>
   
   <ion-list>

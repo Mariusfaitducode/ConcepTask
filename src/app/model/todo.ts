@@ -344,10 +344,29 @@ export class Todo {
     }
 
 
-    public static formatDateToCustomString(todo : Todo) {
-      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    public static formatDateToCustomString(todo : Todo, translate : any = undefined) {
+
+      console.log(translate)
+
+      let daysOfWeek : any[] = []
+      let months : any[] = []
+
+      const daysOfWeekEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayOfWeekFr = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+      const monthsEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const monthsFr = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
     
+      if (translate && translate.store.currentLang == "fr") {
+        months = monthsFr;
+        daysOfWeek = dayOfWeekFr;
+      }
+      else{
+        months = monthsEn;
+        daysOfWeek = daysOfWeekEn;
+      }
+
+
       if (todo.config.date){
   
         let date = Todo.getDate(todo.date!, todo.time);
@@ -369,6 +388,13 @@ export class Todo {
         const month = months[date!.getMonth()];
         const hours = String(date!.getHours()).padStart(2, '0');
         const minutes = String(date!.getMinutes()).padStart(2, '0');
+
+        const translateKey = `repeat.${todo.repeat!.delayType}`
+        const translationParams = { day, dayOfMonth, month, hours, minutes }
+
+        if (translate) {
+          return translate.instant(translateKey, translationParams);
+        }
 
         if (todo.repeat!.delayType == "day") {
           return `Repeat every day at ${hours}:${minutes}`;

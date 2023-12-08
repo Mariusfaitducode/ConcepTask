@@ -20,9 +20,11 @@
 .research-header ion-searchbar{
   --background: var(--ion-color-step-50);
   --color: var(--ion-text-color);
-  width: 85%;
+  // width: 85%;
   // margin-right: 10px;
   --border-radius: 5px;
+
+  padding-bottom : 0px;
 }
 
 .research-header ion-buttons{
