@@ -13,37 +13,37 @@
 ion-title{
   margin-left: 38px;
 }
+
+ion-menu::part(container) {
   
-  ion-menu::part(container) {
-    
-  
-    box-shadow: 4px 0px 16px rgba(49, 48, 48, 0.449);
-  }
 
-  .menu-link{
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-  }
+  box-shadow: 4px 0px 16px rgba(49, 48, 48, 0.449);
+}
 
-  .menu-link ion-icon{
-    width: 20px;
-    height: 20px;
+.menu-link{
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
 
-    margin-right: 10px;
-  }
+.menu-link ion-icon{
+  width: 20px;
+  height: 20px;
 
-  .menu{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    // height: 100%;
-  }
+  margin-right: 10px;
+}
 
-  .done-icon-size{
-    // width: 20px;
-    // height: 20px;
-    font-size: 20px;
-    margin-right: 10px;
-  }
+.menu{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // height: 100%;
+}
+
+.done-icon-size{
+  // width: 20px;
+  // height: 20px;
+  font-size: 20px;
+  margin-right: 10px;
+}

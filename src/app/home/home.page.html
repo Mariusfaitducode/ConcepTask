@@ -1,11 +1,11 @@
 
-<div class="ion-page">
+<div class="ion-page" id="openMenu">
 
-  <ion-header id="openMenu">
+  <ion-header >
     <ion-toolbar class="home-toolbar">
       <ion-buttons slot="start">
   
-        <ion-menu-button autoHide="false"></ion-menu-button>
+        <ion-menu-button  autoHide="false"></ion-menu-button>
   
       </ion-buttons>
 
@@ -19,7 +19,7 @@
     </ion-toolbar>
   </ion-header>
    
-<ion-content [fullscreen]="true">
+<ion-content>
 
 
   <ion-row class="research-header">
@@ -42,10 +42,7 @@
         <app-todo-card *ngIf="!todo.isDone" [todo]="todo" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
       </ion-row >
     </ion-reorder-group>
-
-      
   </ion-list>
-
 
   <!-- <ion-infinite-scroll>
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
@@ -58,13 +55,8 @@
   </ion-fab>
 
 
-
-  <div>
-    <app-left-menu></app-left-menu>
-  </div>
-
-
-  <ion-modal #modal trigger="open-modal">
+  
+  <!-- <ion-modal #modal trigger="open-modal">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -115,9 +107,12 @@
         </ion-list>
       </ion-content>
     </ng-template>
-  </ion-modal>
+  </ion-modal> -->
   
 </ion-content>
 
 </div>
+
+<app-left-menu></app-left-menu>
+
 
