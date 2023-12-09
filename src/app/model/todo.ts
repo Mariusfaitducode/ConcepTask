@@ -465,6 +465,10 @@ export class Todo {
 
       // console.log(todo1, todo2)
 
+      if (!todo1 || !todo2) {
+        return false;
+      }
+
       const keys1 = Object.keys(todo1);
       const keys2 = Object.keys(todo2);
     

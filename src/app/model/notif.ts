@@ -6,7 +6,9 @@ import { Todo } from './todo';
 
 export class Notif {
 
-    public static async scheduleNotification(todo : Todo) {
+    
+
+    public static async scheduleNotification(todo : Todo, router : any) {
         try {
           console.log("schedule notification")
           let date = Todo.getDate(todo.date!, todo.time);
@@ -26,6 +28,11 @@ export class Notif {
 
           if (available) {
 
+            const notificationData = {
+              pageToNavigate: '/todo/'+todo.mainId, // Remplacez par le chemin de la page cible
+              // Autres données de notification
+            };
+
           console.log("notification available")
 
             console.log(date)
@@ -41,9 +48,23 @@ export class Notif {
                   body: `${description}`,
                   id: notifId,
                   schedule: { at: date },
+                  extra: notificationData,
                 }
               ],
             });
+
+            LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
+              const clickedNotificationData = notification.notification.extra;
+
+              todo.reminder = false;
+              
+              // Vérifiez si des données supplémentaires existent et contiennent la page à laquelle naviguer
+              if (clickedNotificationData && clickedNotificationData.pageToNavigate) {
+                const pageToNavigate = clickedNotificationData.pageToNavigate;
+                router.navigate([pageToNavigate]);
+              }
+            });
+
           }
           return true;
 
@@ -55,7 +76,7 @@ export class Notif {
       }
   
   
-      public static async scheduleRecurringNotification(todo: Todo) {
+      public static async scheduleRecurringNotification(todo: Todo, router : any) {
         try {
           let date = Todo.getDate(todo.repeat!.startDate!, todo.repeat!.startTime);
 
@@ -78,6 +99,11 @@ export class Notif {
   
           if (available) {
 
+            const notificationData = {
+              pageToNavigate: '/todo/'+todo.mainId, // Remplacez par le chemin de la page cible
+              // Autres données de notification
+            };
+
             console.log(date)
   
             // Planifier la notification
@@ -94,10 +120,21 @@ export class Notif {
                     repeats: true,
                     at: date,
                     every: repeat},
-                  
+                  extra: notificationData,
                 }
               ],
             });
+
+            LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
+              const clickedNotificationData = notification.notification.extra;
+              
+              // Vérifiez si des données supplémentaires existent et contiennent la page à laquelle naviguer
+              if (clickedNotificationData && clickedNotificationData.pageToNavigate) {
+                const pageToNavigate = clickedNotificationData.pageToNavigate;
+                router.navigate([pageToNavigate]);
+              }
+            });
+            
           }
           return true;
 

@@ -5,6 +5,7 @@ import { Todo } from 'src/app/model/todo';
 import { ToastController } from '@ionic/angular';
 import { set } from 'firebase/database';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-date-selector',
@@ -21,7 +22,8 @@ export class DateSelectorComponent  implements OnInit {
   // date : Date = new Date();
 
   constructor(public toastController: ToastController,
-                private translate : TranslateService) { }
+                private translate : TranslateService,
+                private router : Router) { }
 
   ngOnInit() {
     // if (!this.todo.repeat){
@@ -78,7 +80,7 @@ export class DateSelectorComponent  implements OnInit {
 
 
     if (this.todo.reminder) {
-      let result = await Notif.scheduleNotification(this.todo);
+      let result = await Notif.scheduleNotification(this.todo, this.router);
 
       if (result){
         // console.log("notification scheduled")
@@ -102,8 +104,19 @@ export class DateSelectorComponent  implements OnInit {
   }
 
   async manageRepeatNotification(){
+
+    if (this.todo.reminder && Todo.passedDate(this.todo)){
+      this.presentToast(`${this.translate.instant('DATE PASSED')}`);
+
+      setTimeout(() => {
+      this.todo.reminder = false;
+
+      }, 300);
+      return;
+    }
+
     if (this.todo.reminder) {
-      let result = await Notif.scheduleRecurringNotification(this.todo);
+      let result = await Notif.scheduleRecurringNotification(this.todo, this.router);
 
       if (result){
         // console.log("notification scheduled")
@@ -124,7 +137,7 @@ export class DateSelectorComponent  implements OnInit {
 
   async updateNotification(){
 
-    if (Todo.passedDate(this.todo)){
+    if ( this.todo.reminder && Todo.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
       return;
     }
@@ -134,7 +147,7 @@ export class DateSelectorComponent  implements OnInit {
     if (this.todo.reminder){
       let result = await Notif.cancelNotification(this.todo);
       if (result){
-        let result = await Notif.scheduleNotification(this.todo);
+        let result = await Notif.scheduleNotification(this.todo, this.router);
         if (result){
           this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }
@@ -145,7 +158,7 @@ export class DateSelectorComponent  implements OnInit {
 
   async updateRepeatNotification(){
 
-    if (Todo.passedDate(this.todo)){
+    if (this.todo.reminder && Todo.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
       return;
     }
@@ -153,7 +166,7 @@ export class DateSelectorComponent  implements OnInit {
     if (this.todo.reminder){
       let result = await Notif.cancelNotification(this.todo);
       if (result){
-        let result = await Notif.scheduleRecurringNotification(this.todo);
+        let result = await Notif.scheduleRecurringNotification(this.todo, this.router);
         if (result){
           this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }

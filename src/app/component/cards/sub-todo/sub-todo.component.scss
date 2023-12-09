@@ -19,17 +19,7 @@
 }
 
 
-.priority-icon{
-    font-size: 30px;
-    margin-right: 10px;
-    padding-top: 7px;
-}
 
-
-.isDone-icon{
-    // margin-right: 3px;
-    padding-top: 5px;
-}
 
 
 ion-card{
@@ -46,12 +36,66 @@ ion-card-content{
     padding: 10px;
 }
 
+.card-reorder-text{
+    // width: 50%;
+    height: 100%;
+    // width: fit-content;
+
+    flex-grow: 1;
+    // max-width: 85%;
+    // flex-shrink: 1;
+
+    // width: fit-content;
+    // max-width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    
+}
 
 .subtask-title{
     font-size: 18px;
-    font-weight: 500;
-    margin-right: 10px;
+    // font-weight: 100;
+    margin-right: 8px;
+    margin-left: 12px;
+
+
+    height: 30px;
+    width: 100%;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
+
+
+.card-icons-develop{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+    
+}
+
+.priority-icon{
+    font-size: 30px;
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
+
+.done-icon{
+    margin-right: 5px;
+    // padding-top: 5px;
+}
+
 
 .left-card{
     // width: 50%;
