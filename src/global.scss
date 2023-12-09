@@ -331,10 +331,14 @@ app-sub-task ion-card{
 }
 
 ion-select::part(label){
-    color: var(--ion-color-primary) !important;
+    // color: var(--ion-color-primary) !important;
     font-weight: bold;
 }
 
+ ion-select.has-value::part(label){
+    color: var(--ion-color-primary) !important;
+    // font-weight: bold;
+}
 
 
 // LIGHT THEME ADAPTATION

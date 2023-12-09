@@ -127,6 +127,7 @@ export class SubTaskComponent  implements OnInit {
   developSubTaskPressed(event: Event){
     event.stopPropagation();
     this.subTask.developped = true;
+
   }
 
 
@@ -136,6 +137,9 @@ export class SubTaskComponent  implements OnInit {
   developSubTask(event: Event){
     event.stopPropagation();
     this.subTask.developped = !this.subTask.developped;
+
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+
   }
 
   clickSubTask(){
