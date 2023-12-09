@@ -59,16 +59,6 @@
   </ion-list>
     
 
-  <!-- <ion-list>
-    <ion-item>
-      
-      <ion-select label="Language">
-        <ion-select-option value="en">English</ion-select-option>
-        <ion-select-option value="fr">Français</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list> -->
-
   <div>
     <ion-label position="floating" color="primary" class="label-section">Language</ion-label>
 
@@ -94,18 +84,12 @@
       <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
     </ion-row>
 
-<!-- <ion-row class="category-row ">
-      <div>{{'THEME COLOR' | translate}}</div> -->
+<ion-row class="category-row ">
+      <div>{{'THEME COLOR' | translate}}</div>
       <!-- <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle> -->
-      <!-- <input type="color" id="colorPicker" class="color-category" value="{{themeColor}}" (input)="onThemeColorChange($event)"> -->
+      <input type="color" id="colorPicker" class="color-category little-margin-right" value="{{themeColor}}" (input)="onThemeColorChange($event)">
 
-      <!-- <input class="color-category"
-       [colorPicker]="themeColor" 
-      (colorPickerChange)="themeColor=$event"
-       [style.background]="themeColor" 
-       [cpPositionRelativeToArrow]="true"   /> -->
-
-    <!-- </ion-row> -->
+    </ion-row>
   </div>
 
   

@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { WelcomeTodo } from 'src/app/model/welcome-todo';
 
 @Component({
   selector: 'app-settings',
@@ -143,5 +144,30 @@ export class SettingsPage implements OnInit {
     localStorage.setItem('settings', JSON.stringify(this.settings));
 
     this.translate.use(this.settings.language); 
+
+
+    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+
+    for (let todo of todos){
+      if (todo.welcomeTodo === true){
+
+        console.log("found welcome todo", todo)
+
+        todos.splice(todos.indexOf(todo), 1);
+
+        if (this.settings.language === 'en'){
+          todo = WelcomeTodo.getWelcomeTodo();
+        }
+        else{
+          todo = WelcomeTodo.getWelcomeTodoFr();
+        }
+
+        todos.push(todo);
+
+        break;
+      }
+    }
+    console.log("todos", todos)
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
 }

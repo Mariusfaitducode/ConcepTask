@@ -113,7 +113,10 @@
         label="{{'DUE DATE' | translate}}" labelPlacement="floating" class="label-padding"
           [ngClass]="{'passed-date' : !validDate()}">
         </ion-input>
-        <!-- <ion-icon  name="notifications-outline"></ion-icon> -->
+
+        <ion-icon *ngIf="!passedDate() && todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
+        <ion-icon *ngIf="!passedDate() && todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
+
       </ion-item>
     </div>
 
@@ -123,6 +126,10 @@
         label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
           [ngClass]="{'passed-date' : !validDate()}">
         </ion-input>
+
+        <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
+        <ion-icon *ngIf="todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
+
       </ion-item>
     </div>
 

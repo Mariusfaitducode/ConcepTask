@@ -5,6 +5,8 @@ export class Todo {
 
     // 
 
+    public welcomeTodo?: boolean = false;
+
     public subId?: number;
     public parentId?: number;
 
