@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Todo } from 'src/app/model/todo';
 
-import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-sub-task',
@@ -37,33 +37,77 @@ export class SubTaskComponent  implements OnInit {
 
   subType : string = "customize";
 
+  isDragged: boolean = false;
+
+  // @ViewChild('dragElement') dragElement?: CdkDrag;
+
   ngOnInit() {
     // Todo.setConfig(this.subTask);
   }
 
-  drop(event: CdkDragDrop<any[]>) {
-    console.log("Element dropped")
-    console.log(event.previousContainer.id);
-    console.log(event.container.id);
+  // drop(event: CdkDragDrop<any[]>) {
+  //   console.log("Element dropped")
+  //   console.log(event.previousContainer.id);
+  //   console.log(event.container.id);
 
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      return;
-    }
-    else{
-      // event.container.data.push(event.previousContainer.data[event.previousIndex])
-      //event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
-      //event.previousContainer.data.splice(event.previousIndex, 1);
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //     return;
+  //   }
+  //   else{
+  //     // event.container.data.push(event.previousContainer.data[event.previousIndex])
+  //     //event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
+  //     //event.previousContainer.data.splice(event.previousIndex, 1);
       
+  //   }
+  //   // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  // }
+
+  // drag(event: any) {
+  //   console.log("Element dragStart")
+  //   console.log(event);
+  // }
+
+  startDrag(){
+    console.log("Start Timer")
+    
+
+    if ('vibrate' in navigator) {
+      console.log("Vibrate")
+      navigator.vibrate(100);
     }
-    // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+    this.isDragged = true;
   }
 
-  dragStart(event: any) {
-    console.log("Element dragStart")
+  stopDrag(){
+    this.isDragged = false;
+  }
+
+  onEntered(event: any) {
+    console.log("Element entered")
     console.log(event);
+
+  //   const element = event.getPlaceholderElement();
+  // if (element) {
+  //   element.parentElement.style.backgroundColor = 'lightblue'; // Exemple de style à appliquer
+  // }
   }
 
+  // clearTimer(){
+  //   console.log("Clear Timer")
+  // }
+
+  // onDragStarted(event: any) {
+  //   console.log("Element dragStart")
+  //   console.log(event);
+  // }
+
+  // onDragEnded(event: any) 
+  // {
+  //   console.log("Element dragEnd")
+  //   console.log(event);
+  // }
 
 
   backgroundColor(){

@@ -126,12 +126,9 @@
       </ion-item>
     </div>
 
-
     <!-- <div *ngIf="haveProperties() === false" [ngClass]="{'ecart' : true}">
-
     </div> -->
     
-
     <div id="sub-task-mode"></div>
 
     <!-- List sub tasks -->
@@ -168,7 +165,10 @@
           <!-- <div cdkDropList [cdkDropListData]="todo.list" (cdkDropListDropped)="drop($event)"> -->
           <div cdkDropListGroup>
             <div *ngFor="let subTodo of todo.list; let index = index" >
-              <div cdkDropList [cdkDropListData]="subTasksList[index]" (cdkDropListDropped)="drop($event)" *ngIf="!hideSubTasks || !subTodo.isDone">
+              <div cdkDropList [cdkDropListData]="subTasksList[index]" 
+               
+              
+              (cdkDropListDropped)="drop($event)" *ngIf="!hideSubTasks || !subTodo.isDone">
                 <!-- index : {{index}} -->
                 <app-sub-task 
                 [todos]="todos" [parentTask]="todo" [subTask]="subTodo" [index]="index" [page]="'todo'" [hideSubTasks]="hideSubTasks"></app-sub-task>

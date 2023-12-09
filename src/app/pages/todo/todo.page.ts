@@ -180,6 +180,23 @@ export class TodoPage implements OnInit {
   }
 
 
+  // onEntered(event: any) {
+  //   console.log("Element entered")
+  //   console.log(event);
+  // }
+
+  // onDragStarted(event: any) {
+  //   console.log("Element dragStart")
+  //   console.log(event);
+  // }
+
+  // onDragEnded(event: any) 
+  // {
+  //   console.log("Element dragEnd")
+  //   console.log(event);
+  // }
+
+
   //Reset config au cas ou
   setConfig(){
     console.log("set config")
