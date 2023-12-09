@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Dialog } from '@capacitor/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { path } from 'd3';
 import { Todo } from 'src/app/model/todo';
 
@@ -15,7 +16,7 @@ export class NodeModalComponent implements OnInit {
   todo : Todo = new Todo();
   mainTodo : Todo = new Todo();
 
-  constructor(private route : ActivatedRoute, private router : Router) { }
+  constructor(private route : ActivatedRoute, private router : Router, private translate : TranslateService) { }
 
   ngOnInit() {
 
@@ -83,7 +84,7 @@ export class NodeModalComponent implements OnInit {
     
     const { value } = await Dialog.confirm({
       title: 'Confirm',
-      message: `Are you sure to delete `+ this.todo.title +` ?`,
+      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
     });
   
     console.log('Confirmed:', value);

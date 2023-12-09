@@ -6,6 +6,7 @@ import { ModalService } from 'src/app/service/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-modal',
@@ -48,7 +49,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     modify: false
   };*/
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private translate : TranslateService) { }
 
   ngAfterViewInit() {
     
@@ -79,7 +80,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   showConfirm = async () => {
     const { value } = await Dialog.confirm({
       title: 'Confirm',
-      message: `Are you sure to delete `+ this.subTask.title +` ?`,
+      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.subTask.title +` ?`,
     });
   
     console.log('Confirmed:', value);

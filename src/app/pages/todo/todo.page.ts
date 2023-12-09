@@ -174,7 +174,7 @@ export class TodoPage implements OnInit {
 
   async drop(event: CdkDragDrop<any[]>) {
 
-    await DragAndDrop.drop(event, this.mainTodo);
+    await DragAndDrop.drop(event, this.mainTodo, this.translate);
     this.initializeSubTasksList();
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
@@ -286,7 +286,7 @@ export class TodoPage implements OnInit {
   showConfirm = async () => {
     const { value } = await Dialog.confirm({
       title: 'Confirm',
-      message: `Are you sure to delete `+ this.todo.title +` ?`,
+      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
     });
   
     console.log('Confirmed:', value);

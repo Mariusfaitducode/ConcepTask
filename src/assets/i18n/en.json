@@ -79,5 +79,11 @@
     "DARK MODE": "Dark mode",
     "THEME COLOR": "Theme color",
 
-    "SHARE": "Share"
+    "SHARE": "Share",
+
+    "DELETE MESSAGE": "Are you sure you want to delete : ",
+    "LOOSE CHANGE MESSAGE": "You will loose all changes made since your last save.",
+
+    "SURE TO MOVE TO": "Are you sure to move",
+    "INTO": "into"
 }

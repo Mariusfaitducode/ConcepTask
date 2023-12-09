@@ -84,15 +84,15 @@ export class SubTaskComponent  implements OnInit {
     this.isDragged = false;
   }
 
-  onEntered(event: any) {
-    console.log("Element entered")
-    console.log(event);
+  // onEntered(event: any) {
+  //   console.log("Element entered")
+  //   console.log(event);
 
-  //   const element = event.getPlaceholderElement();
-  // if (element) {
-  //   element.parentElement.style.backgroundColor = 'lightblue'; // Exemple de style à appliquer
+  // //   const element = event.getPlaceholderElement();
+  // // if (element) {
+  // //   element.parentElement.style.backgroundColor = 'lightblue'; // Exemple de style à appliquer
+  // // }
   // }
-  }
 
   // clearTimer(){
   //   console.log("Clear Timer")

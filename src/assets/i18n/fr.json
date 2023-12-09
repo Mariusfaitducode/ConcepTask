@@ -85,5 +85,13 @@
     "DARK MODE": "Mode sombre",
     "THEME COLOR": "Couleur du thème",
 
-    "SHARE": "Partager"
+    "SHARE": "Partager",
+
+    "DELETE MESSAGE": "Êtes-vous sûr de vouloir supprimer : ",
+    "LOOSE CHANGE MESSAGE": "Vous allez perdre vos changements si vous quittez la page sans sauvegarder.",
+
+    "SURE TO MOVE TO": "Etes vous sur de vouloir déplacer ",
+    "INTO": "dans"
+
+
 }

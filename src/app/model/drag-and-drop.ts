@@ -5,7 +5,7 @@ import { Dialog } from "@capacitor/dialog";
 export class DragAndDrop {
 
 
-    public static async drop(event: CdkDragDrop<any[]>, mainTodo: Todo) {
+    public static async drop(event: CdkDragDrop<any[]>, mainTodo: Todo, translate : any) {
 
         console.log("Element dropped")
         // console.log(event)
@@ -40,19 +40,19 @@ export class DragAndDrop {
 
         if (Todo.findSubTodoById(item, parentTodo.subId!)) return;
         
-        await this.moveItem(item, parentTodo, mainTodo);
+        await this.moveItem(item, parentTodo, mainTodo, translate);
         
         console.log(event.container.data)
       }
 
 
-      public static async moveItem(item : any, parentTodo : any, mainTodo : any){
+      public static async moveItem(item : any, parentTodo : any, mainTodo : any, translate : any){
 
         console.log("move item")
 
         const { value } = await Dialog.confirm({
             title: 'Confirm',
-            message: `Are you sure to move `+ item.title +` into `+ parentTodo.title +` ?`,
+            message: `${translate.instant('SURE TO MOVE TO')} `+ item.title +` ${translate.instant('INTO')}  `+ parentTodo.title +` ?`,
           });
         
           console.log('Confirmed:', value);

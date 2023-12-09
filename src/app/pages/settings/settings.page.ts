@@ -35,7 +35,7 @@ export class SettingsPage implements OnInit {
   showConfirmDelete(cat : any) {
     Dialog.confirm({
       title: 'Delete category',
-      message: `Are you sure you want to delete ${cat.name} category ?`,
+      message: `${this.translate.instant('DELETE MESSAGE')} ${cat.name} category ?`,
       okButtonTitle: 'Delete',
       cancelButtonTitle: 'Cancel',
     }).then((result) => {

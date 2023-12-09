@@ -160,7 +160,7 @@ export class AddPage implements OnInit {
   
   async drop(event: CdkDragDrop<any[]>) {
 
-    await DragAndDrop.drop(event, this.newTodo);
+    await DragAndDrop.drop(event, this.newTodo, this.translate);
     this.initializeSubTasksList();
   }
 
@@ -255,7 +255,7 @@ export class AddPage implements OnInit {
 
       const { value } = await Dialog.confirm({
         title: 'Confirm',
-        message: `Your change will be loosed ?`,
+        message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
       });
     
       console.log('Confirmed:', value);
@@ -284,7 +284,7 @@ export class AddPage implements OnInit {
 
         const { value } = await Dialog.confirm({
           title: 'Confirm',
-          message: `Your change will be loosed ?`,
+          message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
         });
       
         console.log('Confirmed:', value);
