@@ -54,9 +54,14 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
-  },  {
+  },
+  {
     path: 'done-task',
     loadChildren: () => import('./pages/done-task/done-task.module').then( m => m.DoneTaskPageModule)
+  },
+  {
+    path: 'feedback',
+    loadChildren: () => import('./pages/feedback/feedback.module').then( m => m.FeedbackPageModule)
   },
 
 

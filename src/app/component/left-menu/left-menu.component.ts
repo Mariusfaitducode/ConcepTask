@@ -25,5 +25,9 @@ export class LeftMenuComponent  implements OnInit {
     this.router.navigate(['/done-task']);
   }
 
+  goToFeedback(){
+    this.router.navigate(['/feedback']);
+  }
+
   
 }

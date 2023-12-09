@@ -23,7 +23,7 @@ export class DragAndDrop {
             newIndex = event.currentIndex;
         }
 
-        if (event.container.data[newIndex] === undefined ) return;
+        // if (event.container.data[newIndex] === undefined ) return;
 
         let item : Todo = event.item.data;
         let parentTodo = event.container.data[newIndex].todo;

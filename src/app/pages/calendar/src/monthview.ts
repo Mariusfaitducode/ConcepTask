@@ -24,7 +24,32 @@ import {CalendarService} from './calendar.service';
     template: `
         <div class="swiper monthview-swiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">                    
+
+            
+                <div class="swiper-slide" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9]">                    
+                    <table class="table table-bordered table-fixed monthview-datetable">
+                        <thead>
+                        <tr>
+                            <th *ngFor="let dayHeader of views[currentViewIndex].dayHeaders">
+                                <small>{{dayHeader}}</small>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let row of [0,1,2,3,4,5]">
+                            <td *ngFor="let col of [0,1,2,3,4,5,6]" tappable (click)="select(views[currentViewIndex].dates[row*7+col])"
+                                [ngClass]="getHighlightClass(views[currentViewIndex].dates[row*7+col])">
+                                <ng-template [ngTemplateOutlet]="monthviewDisplayEventTemplate"
+                                             [ngTemplateOutletContext]="{view: views[currentViewIndex], row: row, col: col}">
+                                </ng-template>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- <div class="swiper-slide">                    
                     <table *ngIf="0===currentViewIndex" class="table table-bordered table-fixed monthview-datetable">
                         <thead>
                         <tr>
@@ -140,7 +165,7 @@ import {CalendarService} from './calendar.service';
                         <tr>
                         </tbody>
                     </table>
-                </div>
+                </div> -->
             </div>
             <ng-template [ngTemplateOutlet]="monthviewEventDetailTemplate"
                          [ngTemplateOutletContext]="{showEventDetail:showEventDetail, selectedDate: selectedDate, noEventsLabel: noEventsLabel}">
@@ -201,7 +226,7 @@ import {CalendarService} from './calendar.service';
 
         .monthview-primary-with-event {
             background-color: #3a87ad;
-            color: white;
+            // color: white;
         }
 
         .monthview-current {
@@ -209,8 +234,8 @@ import {CalendarService} from './calendar.service';
         }
 
         .monthview-selected {
-            background-color: #009900;
-            color: white;
+            // background-color: #009900;
+            // color: white;
         }
 
         .monthview-datetable td.monthview-disabled {
@@ -228,7 +253,7 @@ import {CalendarService} from './calendar.service';
         }
 
         .monthview-secondary-with-event {
-            background-color: #d9edf7;
+            // background-color: #d9edf7;
         }
 
         ::-webkit-scrollbar,
