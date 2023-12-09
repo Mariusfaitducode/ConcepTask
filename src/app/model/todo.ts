@@ -1,4 +1,5 @@
 import { ScheduleEvery } from "@capacitor/local-notifications";
+import { Notif } from "./notif";
 
 export class Todo {
 
@@ -80,6 +81,8 @@ export class Todo {
 
 
     public static deleteTodoById(rootTodo: Todo, idToDelete: number): Todo {
+
+      Notif.cancelNotification(rootTodo);
     
       // Créez une copie du todo actuel
       const updatedTodo: Todo = { ...rootTodo };
@@ -253,25 +256,32 @@ export class Todo {
       if (!todo.notifId) {
 
         console.log("get notifId")
-        console.log(localStorage.getItem('notifId') || '0')
+        // console.log(localStorage.getItem('notifId') || [])
 
-        let notifId = JSON.parse(localStorage.getItem('notifId') || '0');
+        let notifId = JSON.parse(localStorage.getItem('notifId') || '[]');
 
-        console.log("notifId : " + notifId)
-  
-        if (notifId == 0) {
-          notifId = 1;
+        let newId = 0;
+
+        for (let id of notifId) {
+          
+          if (id === newId) {
+            newId = id + 1;
+          }
+          else{
+            break;
+          }
         }
-        else{
-          notifId++;
-        }
-        todo.notifId = notifId;
+
+        notifId.push(newId);
+
 
         console.log("set notifId : " + notifId)
     
         localStorage.setItem('notifId', JSON.stringify(notifId));
 
-        return notifId;
+        todo.notifId = newId;
+
+        return todo.notifId;
       }
       else{
         console.log("already notifId")
@@ -284,6 +294,34 @@ export class Todo {
 
       if (todo.config.date && todo.date) {
         let date = new Date(todo.date);
+
+        if (todo.time) {
+          let time = todo.time!.split(':');
+          const hours = parseInt(time[0], 10); // Convertissez l'heure en entier
+          const minutes = parseInt(time[1], 10);
+          
+          date.setHours(hours);
+          date.setMinutes(minutes);
+        }
+
+        let now = new Date();
+  
+        if (date < now) {
+          return true;
+        }
+      }
+      else if (todo.config.repeat && todo.repeat?.startDate) {
+        let date = new Date(todo.repeat.startDate);
+
+        if (todo.repeat.startTime) {
+          let time = todo.repeat.startTime!.split(':');
+          const hours = parseInt(time[0], 10); // Convertissez l'heure en entier
+          const minutes = parseInt(time[1], 10);
+          
+          date.setHours(hours);
+          date.setMinutes(minutes);
+        }
+
         let now = new Date();
   
         if (date < now) {

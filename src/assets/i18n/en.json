@@ -52,6 +52,12 @@
     "repeat.month": "Repeat every month on {{dayOfMonth}} at {{hours}}:{{minutes}}",
     "repeat.year": "Repeat every year on {{dayOfMonth}} {{month}} at {{hours}}:{{minutes}}",
 
+    "NOTIF SCHEDULED": "Notification scheduled",
+    "NOTIF PROBLEM": "A problem occurs, notification not scheduled",
+    "NOTIF CANCELED": "Notification canceled",
+    "DATE PASSED": "Date passed, notification cannot be scheduled.",
+    "NOTIF UPDATE": "Notification updated",
+
     "SUB TASKS": "Sub Tasks",
     "TYPE": "Type",
     "CUSTOMIZE": "Customize",

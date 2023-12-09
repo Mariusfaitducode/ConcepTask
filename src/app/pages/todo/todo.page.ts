@@ -278,7 +278,7 @@ export class TodoPage implements OnInit {
     }
     localStorage.setItem('todos', JSON.stringify(this.todos));
 
-    Notif.cancelNotification(this.todo);
+    // Notif.cancelNotification(this.todo);
 
     this.navCtrl.back();
   }

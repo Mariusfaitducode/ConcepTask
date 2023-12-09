@@ -51,12 +51,19 @@
     "repeat.two-weeks": "Répéter toutes les deux semaines le {{day}} à {{hours}}:{{minutes}}",
     "repeat.month": "Répéter chaque mois le {{dayOfMonth}} à {{hours}}:{{minutes}}",
     "repeat.year": "Répéter chaque année le {{dayOfMonth}} {{month}} à {{hours}}:{{minutes}}",
-    
+
     "day": "jour",
     "week": "semaine",
     "two-weeks": "deux semaines",
     "month": "mois",
     "year": "année",
+
+    "NOTIF SCHEDULED": "Notification planifiée",
+    "NOTIF PROBLEM": "Un problème est survenu lors de la planification de la notification.",
+    "NOTIF CANCELED": "Notification annulée",
+    "DATE PASSED": "La date n'est pas valide",
+    "NOTIF UPDATE": "Notification mise à jour",
+
     
     "SUB TASKS": "Sous Tâches",
     "TYPE": "Type",

@@ -26,5 +26,7 @@ export class AppComponent {
     // }
 
     // localStorage.setItem('todos', JSON.stringify(todos));
+
+    localStorage.setItem('notifId', JSON.stringify([]));
   }
 }

@@ -112,6 +112,7 @@ export class Notif {
         try {
           console.log("remove notification");
   
+          if (!todo.notifId) return false;
           await LocalNotifications.cancel({ notifications: [{ id: todo.notifId! }] });
           return true;
         } catch (error) {

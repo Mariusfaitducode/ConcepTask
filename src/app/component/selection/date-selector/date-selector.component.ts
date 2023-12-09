@@ -3,6 +3,8 @@ import { Notif } from 'src/app/model/notif';
 import { Todo } from 'src/app/model/todo';
 
 import { ToastController } from '@ionic/angular';
+import { set } from 'firebase/database';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-date-selector',
@@ -18,7 +20,8 @@ export class DateSelectorComponent  implements OnInit {
 
   // date : Date = new Date();
 
-  constructor(public toastController: ToastController) { }
+  constructor(public toastController: ToastController,
+                private translate : TranslateService) { }
 
   ngOnInit() {
     // if (!this.todo.repeat){
@@ -62,23 +65,35 @@ export class DateSelectorComponent  implements OnInit {
     console.log("manage notification")
     console.log(this.todo.reminder);
     // this.newTodo.sayHello();
+
+    if (this.todo.reminder && Todo.passedDate(this.todo)){
+      this.presentToast(`${this.translate.instant('DATE PASSED')}`);
+
+      setTimeout(() => {
+      this.todo.reminder = false;
+
+      }, 300);
+      return;
+    }
+
+
     if (this.todo.reminder) {
       let result = await Notif.scheduleNotification(this.todo);
 
       if (result){
         // console.log("notification scheduled")
-        this.presentToast("Notification scheduled");
+        this.presentToast(`${this.translate.instant('NOTIF SCHEDULED')}`);
 
       }
       else{
-        this.presentToast("Notification scheduled");
+        this.presentToast(`${this.translate.instant('NOTIF PROBLEM')}`);
         // console.log("notification not scheduled")
       }
 
     }
     else{
       let result = await Notif.cancelNotification(this.todo);
-      if (result) this.presentToast("Notification canceled");
+      if (result) this.presentToast(`${this.translate.instant('NOTIF CANCELED')}`);
     }
   }
 
@@ -91,23 +106,28 @@ export class DateSelectorComponent  implements OnInit {
       let result = await Notif.scheduleRecurringNotification(this.todo);
 
       if (result){
-        console.log("notification scheduled")
-        this.presentToast("Notification scheduled");
+        // console.log("notification scheduled")
+        this.presentToast(`${this.translate.instant('NOTIF SCHEDULED')}`);
       }
       else{
         // console.log("notification not scheduled")
-        this.presentToast("Notification not scheduled");
+        this.presentToast(`${this.translate.instant('NOTIF PROBLEM')}`);
 
       }
     }
     else{
       let result = await Notif.cancelNotification(this.todo);
-      if (result) this.presentToast("Notification canceled");
+      if (result) this.presentToast(`${this.translate.instant('NOTIF CANCELED')}`);
     }
   }
 
 
   async updateNotification(){
+
+    if (Todo.passedDate(this.todo)){
+      this.presentToast(`${this.translate.instant('DATE PASSED')}`);
+      return;
+    }
 
     console.log("update notification")
 
@@ -116,7 +136,7 @@ export class DateSelectorComponent  implements OnInit {
       if (result){
         let result = await Notif.scheduleNotification(this.todo);
         if (result){
-          this.presentToast("Notification updated");
+          this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }
       }
     }
@@ -125,12 +145,17 @@ export class DateSelectorComponent  implements OnInit {
 
   async updateRepeatNotification(){
 
+    if (Todo.passedDate(this.todo)){
+      this.presentToast(`${this.translate.instant('DATE PASSED')}`);
+      return;
+    }
+
     if (this.todo.reminder){
       let result = await Notif.cancelNotification(this.todo);
       if (result){
         let result = await Notif.scheduleRecurringNotification(this.todo);
         if (result){
-          this.presentToast("Notification updated");
+          this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }
       }
     }
