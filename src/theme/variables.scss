@@ -243,6 +243,14 @@
     --ion-tab-bar-background: #1f1f1f;
 
     --ion-card-background: #1e1e1e;
+
+    --ion-toggle : rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.39);
+
+    --ion-searchbar : #1e1e1e;
+
+    --ion-chip-open : var(--ion-color-step-600);
+    --ion-chip-close : var(--ion-color-light);
+
   }
 
 
@@ -252,7 +260,7 @@
     --ion-background-color: #ffffff;
     --ion-background-color-rgb: 0,0,0;
 
-    --ion-text-color: #000000;
+    --ion-text-color: #000000bc;
     --ion-text-color-rgb: 255,255,255;
 
     --ion-color-step-950: #0d0d0d;
@@ -296,6 +304,7 @@
     --ion-background-color: #ffffff;
     --ion-background-color-rgb: 18,18,18;
 
+    --ion-greyded-text: #000000;
     --ion-text-color: #000000;
     --ion-text-color-rgb: 255,255,255;
 
@@ -323,10 +332,21 @@
 
     --ion-item-background: none;
 
-    --ion-toolbar-background: #d9d9d9;
+    --ion-toolbar-background: #ffffff;
 
     --ion-tab-bar-background: #d9d9d9;
 
-    --ion-card-background: #e6e6e6;
+    --ion-card-background: #ffffff;
+
+
+    --ion-toggle: #efeded;
+
+    --ion-searchbar : #d9d9d9;
+
+    
+    --ion-chip-open : #808080;
+    --ion-chip-close : #f2f2f2;
+
+    --ion-list-modal-background: #ffffff;
   }
 

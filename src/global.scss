@@ -334,3 +334,17 @@ ion-select::part(label){
     color: var(--ion-color-primary) !important;
     font-weight: bold;
 }
+
+
+
+// LIGHT THEME ADAPTATION
+
+.greyded-text{
+    color: var(--ion-greyded-text);
+    // fill: var(--ion-text-color);
+    // --color: var(--ion-text-color);
+}
+
+ion-toggle{
+    --track-background: var(--ion-toggle);
+}

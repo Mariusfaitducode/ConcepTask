@@ -84,7 +84,7 @@ export class HomePage {
     this.translate.setDefaultLang(settings.language);
     this.translate.use(settings.language); 
 
-    if (!settings.darkMode) {
+    if (settings.darkMode === undefined) {
       console.log("no settings")
       
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');

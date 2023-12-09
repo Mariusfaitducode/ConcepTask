@@ -73,10 +73,10 @@
 
       <ion-segment [(ngModel)]="subMode" *ngIf="changePositionSubMode" class="sub-task-mode tree-segment" (ionChange)="goToConceptor()" ngDefaultControl="tree">
         <ion-segment-button value="tree">
-          <div>{{'TREE' | translate}}</div>
+          <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
         </ion-segment-button>
         <ion-segment-button value="graph">
-          <div>{{'GRAPH' | translate}}</div>
+          <div [class.greyded-text]="subMode !== 'graph'">{{'GRAPH' | translate}}</div>
         </ion-segment-button>
       </ion-segment>
     </div>
@@ -150,10 +150,10 @@
         
         <ion-segment [(ngModel)]="subMode"  class="tree-segment" (ionChange)="goToConceptor()" >
           <ion-segment-button value="tree">
-            <div>{{'TREE' | translate}}</div>
+            <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
           </ion-segment-button>
           <ion-segment-button value="graph">
-            <div>{{'GRAPH' | translate}}</div>
+            <div [class.greyded-text]="subMode !== 'graph'">{{'GRAPH' | translate}}</div>
           </ion-segment-button>
         </ion-segment>
 

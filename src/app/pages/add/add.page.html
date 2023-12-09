@@ -84,13 +84,13 @@
       <ion-label class="sub-todos-label" color="primary">{{'PRIORITY' | translate}}</ion-label>
       <ion-segment [(ngModel)]="newTodo.priority" color="primary">
         <ion-segment-button value="low">
-          <ion-label>{{'LOW' | translate}}</ion-label>
+          <div [class.greyded-text]="newTodo.priority !== 'low'">{{'LOW' | translate}}</div>
         </ion-segment-button>
         <ion-segment-button value="medium">
-          <ion-label>{{'MEDIUM' | translate}}</ion-label>
+          <div [class.greyded-text]="newTodo.priority !== 'medium'">{{'MEDIUM' | translate}}</div>
         </ion-segment-button>
         <ion-segment-button value="high">
-          <ion-label>{{'HIGH' | translate}}</ion-label>
+          <div [class.greyded-text]="newTodo.priority !== 'high'">{{'HIGH' | translate}}</div>
         </ion-segment-button>
       </ion-segment>
     </ion-row>
