@@ -9,14 +9,14 @@ import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notificati
 
 import { ItemReorderEventDetail } from '@ionic/core';
 
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
-import { ModalService } from 'src/app/service/modal.service';
+import { ModalService } from 'src/app/services/modal.service';
 import { set } from 'firebase/database';
 
 import { Dialog } from '@capacitor/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { DragAndDrop } from 'src/app/model/drag-and-drop';
+import { DragAndDrop } from 'src/app/models/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 
 

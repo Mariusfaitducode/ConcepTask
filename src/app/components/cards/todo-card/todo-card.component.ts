@@ -1,7 +1,7 @@
 import { SelectorContext } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-todo-card',

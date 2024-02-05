@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { Notif } from 'src/app/model/notif';
+import { Notif } from 'src/app/models/notif';
 
 @Component({
   selector: 'app-custom-config',

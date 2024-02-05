@@ -1,15 +1,15 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 
-import { FirebaseService } from '../service/firebase.service';
+import { FirebaseService } from '../services/firebase.service';
 
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
 // import { NavParams } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
-import { Todo } from '../model/todo';
+import { Todo } from '../models/todo';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { WelcomeTodo } from '../model/welcome-todo';
+import { WelcomeTodo } from '../models/welcome-todo';
 
 //import { AngularFireDatabase } from '@angular/fire/database';
 
@@ -27,107 +27,7 @@ export class HomePage {
     private menuCtrl : MenuController,
     private route : ActivatedRoute,
   )
-  {
-
-    let categories = JSON.parse(localStorage.getItem('categories') || '[]');
-    if (categories.length === 0){
-      categories = [
-        {
-          id: 0,
-          name: 'Task',
-          color: '#e83c53',
-        },
-        {
-          id: 1,
-          name: 'Project',
-          color: '#428cff',
-        },
-        {
-          id: 2,
-          name: 'Work',
-          color: '#ffd948',
-        },
-        {
-          id: 3,
-          name: 'Personal',
-          color: '#29c467',
-        },
-        {
-          id: 4,
-          name: 'Event',
-          color: '#5d58e0',
-        },
-      ];
-      localStorage.setItem('categories', JSON.stringify(categories));
-    }
-
-    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
-
-    console.log(settings)
-
-    if (!settings.firstVisiteDone) {
-
-      let todos = JSON.parse(localStorage.getItem('todos') || '[]');
-      let firstTodo = WelcomeTodo.getWelcomeTodo();
-      todos.push(firstTodo);
-      localStorage.setItem('todos', JSON.stringify(todos));
-
-      settings.firstVisiteDone = true;
-    }
-
-    if (!settings.language) {
-      settings.language = 'en';
-    }
-
-    // settings.language = 'fr';
-
-    this.translate.setDefaultLang(settings.language);
-    this.translate.use(settings.language); 
-
-    if (settings.darkMode === undefined) {
-      console.log("no settings")
-      
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        if (prefersDark.matches) {
-          console.log("DARK MODE")
-          document.body.setAttribute('color-theme', 'dark');
-          settings.darkMode = true;
-          // this.darkMode = true;
-        }
-        else{
-          console.log("LIGHT MODE")
-          document.body.setAttribute('color-theme', 'light');
-          settings.darkMode = false;
-          // this.darkMode = false;
-        }
-    }
-
-    if (settings.darkMode) {
-      document.body.setAttribute('color-theme', 'dark');
-      // this.darkMode = true;
-    }
-    else{
-      console.log("LIGHT MODE SET")
-      document.body.setAttribute('color-theme', 'light');
-      // this.darkMode = false;
-    }
-
-    if (settings.themeColor){
-      const style = document.createElement('style');
-      style.innerHTML = `
-        :root {
-          --ion-color-primary: ${settings.themeColor};
-          --ion-color-primary-contrast: #ffffff;
-          --ion-color-primary-shade: mix(black, var(--ion-color-primary), 15%);
-          --ion-color-primary-tint: mix(white, var(--ion-color-primary), 15%);
-        }
-      `;
-      document.head.appendChild(style);
-    }
-
-    localStorage.setItem('settings', JSON.stringify(settings));
-
-    }
+  {}
 
   todos : Todo[] = []
   results : Todo[] = []
@@ -136,9 +36,7 @@ export class HomePage {
 
   openLeftMenu = false;
 
-
   filters = {
-
     today: false,
     week: false,
     month: false,
@@ -152,12 +50,9 @@ export class HomePage {
   
 
   ngOnInit() {
-
-    console.log("HOME PAGEEEE")
-
+    
     this.darkMode = JSON.parse(localStorage.getItem('settings') || '{}').darkMode;
     
-
     this.route.queryParams.subscribe(params =>{
 
       console.log("HOME PAGEEEE CHANGE")
@@ -166,7 +61,6 @@ export class HomePage {
       this.darkMode = settings.darkMode;
       this.translate.use(settings.language); 
 
-      // window.location.reload();
       this.loadTodos();
       this.results = [...this.todos];
     });
@@ -176,27 +70,26 @@ export class HomePage {
   }
 
 
- loadTodos(){
-  this.todos = []
-   this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-   console.log(this.todos)
- }
+  loadTodos(){
+    this.todos = []
+    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    console.log(this.todos)
+  }
 
 
- setTodos(){
-   localStorage.setItem('todos', JSON.stringify(this.todos));
- }
+  setTodos(){
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
 
 
- openMenu() {
-   this.menuCtrl.open();
- }
+  openMenu() {
+    this.menuCtrl.open();
+  }
 
 
- closeMenu() {
-   this.menuCtrl.close();
- }
-  // app = initializeApp(environnement.firebaseConfig);
+  closeMenu() {
+    this.menuCtrl.close();
+  }
 
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
@@ -222,70 +115,52 @@ export class HomePage {
   }
 
 
-  dateFilters(on: boolean, off1:boolean, off2:boolean) {
-    // on = !on;
+  // dateFilters(on: boolean, off1:boolean, off2:boolean) {
 
-    if (on) {
-      console.log("on")
-      off1 = false;
-      off2 = false;
-    }
-  }
+  //   if (on) {
+  //     console.log("on")
+  //     off1 = false;
+  //     off2 = false;
+  //   }
+  // }
 
 
-  filterResults() {
+  // filterResults() {
 
-    // if (this.filters.today) {
-    //   this.filters.week = false;
-    //   this.filters.month = false;
-    //   this.filters.overdue = false;
-    // }
-    // if (this.filters.week) {
-    //   this.filters.today = false;
-    //   this.filters.month = false;
-    //   this.filters.overdue = false;
-    // }
-    // if (this.filters.overdue) {
-    //   this.filters.week = false;
-    //   this.filters.today = false;
-    //   this.filters.month = false;
-    // }
+  //   this.results = [...this.todos];
 
-    this.results = [...this.todos];
+  //   if (this.filters.week) {
+  //     const nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+  //     this.results = [...this.results.filter((d) => d.date && new Date(d.date) < nextWeek && new Date(d.date) >= new Date())];
+  //   }
 
-    if (this.filters.week) {
-      const nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
-      this.results = [...this.results.filter((d) => d.date && new Date(d.date) < nextWeek && new Date(d.date) >= new Date())];
-    }
+  //   if (this.filters.today) {
+  //     this.results = [...this.results.filter((d) => d.date && new Date(d.date) == new Date())];
+  //   }
 
-    if (this.filters.today) {
-      this.results = [...this.results.filter((d) => d.date && new Date(d.date) == new Date())];
-    }
+  //   if (this.filters.overdue) {
+  //     this.results = [...this.todos.filter((d) => d.date && new Date(d.date) < new Date())];
+  //   }
 
-    if (this.filters.overdue) {
-      this.results = [...this.todos.filter((d) => d.date && new Date(d.date) < new Date())];
-    }
+  //   if (this.filters.priority) {
+  //     this.results = [...this.results.filter((d) => d.priority == this.filters.priorityChoosed)];
+  //   }
 
-    if (this.filters.priority) {
-      this.results = [...this.results.filter((d) => d.priority == this.filters.priorityChoosed)];
-    }
+  //   if (this.filters.category) {
+  //     this.results = [...this.results.filter((d) => d.category.name == this.filters.categoryChoosed)];
+  //   }
+  //   if (this.filters.done) {
+  //     this.results = [...this.results.filter((d) => d.isDone == true)];
+  //   }
+  // }
 
-    if (this.filters.category) {
-      this.results = [...this.results.filter((d) => d.category.name == this.filters.categoryChoosed)];
-    }
-    if (this.filters.done) {
-      this.results = [...this.results.filter((d) => d.isDone == true)];
-    }
-    
-  }
-
-  countFilters(){
-    let count = 0;
-    for (const [key, value] of Object.entries(this.filters)) {
-      if (value) {
-        count++;
-      }
-    }
-    return count;
-  }
+  // countFilters(){
+  //   let count = 0;
+  //   for (const [key, value] of Object.entries(this.filters)) {
+  //     if (value) {
+  //       count++;
+  //     }
+  //   }
+  //   return count;
+  // }
 }

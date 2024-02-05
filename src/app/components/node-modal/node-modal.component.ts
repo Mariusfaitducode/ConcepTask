@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { path } from 'd3';
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-node-modal',

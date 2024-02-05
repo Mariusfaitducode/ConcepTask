@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
 import { set } from 'firebase/database';
-import { Todo } from 'src/app/model/todo';
-import { ModalService } from 'src/app/service/modal.service';
+import { Todo } from 'src/app/models/todo';
+import { ModalService } from 'src/app/services/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';

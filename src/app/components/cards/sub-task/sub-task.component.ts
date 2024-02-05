@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 

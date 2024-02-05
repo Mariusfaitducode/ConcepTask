@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-sub-todo',

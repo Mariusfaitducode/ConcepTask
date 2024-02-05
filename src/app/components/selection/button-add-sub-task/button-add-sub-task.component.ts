@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-button-add-sub-task',

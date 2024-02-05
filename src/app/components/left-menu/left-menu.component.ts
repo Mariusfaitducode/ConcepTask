@@ -13,7 +13,7 @@ import { Share } from '@capacitor/share';
 export class LeftMenuComponent  implements OnInit {
 
   constructor(private router : Router,
-    private socialSharing: SocialSharing) { }
+   ) { }
 
   ngOnInit() {}
 

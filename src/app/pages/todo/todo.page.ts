@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
-import { Todo } from 'src/app/model/todo';
-import { ModalService } from 'src/app/service/modal.service';
+import { Todo } from 'src/app/models/todo';
+import { ModalService } from 'src/app/services/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DragAndDrop } from 'src/app/model/drag-and-drop';
-import { Notif } from 'src/app/model/notif';
+import { DragAndDrop } from 'src/app/models/drag-and-drop';
+import { Notif } from 'src/app/models/notif';
 import { set } from 'firebase/database';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';

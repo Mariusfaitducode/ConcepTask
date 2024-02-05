@@ -9,9 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { IonicStorageModule } from '@ionic/storage-angular';
 
-import { TodoCardComponent } from './component/cards/todo-card/todo-card.component';
-
-
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -21,7 +19,7 @@ import { TodoCardComponent } from './component/cards/todo-card/todo-card.compone
     IonicModule.forRoot(),
     AppRoutingModule, 
     IonicStorageModule.forRoot(),
-    
+    SharedModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

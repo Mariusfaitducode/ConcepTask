@@ -9,8 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import * as d3 from 'd3';
 import { update } from 'firebase/database';
 import { last } from 'rxjs';
-import { GraphConceptor } from 'src/app/model/graph-conceptor';
-import { Todo } from 'src/app/model/todo';
+import { GraphConceptor } from 'src/app/models/graph-conceptor';
+import { Todo } from 'src/app/models/todo';
 
 // import 'font-awesome';
 

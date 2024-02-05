@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { CalendarComponent } from './src/calendar';
 import * as moment from 'moment';
-import { Todo } from 'src/app/model/todo';
+import { Todo } from 'src/app/models/todo';
 
 
 @Component({

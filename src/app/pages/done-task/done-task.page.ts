@@ -1,15 +1,15 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 
-import { FirebaseService } from '../../service/firebase.service';
+import { FirebaseService } from '../../services/firebase.service';
 
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
 // import { NavParams } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
-import { Todo } from '../../model/todo';
+import { Todo } from '../../models/todo';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { WelcomeTodo } from '../../model/welcome-todo';
+import { WelcomeTodo } from '../../models/welcome-todo';
 
 //import { AngularFireDatabase } from '@angular/fire/database';
 

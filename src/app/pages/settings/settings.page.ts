@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { WelcomeTodo } from 'src/app/model/welcome-todo';
+import { WelcomeTodo } from 'src/app/models/welcome-todo';
 
 @Component({
   selector: 'app-settings',
