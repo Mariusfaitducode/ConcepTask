@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Settings } from 'src/app/models/settings';
 
 @Component({
   selector: 'app-feedback',
@@ -9,18 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class FeedbackPage implements OnInit {
 
   constructor(private translate: TranslateService) {
-
-
-    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
-
-    if (settings.darkMode) {
-      document.body.setAttribute('color-theme', 'dark');
-    }
-    else{
-      document.body.setAttribute('color-theme', 'light');
-    }
-
-    this.translate.use(settings.language); 
+    
+    let settings = new Settings();
+    settings.initPage(translate);
 
    }
 

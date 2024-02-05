@@ -2,6 +2,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { Category } from 'src/app/models/category';
+import { Settings } from 'src/app/models/settings';
 import { WelcomeTodo } from 'src/app/models/welcome-todo';
 
 @Component({
@@ -12,24 +14,21 @@ import { WelcomeTodo } from 'src/app/models/welcome-todo';
 export class SettingsPage implements OnInit {
 
   constructor(private translate: TranslateService) {
-      // let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+    this.settings = new Settings();
+    this.settings.initPage(translate);
+  }
 
-      this.darkMode = this.settings.darkMode;
-      this.translate.use(this.settings.language); 
-    }
-
-  settings = JSON.parse(localStorage.getItem('settings') || '{}');
+  settings : Settings = new Settings();
   darkMode : boolean = false;
   themeColor : string = this.settings.themeColor || '#3880ff';
 
-  categories : any[] = [];
+  categories : Category[] = [];
 
-  newCategory : any = {};
+  newCategory : Category = new Category();
 
   ngOnInit() {
 
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
-    
   }
 
 
@@ -62,7 +61,7 @@ export class SettingsPage implements OnInit {
       color: this.newCategory.color,
     });
 
-    this.newCategory = {};
+    this.newCategory = new Category();
     this.saveCategory();
   }
 
@@ -142,9 +141,7 @@ export class SettingsPage implements OnInit {
 
   onLanguageChange() {
     localStorage.setItem('settings', JSON.stringify(this.settings));
-
     this.translate.use(this.settings.language); 
-
 
     let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
@@ -152,7 +149,6 @@ export class SettingsPage implements OnInit {
       if (todo.welcomeTodo === true){
 
         console.log("found welcome todo", todo)
-
         todos.splice(todos.indexOf(todo), 1);
 
         if (this.settings.language === 'en'){
@@ -163,7 +159,6 @@ export class SettingsPage implements OnInit {
         }
 
         todos.push(todo);
-
         break;
       }
     }

@@ -10,6 +10,7 @@ import * as d3 from 'd3';
 import { update } from 'firebase/database';
 import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
+import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
 
 // import 'font-awesome';
@@ -38,19 +39,10 @@ export class ConceptorPage implements OnInit {
 
   constructor(private route : ActivatedRoute, 
               private router : Router,
-              private translate : TranslateService) { 
-
-    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
-
-    if (settings.darkMode) {
-      document.body.setAttribute('color-theme', 'dark');
-    }
-    else{
-      document.body.setAttribute('color-theme', 'light');
-    }
-
-     //Use good language 
-     this.translate.use(settings.language); 
+              private translate : TranslateService) 
+  { 
+    let settings = new Settings();
+    settings.initPage(translate);
   }
 
   ngOnInit() {

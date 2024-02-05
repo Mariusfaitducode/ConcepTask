@@ -2,16 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
-import { ModalService } from 'src/app/services/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
-import { LocalNotifications } from '@capacitor/local-notifications';
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragAndDrop } from 'src/app/models/drag-and-drop';
-import { Notif } from 'src/app/models/notif';
-import { set } from 'firebase/database';
 import { TranslateService } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
+import { Settings } from 'src/app/models/settings';
 
 
 @Component({
@@ -21,7 +17,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TodoPage implements OnInit {
 
-  // @ViewChild ('.sub-toolbar') subToolbar!: HTMLElement;
+  constructor(private navCtrl: NavController, 
+    private route : ActivatedRoute, 
+    private router : Router,
+    private translate : TranslateService,
+  ){ 
+    let settings = new Settings();
+    settings.initPage(translate);
+  }
 
 
   todos: Todo[] = [];
@@ -34,13 +37,8 @@ export class TodoPage implements OnInit {
 
   subTasksList : any[] = [];
 
-  // originalIndex : number = 0;
-
   inSubTask : boolean = false;
-  // openModal: boolean = false;
-
   configMode : boolean = false;
-
   hideSubTasks : boolean = false;
 
   lastScrollPosition: number = 0;
@@ -49,29 +47,12 @@ export class TodoPage implements OnInit {
   changePositionSubMode : boolean = false;
   subMode : string = "tree";
 
-  subTaskModePosY = 0;
+  subTaskModePosY : number = 0;
   
 
   newTodoOnListTitle: string = "";
 
-  constructor(private navCtrl: NavController, 
-              private route : ActivatedRoute, 
-              private router : Router,
-              private translate : TranslateService,
-              ){ 
-
-    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
-
-    if (settings.darkMode) {
-      document.body.setAttribute('color-theme', 'dark');
-    }
-    else{
-      document.body.setAttribute('color-theme', 'light');
-    }
-
-    //Use good language 
-    this.translate.use(settings.language); 
-  }
+ 
 
   ngOnInit() {
 
@@ -88,7 +69,6 @@ export class TodoPage implements OnInit {
         this.loadTodo(this.index);
       }
       else{
-        //In a subTodo
         this.inSubTask = true;
         this.index = +params['id'];
         //Détermine main todo
@@ -100,8 +80,8 @@ export class TodoPage implements OnInit {
     });
     this.initializeSubTasksList();
 
-    console.log(this.subTasksList);
-    console.log(this.todo)
+    // console.log(this.subTasksList);
+    // console.log(this.todo)
   }
 
   ngAfterViewInit() {

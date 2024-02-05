@@ -15,41 +15,30 @@ import { Todo } from 'src/app/models/todo';
 })
 export class CalendarPage implements OnInit {
 
+  constructor(private router : Router) { }
 
   @ViewChild(CalendarComponent, { static: false }) myCalendar!: CalendarComponent;
 
   eventSource : any[] = [];
 
   todos = [];
-
   currentMonth = moment(new Date()).format('MMMM YYYY');
- 
   viewTitle: string = '';
-
   selectedDay = new Date();
 
-  constructor(private router : Router) { }
+  
 
   ngOnInit() {
 
     this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
     this.initTodoList();
-
-
-    console.log(this.eventSource)
   }
 
-
-  // todoColor(todo : Todo){
-  //   return Todo.typeColor(todo.category);
-  // }
 
   initTodoList(){
 
     let copyList : Todo[] = [...this.todos!];
-
-    // let queue = [{ list: copyList, parentId: 0 }];
 
     // Bfs algorithm
     while (copyList.length > 0) {
@@ -72,8 +61,6 @@ export class CalendarPage implements OnInit {
       }
       else if (todo.config.repeat && todo.repeat){
 
-        console.log("todo repeat")
-
         let endDate = Todo.getDate(todo.repeat.startDate!);
         endDate.setDate(endDate.getDate() );
 
@@ -81,7 +68,7 @@ export class CalendarPage implements OnInit {
           title: todo.title,
           startTime: endDate,
           endTime: endDate,
-          allDay: true, // Définissez à true si l'événement dure toute la journée
+          allDay: true,
         };
 
         this.eventSource.push(newEvent);
@@ -91,8 +78,6 @@ export class CalendarPage implements OnInit {
         copyList.push(subTodo);
       }
     }
-
-    console.log("eventSource",this.eventSource)
 
     // setTimeout(() => {
     //   this.myCalendar.loadEvents();
@@ -114,10 +99,7 @@ export class CalendarPage implements OnInit {
 
     while (copyList.length > 0) {
 
-      // console.log("todo")
-
       let todo : Todo = copyList.shift()!;
-
 
       if (todo.config.date && todo.date && this.sameDates(date, new Date(todo.date))){
         
@@ -126,11 +108,7 @@ export class CalendarPage implements OnInit {
       else if (todo.config.repeat && todo.repeat){
 
         if (Todo.isDateInRepeat(todo, date)){
-          // console.log("FIND TODO")
           eventTodos.push(todo);
-        }
-        else{
-          // console.log("NOT FIND TODO")
         }
       }
 
@@ -164,13 +142,11 @@ export class CalendarPage implements OnInit {
 
   previousMonth() {
     this.myCalendar.slidePrev();
-    //this.currentMonth = moment(this.myCalendar.currentDate).format('MMMM YYYY');
-
   }
+
 
   nextMonth() {
     this.myCalendar.slideNext();
-    //this.currentMonth = moment(this.myCalendar.currentDate).format('MMMM YYYY');
   }
 
 
@@ -180,18 +156,9 @@ export class CalendarPage implements OnInit {
   }
 
 
-  // eventsBackgroundColor(length : number){
-
-  //   if (length > 0){
-  //     return 'primary !important';
-  //   }
-  //   return 'light !important';
-  // }
-
   formatDateToCustomString(calendarDate: Date) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 
     let date = calendarDate;
 
@@ -200,13 +167,11 @@ export class CalendarPage implements OnInit {
     const month = months[date!.getMonth()];
   
     return `${day}, ${dayOfMonth} ${month}`;
-    
   }
+
 
   addTodoOnDate(date : Date){
     console.log(date) 
     this.router.navigate(['/add', date.getDate(), date.getMonth(), date.getFullYear() ]);
-
   }
-  
 }

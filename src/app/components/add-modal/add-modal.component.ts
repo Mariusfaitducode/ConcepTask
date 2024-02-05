@@ -7,6 +7,8 @@ import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { TranslateService } from '@ngx-translate/core';
+import { Category } from 'src/app/models/category';
+import { TaskModal } from 'src/app/models/task-modal';
 
 @Component({
   selector: 'app-add-modal',
@@ -17,9 +19,9 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   //@ViewChild('child') childComponentRef!: ElementRef;
 
-  @Input() modalConfig: any = {};
+  @Input() modalConfig: TaskModal = new TaskModal();
 
-  @Input() newModalConfig: any = {};
+  @Input() newModalConfig: TaskModal = new TaskModal();
 
 
   //@Input() subTodo! : Todo;
@@ -41,7 +43,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   subType: string = 'customize';
 
 
-  categories : any[] = [];
+  categories : Category[] = [];
 
   /*openModal: any = {
     open: false,
@@ -66,7 +68,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
 
-    this.subTask = this.modalConfig.task;
+    this.subTask = this.modalConfig.task!;
     this.modify = this.modalConfig.modify;
 
     //this.setConfig();
@@ -114,12 +116,12 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
 
   deleteSubTask(){
-    this.modalConfig.parentTask.list!.splice(this.modalConfig.index, 1);
+    this.modalConfig.parentTask!.list!.splice(this.modalConfig.index!, 1);
 
     //this.modalConfig.parentTask.list.filter((item: Todo) => item !== this.subTask)
 
     
-    console.log( this.modalConfig.parentTask.list )
+    console.log( this.modalConfig.parentTask!.list )
     this.modalConfig.open = false;
   }
 
@@ -130,7 +132,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     
     console.log( this.subTask )
 
-    this.modalConfig.parentTask.list.push(this.subTask);
+    this.modalConfig.parentTask!.list.push(this.subTask);
 
     this.closeSubTask();
     

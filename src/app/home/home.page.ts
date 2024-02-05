@@ -1,17 +1,9 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 
-import { FirebaseService } from '../services/firebase.service';
-
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
-
-// import { NavParams } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
 import { Todo } from '../models/todo';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { WelcomeTodo } from '../models/welcome-todo';
-
-//import { AngularFireDatabase } from '@angular/fire/database';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -32,21 +24,21 @@ export class HomePage {
   todos : Todo[] = []
   results : Todo[] = []
 
-  darkMode = false;
+  darkMode : boolean = false;
 
-  openLeftMenu = false;
+  openLeftMenu : boolean = false;
 
-  filters = {
-    today: false,
-    week: false,
-    month: false,
-    overdue: false,
-    done: false,
-    priority: false,
-    priorityChoosed: '',
-    category: false,
-    categoryChoosed: '',
-  };
+  // filters = {
+  //   today: false,
+  //   week: false,
+  //   month: false,
+  //   overdue: false,
+  //   done: false,
+  //   priority: false,
+  //   priorityChoosed: '',
+  //   category: false,
+  //   categoryChoosed: '',
+  // };
   
 
   ngOnInit() {
@@ -94,7 +86,6 @@ export class HomePage {
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
 
-    
     console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
     ev.detail.complete(this.results);
     console.log();

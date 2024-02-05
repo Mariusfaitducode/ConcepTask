@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Todo } from 'src/app/models/todo';
 
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TaskModal } from 'src/app/models/task-modal';
 
 @Component({
   selector: 'app-sub-task',
@@ -20,53 +21,20 @@ export class SubTaskComponent  implements OnInit {
   @Input() parentTask: Todo = new Todo();
   
   //Index = mainTodo in todo page / subTodo in add page
-  @Input() index: any;
+  @Input() index: number = 0;
   @Input() page: string = "";
   @Input() level: number = 0;
 
   @Input() hideSubTasks: boolean = false;
-  
 
-  // developped: boolean = false;
-
-  @Input() openModal: any = {
-    open: false,
-    task: Todo,
-    modify: false
-  };
+  @Input() openModal: TaskModal = new TaskModal();
 
   subType : string = "customize";
 
   isDragged: boolean = false;
 
-  // @ViewChild('dragElement') dragElement?: CdkDrag;
-
   ngOnInit() {
-    // Todo.setConfig(this.subTask);
   }
-
-  // drop(event: CdkDragDrop<any[]>) {
-  //   console.log("Element dropped")
-  //   console.log(event.previousContainer.id);
-  //   console.log(event.container.id);
-
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //     return;
-  //   }
-  //   else{
-  //     // event.container.data.push(event.previousContainer.data[event.previousIndex])
-  //     //event.container.data.splice(0, 0, event.previousContainer.data[event.previousIndex]);
-  //     //event.previousContainer.data.splice(event.previousIndex, 1);
-      
-  //   }
-  //   // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  // }
-
-  // drag(event: any) {
-  //   console.log("Element dragStart")
-  //   console.log(event);
-  // }
 
   startDrag(){
     console.log("Start Timer")
@@ -84,37 +52,13 @@ export class SubTaskComponent  implements OnInit {
     this.isDragged = false;
   }
 
-  // onEntered(event: any) {
-  //   console.log("Element entered")
-  //   console.log(event);
-
-  // //   const element = event.getPlaceholderElement();
-  // // if (element) {
-  // //   element.parentElement.style.backgroundColor = 'lightblue'; // Exemple de style à appliquer
-  // // }
-  // }
-
-  // clearTimer(){
-  //   console.log("Clear Timer")
-  // }
-
-  // onDragStarted(event: any) {
-  //   console.log("Element dragStart")
-  //   console.log(event);
-  // }
-
-  // onDragEnded(event: any) 
-  // {
-  //   console.log("Element dragEnd")
-  //   console.log(event);
-  // }
-
 
   backgroundColor(){
     const levelShade = 50 + (this.level * 50);
 
     return 'var(--ion-color-step-' + levelShade + ')';
   }
+
 
   marginLeft(){
 
@@ -124,14 +68,11 @@ export class SubTaskComponent  implements OnInit {
     return '8px';
   }
 
+
   developSubTaskPressed(event: Event){
     event.stopPropagation();
     this.subTask.developped = true;
-
   }
-
-
-  // Use to have no erros but should be remove on new todos
 
 
   developSubTask(event: Event){
@@ -139,8 +80,8 @@ export class SubTaskComponent  implements OnInit {
     this.subTask.developped = !this.subTask.developped;
 
     localStorage.setItem('todos', JSON.stringify(this.todos));
-
   }
+
 
   clickSubTask(){
     // [routerLink]="'/todo/' + this.index + '/' + subTodo.subId"
@@ -159,7 +100,7 @@ export class SubTaskComponent  implements OnInit {
     }
   }
 
-  modifyTaskOnList(subTask : any){
+  modifyTaskOnList(subTask : Todo){
     this.openModal.task = subTask;
     this.openModal.open = true;
     this.openModal.modify = true;

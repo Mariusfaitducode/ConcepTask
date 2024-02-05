@@ -18,6 +18,8 @@ import { Dialog } from '@capacitor/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { DragAndDrop } from 'src/app/models/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
+import { Settings } from 'src/app/models/settings';
+import { TaskModal } from 'src/app/models/task-modal';
 
 
 @Component({
@@ -26,6 +28,17 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./add.page.scss'],
 })
 export class AddPage implements OnInit {
+
+
+  constructor(private navCtrl: NavController, 
+    private route : ActivatedRoute, 
+    private platform : Platform,
+    private translate: TranslateService) 
+  {
+    let settings = new Settings();
+    settings.initPage(translate);
+  }
+
 
   todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
@@ -43,37 +56,10 @@ export class AddPage implements OnInit {
 
   showDate: boolean = false;
 
-  modalConfig: any = {
-    open: false,
-    task: Todo,
-    modify: false,
-    parentTask: Todo,
-  };
+  modalConfig: TaskModal = new TaskModal();
 
-  newModalConfig: any = {
-    open: false,
-    task: Todo,
-    modify: false,
-    parentTask: Todo,
-  };
+  newModalConfig: TaskModal = new TaskModal();
 
-  constructor(private navCtrl: NavController, 
-              private route : ActivatedRoute, 
-              private platform : Platform,
-              private translate: TranslateService) 
-  {
-    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
-
-    if (settings.darkMode) {
-      document.body.setAttribute('color-theme', 'dark');
-    }
-    else{
-      document.body.setAttribute('color-theme', 'light');
-    }
-
-    //Use good language 
-    this.translate.use(settings.language); 
-  }
 
   ngOnInit() {
 
@@ -97,7 +83,7 @@ export class AddPage implements OnInit {
           this.modalConfig.open = true
           this.modalConfig.task = Todo.findSubTodoById(this.newTodo, params['subId'])
           this.modalConfig.modify = true
-          this.modalConfig.parentTask = undefined
+          this.modalConfig.parentTask = null
         }
       }
       else if (params['day'] && params['month'] && params['year']){

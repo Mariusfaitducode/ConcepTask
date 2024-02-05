@@ -14,6 +14,7 @@ import { WelcomeTodo } from '../../models/welcome-todo';
 //import { AngularFireDatabase } from '@angular/fire/database';
 
 import { TranslateService } from '@ngx-translate/core';
+import { Settings } from 'src/app/models/settings';
 
 @Component({
   selector: 'app-home',
@@ -28,25 +29,9 @@ export class DoneTaskPage {
     private route : ActivatedRoute,
   )
   {
-
-    
-
-    let settings = JSON.parse(localStorage.getItem('settings') || '{}');
-
-    this.translate.use(settings.language); 
-
-
-    if (settings.darkMode) {
-      document.body.setAttribute('color-theme', 'dark');
-      // this.darkMode = true;
-    }
-    else{
-      console.log("LIGHT MODE SET")
-      document.body.setAttribute('color-theme', 'light');
-      // this.darkMode = false;
-    }
-
-    }
+    let settings = new Settings();
+    settings.initPage(translate);
+  }
 
   todos : Todo[] = []
   results : Todo[] = []
