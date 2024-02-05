@@ -39,7 +39,6 @@
           {{'DONE_MODIFY' | translate}}
           </ion-button >
         </ion-buttons>
-        
     
       </ion-toolbar>
     </ion-header>
@@ -54,8 +53,10 @@
       <div class="title-type-header">
   
         <ion-item class="title">
-          <ion-label position="floating" [color]="subTask.title ? 'primary' : ''">{{'TITLE' | translate}}</ion-label>
-          <ion-input type="text" [(ngModel)]="subTask.title"></ion-input>
+          <!-- <ion-label position="floating" [color]="subTask.title ? 'primary' : ''">{{'TITLE' | translate}}</ion-label> -->
+          <ion-input type="text" 
+            label="{{'TITLE' | translate}}" labelPlacement="floating"
+            [(ngModel)]="subTask.title"></ion-input>
         </ion-item>
   
         <ion-row  class="type">

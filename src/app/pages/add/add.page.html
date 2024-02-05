@@ -19,14 +19,6 @@
 
     </div>
 
-    <!-- <div>
-      <ion-title size="large">{{newTodo.title}}</ion-title>
-    </div> -->
-    <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
-    <!-- <ion-button class="save-button" slot="end" fill="clear" [disabled]="!canSaveTodo()" (click)="saveTodo()">
-      Save
-    </ion-button> -->
-
   </ion-toolbar>
 </ion-header>
 
@@ -43,8 +35,9 @@
     <div class="title-type-header item-margin">
 
       <ion-item class="title">
-        <ion-label position="floating" [color]="newTodo.title ? 'primary' : ''">{{'TITLE'| translate}}</ion-label>
-        <ion-input type="text" [(ngModel)]="newTodo.title"></ion-input>
+        <ion-input type="text" 
+          label="{{'TITLE'| translate}}" labelPlacement="floating" 
+          [(ngModel)]="newTodo.title"></ion-input>
       </ion-item>
 
       <ion-row class="type">
@@ -60,14 +53,9 @@
       </ion-row>
     </div>
 
-    <!-- <div class="item-margin"> -->
-      <app-custom-config [configArray]="this.newTodo.config" [todo]="this.newTodo"></app-custom-config>
-    <!-- </div> -->
-
+    <app-custom-config [configArray]="this.newTodo.config" [todo]="this.newTodo"></app-custom-config>
 
     <div *ngIf="this.newTodo.config.description" class="description-textarea item-margin">
-
-      <!-- <ion-label position="floating"  [color]="newTodo.description ? 'primary' : ''">Description</ion-label> -->
 
       <ion-textarea [(ngModel)]="newTodo.description" [autoGrow]="true"
       label="{{'DESCRIPTION' | translate}}" labelPlacement="floating"

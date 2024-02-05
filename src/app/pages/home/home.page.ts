@@ -3,7 +3,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
-import { Todo } from '../models/todo';
+import { Todo } from '../../models/todo';
 
 import { TranslateService } from '@ngx-translate/core';
 

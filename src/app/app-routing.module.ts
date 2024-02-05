@@ -3,70 +3,70 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: '',
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'tabs',
     pathMatch: 'full'
   },
   {
+    path: 'home',
+    redirectTo: 'tabs/home',
+  },
+  {
     path: 'add',
-    loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
+    redirectTo: 'tabs/add',
   },
   {
     path: 'add/:id',
-    loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
+    redirectTo: 'tabs/add/:id',
   },
   {
     path: 'add/:id/:subId',
-    loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
+    redirectTo: 'tabs/add/:id/:subId',
   },
   {
     path: 'add/:day/:month/:year',
-    loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
+    redirectTo: 'tabs/add/:day/:month/:year',
   },
   {
     path: 'todo/:id',
-    loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
+    redirectTo: 'tabs/todo/:id',
   },
   {
     path: 'todo/:id/:subId',
-    loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
+    redirectTo: 'tabs/todo/:id/:subId',
   },
   {
     path: 'conceptor/:id',
-    loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
+    redirectTo: 'tabs/conceptor/:id',
   },
   {
     path: 'conceptor/:id/:modalId',
-    loadChildren: () => import('./pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
+    redirectTo: 'tabs/conceptor/:id/:modalId',
   },
   {
     path: 'calendar',
-    loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
+    redirectTo: 'tabs/calendar',
   },
   {
     path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+    redirectTo: 'tabs/settings',
   },
   {
     path: 'done-task',
-    loadChildren: () => import('./pages/done-task/done-task.module').then( m => m.DoneTaskPageModule)
+    redirectTo: 'tabs/done-task',
   },
   {
     path: 'feedback',
-    loadChildren: () => import('./pages/feedback/feedback.module').then( m => m.FeedbackPageModule)
+    redirectTo: 'tabs/feedback',
   },
-
-
-
-
-
-  // { path: 'Todo/:id', },
-  // { path: 'Add',},
-  // { path: 'Edit/:id',},
+  {
+    path: 'profile',
+    redirectTo: 'tabs/profile',
+  },
 ];
 
 @NgModule({
