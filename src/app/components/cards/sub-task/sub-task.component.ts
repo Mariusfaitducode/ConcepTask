@@ -118,7 +118,7 @@ export class SubTaskComponent  implements OnInit {
 
   numberOfDoneSubTask(){
     if (this.subTask.list) {
-      return this.subTask.list.filter((subTodo : any) => subTodo.isDone).length;
+      return this.subTask.list.filter((subTodo : Todo) => subTodo.isDone).length;
     }
     return 0;
   }

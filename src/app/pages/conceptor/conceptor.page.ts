@@ -24,7 +24,7 @@ export class ConceptorPage implements OnInit {
 
   index : number = 0;
 
-  todos : any[] = [];
+  todos : Todo[] = [];
   todo! : Todo;
 
   nodes : any[] = []

@@ -11,9 +11,9 @@ export class SubTodoComponent  implements OnInit {
 
   constructor() { }
 
-  @Input() subTodo: any;
-  @Input() todo: any;
-  @Input() index: any;
+  @Input() subTodo: Todo = new Todo();
+  @Input() todo: Todo = new Todo();
+  @Input() index: number = 0;
   @Input() page: string = "";
 
   ngOnInit() {}

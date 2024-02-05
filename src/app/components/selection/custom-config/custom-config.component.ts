@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Notif } from 'src/app/models/notif';
+import { TaskConfig } from 'src/app/models/task-config';
+import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-custom-config',
@@ -10,9 +12,9 @@ import { Notif } from 'src/app/models/notif';
 export class CustomConfigComponent  implements OnInit {
 
 
-  @Input() configArray: any;
+  @Input() configArray: TaskConfig = new TaskConfig();
 
-  @Input() todo: any;
+  @Input() todo: Todo = new Todo();
 
   constructor(public toastController: ToastController) { }
 
@@ -23,7 +25,7 @@ export class CustomConfigComponent  implements OnInit {
 
     let removeNotif = false;
     
-    this.configArray[key] = !this.configArray[key];
+    this.configArray[key as keyof TaskConfig] = !this.configArray[key as keyof TaskConfig];
 
     if (key == 'date') {
       
@@ -44,7 +46,6 @@ export class CustomConfigComponent  implements OnInit {
     if (removeNotif){
       if (this.todo.reminder && this.todo.notifId){
         this.todo.reminder = false;
-        // Notif.cancelNotification(this.todo);
 
         let result = await Notif.cancelNotification(this.todo);
         if (result) this.presentToast("Notification canceled");
@@ -56,9 +57,9 @@ export class CustomConfigComponent  implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 3000, // Durée d'affichage du toast en millisecondes
-      position: 'bottom', // Position du toast (top, middle, bottom)
-      // color: 'success', // Couleur du toast (vous pouvez utiliser 'danger' pour une couleur rouge, etc.)
+      duration: 3000, 
+      position: 'bottom',
+      // color: 'success',
     });
     toast.present();
   }

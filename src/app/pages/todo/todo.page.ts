@@ -35,7 +35,7 @@ export class TodoPage implements OnInit {
   index : number = 0;
 
 
-  subTasksList : any[] = [];
+  subTasksList : {todo: Todo, level: number}[][] = [];
 
   inSubTask : boolean = false;
   configMode : boolean = false;
@@ -158,23 +158,6 @@ export class TodoPage implements OnInit {
     this.initializeSubTasksList();
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
-
-
-  // onEntered(event: any) {
-  //   console.log("Element entered")
-  //   console.log(event);
-  // }
-
-  // onDragStarted(event: any) {
-  //   console.log("Element dragStart")
-  //   console.log(event);
-  // }
-
-  // onDragEnded(event: any) 
-  // {
-  //   console.log("Element dragEnd")
-  //   console.log(event);
-  // }
 
 
   //Reset config au cas ou

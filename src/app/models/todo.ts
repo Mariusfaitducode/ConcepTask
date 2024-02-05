@@ -1,5 +1,8 @@
 import { ScheduleEvery } from "@capacitor/local-notifications";
 import { Notif } from "./notif";
+import { TaskConfig } from "./task-config";
+import { Category } from "./category";
+import { TranslateService } from "@ngx-translate/core";
 
 export class Todo {
 
@@ -19,10 +22,10 @@ export class Todo {
 
     // Propriety to choose
 
-    public config!: any;
+    public config!: TaskConfig;
     
     public title!: string;
-    public category: { name: string, color: string, id: number};
+    public category: Category;
 
     public description?: string;
 
@@ -44,7 +47,7 @@ export class Todo {
     public developped?: boolean = false;
 
 
-    constructor(title?: string, category?: any, main?: boolean) {
+    constructor(title?: string, category?: Category, main?: boolean) {
 
         //this.id = id;
         this.main = main || false;
@@ -57,13 +60,7 @@ export class Todo {
 
         this.list = [];
 
-        this.config = {
-          description: false,
-          priority: false,
-          date: false,
-          repeat: false,
-          subtasks: false,
-        };   
+        this.config = new TaskConfig(); 
     }
 
 
@@ -177,13 +174,6 @@ export class Todo {
         return '#ffffff';
       }
     }
-
-
-    // public static findOnConfig(todo: Todo, key: string): boolean {
-
-    //   const configItem = todo.config.find(item => item.key === key);
-    //   return configItem ? configItem.value : false;
-    // }
 
 
     public static getDate(newDate: Date | string, newTime?: string) {
@@ -335,7 +325,7 @@ export class Todo {
     }
 
 
-    public static transformTodoInListByDepth(rootTodo : Todo, hideSubTask : boolean = false, level : number = 0, list : any[] = []){
+    public static transformTodoInListByDepth(rootTodo : Todo, hideSubTask : boolean = false, level : number = 0, list : {todo: Todo, level: number}[] = []){
 
       if (hideSubTask && rootTodo.isDone){
         return list;
@@ -388,12 +378,12 @@ export class Todo {
     }
 
 
-    public static formatDateToCustomString(todo : Todo, translate : any = undefined) {
+    public static formatDateToCustomString(todo : Todo, translate : TranslateService | null = null) {
 
       // console.log(translate)
 
-      let daysOfWeek : any[] = []
-      let months : any[] = []
+      let daysOfWeek : string[] = []
+      let months : string[] = []
 
       const daysOfWeekEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const dayOfWeekFr = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
@@ -461,11 +451,8 @@ export class Todo {
     }
 
 
-    public static areSameTodos(todo1 : any, todo2 : any){
+    public static areSameTodos(todo1 : Todo, todo2 : Todo){
 
-      // console.log("verify todos")
-
-      // console.log(todo1, todo2)
 
       if (!todo1 || !todo2) {
         return false;
@@ -475,20 +462,14 @@ export class Todo {
       const keys2 = Object.keys(todo2);
     
       if (keys1.length !== keys2.length) {
-        // console.log("length")
-        // console.log(keys1.length, keys2.length)
         return false;
       }
     
       for (let key of keys1) {
 
         if (key == "list") {
-
-          // console.log("list")
           
           for (let i = 0; i < todo1.list.length; i++) {
-
-            // console.log(todo1.list[i], todo2.list[i])
 
             if (!Todo.areSameTodos(todo1.list[i], todo2.list[i])) {
               return false;
@@ -496,9 +477,7 @@ export class Todo {
           }
         }
 
-        else if (!this.compareObjects(todo1[key], todo2[key])) {
-          // console.log(key)
-          // console.log(todo1[key], todo2[key])
+        else if (!this.compareObjects(todo1[key as keyof Todo] as Object, todo2[key as keyof Todo] as Object)) {
           return false;
         }
       }
@@ -506,26 +485,22 @@ export class Todo {
       return true;
     }
 
-    public static compareObjects(object1 : any, object2 : any) {
+
+    public static compareObjects(object1 : Object, object2 : Object) {
 
       const keys1 = Object.keys(object1);
       const keys2 = Object.keys(object2);
       
       if (keys1.length !== keys2.length) {
-        // console.log("length")
         return false;
       }
 
       for (let key of keys1) {
-          if (object1[key] !== object2[key]) {
-            // console.log(key)
-            // console.log(object1[key], object2[key])
+          if (object1[key as keyof Object] !== object2[key as keyof Object]) {
             return false;
           }
       }
-
       return true
-
     }
 
   }

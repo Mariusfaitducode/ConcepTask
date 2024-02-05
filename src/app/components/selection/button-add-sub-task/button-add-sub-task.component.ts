@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { TaskModal } from 'src/app/models/task-modal';
 import { Todo } from 'src/app/models/todo';
 
 @Component({
@@ -9,7 +10,7 @@ import { Todo } from 'src/app/models/todo';
 export class ButtonAddSubTaskComponent  implements OnInit {
 
   @Input() parentTask!: Todo;
-  @Input() modalConfig: any = {};
+  @Input() modalConfig: TaskModal = new TaskModal();
 
   subType : string = "customize";
   newTodoOnListTitle: string = "";
@@ -19,17 +20,15 @@ export class ButtonAddSubTaskComponent  implements OnInit {
   ngOnInit() {}
 
 
+  // Add simple todo
   addTodoOnList(){
-
-    let newTodoOnList = new Todo(this.newTodoOnListTitle, 'todo');
-
+    let newTodoOnList = new Todo(this.newTodoOnListTitle);
     this.parentTask.list?.push(newTodoOnList);
-
     this.newTodoOnListTitle = '';
-    //console.log(this.newTodo);
   }
 
 
+  // Add sub task with modal
   addTaskOnList(){
     this.modalConfig.task = new Todo();
     this.modalConfig.open = true;

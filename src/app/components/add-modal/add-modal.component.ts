@@ -29,27 +29,12 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   initialSubTask : Todo = new Todo();
 
-  //@Input() level! : number;
-
-  // newSubTodo: Todo = new Todo();
-
-  //@Input() modify : boolean = false;
   modify : boolean = false;
 
-  // newTodoOnListTitle: string = "";
-
   showDate: boolean = false;
-
   subType: string = 'customize';
-
-
   categories : Category[] = [];
 
-  /*openModal: any = {
-    open: false,
-    task: new Todo(),
-    modify: false
-  };*/
 
   constructor(private modalService: ModalService, private translate : TranslateService) { }
 

@@ -1,17 +1,15 @@
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
 import { Todo } from "./todo";
 import { Dialog } from "@capacitor/dialog";
+import { TranslateService } from "@ngx-translate/core";
 
 export class DragAndDrop {
 
 
-    public static async drop(event: CdkDragDrop<any[]>, mainTodo: Todo, translate : any) {
+    public static async drop(event: CdkDragDrop<any[]>, mainTodo: Todo, translate : TranslateService) {
 
         console.log("Element dropped")
-        // console.log(event)
-    
-        // console.log(event.item.data.title)
-        // console.log(event.previousContainer.data);
+        
         console.log(event.container.id > event.previousContainer.id);
 
         let newIndex = 0;
@@ -46,7 +44,7 @@ export class DragAndDrop {
       }
 
 
-      public static async moveItem(item : any, parentTodo : any, mainTodo : any, translate : any){
+      public static async moveItem(item : Todo, parentTodo : Todo, mainTodo : Todo, translate : TranslateService){
 
         console.log("move item")
 
@@ -59,7 +57,7 @@ export class DragAndDrop {
       
           if (value) {
 
-            if (parentTodo.config.subtasks !== "true"){
+            if (parentTodo.config.subtasks !== true){
                 parentTodo.config.subtasks = true;
             }
 

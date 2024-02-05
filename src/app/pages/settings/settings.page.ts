@@ -4,6 +4,7 @@ import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/category';
 import { Settings } from 'src/app/models/settings';
+import { Todo } from 'src/app/models/todo';
 import { WelcomeTodo } from 'src/app/models/welcome-todo';
 
 @Component({
@@ -32,22 +33,22 @@ export class SettingsPage implements OnInit {
   }
 
 
-  showConfirmDelete(cat : any) {
+  showConfirmDelete(category : Category) {
     Dialog.confirm({
       title: 'Delete category',
-      message: `${this.translate.instant('DELETE MESSAGE')} ${cat.name} category ?`,
+      message: `${this.translate.instant('DELETE MESSAGE')} ${category.name} category ?`,
       okButtonTitle: 'Delete',
       cancelButtonTitle: 'Cancel',
     }).then((result) => {
       if (result.value) {
-        this.removeCategory(cat);
+        this.removeCategory(category);
       }
     });
   }
 
 
-  removeCategory(cat : any){
-    this.categories = this.categories.filter((c) => c.id !== cat.id);
+  removeCategory(category : Category){
+    this.categories = this.categories.filter((c) => c.id !== category.id);
     this.saveCategory();
   }
 
@@ -66,21 +67,21 @@ export class SettingsPage implements OnInit {
   }
 
 
-  onColorChange(event: Event, cat : any) {
+  onColorChange(event: Event, category : Category) {
     const colorInput = event.target as HTMLInputElement;
     const selectedColor = colorInput.value;
-    cat.color = selectedColor;
+    category.color = selectedColor;
 
-    this.updateColorCategory(cat);
+    this.updateColorCategory(category);
 
     this.saveCategory();
   }
 
 
-  updateColorCategory(cat : any){
+  updateColorCategory(cat : Category){
     let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    todos.forEach((todo : any) => {
+    todos.forEach((todo : Todo) => {
       if (todo.category.name == cat.name){
         todo.category.color = cat.color;
       }

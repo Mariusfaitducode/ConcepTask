@@ -20,6 +20,7 @@ import { DragAndDrop } from 'src/app/models/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskModal } from 'src/app/models/task-modal';
+import { Category } from 'src/app/models/category';
 
 
 @Component({
@@ -47,12 +48,12 @@ export class AddPage implements OnInit {
 
   subType: string = 'customize';
 
-  categories : any[] = [];
+  categories : Category[] = [];
   categoryName : string = "";
 
   initialTodo : Todo = new Todo();
 
-  subTasksList : any[] = [];
+  subTasksList : {todo: Todo, level: number}[][] = [];
 
   showDate: boolean = false;
 
@@ -247,17 +248,10 @@ export class AddPage implements OnInit {
       console.log('Confirmed:', value);
   
       if (value) {
-
-        console.log("change")
-
         this.navCtrl.back();
-        
       }
     }
     else{
-
-      console.log("no change")
-
       this.navCtrl.back();
     }
   };
@@ -319,30 +313,14 @@ export class AddPage implements OnInit {
   }
 
 
-
-
-
-
-  // findTodoById(id: number): Todo {
-  //   return this.todos.find((todo: { id: number; }) => todo.id === id)!;
-  // }
-
-
-  //List 
-
-
-
   changeCategory(){
     console.log(this.categoryName)
-    this.newTodo.category = this.categories.find((category: any) => category.name === this.categoryName)!;
+    this.newTodo.category = this.categories.find((category: Category) => category.name === this.categoryName)!;
   }
   
 
   passedDate(){
     return Todo.passedDate(this.newTodo);
   }
-
-// Notifications
-
   
  }

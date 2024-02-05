@@ -78,13 +78,6 @@ export class CalendarPage implements OnInit {
         copyList.push(subTodo);
       }
     }
-
-    // setTimeout(() => {
-    //   this.myCalendar.loadEvents();
-
-    //   console.log("loadEvents")
-
-    // }, 2000);
     
   }
 
