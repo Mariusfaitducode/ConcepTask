@@ -1,0 +1,16 @@
+
+
+.profile-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    // padding: 0px 16px;
+}
+
+.pseudo-image{
+    width: 33%;
+    height: 33%;
+    border-radius: 50%;
+}
