@@ -4,6 +4,7 @@ import { Todo } from 'src/app/models/todo';
 
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskModal } from 'src/app/models/task-modal';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 @Component({
   selector: 'app-sub-task',
@@ -124,6 +125,6 @@ export class SubTaskComponent  implements OnInit {
   }
   
   passedDate(){
-    return Todo.passedDate(this.subTask);
+    return TodoDate.passedDate(this.subTask);
   }
 }

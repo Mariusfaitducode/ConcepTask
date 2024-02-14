@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CalendarComponent } from './src/calendar';
 import * as moment from 'moment';
 import { Todo } from 'src/app/models/todo';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class CalendarPage implements OnInit {
 
       if (todo.config.date && todo.date){
 
-        let endDate = Todo.getDate(todo.date!);
+        let endDate = TodoDate.getDate(todo.date!);
         endDate.setDate(endDate.getDate() );
 
         const newEvent = {
@@ -61,7 +62,7 @@ export class CalendarPage implements OnInit {
       }
       else if (todo.config.repeat && todo.repeat){
 
-        let endDate = Todo.getDate(todo.repeat.startDate!);
+        let endDate = TodoDate.getDate(todo.repeat.startDate!);
         endDate.setDate(endDate.getDate() );
 
         const newEvent = {
@@ -100,7 +101,7 @@ export class CalendarPage implements OnInit {
       }
       else if (todo.config.repeat && todo.repeat){
 
-        if (Todo.isDateInRepeat(todo, date)){
+        if (TodoDate.isDateInRepeat(todo, date)){
           eventTodos.push(todo);
         }
       }

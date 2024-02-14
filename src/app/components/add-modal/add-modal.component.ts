@@ -9,6 +9,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/category';
 import { TaskModal } from 'src/app/models/task-modal';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 @Component({
   selector: 'app-add-modal',
@@ -158,6 +159,6 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   }
 
   passedDate(){
-    return Todo.passedDate(this.subTask);
+    return TodoDate.passedDate(this.subTask);
   }
 }

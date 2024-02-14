@@ -9,6 +9,8 @@ import { DragAndDrop } from 'src/app/models/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskService } from 'src/app/services/task.service';
+import { TodoDate } from 'src/app/utils/todo-date';
+import { TodoColor } from 'src/app/utils/todo-color';
 
 
 @Component({
@@ -262,18 +264,18 @@ export class TodoPage implements OnInit {
 
 
   passedDate(){
-    return Todo.passedDate(this.todo);
+    return TodoDate.passedDate(this.todo);
   }
 
 
   formatDateToCustomString() {
-    return Todo.formatDateToCustomString(this.todo, this.translate); 
+    return TodoDate.formatDateToCustomString(this.todo, this.translate); 
   }
 
 
   validDate(){
     if (this.todo.config.date){
-      let date = Todo.getDate(this.todo.date!, this.todo.time);
+      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
       let now = new Date();
       return date! > now;
     }
@@ -284,7 +286,7 @@ export class TodoPage implements OnInit {
   }
 
   contrastColor(){
-    let color = Todo.getCorrectTextColor(this.todo.category.color);
+    let color = TodoColor.getCorrectTextColor(this.todo.category.color);
     return color
   }
 

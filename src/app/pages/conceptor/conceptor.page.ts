@@ -12,6 +12,8 @@ import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
+import { TodoColor } from 'src/app/utils/todo-color';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 // import 'font-awesome';
 
@@ -196,7 +198,7 @@ export class ConceptorPage implements OnInit {
           if (d.todo.category.name) {
             nodeCategory!.innerHTML = d.todo.category.name;
             nodeCategory!.style.backgroundColor = d.todo.category.color;
-            nodeCategory!.style.color = Todo.getCorrectTextColor(d.todo.category.color);
+            nodeCategory!.style.color = TodoColor.getCorrectTextColor(d.todo.category.color);
           }
           else{
             nodeCategory!.classList.add('hide');
@@ -222,7 +224,7 @@ export class ConceptorPage implements OnInit {
             modalDate!.classList.remove('hide');
 
             let nodeDate = document.getElementById("node-date");
-            nodeDate!.setAttribute('value', Todo.formatDateToCustomString(d.todo)!);
+            nodeDate!.setAttribute('value', TodoDate.formatDateToCustomString(d.todo)!);
 
             // let nodeTime = document.getElementById("node-time");
             // nodeTime!.setAttribute('value',d.todo.time);
@@ -237,7 +239,7 @@ export class ConceptorPage implements OnInit {
             modalDate!.classList.remove('hide');
 
             let nodeDate = document.getElementById("node-repeat");
-            nodeDate!.setAttribute('value', Todo.formatDateToCustomString(d.todo)!);
+            nodeDate!.setAttribute('value', TodoDate.formatDateToCustomString(d.todo)!);
 
             // let nodeTime = document.getElementById("node-time");
             // nodeTime!.setAttribute('value',d.todo.time);
@@ -359,7 +361,7 @@ export class ConceptorPage implements OnInit {
               nodePriority!.classList.add('hide');
             }
 
-            if (Todo.passedDate(d.todo)) {
+            if (TodoDate.passedDate(d.todo)) {
               let nodePassedIcon = document.getElementById("node-passed-icon");
               nodePassedIcon!.classList.remove('hide');
             }
@@ -527,7 +529,7 @@ export class ConceptorPage implements OnInit {
           if (d.todo.isDone) {
             return "var(--is-done-color-node)";
           }
-          else if (d.todo.config.date && Todo.passedDate(d.todo)) {
+          else if (d.todo.config.date && TodoDate.passedDate(d.todo)) {
             return "var(--ion-color-danger)";
           }
           else {
@@ -561,10 +563,10 @@ export class ConceptorPage implements OnInit {
             emoji += '✅';
           }
           else {
-            if (d.todo.config.date && Todo.passedDate(d.todo)){
+            if (d.todo.config.date && TodoDate.passedDate(d.todo)){
               emoji+= '⏰';
             }
-            if (d.todo.config.date && !Todo.passedDate(d.todo)){
+            if (d.todo.config.date && !TodoDate.passedDate(d.todo)){
               emoji+= '📅';
             }
             if (d.todo.config.repeat && d.todo.reminder){

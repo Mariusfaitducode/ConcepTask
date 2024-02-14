@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 @Component({
   selector: 'app-sub-todo',
@@ -28,7 +29,7 @@ export class SubTodoComponent  implements OnInit {
 
 
   passedDate(){
-    return Todo.passedDate(this.subTodo);
+    return TodoDate.passedDate(this.subTodo);
   }
 
 }

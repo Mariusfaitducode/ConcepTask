@@ -34,8 +34,6 @@ export class TaskService {
       Todo.deleteTodoById(mainTodo, todoToDelete.subId!);
     }
 
-    // TODO : Cancel todo notifications
-
     this.setTodos(todos);
     return todos;
   }

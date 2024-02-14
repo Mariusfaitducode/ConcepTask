@@ -2,6 +2,8 @@ import { SelectorContext } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Todo } from 'src/app/models/todo';
+import { TodoColor } from 'src/app/utils/todo-color';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 @Component({
   selector: 'app-todo-card',
@@ -25,7 +27,7 @@ export class TodoCardComponent  implements OnInit {
   
     if (this.todo.config.date){
 
-      let date = Todo.getDate(this.todo.date!, this.todo.time);
+      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
 
       const day = daysOfWeek[date!.getDay()];
       const dayOfMonth = date!.getDate();
@@ -67,7 +69,7 @@ export class TodoCardComponent  implements OnInit {
 
   validDate(){
     if (this.todo.config.date){
-      let date = Todo.getDate(this.todo.date!, this.todo.time);
+      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
       let now = new Date();
       return date! > now;
     }
@@ -80,7 +82,7 @@ export class TodoCardComponent  implements OnInit {
 
   contrastColor(){
 
-    let color = Todo.getCorrectTextColor(this.todo.category.color);
+    let color = TodoColor.getCorrectTextColor(this.todo.category.color);
     
     return color
   

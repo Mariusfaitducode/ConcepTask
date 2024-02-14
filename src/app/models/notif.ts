@@ -2,6 +2,7 @@
 import { LocalNotifications, ScheduleEvery } from '@capacitor/local-notifications';
 import { Todo } from './todo';
 import { Router } from '@angular/router';
+import { TodoDate } from '../utils/todo-date';
 
 // import { Actions } from '@ionic/angular';
 
@@ -12,7 +13,7 @@ export class Notif {
     public static async scheduleNotification(todo : Todo, router : Router) {
         try {
           console.log("schedule notification")
-          let date = Todo.getDate(todo.date!, todo.time);
+          let date = TodoDate.getDate(todo.date!, todo.time);
           
           // Vérifier si les notifications sont disponibles
           const available = await LocalNotifications.requestPermissions();
@@ -79,7 +80,7 @@ export class Notif {
   
       public static async scheduleRecurringNotification(todo: Todo, router : Router) {
         try {
-          let date = Todo.getDate(todo.repeat!.startDate!, todo.repeat!.startTime);
+          let date = TodoDate.getDate(todo.repeat!.startDate!, todo.repeat!.startTime);
 
           console.log(date)
           

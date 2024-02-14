@@ -13,6 +13,7 @@ import { Settings } from 'src/app/models/settings';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Category } from 'src/app/models/category';
 import { TaskService } from 'src/app/services/task.service';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 
 @Component({
@@ -87,10 +88,10 @@ export class AddPage implements OnInit {
 
         this.modifyExistingTodo = true;
 
-        let index = +params['id'];
+        let mainId = +params['id'];
 
         this.todos = this.taskService.loadTodos();
-        this.newTodo = this.todos.find((todo:Todo) => todo.mainId == index)!;
+        this.newTodo = this.todos.find((todo:Todo) => todo.mainId == mainId)!;
 
         this.categoryName = this.newTodo.category.name;
 
@@ -313,7 +314,7 @@ export class AddPage implements OnInit {
     }
   }
 
-  
+
 
   changeCategory(){
     console.log(this.categoryName)
@@ -322,7 +323,7 @@ export class AddPage implements OnInit {
   
 
   passedDate(){
-    return Todo.passedDate(this.newTodo);
+    return TodoDate.passedDate(this.newTodo);
   }
   
  }

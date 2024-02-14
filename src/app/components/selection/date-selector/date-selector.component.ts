@@ -6,6 +6,7 @@ import { ToastController } from '@ionic/angular';
 import { set } from 'firebase/database';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { TodoDate } from 'src/app/utils/todo-date';
 
 @Component({
   selector: 'app-date-selector',
@@ -68,7 +69,7 @@ export class DateSelectorComponent  implements OnInit {
     console.log(this.todo.reminder);
     // this.newTodo.sayHello();
 
-    if (this.todo.reminder && Todo.passedDate(this.todo)){
+    if (this.todo.reminder && TodoDate.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
 
       setTimeout(() => {
@@ -105,7 +106,7 @@ export class DateSelectorComponent  implements OnInit {
 
   async manageRepeatNotification(){
 
-    if (this.todo.reminder && Todo.passedDate(this.todo)){
+    if (this.todo.reminder && TodoDate.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
 
       setTimeout(() => {
@@ -137,7 +138,7 @@ export class DateSelectorComponent  implements OnInit {
 
   async updateNotification(){
 
-    if ( this.todo.reminder && Todo.passedDate(this.todo)){
+    if ( this.todo.reminder && TodoDate.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
       return;
     }
@@ -158,7 +159,7 @@ export class DateSelectorComponent  implements OnInit {
 
   async updateRepeatNotification(){
 
-    if (this.todo.reminder && Todo.passedDate(this.todo)){
+    if (this.todo.reminder && TodoDate.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
       return;
     }
