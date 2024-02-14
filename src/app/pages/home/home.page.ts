@@ -8,6 +8,7 @@ import { Todo } from '../../models/todo';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskService } from 'src/app/services/task.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomePage {
     private translate: TranslateService,
     private route : ActivatedRoute,
     private taskService : TaskService,
+    private userService : UserService,
   )
   {}
 
@@ -42,6 +44,15 @@ export class HomePage {
   
 
   ngOnInit() {
+
+    // Test connexion backend
+
+    this.userService.getUser().subscribe( (data : any) =>{
+      console.log("Connexion backend")
+      console.log(data);
+    })
+
+
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
 
