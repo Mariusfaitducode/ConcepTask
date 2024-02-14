@@ -6,8 +6,6 @@ import { TranslateService } from "@ngx-translate/core";
 
 export class Todo {
 
-    // 
-
     public welcomeTodo?: boolean = false;
 
     public subId?: number;

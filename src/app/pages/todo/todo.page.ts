@@ -8,6 +8,7 @@ import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@an
 import { DragAndDrop } from 'src/app/models/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
+import { TaskService } from 'src/app/services/task.service';
 
 
 @Component({
@@ -21,18 +22,18 @@ export class TodoPage implements OnInit {
     private route : ActivatedRoute, 
     private router : Router,
     private translate : TranslateService,
-  ){ 
-    let settings = new Settings();
-    settings.initPage(translate);
-  }
+
+    private taskService : TaskService,
+  ){}
 
 
   todos: Todo[] = [];
 
   mainTodo! : Todo;
+  // mainId : number = 0;
 
   todo! : Todo;
-  index : number = 0;
+  
 
 
   subTasksList : {todo: Todo, level: number}[][] = [];
@@ -58,64 +59,47 @@ export class TodoPage implements OnInit {
 
     this.route.params.subscribe((params) => {
 
-      if (params['subId'] == undefined) {
+      let settings = new Settings();
+      settings.initPage(this.translate);
 
-        //In the main todo
+      if (params['subId'] == undefined) { // Into the main todo
 
         this.inSubTask = false;
-        this.index = +params['id'];
+        let mainId = +params['id'];
 
-        //Détermine main todo
-        this.loadTodo(this.index);
+        // this.loadTodo(this.index);
+
+        this.todos = this.taskService.loadTodos();
+        this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
+        this.todo = this.todos.find(todo => todo.mainId == mainId)!;
+
       }
-      else{
-        this.inSubTask = true;
-        this.index = +params['id'];
-        //Détermine main todo
-        this.loadTodo(this.index);
+      else{ // Into a sub todo
 
-        //Détermine sub todo
-        this.todo = Todo.findSubTodoById(this.mainTodo, +params['subId']!)!;
+        this.inSubTask = true;
+        let mainId = +params['id'];
+        let subId = +params['subId']!;
+
+        // this.loadTodo(this.mainId);
+
+        this.todos = this.taskService.loadTodos();
+        this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
+
+        this.todo = Todo.findSubTodoById(this.mainTodo, subId)!;
       }
     });
-    this.initializeSubTasksList();
 
-    // console.log(this.subTasksList);
-    // console.log(this.todo)
+    // Initialisation pour drag and drop indexs
+    this.initializeSubTasksList();
   }
+
 
   ngAfterViewInit() {
     this.actualizeWhenDeveloppedClicked();
   }
 
-  onContentScroll(event : any){
 
-    const subTaskMode = document.getElementById('sub-task-mode')!;
-    const header = document.getElementById('header')!;
-
-    // console.log(subTaskMode)
-    // console.log(event.detail.scrollTop)
-
-    let headerPosY = header.getBoundingClientRect().top;
-
-    if (subTaskMode){
-      this.subTaskModePosY = subTaskMode.getBoundingClientRect().top;
-      
-      // console.log(this.subTaskModePosY, headerPosY)
-    }
-
-    if (this.subTaskModePosY < -20) {
-      this.changePositionSubMode = true;
-      this.hideSubToolbar = true;
-    }
-    else {
-      this.changePositionSubMode = false;
-      this.hideSubToolbar = false;
-    }
-
-    this.lastScrollPosition = event.detail.scrollTop;
-  }
-
+  // DRAG AND DROP SETUP
 
   actualizeWhenDeveloppedClicked(){
     let developTask = Array.from(document.getElementsByClassName("develop-task"));
@@ -147,10 +131,8 @@ export class TodoPage implements OnInit {
         this.subTasksList.push(Todo.transformTodoInListByDepth(subTask, this.hideSubTasks));
       }
     }
-
     console.log(this.subTasksList)
   }
-
 
   async drop(event: CdkDragDrop<any[]>) {
 
@@ -159,30 +141,7 @@ export class TodoPage implements OnInit {
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 
-
-  //Reset config au cas ou
-  setConfig(){
-    console.log("set config")
-    let configArray = {
-       description: this.todo.description ? true : false ,
-       priority: this.todo.priority ? true : false,
-       date: this.todo.date ? true : false ,
-       repeat: this.todo.repeat ? true : false ,
-      // { key: 'note', value: false },
-       subtasks: this.todo.list?.length ? true : false ,
-    };
-
-    this.todo.config = configArray;
-  }
-
-
-  loadTodo(id : number){
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    console.log(this.todos)
-    this.todo = this.todos.find(todo => todo.mainId == id)!;
-    this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
-  }
-
+  // NAVIGATION
 
   goBackTodo(){
     // this.navCtrl.back();
@@ -200,7 +159,7 @@ export class TodoPage implements OnInit {
       }
       else{
         console.log("no parent")
-        this.router.navigate(['/todo', this.index]);
+        this.router.navigate(['/todo', this.mainTodo.mainId]);
       }
     }
     else{
@@ -213,15 +172,80 @@ export class TodoPage implements OnInit {
     }
   }
 
+  onContentScroll(event : any){
+
+    const subTaskMode = document.getElementById('sub-task-mode')!;
+    const header = document.getElementById('header')!;
+
+    let headerPosY = header.getBoundingClientRect().top;
+
+    if (subTaskMode){
+      this.subTaskModePosY = subTaskMode.getBoundingClientRect().top;
+      
+      // console.log(this.subTaskModePosY, headerPosY)
+    }
+
+    if (this.subTaskModePosY < -20) {
+      this.changePositionSubMode = true;
+      this.hideSubToolbar = true;
+    }
+    else {
+      this.changePositionSubMode = false;
+      this.hideSubToolbar = false;
+    }
+
+    this.lastScrollPosition = event.detail.scrollTop;
+  }
+
+
+  
+
+
+  
+
+
+  // Réinitialisation config todo en cas de besoin
+
+  // setConfig(){
+  //   console.log("set config")
+  //   let configArray = {
+  //      description: this.todo.description ? true : false ,
+  //      priority: this.todo.priority ? true : false,
+  //      date: this.todo.date ? true : false ,
+  //      repeat: this.todo.repeat ? true : false ,
+  //     // { key: 'note', value: false },
+  //      subtasks: this.todo.list?.length ? true : false ,
+  //   };
+
+  //   this.todo.config = configArray;
+  // }
+
+
+
+  // GESTION TODO LIST
+
+  // loadTodo(id : number){
+
+  //   this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+  //   console.log(this.todos)
+    
+  //   this.todo = this.todos.find(todo => todo.mainId == id)!;
+    
+  //   this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
+  // }
+
+
+  
+
 
   modifyTodo(){
 
     const params = this.route.snapshot.params;
 
     if (params['subId'] == undefined) {
-      this.router.navigate(['/add', this.index]);
+      this.router.navigate(['/add', this.mainTodo.mainId]);
     } else {
-      this.router.navigate(['/add', this.index, params['subId']]);
+      this.router.navigate(['/add', this.mainTodo.mainId, params['subId']]);
     }
   }
 
@@ -246,6 +270,8 @@ export class TodoPage implements OnInit {
     this.navCtrl.back();
   }
 
+
+
   showConfirm = async () => {
     const { value } = await Dialog.confirm({
       title: 'Confirm',
@@ -261,6 +287,8 @@ export class TodoPage implements OnInit {
   };
 
 
+  // MODIFICATION PROPRIETES TODO
+
   validateTodo(){
     this.todo.isDone = true;
     localStorage.setItem('todos', JSON.stringify(this.todos));
@@ -275,12 +303,14 @@ export class TodoPage implements OnInit {
   }
 
 
-  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+  // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
    
-    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-    ev.detail.complete(this.todo.list);
-    console.log(this.todo.list);
-  }
+  //   console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+  //   ev.detail.complete(this.todo.list);
+  //   console.log(this.todo.list);
+  // }
+
+
 
 
   addTodoOnList(){
@@ -306,7 +336,7 @@ export class TodoPage implements OnInit {
       this.subMode = "tree";
       console.log(this.subMode)
 
-      this.router.navigate(['/conceptor', this.index]);
+      this.router.navigate(['/conceptor', this.mainTodo.mainId]);
 
       segment!.forEach((seg) => {
         console.log(seg)
