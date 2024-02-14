@@ -27,31 +27,36 @@ export class TodoPage implements OnInit {
   ){}
 
 
+  // Todo objects
+
   todos: Todo[] = [];
 
   mainTodo! : Todo;
-  // mainId : number = 0;
-
   todo! : Todo;
   
-
+  // Drag and drop need
 
   subTasksList : {todo: Todo, level: number}[][] = [];
 
-  inSubTask : boolean = false;
-  configMode : boolean = false;
-  hideSubTasks : boolean = false;
+  // Visualisation
 
-  lastScrollPosition: number = 0;
+  // Toggle sub task
+  hideDoneTasks : boolean = false;
+
+
+  // Tree / Graph mode 
   hideSubToolbar: boolean = false;
 
   changePositionSubMode : boolean = false;
   subMode : string = "tree";
 
-  subTaskModePosY : number = 0;
+
+  // Scroll position
+  // lastScrollPosition: number = 0;
+  // subTaskModePosY : number = 0;
   
 
-  newTodoOnListTitle: string = "";
+  // newTodoOnListTitle: string = "";
 
  
 
@@ -63,11 +68,7 @@ export class TodoPage implements OnInit {
       settings.initPage(this.translate);
 
       if (params['subId'] == undefined) { // Into the main todo
-
-        this.inSubTask = false;
         let mainId = +params['id'];
-
-        // this.loadTodo(this.index);
 
         this.todos = this.taskService.loadTodos();
         this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
@@ -75,12 +76,8 @@ export class TodoPage implements OnInit {
 
       }
       else{ // Into a sub todo
-
-        this.inSubTask = true;
         let mainId = +params['id'];
         let subId = +params['subId']!;
-
-        // this.loadTodo(this.mainId);
 
         this.todos = this.taskService.loadTodos();
         this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
@@ -122,13 +119,11 @@ export class TodoPage implements OnInit {
 
     this.actualizeWhenDeveloppedClicked();
 
-    console.log("initialize subtask list")
-
     this.subTasksList = [];
 
     for (let subTask of this.todo.list!) {
-      if (!this.hideSubTasks || !subTask.isDone){
-        this.subTasksList.push(Todo.transformTodoInListByDepth(subTask, this.hideSubTasks));
+      if (!this.hideDoneTasks || !subTask.isDone){
+        this.subTasksList.push(Todo.transformTodoInListByDepth(subTask, this.hideDoneTasks));
       }
     }
     console.log(this.subTasksList)
@@ -141,104 +136,60 @@ export class TodoPage implements OnInit {
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 
+  // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+   
+  //   console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+  //   ev.detail.complete(this.todo.list);
+  //   console.log(this.todo.list);
+  // }
+
+
+
   // NAVIGATION
 
   goBackTodo(){
-    // this.navCtrl.back();
-    // localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.navCtrl.back();
 
-    if (this.inSubTask) {
+    // if (this.inSubTask) { // If we are in a subtask
 
-      console.log("in subtask");
+    //   console.log(this.todo.parentId);
 
-      console.log(this.todo.parentId);
+    //   if (this.todo.parentId != undefined && this.todo.parentId != 0){
+        
+    //     // Retourne au parent du subTodo
+    //     this.navCtrl.back();
+    //   }
+    //   else{
+        
+    //     // Retourne au mainTodo
+    //     this.router.navigate(['/todo', this.mainTodo.mainId]);
+    //   }
+    // }
+    // else{ // Retour à la page d'accueil
 
-      if (this.todo.parentId != undefined && this.todo.parentId != 0){
-        console.log("parent")
-        this.navCtrl.back();
-      }
-      else{
-        console.log("no parent")
-        this.router.navigate(['/todo', this.mainTodo.mainId]);
-      }
-    }
-    else{
-      if (this.todo.isDone){
-        this.router.navigate(['/done-task']);
-      }
-      else{
-        this.router.navigate(['/home']);
-      }
-    }
+    //   if (this.todo.isDone){
+    //     this.router.navigate(['/done-task']);
+    //   }
+    //   else{
+    //     this.router.navigate(['/home']);
+    //   }
+    // }
   }
 
-  onContentScroll(event : any){
+  goToConceptor(){
+    console.log("go to conceptor")
 
-    const subTaskMode = document.getElementById('sub-task-mode')!;
-    const header = document.getElementById('header')!;
+    const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
 
-    let headerPosY = header.getBoundingClientRect().top;
+      this.subMode = "tree";
+      this.router.navigate(['/conceptor', this.mainTodo.mainId]);
 
-    if (subTaskMode){
-      this.subTaskModePosY = subTaskMode.getBoundingClientRect().top;
-      
-      // console.log(this.subTaskModePosY, headerPosY)
-    }
-
-    if (this.subTaskModePosY < -20) {
-      this.changePositionSubMode = true;
-      this.hideSubToolbar = true;
-    }
-    else {
-      this.changePositionSubMode = false;
-      this.hideSubToolbar = false;
-    }
-
-    this.lastScrollPosition = event.detail.scrollTop;
+      segment!.forEach((seg) => {
+        seg!.value = "tree";
+      })
   }
 
-
-  
-
-
-  
-
-
-  // Réinitialisation config todo en cas de besoin
-
-  // setConfig(){
-  //   console.log("set config")
-  //   let configArray = {
-  //      description: this.todo.description ? true : false ,
-  //      priority: this.todo.priority ? true : false,
-  //      date: this.todo.date ? true : false ,
-  //      repeat: this.todo.repeat ? true : false ,
-  //     // { key: 'note', value: false },
-  //      subtasks: this.todo.list?.length ? true : false ,
-  //   };
-
-  //   this.todo.config = configArray;
-  // }
-
-
-
-  // GESTION TODO LIST
-
-  // loadTodo(id : number){
-
-  //   this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-  //   console.log(this.todos)
-    
-  //   this.todo = this.todos.find(todo => todo.mainId == id)!;
-    
-  //   this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
-  // }
-
-
-  
-
-
-  modifyTodo(){
+  modifyTodo(){ // redirection to add page
 
     const params = this.route.snapshot.params;
 
@@ -250,101 +201,65 @@ export class TodoPage implements OnInit {
   }
 
 
-  deleteTodo(){
-    // this.todos.splice(this.index, 1);
+  // SCROLL Tree / Graph management
 
-    console.log("delete");
+  onContentScroll(){
 
-    if (this.todo.main == true){
-      console.log("main")
-      this.todos = this.todos.filter(todo => todo.mainId != this.todo.mainId);
+    const subTaskMode = document.getElementById('sub-task-mode')!;
+    let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
+
+    if (subTaskModePosY < -20) {
+      this.changePositionSubMode = true;
+      this.hideSubToolbar = true;
     }
-    else{
-      Todo.deleteTodoById(this.mainTodo, this.todo.subId!);
-      console.log(this.mainTodo.list)
+    else {
+      this.changePositionSubMode = false;
+      this.hideSubToolbar = false;
     }
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-
-    // Notif.cancelNotification(this.todo);
-
-    this.navCtrl.back();
   }
 
 
+  // GESTION TODOS
 
-  showConfirm = async () => {
+  showConfirmDeleteTodo = async () => {
     const { value } = await Dialog.confirm({
       title: 'Confirm',
       message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
     });
-  
-    console.log('Confirmed:', value);
 
     if (value) {
-      this.deleteTodo();
-      
+      this.todos = this.taskService.deleteTodoById(this.todos, this.mainTodo, this.todo);
+      this.navCtrl.back();
     }
   };
+
 
 
   // MODIFICATION PROPRIETES TODO
 
   validateTodo(){
     this.todo.isDone = true;
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-    console.log(this.todos);
+    this.taskService.setTodos(this.todos);
   }
 
 
   unvalidateTodo(){
     this.todo.isDone = false;
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-    console.log(this.todos);
+    this.taskService.setTodos(this.todos);
   }
 
 
-  // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-   
-  //   console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-  //   ev.detail.complete(this.todo.list);
-  //   console.log(this.todo.list);
+
+  // DISPLAY INFORMATIONS
+
+  // haveProperties(){
+  //   return this.exist(this.todo.description) || this.exist(this.todo.date) || this.exist(this.todo.time) || this.exist(this.todo.repeat)
   // }
 
+  // exist(item : any){
+  //   return item != undefined && item != '';
+  // }
 
-
-
-  addTodoOnList(){
-
-    this.newTodoOnListTitle = '';
-    console.log(this.todo);
-  }
-
-  haveProperties(){
-    return this.exist(this.todo.description) || this.exist(this.todo.date) || this.exist(this.todo.time) || this.exist(this.todo.repeat)
-  }
-
-  exist(item : any){
-    return item != undefined && item != '';
-  }
-
-
-  goToConceptor(){
-    console.log("go to conceptor")
-
-    const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
-
-      this.subMode = "tree";
-      console.log(this.subMode)
-
-      this.router.navigate(['/conceptor', this.mainTodo.mainId]);
-
-      segment!.forEach((seg) => {
-        console.log(seg)
-        seg!.value = "tree";
-      })
-  
-  }
- 
 
   passedDate(){
     return Todo.passedDate(this.todo);
@@ -369,13 +284,30 @@ export class TodoPage implements OnInit {
   }
 
   contrastColor(){
-
-    // console.log(this.todo.category.color)
     let color = Todo.getCorrectTextColor(this.todo.category.color);
-    
-    // console.log(color)
     return color
   }
+
+
+  // UTILS
+
+  // Réinitialisation config todo en cas de besoin
+
+  // setConfig(){
+  //   console.log("set config")
+  //   let configArray = {
+  //      description: this.todo.description ? true : false ,
+  //      priority: this.todo.priority ? true : false,
+  //      date: this.todo.date ? true : false ,
+  //      repeat: this.todo.repeat ? true : false ,
+  //     // { key: 'note', value: false },
+  //      subtasks: this.todo.list?.length ? true : false ,
+  //   };
+
+  //   this.todo.config = configArray;
+  // }
+
+  // Export todo
 
   // async exportTodo(){
   //   console.log("export")

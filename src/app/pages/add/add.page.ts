@@ -3,16 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { NavController, Platform } from '@ionic/angular';
 
-import { ModalController } from '@ionic/angular';
-
-import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
-
-import { ItemReorderEventDetail } from '@ionic/core';
-
 import { Todo } from 'src/app/models/todo';
-
-import { ModalService } from 'src/app/services/modal.service';
-import { set } from 'firebase/database';
 
 import { Dialog } from '@capacitor/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -21,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Category } from 'src/app/models/category';
+import { TaskService } from 'src/app/services/task.service';
 
 
 @Component({
@@ -34,52 +26,75 @@ export class AddPage implements OnInit {
   constructor(private navCtrl: NavController, 
     private route : ActivatedRoute, 
     private platform : Platform,
-    private translate: TranslateService) 
-  {
-    let settings = new Settings();
-    settings.initPage(translate);
-  }
+    private translate: TranslateService,
+    private taskService : TaskService,
+  ) 
+  {}
 
 
-  todos = JSON.parse(localStorage.getItem('todos') || '[]');
+  // Todo objects
+
+  todos : Todo[] = [];
 
   newTodo!: Todo;
-  index?: number = undefined;
+  initialTodo : Todo = new Todo();
+
+  modifyExistingTodo : boolean = false;
+
+  // Drag and drop need
+  subTasksList : {todo: Todo, level: number}[][] = [];
+
+
+  // Modal
+
+  modalConfig: TaskModal = new TaskModal();
+  newModalConfig: TaskModal = new TaskModal();
+
+
+  // index?: number = undefined;
 
   subType: string = 'customize';
 
   categories : Category[] = [];
   categoryName : string = "";
 
-  initialTodo : Todo = new Todo();
-
-  subTasksList : {todo: Todo, level: number}[][] = [];
 
   showDate: boolean = false;
 
-  modalConfig: TaskModal = new TaskModal();
-
-  newModalConfig: TaskModal = new TaskModal();
+  
 
 
   ngOnInit() {
 
-    this.setupBackButtonHandler();
-
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
+
 
     // Récupère chemins et paramètres de la route active -> provenance : Todo / Home  
     this.route.params.subscribe((params) => {
 
-      // Modification d'un Todo existant
-      if (params['id']) {
+      console.log('add page changed')
 
-        this.index = +params['id'];
-        this.loadTodo(this.index);
+      // Setup android back button
+      this.setupBackButtonHandler();
+
+
+      // Initilisation des settings
+      let settings = new Settings();
+      settings.initPage(this.translate);
+
+      // MODIFICATION D'UN TODO EXISTANT
+      if (params['id']) {  
+
+        this.modifyExistingTodo = true;
+
+        let index = +params['id'];
+
+        this.todos = this.taskService.loadTodos();
+        this.newTodo = this.todos.find((todo:Todo) => todo.mainId == index)!;
 
         this.categoryName = this.newTodo.category.name;
 
-        if (params['subId']){
+        if (params['subId']){ // Modification d'un sous-todo
 
           this.modalConfig.open = true
           this.modalConfig.task = Todo.findSubTodoById(this.newTodo, params['subId'])
@@ -87,29 +102,37 @@ export class AddPage implements OnInit {
           this.modalConfig.parentTask = null
         }
       }
-      else if (params['day'] && params['month'] && params['year']){
+      // NOUVEAU TODO
 
-        console.log(params['day'], params['month'], params['year'])
+      else{
+
+        this.modifyExistingTodo = false;
 
         this.newTodo = new Todo();
-        this.newTodo.config.date = true;
-        let date = new Date(params['year'], params['month'], params['day'])
 
-        const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
-        const month = (date.getMonth()).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
-        const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
+        if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
 
-        const formattedDate = `${year}-${month}-${day}`;
 
-        this.newTodo.date = formattedDate;
-        document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
-      }
-      else{ // Nouveau todo
-        this.newTodo = new Todo();
+          console.log(params['day'], params['month'], params['year'])
+
+          // this.newTodo = new Todo();
+          this.newTodo.config.date = true;
+          let date = new Date(params['year'], params['month'], params['day'])
+
+          const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
+          const month = (date.getMonth()).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
+          const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
+
+          const formattedDate = `${year}-${month}-${day}`;
+
+          this.newTodo.date = formattedDate;
+          document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
+        }
       }
       this.setMainTodoId();
+      
+      // Initialisation pour drag and drop indexs
       this.initializeSubTasksList();
-      // Todo.setConfig(this.newTodo);
 
       this.initialTodo = JSON.parse(JSON.stringify(this.newTodo));
     });
@@ -120,6 +143,8 @@ export class AddPage implements OnInit {
     this.actualizeWhenDeveloppedClicked();
   }
 
+
+  // DRAG AND DROP SETUP
 
   actualizeWhenDeveloppedClicked(){
     let developTask = Array.from(document.getElementsByClassName("develop-task"));
@@ -151,18 +176,13 @@ export class AddPage implements OnInit {
     this.initializeSubTasksList();
   }
 
-  
-
-  loadTodo(id : number){
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    console.log(this.todos)
-    this.newTodo = this.todos.find((todo:Todo) => todo.mainId == id)!;
-    
-    // this.mainTodo = this.todos[id] 
-  }
 
 
-  //A vérifier si on en a besoin
+
+  // SET TODO -> TODO CLASS
+
+  //Remplacer par unique id avec database
+
   setMainTodoId(){
     let todoId = JSON.parse(localStorage.getItem('mainTodoId') || '0');
 
@@ -177,64 +197,42 @@ export class AddPage implements OnInit {
     localStorage.setItem('mainTodoId', JSON.stringify(todoId));
   }
 
-  // getId(){
-  //   return this.todos.length + 1;
-  // }
+  
 
-  //Config
 
-  //Reset config au cas ou
-
+  // SAVE TODO
 
   canSaveTodo(){
-
     if (this.newTodo.title == undefined || this.newTodo.title == "") {
       return false;
     }
-
     return true;
   }
 
 
   saveTodo(){
-    console.log(this.newTodo);
 
-    this.assignIds();
+    this.assignIds(); // A vérifier
 
+    if (this.modifyExistingTodo) {  // Modification d'un Todo existant
 
-    if (this.index != undefined) {
-      // this.todos[this.index] = this.newTodo;
+      this.todos = this.taskService.updateTodoById(this.todos, this.newTodo);
 
-      this.todos.forEach((todo: Todo, index: number) => {
-        if (todo.mainId === this.newTodo.mainId) {
-          // Remplacez l'élément par le nouveau todo
-
-          console.log("find id")
-
-          this.todos[index] = this.newTodo;
-        }
-      });
-
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.newTodo = new Todo();
-      //this.newSubTodo = new Todo();
-
-      console.log("navigate to todo page")
-      this.navCtrl.navigateForward('/todo/' + this.index);
+      this.navCtrl.navigateForward('/todo/' + this.newTodo.mainId);
     }
     else{
       this.todos.push(this.newTodo);
 
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.newTodo = new Todo();
-      //this.newSubTodo = new Todo();
+      this.taskService.setTodos(this.todos);
 
       this.navCtrl.navigateForward('/home');
     }
-    //this.todos.push(this.newTodo);
 
+    this.newTodo = new Todo();
   }
 
+
+  // NAVIGATION
 
   showCloseConfirm = async () => {
 
@@ -244,8 +242,6 @@ export class AddPage implements OnInit {
         title: 'Confirm',
         message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
       });
-    
-      console.log('Confirmed:', value);
   
       if (value) {
         this.navCtrl.back();
@@ -257,6 +253,7 @@ export class AddPage implements OnInit {
   };
 
 
+  // A vérifier
   private setupBackButtonHandler() {
     this.platform.backButton.subscribeWithPriority(0, async () => {
       
@@ -283,6 +280,10 @@ export class AddPage implements OnInit {
     });
   }
 
+
+
+
+  // UTILS 
 
   //Id 
 
@@ -312,6 +313,7 @@ export class AddPage implements OnInit {
     }
   }
 
+  
 
   changeCategory(){
     console.log(this.categoryName)

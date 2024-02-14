@@ -11,10 +11,10 @@
         </ion-button>
       </ion-buttons>
 
-        <h1 class="title-input">{{todo.title}}</h1>
+      <h1 class="title-input">{{todo.title}}</h1>
 
-        <div class="center-title">
-        </div>
+      <div class="center-title">
+      </div>
     </div>
 
     <div  [ngClass]="{ 'header-appear': !hideSubToolbar, 'header-disappear': hideSubToolbar }">
@@ -52,7 +52,7 @@
               <svg width="28px" height="28px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z"  stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
           </button>
     
-          <button class="header-button" (click)="showConfirm()">
+          <button class="header-button" (click)="showConfirmDeleteTodo()">
             <ion-icon name="trash-outline" ></ion-icon>
           </button>
     
@@ -86,7 +86,7 @@
 
 
 
-<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll($event)">
+<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll()">
 
 
   <!-- <ion-button (click)="exportTodo()">
@@ -148,7 +148,7 @@
           <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
 
           <div class="toggle-done-tasks">
-            <ion-toggle labelPlacement="end" [(ngModel)]="hideSubTasks" (ionChange)="initializeSubTasksList()"></ion-toggle>
+            <ion-toggle labelPlacement="end" [(ngModel)]="hideDoneTasks" (ionChange)="initializeSubTasksList()"></ion-toggle>
             <!-- <ion-label>{{'HIDE DONE TASKS' | translate}}</ion-label> -->
             <div>{{'HIDE DONE TASKS' | translate}}</div>
             
@@ -164,21 +164,15 @@
           </ion-segment-button>
         </ion-segment>
 
-        <!-- <button class="conceptor-button" (click)="goToConceptor()">
-          <svg fill="#000000" width="30px" height="30px" viewBox="-2.4 -2.4 28.80 28.80" xmlns="http://www.w3.org/2000/svg" stroke-width="0.00024000000000000003" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.144"></g><g id="SVGRepo_iconCarrier"><path d="M20,9H16a1,1,0,0,0-1,1v1H7V7H8A1,1,0,0,0,9,6V2A1,1,0,0,0,8,1H4A1,1,0,0,0,3,2V6A1,1,0,0,0,4,7H5V20a1,1,0,0,0,1,1h9v1a1,1,0,0,0,1,1h4a1,1,0,0,0,1-1V18a1,1,0,0,0-1-1H16a1,1,0,0,0-1,1v1H7V13h8v1a1,1,0,0,0,1,1h4a1,1,0,0,0,1-1V10A1,1,0,0,0,20,9ZM5,3H7V5H5ZM17,19h2v2H17Zm2-6H17V11h2Z"></path></g></svg>
-        </button>
-   -->
         <div>
           <!-- <div cdkDropList [cdkDropListData]="todo.list" (cdkDropListDropped)="drop($event)"> -->
           <div cdkDropListGroup>
             <div *ngFor="let subTodo of todo.list; let index = index" >
               <div cdkDropList [cdkDropListData]="subTasksList[index]" 
-               
-              
-              (cdkDropListDropped)="drop($event)" *ngIf="!hideSubTasks || !subTodo.isDone">
-                <!-- index : {{index}} -->
-                <app-sub-task 
-                [todos]="todos" [parentTask]="todo" [subTask]="subTodo" [index]="index" [page]="'todo'" [hideSubTasks]="hideSubTasks"></app-sub-task>
+              (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
+
+                <app-sub-task [todos]="todos" [parentTask]="todo" 
+                [subTask]="subTodo" [index]="index" [page]="'todo'" [hideSubTasks]="hideDoneTasks"></app-sub-task>
               </div>
             </div >
           </div>
