@@ -67,7 +67,7 @@
         <ion-label>Teams</ion-label>
       </ion-item>
 
-      <ion-item *ngIf="userConnected">
+      <ion-item *ngIf="userConnected" (click)="disconnect()">
         <ion-icon name="log-out-outline" slot="start"></ion-icon>
         <ion-label>Déconnexion</ion-label>
       </ion-item>

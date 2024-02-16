@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { local } from 'd3';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -13,7 +14,8 @@ export class LogInPage implements OnInit {
 
   constructor(
     private router : Router,
-    private authService : AuthService) { }
+    private authService : AuthService,
+    private userService : UserService) { }
 
   newUser : User = new User();
 
@@ -45,13 +47,23 @@ export class LogInPage implements OnInit {
 
   logIn(){
     console.log(this.newUser);
-
-    // this.userService.postUser(this.newUser).subscribe((res : any) => {
-    //   console.log(res);
-    // });
   
     this.authService.logIn(this.newUser).subscribe((res : any) => {
-      console.log(res);
+      if (res.error){
+        console.log(res.error);
+      } 
+      else {
+        console.log(res);
+
+        this.authService.setToken(res.token);
+
+        this.userService.getUser().subscribe((res : any) => {
+          console.log(res);
+
+          localStorage.setItem('user', JSON.stringify(res));
+          this.router.navigate(['tabs/profile']);
+        });
+      }
     });
   
   }

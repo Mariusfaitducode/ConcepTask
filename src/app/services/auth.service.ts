@@ -12,6 +12,10 @@ export class AuthService {
 
   url : string = 'http://localhost:3000/';
 
+
+  // TODO : afficher authentification problems
+
+
   signUp(user : User){
     // return this.http.post(this.url + 'api/users', user);
 
@@ -22,10 +26,19 @@ export class AuthService {
   }
 
   logIn(user : User){
-    
+
     return this.http.post<User>(this.url + 'api/auth/login', user).pipe(tap({
       next: res => { console.log('Response:', res); },
       error: err => { console.error('Error:', err); }
     }));
+  }
+
+
+  setToken(token : string){
+    localStorage.setItem('token', token);
+  }
+
+  getToken(){
+    return localStorage.getItem('token');
   }
 }
