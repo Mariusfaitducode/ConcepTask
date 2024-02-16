@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="goBackTodo()" class="back-button">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Créez votre compte !</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Créez votre compte !</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <div class="signup-page">
+
+    <ion-list>
+
+      <ion-item>
+        <!-- <ion-label position="floating">Prénom</ion-label> -->
+        <ion-input type="text" 
+        label="Prénom" labelPlacement="floating" aria-label="Prénom" 
+        [(ngModel)]="newUser.firstname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="floating">Nom</ion-label> -->
+        <ion-input type="text" 
+        label="Nom" labelPlacement="floating" aria-label="Nom"
+        [(ngModel)]="newUser.lastname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="floating">Email</ion-label> -->
+        <ion-input type="text" 
+        label="Email" labelPlacement="floating" aria-label="Email" 
+        [(ngModel)]="newUser.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="floating">Pseudo</ion-label> -->
+        <ion-input type="text" 
+        label="Pseudo" labelPlacement="floating" aria-label="Pseudo" 
+        [(ngModel)]="newUser.pseudo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="floating">Mot de passe</ion-label> -->
+        <ion-input type="password" 
+        label="Mot de passe" labelPlacement="floating" aria-label="Mot de passe" 
+        [(ngModel)]="newUser.password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label position="floating">Confirmation du mot de passe</ion-label> -->
+        <ion-input type="password" 
+        label="Confirmation mot de passe" labelPlacement="floating" aria-label="Confirmation mot de passe"
+        [(ngModel)]="passwordConfirmation"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+
+    <div class="padding-buttons">
+      <ion-button  expand="block" class="connexion-button"
+      [disabled]="!validForm() || !validPassword()" (click)="signUp()">Créer mon compte</ion-button>
+
+          <ion-button expand="block" fill="clear" color="secondary" (click)="goToLogInPage()">J'ai déjà un compte</ion-button>
+      
+          <ion-button expand="block" fill="clear" color="secondary" (click)="goToHomePage()">Retour à l'accueil</ion-button>
+        
+    </div>
+    
+  </div>
+
+
+</ion-content>

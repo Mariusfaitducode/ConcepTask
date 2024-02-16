@@ -10,6 +10,10 @@ export class ProfilePage implements OnInit {
 
   constructor(private router : Router) { }
 
+
+  userConnected : boolean = false;
+
+
   ngOnInit() {
   }
 
@@ -17,6 +21,13 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['/settings']);
   }
 
+  goToLogin(){
+    this.router.navigate(['tabs/profile/log-in']);
+  }
+
+  goToSignUp(){
+    this.router.navigate(['tabs/profile/sign-up']);
+  }
 
 
 
