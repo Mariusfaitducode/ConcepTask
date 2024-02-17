@@ -21,6 +21,7 @@ import { HabitTrackerComponent } from '../components/habit-tracker/habit-tracker
 
 
 
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -51,7 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LeftMenuComponent,
     ButtonAddSubTaskComponent,
     DateSelectorComponent,
-    HabitTrackerComponent
+    HabitTrackerComponent,
   ],
   exports:[
     TodoCardComponent, 
@@ -64,7 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonAddSubTaskComponent,
     DateSelectorComponent,
     TranslateModule,
-    HabitTrackerComponent
+    HabitTrackerComponent,
   ]
 })
 export class SharedModule { }
