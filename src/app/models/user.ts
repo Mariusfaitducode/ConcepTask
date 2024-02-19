@@ -12,15 +12,5 @@ export class User{
     status: string = "test";
     phone: string = "test";
 
-    adress?: {
-        street: string,
-        number: string,
-        postalCode: string,
-        city: string,
-        country: string,
-    }
-
-    basket: number[] = [];
-    orders: number[] = [];
     
 }

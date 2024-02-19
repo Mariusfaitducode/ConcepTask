@@ -1,10 +1,14 @@
 
 
+.padding-page{
+    padding: 16px;
+}
+
 .profile-content{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
     // padding: 0px 16px;
 }
@@ -13,8 +17,21 @@
     width: 33%;
     height: 33%;
     border-radius: 50%;
+    margin: 0px 16px;
 }
 
+.user-names{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.firstname{
+    font-size: 22px;
+    font-weight: bold;
+
+}
 
 
 

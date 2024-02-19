@@ -63,7 +63,16 @@
     </ion-list>
 
 
+    
+
     <div class="padding-buttons">
+
+      <div class="error-message" *ngIf="errorMessage">
+        <ion-text color="danger">
+          {{errorMessage}}
+        </ion-text>
+      </div>
+
       <ion-button  expand="block" class="connexion-button"
       [disabled]="!validForm() || !validPassword()" (click)="signUp()">Créer mon compte</ion-button>
 

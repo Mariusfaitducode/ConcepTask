@@ -75,6 +75,9 @@ export class AddPage implements OnInit {
 
       console.log('add page changed')
 
+
+      this.todos = this.taskService.loadTodos();
+
       // Setup android back button
       this.setupBackButtonHandler();
 
@@ -90,7 +93,7 @@ export class AddPage implements OnInit {
 
         let mainId = +params['id'];
 
-        this.todos = this.taskService.loadTodos();
+        
         this.newTodo = this.todos.find((todo:Todo) => todo.mainId == mainId)!;
 
         this.categoryName = this.newTodo.category.name;
@@ -213,6 +216,8 @@ export class AddPage implements OnInit {
 
   saveTodo(){
 
+    console.log(this.todos)
+
     this.assignIds(); // A vérifier
 
     if (this.modifyExistingTodo) {  // Modification d'un Todo existant
@@ -228,6 +233,8 @@ export class AddPage implements OnInit {
 
       this.navCtrl.navigateForward('/home');
     }
+
+    console.log(this.todos)
 
     this.newTodo = new Todo();
   }

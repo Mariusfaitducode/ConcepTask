@@ -45,14 +45,6 @@ export class HomePage {
 
   ngOnInit() {
 
-    // Test connexion backend
-
-    this.userService.getUser().subscribe( (data : any) =>{
-      console.log("Connexion backend")
-      console.log(data);
-    })
-
-
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
 

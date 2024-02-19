@@ -17,7 +17,7 @@ export class UserService {
     return this.http.post(this.url + 'api/users', user);
   }
 
-  getUser(){
+  getUserInDatabase(){
     
     let token = localStorage.getItem('token');
     let headers = { 'Authorization' : 'Bearer ' + token };
@@ -26,5 +26,15 @@ export class UserService {
       next: res => { console.log('Response:', res); },
       error: err => { console.error('Error:', err); }
     }));
+  }
+
+
+  setUser(token : string){
+    localStorage.setItem('user', token);
+  }
+
+  getUser(){
+    let user = JSON.parse(localStorage.getItem('user') || 'null');
+    return user;
   }
 }

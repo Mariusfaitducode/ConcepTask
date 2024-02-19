@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { SyncService } from 'src/app/services/sync.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,11 +15,14 @@ export class SignUpPage implements OnInit {
 
   constructor(
     private router : Router,
-    private authService : AuthService) { }
+    private authService : AuthService,
+    private syncService : SyncService) { }
 
   newUser : User = new User();
 
   passwordConfirmation : string = "";
+
+  errorMessage : string = "";
 
   ngOnInit() {
   }
@@ -50,25 +55,39 @@ export class SignUpPage implements OnInit {
 
   signUp(){
 
-    this.authService.signUp(this.newUser).subscribe((res : any) =>{
-
-      if (res.error){
-        console.log(res.error);
-      } 
-      else {
+    this.authService.signUp(this.newUser).subscribe(
+      {
+      next: (res : any) => {
         console.log(res);
-        this.router.navigate(['tabs/profile/log-in']);
+
+        // Synchronisation BDD res.token
+
+        let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+
+        if (todos.length == 0){ 
+          this.router.navigate(['tabs/profile/log-in']);
+        }
+        else{
+          this.syncService.setDatabaseTodos(res.token, todos).subscribe({
+
+            next: (res : any) => {
+              console.log(res);
+              console.log('Synchronisation todos réussie')
+              this.router.navigate(['tabs/profile/log-in']);
+            },
+            error: (res : HttpErrorResponse ) => {
+              console.log(res);
+            }
+          });
+        }
+
+        
+      },
+      error: (res : HttpErrorResponse ) => {
+        console.log(res);
+        this.errorMessage = res.error.message;
       }
-      
-      // next: (res : any) => {
-      //   console.log(res);
-      //   this.router.navigate(['tabs/profile/log-in']);
-      // },
-      // error: (err : any) => {
-      //   console.log(err);
-      // }
     });
   }
 
- 
 }

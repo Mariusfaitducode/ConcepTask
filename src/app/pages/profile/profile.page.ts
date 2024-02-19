@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,9 +15,11 @@ export class ProfilePage implements OnInit {
   constructor(
     private translate: TranslateService,
     private router : Router,
-    private route : ActivatedRoute,) { }
+    private route : ActivatedRoute,
+    private userService : UserService) { }
 
 
+  user : User = new User();
   userConnected : boolean = false;
 
 
@@ -27,7 +31,11 @@ export class ProfilePage implements OnInit {
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      if (localStorage.getItem('user')){
+      this.user = this.userService.getUser();
+
+      console.log(this.user)
+
+      if (this.user != null){
         this.userConnected = true;
       }
     });

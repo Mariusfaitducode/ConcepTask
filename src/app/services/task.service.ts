@@ -9,6 +9,7 @@ export class TaskService {
   constructor() { }
 
 
+  // Storage
 
   loadTodos(){
     let todos = [];
@@ -22,8 +23,9 @@ export class TaskService {
   }
 
 
-  deleteTodoById(todos : Todo[], mainTodo: Todo, todoToDelete: Todo){
+  // CRUD
 
+  deleteTodoById(todos : Todo[], mainTodo: Todo, todoToDelete: Todo){
 
     if (todoToDelete.main == true){ // Remove the main todo
 

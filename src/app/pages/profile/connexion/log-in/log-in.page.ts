@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { local } from 'd3';
@@ -19,6 +20,7 @@ export class LogInPage implements OnInit {
 
   newUser : User = new User();
 
+  errorMessage : string = "";
 
   ngOnInit() {
   }
@@ -48,24 +50,39 @@ export class LogInPage implements OnInit {
   logIn(){
     console.log(this.newUser);
   
-    this.authService.logIn(this.newUser).subscribe((res : any) => {
-      if (res.error){
-        console.log(res.error);
-      } 
-      else {
-        console.log(res);
+    // Verification info connexion -> recup token
+    this.authService.logIn(this.newUser).subscribe(
+      {
+        next: (res : any) => {
 
-        this.authService.setToken(res.token);
+          this.authService.setToken(res.token);
 
-        this.userService.getUser().subscribe((res : any) => {
-          console.log(res);
+          // Token -> recup user infos
+          this.userService.getUserInDatabase().subscribe({
 
-          localStorage.setItem('user', JSON.stringify(res));
-          this.router.navigate(['tabs/profile']);
-        });
+            next: (res : any) => {
+              console.log(res);
+              localStorage.setItem('user', JSON.stringify(res));
+              this.router.navigate(['tabs/profile']);
+            },
+            error: (err : HttpErrorResponse) => {
+              console.log(err);
+              this.errorMessage = err.error;
+            }
+          });
+        },
+        error: (err : HttpErrorResponse) => {
+          
+          if (err.status == 401){
+            this.errorMessage = "Email ou mot de passe incorrect.";
+          }
+          else{
+            this.errorMessage = err.error;
+          }
+
+        }
       }
-    });
-  
+    );
   }
 
   
