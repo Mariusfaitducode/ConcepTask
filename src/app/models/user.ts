@@ -3,7 +3,7 @@ import { Todo } from "./todo";
 
 export class User{
 
-    id: number = 0;
+    _id: number = 0;
 
     firstname: string = "";
     lastname: string = "";
@@ -12,6 +12,8 @@ export class User{
     password: string = "";
     status: string = "test";
     phone: string = "test";
+
+    avatar: string = "";
 
     todos : Todo[] = [];
     

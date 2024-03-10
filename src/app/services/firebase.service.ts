@@ -2,53 +2,70 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 
-import { getDatabase, ref, get, DataSnapshot } from 'firebase/database';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getDatabase, get, DataSnapshot } from 'firebase/database';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  private app: any; // Firebase app instance
-  private database: any; // Firebase database instance
+ 
 
   constructor() {
-    // Initialize Firebase using your configuration
-    this.app = initializeApp({
-      apiKey: "AIzaSyA6ChSIyUR6Qdh14Z5gTKZbV-daOrv7MUg",
-      authDomain: "todolist-db4bc.firebaseapp.com",
-      databaseURL: "https://todolist-db4bc-default-rtdb.firebaseio.com",
-      storageBucket: "todolist-db4bc.appspot.com",
-      messagingSenderId: "683819826637",
-      appId: "1:683819826637:web:d56bf5c5f5f2f8417f5884"
-    });
-
-    // Get a reference to the database
-    this.database = getDatabase(this.app);
   }
 
+  app = initializeApp({
+    apiKey: "AIzaSyA6ChSIyUR6Qdh14Z5gTKZbV-daOrv7MUg",
+    authDomain: "todolist-db4bc.firebaseapp.com",
+    databaseURL: "https://todolist-db4bc-default-rtdb.firebaseio.com",
+    storageBucket: "todolist-db4bc.appspot.com",
+    messagingSenderId: "683819826637",
+    appId: "1:683819826637:web:d56bf5c5f5f2f8417f5884"
+  });
   
+  storage = getStorage(this.app);
 
-  async getTasks(): Promise<any[]> {
 
-    console.log(this.app)
+  // Méthode pour téléverser une image
+  async uploadAvatarImage(user: User, file: File): Promise<string> {
 
-    console.log(this.database)
+    console.log('UPLOAD IMAGE')
 
-    const tasksRef = ref(this.database, 'todos');
-    const tasksSnapshot = await get(tasksRef);
+    const imageId = Math.random().toString(36).substring(2);
 
-    console.log(tasksSnapshot);
-
-    const tasks: any[] = [];
-    tasksSnapshot.forEach((childSnapshot: DataSnapshot) => {
-
-      console.log(childSnapshot.key);
-      console.log(childSnapshot.val());
-      tasks.push(childSnapshot.val());
-    });
-
-    return tasks;
+    const storageRef = ref(this.storage, `/users/${user._id}/images/${imageId}`);
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+      return getDownloadURL(snapshot.ref);
+    } 
+    catch (error) {
+      console.error("Erreur de téléversement : ", error);
+      throw error;
+    }
   }
+
+  // async getTasks(): Promise<any[]> {
+
+  //   console.log(this.app)
+
+  //   console.log(this.database)
+
+  //   const tasksRef = ref(this.database, 'todos');
+  //   const tasksSnapshot = await get(tasksRef);
+
+  //   console.log(tasksSnapshot);
+
+  //   const tasks: any[] = [];
+  //   tasksSnapshot.forEach((childSnapshot: DataSnapshot) => {
+
+  //     console.log(childSnapshot.key);
+  //     console.log(childSnapshot.val());
+  //     tasks.push(childSnapshot.val());
+  //   });
+
+  //   return tasks;
+  // }
   
 
   // Ajoutez ici des méthodes pour interagir avec Firebase

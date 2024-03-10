@@ -61,6 +61,9 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['tabs/profile/sign-up']);
   }
 
+  goToEditProfile(){
+    this.router.navigate(['tabs/profile/edit-profile']);
+  }
 
   disconnect(){
     localStorage.removeItem('token');

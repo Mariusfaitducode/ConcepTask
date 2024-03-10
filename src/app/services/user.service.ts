@@ -40,7 +40,7 @@ export class UserService {
 
     return this.http.put(this.url + 'api/users', user, { headers }).pipe(tap({
       next: res => { 
-        console.log('Response:', res); 
+        console.log('Update user:', res); 
         this.userSubject.next(res as User);
       },
       error: err => { console.error('Error:', err); }

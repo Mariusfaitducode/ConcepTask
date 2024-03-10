@@ -31,15 +31,30 @@
   <!-- USER CONNECTED -->
   <div  class="padding-page" *ngIf="user">
 
-    <div *ngIf="userConnected" class="profile-content">
+    <ion-card *ngIf="userConnected" class="profile-content" (click)="goToEditProfile()">
 
-      <img src="https://picsum.photos/150/150" alt="" class="pseudo-image">
+      <div class="profile-infos">
+        <img [src]="user.avatar" width="70px" height="70px" alt="" class="pseudo-image">
 
-      <div class="user-names">
-        <div class="firstname">{{user.firstname}}</div>
-        <div>{{user.pseudo}}</div>
+        <div class="user-names">
+          <div class="firstname">{{user.firstname}}</div>
+          <div>{{user.pseudo}}</div>
+        </div>
       </div>
-    </div>
+
+      
+
+      <div class="edit-profile">
+        <!-- <ion-icon size="large" name="chatbubble-outline"></ion-icon> -->
+    
+        <svg width="32" height="27"  viewBox="0 0 32 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="Arrow Right">
+          <path id="Vector" fill="var(--ion-color-medium)" d="M8.49547 27C8.22406 27 7.94634 26.9095 7.73806 26.7337C7.3215 26.3822 7.3215 25.8071 7.73806 25.4556L21.9961 13.4201L7.94635 1.56566C7.52978 1.21418 7.52978 0.639009 7.94635 0.287535C8.36291 -0.06394 9.04453 -0.06394 9.4611 0.287535L24.2682 12.781C24.6848 13.1325 24.6848 13.7077 24.2682 14.0591L9.25282 26.7337C9.04453 26.9094 8.76688 26.9999 8.49544 26.9999L8.49547 27Z"/>
+          </g>
+          </svg>
+          
+      </div>
+    </ion-card>
 
 
     <!-- Habit tracker -->

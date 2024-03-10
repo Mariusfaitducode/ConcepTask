@@ -1,0 +1,60 @@
+
+
+<ion-content [fullscreen]="true">
+  <div class="padding-page" *ngIf="user !== null">
+
+    <div class="page-title">Modifier profil</div>
+
+    <!-- <app-user-card [user]="user"></app-user-card> -->
+
+    <div class="pseudo-image">
+
+      <img [src]="user.avatar" width="100px" height="100px" alt="" >
+
+      <ion-item>
+
+
+          <input type="file" accept="image/*" (change)="fileUpload($event)" />
+        
+      </ion-item>
+      
+
+
+    </div>
+
+    <ion-list>
+      <ion-item>
+        <ion-input type="text" 
+        label="Prénom" labelPlacement="floating" aria-label="Pseudo" 
+        [(ngModel)]="user.firstname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" 
+        label="Nom" labelPlacement="floating" aria-label="Pseudo" 
+        [(ngModel)]="user.lastname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" 
+        label="Pseudo" labelPlacement="floating" aria-label="Pseudo" 
+        [(ngModel)]="user.pseudo"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" 
+        label="Email" labelPlacement="floating" aria-label="Email" 
+        [(ngModel)]="user.email"></ion-input>
+      </ion-item>
+      
+      
+    </ion-list>
+
+    
+
+
+    <ion-button [disabled]="!canModifyUser()" (click)="modifyUser()" expand="block" class="big-button">Modifier</ion-button>
+
+  </div>
+</ion-content>
+
