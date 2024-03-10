@@ -12,6 +12,8 @@ import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
+import { TaskService } from 'src/app/services/task.service';
+import { UserService } from 'src/app/services/user.service';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { TodoDate } from 'src/app/utils/todo-date';
 
@@ -41,7 +43,9 @@ export class ConceptorPage implements OnInit {
 
   constructor(private route : ActivatedRoute, 
               private router : Router,
-              private translate : TranslateService) 
+              private translate : TranslateService,
+              private taskService : TaskService,
+              private userService : UserService,) 
   { 
     let settings = new Settings();
     settings.initPage(translate);
@@ -49,13 +53,24 @@ export class ConceptorPage implements OnInit {
 
   ngOnInit() {
 
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+        
+        console.log('Todos loaded in conceptor page:', todos)
+        this.todos = todos;
+
+    });
+
     this.route.params.subscribe((params) => {
 
         //Init data
 
         this.index = +params['id'];
 
-        this.loadTodo(this.index);
+        // this.loadTodo(this.index);
+
+        this.todo = this.todos.find(todo => todo.mainId == this.index)!;
+
+
         this.initData();
 
         let graph = {nodes: this.nodes, links: this.links};
@@ -165,7 +180,9 @@ export class ConceptorPage implements OnInit {
 
           let pathAr = window.location.pathname.split('/');
 
-          if (pathAr.length > 3) {
+          // TODO : not securized depends on tabs in path
+
+          if (pathAr.length > 4) {
             pathAr.pop();
           }
 
@@ -711,10 +728,10 @@ export class ConceptorPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  loadTodo(id : number){
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    console.log(this.todos)
-    this.todo = this.todos.find(todo => todo.mainId == id)!;
-  }
+  // loadTodo(id : number){
+  //   this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+  //   console.log(this.todos)
+    
+  // }
 
 }

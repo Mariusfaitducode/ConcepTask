@@ -5,6 +5,7 @@ import { Todo } from 'src/app/models/todo';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskModal } from 'src/app/models/task-modal';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-sub-task',
@@ -13,7 +14,10 @@ import { TodoDate } from 'src/app/utils/todo-date';
 })
 export class SubTaskComponent  implements OnInit {
 
-  constructor(private router : Router) { }
+  constructor(
+    private router : Router,
+    // private taskService : TaskService
+    ) { }
 
   @Input() todos?: Todo[];
   @Input() subTask: Todo = new Todo();
@@ -80,7 +84,8 @@ export class SubTaskComponent  implements OnInit {
     event.stopPropagation();
     this.subTask.developped = !this.subTask.developped;
 
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    // localStorage.setItem('todos', JSON.stringify(this.todos));
+
   }
 
 
@@ -89,14 +94,16 @@ export class SubTaskComponent  implements OnInit {
 
     if (this.page == "todo") {
 
-      if (this.todos){
-        console.log(this.todos);
-        localStorage.setItem('todos', JSON.stringify(this.todos));
-      }
+      // if (this.todos){
+      //   console.log(this.todos);
+      //   localStorage.setItem('todos', JSON.stringify(this.todos));
+      // }
 
       this.router.navigate(['/todo', this.subTask.mainId, this.subTask.subId]);
     }
     else{
+
+      // add page
       this.modifyTaskOnList(this.subTask);
     }
   }

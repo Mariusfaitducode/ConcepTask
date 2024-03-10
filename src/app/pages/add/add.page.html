@@ -1,6 +1,6 @@
 
 
-<ion-header [translucent]="true" >
+<ion-header *ngIf="newTodo" [translucent]="true" >
   <!-- <ion-toolbar *ngIf="modalConfig.open === false" [ngClass]="{'doneHeader': newTodo.isDone === true, 'passedHeader' : passedDate()}"> -->
   <ion-toolbar *ngIf="modalConfig.open === false">
 
@@ -20,7 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content *ngIf="newTodo" [fullscreen]="true">
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!modalConfig.open">
     <ion-fab-button [disabled]="!canSaveTodo()" (click)="saveTodo()">

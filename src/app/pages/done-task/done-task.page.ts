@@ -71,20 +71,20 @@ export class DoneTaskPage {
       this.translate.use(settings.language); 
 
       // window.location.reload();
-      this.loadTodos();
+      // this.loadTodos();
       this.results = [...this.todos];
     });
 
-    this.loadTodos();
+    // this.loadTodos();
     this.results = [...this.todos];
   }
 
 
- loadTodos(){
-  this.todos = []
-   this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
-   console.log(this.todos)
- }
+//  loadTodos(){
+//   this.todos = []
+//    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+//    console.log(this.todos)
+//  }
 
 
  setTodos(){

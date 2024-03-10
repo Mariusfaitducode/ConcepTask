@@ -39,7 +39,7 @@ export class TodoPage implements OnInit {
   todos: Todo[] = [];
 
   mainTodo! : Todo;
-  todo! : Todo;
+  todo: Todo = new Todo();
   
   // Drag and drop need
 
@@ -69,9 +69,7 @@ export class TodoPage implements OnInit {
 
   ngOnInit() {
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
-      this.todos = todos;
-    });
+    
 
     this.userService.getUser().subscribe((user : User | null) => {
       this.user = user;
@@ -82,32 +80,43 @@ export class TodoPage implements OnInit {
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      if (params['subId'] == undefined) { // Into the main todo
-        let mainId = +params['id'];
+      this.taskService.getTodos().subscribe((todos: Todo[]) => {
 
-        // this.todos = this.taskService.loadTodos();
-        this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
-        this.todo = this.todos.find(todo => todo.mainId == mainId)!;
+        console.log('Todos loaded in todo page:', todos)
+        this.todos = todos;
 
-      }
-      else{ // Into a sub todo
-        let mainId = +params['id'];
-        let subId = +params['subId']!;
+        if (this.todos.length == 0) return;
 
-        // this.todos = this.taskService.loadTodos();
-        this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
+        if (params['subId'] == undefined) { // Into the main todo
+          let mainId = +params['id'];
+  
+          // this.todos = this.taskService.loadTodos();
+          this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
+          this.todo = this.mainTodo;
+        }
+        else{ // Into a sub todo
+          let mainId = +params['id'];
+          let subId = +params['subId']!;
+  
+          // this.todos = this.taskService.loadTodos();
+          this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
+  
+          this.todo = Todo.findSubTodoById(this.mainTodo, subId)!;
+        }
 
-        this.todo = Todo.findSubTodoById(this.mainTodo, subId)!;
-      }
+        // Initialisation pour drag and drop indexs
+        this.initializeSubTasksList();
+      });
+
+      
     });
 
-    // Initialisation pour drag and drop indexs
-    this.initializeSubTasksList();
+    
   }
 
 
   ngAfterViewInit() {
-    this.actualizeWhenDeveloppedClicked();
+    // this.actualizeWhenDeveloppedClicked();
   }
 
 
@@ -148,7 +157,8 @@ export class TodoPage implements OnInit {
 
     await DragAndDrop.drop(event, this.mainTodo, this.translate);
     this.initializeSubTasksList();
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    // localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.taskService.setTodos(this.todos, this.user);
   }
 
   // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {

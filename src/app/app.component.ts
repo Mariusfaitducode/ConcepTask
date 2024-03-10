@@ -62,15 +62,15 @@ export class AppComponent {
 
     // Welcome Todo
 
-    if (!settings.firstVisiteDone) {
+    // if (!settings.firstVisiteDone) {
 
-      let todos = JSON.parse(localStorage.getItem('todos') || '[]');
-      let firstTodo = WelcomeTodo.getWelcomeTodo();
-      todos.push(firstTodo);
-      localStorage.setItem('todos', JSON.stringify(todos));
+    //   let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    //   let firstTodo = WelcomeTodo.getWelcomeTodo();
+    //   todos.push(firstTodo);
+    //   localStorage.setItem('todos', JSON.stringify(todos));
 
-      settings.firstVisiteDone = true;
-    }
+    //   settings.firstVisiteDone = true;
+    // }
 
     if (!settings.language) {
       settings.language = 'en';

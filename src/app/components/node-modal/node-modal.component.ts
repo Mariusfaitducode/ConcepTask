@@ -4,6 +4,9 @@ import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { path } from 'd3';
 import { Todo } from 'src/app/models/todo';
+import { User } from 'src/app/models/user';
+import { TaskService } from 'src/app/services/task.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-node-modal',
@@ -12,15 +15,37 @@ import { Todo } from 'src/app/models/todo';
 })
 export class NodeModalComponent implements OnInit {
 
+  constructor(
+    private route : ActivatedRoute, 
+    private router : Router, 
+    private translate : TranslateService,
+    private taskService : TaskService,
+    private userService : UserService) { }
+
+
+  user : User | null = null;  
+
   todos : Todo[] = [];
+
   todo : Todo = new Todo();
+
   mainTodo : Todo = new Todo();
 
-  constructor(private route : ActivatedRoute, private router : Router, private translate : TranslateService) { }
 
   ngOnInit() {
 
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+
+      console.log('Todos loaded node modal:', todos)
+      this.todos = todos;
+    });
+
+    this.userService.getUser().subscribe((user : User | null) => {
+      console.log('User get', user)
+      this.user = user;
+    });
+
+
     // console.log(this.todos)
     // this.todo = this.todos.find(todo => todo.mainId == id)!;
     // this.mainTodo = this.todos.find(todo => todo.mainId == id)!;
@@ -44,15 +69,18 @@ export class NodeModalComponent implements OnInit {
 
     let pathAr = window.location.pathname.split('/');
 
-    let id = Number(pathAr[2]);
-    let modalId = Number(pathAr[3]);
+    let id = Number(pathAr[pathAr.length-2]);
+    let modalId = Number(pathAr[pathAr.length-1]);
 
-    // console.log(id)
-    // console.log(modalId)
+    // console.log("id",id)
+    // console.log("modalId",modalId)
 
     //Détermine main todo
     let mainTodo = this.todos.find(todo => todo.mainId == id)!;
     this.mainTodo = mainTodo;
+
+    console.log(this.todos)
+    console.log(mainTodo)
 
     console.log(modalId)
 
@@ -97,15 +125,17 @@ export class NodeModalComponent implements OnInit {
   deleteTodo(){
     console.log("delete");
 
-    if (this.todo.main == true){
-      console.log("main")
-      this.todos = this.todos.filter(todo => todo.mainId != this.todo.mainId);
-    }
-    else{
-      Todo.deleteTodoById(this.mainTodo, this.todo.subId!);
-      console.log(this.mainTodo.list)
-    }
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.todos = this.taskService.deleteTodoById(this.todos, this.mainTodo, this.todo, this.user);
+
+    // if (this.todo.main == true){
+    //   console.log("main")
+    //   this.todos = this.todos.filter(todo => todo.mainId != this.todo.mainId);
+    // }
+    // else{
+    //   Todo.deleteTodoById(this.mainTodo, this.todo.subId!);
+    //   console.log(this.mainTodo.list)
+    // }
+    // localStorage.setItem('todos', JSON.stringify(this.todos));
     
     window.location.reload();
   }
@@ -114,18 +144,24 @@ export class NodeModalComponent implements OnInit {
     this.loadTodo()
 
     this.todo.isDone = true;
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    // localStorage.setItem('todos', JSON.stringify(this.todos));
+    
+    this.taskService.setTodos(this.todos, this.user);
+
     console.log(this.todos);
-    window.location.reload();
+    // window.location.reload();
   }
 
   unvalidateTodo(){
     this.loadTodo()
 
     this.todo.isDone = false;
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    // localStorage.setItem('todos', JSON.stringify(this.todos));
+
+    this.taskService.setTodos(this.todos, this.user);
+
     console.log(this.todos);
-    window.location.reload();
+    // window.location.reload();
   }
 
   modifyTodo(){

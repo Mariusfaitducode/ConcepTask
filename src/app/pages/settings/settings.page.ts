@@ -5,7 +5,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/category';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
+import { User } from 'src/app/models/user';
 import { WelcomeTodo } from 'src/app/models/welcome-todo';
+import { TaskService } from 'src/app/services/task.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,10 +17,18 @@ import { WelcomeTodo } from 'src/app/models/welcome-todo';
 })
 export class SettingsPage implements OnInit {
 
-  constructor(private translate: TranslateService) {
+  constructor(
+    private translate: TranslateService,
+    private taskService : TaskService,
+    private userService : UserService,) 
+    {
     this.settings = new Settings();
     this.settings.initPage(translate);
   }
+
+  user : User | null = null;
+
+  todos : Todo[] = []
 
   settings : Settings = new Settings();
   darkMode : boolean = false;
@@ -28,6 +39,16 @@ export class SettingsPage implements OnInit {
   newCategory : Category = new Category();
 
   ngOnInit() {
+
+    this.userService.getUser().subscribe((user : User | null) => {
+      console.log('User get', user)
+      this.user = user;
+    });
+
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      console.log('Todos loaded in settings:', todos)
+      this.todos = todos;
+    });
 
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
   }
@@ -79,15 +100,16 @@ export class SettingsPage implements OnInit {
 
 
   updateColorCategory(cat : Category){
-    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    // let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    todos.forEach((todo : Todo) => {
+    this.todos.forEach((todo : Todo) => {
       if (todo.category.name == cat.name){
         todo.category.color = cat.color;
       }
     });
 
-    localStorage.setItem('todos', JSON.stringify(todos));
+    // localStorage.setItem('todos', JSON.stringify(todos));
+    this.taskService.setTodos(this.todos, this.user);
   }
 
 
@@ -144,26 +166,27 @@ export class SettingsPage implements OnInit {
     localStorage.setItem('settings', JSON.stringify(this.settings));
     this.translate.use(this.settings.language); 
 
-    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    // let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    for (let todo of todos){
+    for (let todo of this.todos){
       if (todo.welcomeTodo === true){
 
         console.log("found welcome todo", todo)
-        todos.splice(todos.indexOf(todo), 1);
+        this.todos.splice(this.todos.indexOf(todo), 1);
 
         if (this.settings.language === 'en'){
-          todo = WelcomeTodo.getWelcomeTodo();
+          todo = WelcomeTodo.getWelcomeTodo() as Todo;
         }
         else{
-          todo = WelcomeTodo.getWelcomeTodoFr();
+          todo = WelcomeTodo.getWelcomeTodoFr() as Todo;
         }
 
-        todos.push(todo);
+        this.todos.push(todo);
         break;
       }
     }
-    console.log("todos", todos)
-    localStorage.setItem('todos', JSON.stringify(todos));
+    console.log("todos", this.todos)
+    // localStorage.setItem('todos', JSON.stringify(todos));
+    this.taskService.setTodos(this.todos, this.user);
   }
 }

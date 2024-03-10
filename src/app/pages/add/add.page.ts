@@ -74,9 +74,7 @@ export class AddPage implements OnInit {
 
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
-      this.todos = todos;
-    });
+    
 
     this.userService.getUser().subscribe((user : User | null) => {
       this.user = user;
@@ -87,67 +85,74 @@ export class AddPage implements OnInit {
 
       console.log('add page changed');
 
-      // Setup android back button
-      this.setupBackButtonHandler();
-
-
       // Initilisation des settings
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      // MODIFICATION D'UN TODO EXISTANT
-      if (params['id']) {  
+      this.taskService.getTodos().subscribe((todos: Todo[]) => {
+        this.todos = todos;
 
-        this.modifyExistingTodo = true;
+        if (this.todos.length == 0) return;
 
-        let mainId = +params['id'];
+        // Setup android back button
+        this.setupBackButtonHandler();
 
+        // MODIFICATION D'UN TODO EXISTANT
+        if (params['id']) {  
+
+          this.modifyExistingTodo = true;
+
+          let mainId = +params['id'];
+
+          
+          this.newTodo = this.todos.find((todo:Todo) => todo.mainId == mainId)!;
+
+          this.categoryName = this.newTodo.category.name;
+
+          if (params['subId']){ // Modification d'un sous-todo
+
+            this.modalConfig.open = true
+            this.modalConfig.task = Todo.findSubTodoById(this.newTodo, params['subId'])
+            this.modalConfig.modify = true
+            this.modalConfig.parentTask = null
+          }
+        }
+        // NOUVEAU TODO
+
+        else{
+
+          this.modifyExistingTodo = false;
+
+          this.newTodo = new Todo();
+
+          if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
+
+
+            console.log(params['day'], params['month'], params['year'])
+
+            // this.newTodo = new Todo();
+            this.newTodo.config.date = true;
+            let date = new Date(params['year'], params['month'], params['day'])
+
+            const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
+            const month = (date.getMonth()).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
+            const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
+
+            const formattedDate = `${year}-${month}-${day}`;
+
+            this.newTodo.date = formattedDate;
+            document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
+          }
+        }
+        this.setMainTodoId();
         
-        this.newTodo = this.todos.find((todo:Todo) => todo.mainId == mainId)!;
+        // Initialisation pour drag and drop indexs
+        this.initializeSubTasksList();
 
-        this.categoryName = this.newTodo.category.name;
+        this.initialTodo = JSON.parse(JSON.stringify(this.newTodo));
+      });
 
-        if (params['subId']){ // Modification d'un sous-todo
-
-          this.modalConfig.open = true
-          this.modalConfig.task = Todo.findSubTodoById(this.newTodo, params['subId'])
-          this.modalConfig.modify = true
-          this.modalConfig.parentTask = null
-        }
-      }
-      // NOUVEAU TODO
-
-      else{
-
-        this.modifyExistingTodo = false;
-
-        this.newTodo = new Todo();
-
-        if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
-
-
-          console.log(params['day'], params['month'], params['year'])
-
-          // this.newTodo = new Todo();
-          this.newTodo.config.date = true;
-          let date = new Date(params['year'], params['month'], params['day'])
-
-          const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
-          const month = (date.getMonth()).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
-          const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
-
-          const formattedDate = `${year}-${month}-${day}`;
-
-          this.newTodo.date = formattedDate;
-          document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
-        }
-      }
-      this.setMainTodoId();
       
-      // Initialisation pour drag and drop indexs
-      this.initializeSubTasksList();
-
-      this.initialTodo = JSON.parse(JSON.stringify(this.newTodo));
     });
   }
 

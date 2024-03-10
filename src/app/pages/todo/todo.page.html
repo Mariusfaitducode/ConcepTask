@@ -1,6 +1,6 @@
 
 
-<ion-header [translucent]="true" id="header">
+<ion-header *ngIf="todo" [translucent]="true" id="header">
   <ion-toolbar class="toolbar-parent">
 
     <div class="toolbar-content">
@@ -86,7 +86,7 @@
 
 
 
-<ion-content [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll()">
+<ion-content *ngIf="todo" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll()">
 
 
   <!-- <ion-button (click)="exportTodo()">

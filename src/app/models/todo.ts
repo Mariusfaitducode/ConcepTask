@@ -22,7 +22,7 @@ export class Todo {
 
     public config!: TaskConfig;
     
-    public title!: string;
+    public title: string = '';
     public category: Category;
 
     public description?: string;

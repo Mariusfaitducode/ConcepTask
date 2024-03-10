@@ -7,6 +7,7 @@ import { CalendarComponent } from './src/calendar';
 import * as moment from 'moment';
 import { Todo } from 'src/app/models/todo';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { TaskService } from 'src/app/services/task.service';
 
 
 @Component({
@@ -16,13 +17,15 @@ import { TodoDate } from 'src/app/utils/todo-date';
 })
 export class CalendarPage implements OnInit {
 
-  constructor(private router : Router) { }
+  constructor(
+    private router : Router,
+    private taskService : TaskService) { }
 
   @ViewChild(CalendarComponent, { static: false }) myCalendar!: CalendarComponent;
 
   eventSource : any[] = [];
 
-  todos = [];
+  todos : Todo[] = [];
   currentMonth = moment(new Date()).format('MMMM YYYY');
   viewTitle: string = '';
   selectedDay = new Date();
@@ -31,9 +34,16 @@ export class CalendarPage implements OnInit {
 
   ngOnInit() {
 
-    this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    // this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    this.initTodoList();
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      console.log('Todos loaded in calendar page:', todos)
+      this.todos = todos;
+      this.initTodoList();
+    });
+
+
+    // this.initTodoList();
   }
 
 
