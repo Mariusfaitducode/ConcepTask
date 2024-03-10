@@ -11,7 +11,15 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { SharedModule } from './shared/shared.module';
 
+import { APP_INITIALIZER } from '@angular/core';
+import { AppInitService } from './services/app-init.service';
 
+
+export function initializeApp(appInitService: AppInitService) {
+  return (): any => { 
+    return appInitService.init();
+  }
+}
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -21,7 +29,18 @@ import { SharedModule } from './shared/shared.module';
     IonicStorageModule.forRoot(),
     SharedModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { 
+      provide: RouteReuseStrategy, 
+      useClass: IonicRouteStrategy 
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AppInitService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

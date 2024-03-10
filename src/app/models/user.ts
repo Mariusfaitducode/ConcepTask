@@ -1,3 +1,4 @@
+import { Todo } from "./todo";
 
 
 export class User{
@@ -12,5 +13,6 @@ export class User{
     status: string = "test";
     phone: string = "test";
 
+    todos : Todo[] = [];
     
 }

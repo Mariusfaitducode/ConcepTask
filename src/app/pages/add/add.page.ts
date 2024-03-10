@@ -14,6 +14,8 @@ import { TaskModal } from 'src/app/models/task-modal';
 import { Category } from 'src/app/models/category';
 import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -29,9 +31,12 @@ export class AddPage implements OnInit {
     private platform : Platform,
     private translate: TranslateService,
     private taskService : TaskService,
+    private userService : UserService,
   ) 
   {}
 
+
+  user : User | null = null;
 
   // Todo objects
 
@@ -69,14 +74,18 @@ export class AddPage implements OnInit {
 
     this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
 
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      this.todos = todos;
+    });
+
+    this.userService.getUser().subscribe((user : User | null) => {
+      this.user = user;
+    });
 
     // Récupère chemins et paramètres de la route active -> provenance : Todo / Home  
     this.route.params.subscribe((params) => {
 
-      console.log('add page changed')
-
-
-      this.todos = this.taskService.loadTodos();
+      console.log('add page changed');
 
       // Setup android back button
       this.setupBackButtonHandler();
@@ -229,7 +238,7 @@ export class AddPage implements OnInit {
     else{
       this.todos.push(this.newTodo);
 
-      this.taskService.setTodos(this.todos);
+      this.taskService.setTodos(this.todos, this.user);
 
       this.navCtrl.navigateForward('/home');
     }

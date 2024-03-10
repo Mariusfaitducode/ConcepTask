@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,8 @@ export class HomePage {
     private userService : UserService,
   )
   {}
+
+  user : User | null = null;
 
   todos : Todo[] = []
   results : Todo[] = []
@@ -45,6 +48,20 @@ export class HomePage {
 
   ngOnInit() {
 
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+
+      console.log('Todos loaded in home page:', todos)
+      this.todos = todos;
+      this.results = [...this.todos];
+    });
+
+    this.userService.getUser().subscribe((user : User | null) => {
+      console.log('User get', user)
+      this.user = user;
+    });
+
+    
+
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
 
@@ -53,8 +70,8 @@ export class HomePage {
 
       this.darkMode = settings.darkMode;
 
-      this.todos = this.taskService.loadTodos();
-      this.results = [...this.todos];
+      // this.todos = this.taskService.loadTodos();
+      
     });
   }
 
@@ -68,7 +85,7 @@ export class HomePage {
     ev.stopPropagation();
 
     this.todos = [...this.results];
-    this.taskService.setTodos(this.todos);
+    this.taskService.setTodos(this.todos, this.user);
   }
 
 

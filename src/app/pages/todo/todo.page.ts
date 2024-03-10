@@ -11,6 +11,8 @@ import { Settings } from 'src/app/models/settings';
 import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TodoColor } from 'src/app/utils/todo-color';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -26,8 +28,11 @@ export class TodoPage implements OnInit {
     private translate : TranslateService,
 
     private taskService : TaskService,
+    private userService : UserService,
   ){}
 
+
+  user : User | null = null;
 
   // Todo objects
 
@@ -64,6 +69,14 @@ export class TodoPage implements OnInit {
 
   ngOnInit() {
 
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      this.todos = todos;
+    });
+
+    this.userService.getUser().subscribe((user : User | null) => {
+      this.user = user;
+    });
+
     this.route.params.subscribe((params) => {
 
       let settings = new Settings();
@@ -72,7 +85,7 @@ export class TodoPage implements OnInit {
       if (params['subId'] == undefined) { // Into the main todo
         let mainId = +params['id'];
 
-        this.todos = this.taskService.loadTodos();
+        // this.todos = this.taskService.loadTodos();
         this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
         this.todo = this.todos.find(todo => todo.mainId == mainId)!;
 
@@ -81,7 +94,7 @@ export class TodoPage implements OnInit {
         let mainId = +params['id'];
         let subId = +params['subId']!;
 
-        this.todos = this.taskService.loadTodos();
+        // this.todos = this.taskService.loadTodos();
         this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
 
         this.todo = Todo.findSubTodoById(this.mainTodo, subId)!;
@@ -230,7 +243,7 @@ export class TodoPage implements OnInit {
     });
 
     if (value) {
-      this.todos = this.taskService.deleteTodoById(this.todos, this.mainTodo, this.todo);
+      this.todos = this.taskService.deleteTodoById(this.todos, this.mainTodo, this.todo, this.user);
       this.navCtrl.back();
     }
   };
@@ -241,7 +254,7 @@ export class TodoPage implements OnInit {
 
   validateTodo(){
     this.todo.isDone = true;
-    this.taskService.setTodos(this.todos);
+    this.taskService.setTodos(this.todos, this.user);
   }
 
 

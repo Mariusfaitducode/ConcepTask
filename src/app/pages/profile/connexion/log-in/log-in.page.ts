@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { local } from 'd3';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,7 +17,8 @@ export class LogInPage implements OnInit {
   constructor(
     private router : Router,
     private authService : AuthService,
-    private userService : UserService) { }
+    private userService : UserService,
+    private taskService : TaskService) { }
 
   newUser : User = new User();
 
@@ -57,12 +59,14 @@ export class LogInPage implements OnInit {
 
           this.authService.setToken(res.token);
 
-          // Token -> recup user infos
-          this.userService.getUserInDatabase().subscribe({
-
+          // Récupération de l'utilisateur authentifié
+          this.userService.getUserWithToken().subscribe(
+            {
             next: (res : any) => {
-              console.log(res);
-              localStorage.setItem('user', JSON.stringify(res));
+
+              // Actualisation des todos
+              this.taskService.loadTodos(res);
+
               this.router.navigate(['tabs/profile']);
             },
             error: (err : HttpErrorResponse) => {
@@ -79,7 +83,6 @@ export class LogInPage implements OnInit {
           else{
             this.errorMessage = err.error;
           }
-
         }
       }
     );

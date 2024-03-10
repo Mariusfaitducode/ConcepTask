@@ -19,7 +19,7 @@ import { Settings } from 'src/app/models/settings';
 @Component({
   selector: 'app-home',
   templateUrl: 'done-task.page.html',
-  styleUrls: ['../../home/home.page.scss'],
+  // styleUrls: ['../../home/home.page.scss'],
 })
 export class DoneTaskPage {
 

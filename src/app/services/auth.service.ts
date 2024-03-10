@@ -8,7 +8,8 @@ import { tap } from 'rxjs';
 })
 export class AuthService {
 
-  constructor(private http : HttpClient) { }
+  constructor(
+    private http : HttpClient) { }
 
   url : string = 'http://localhost:3000/';
 
@@ -45,6 +46,7 @@ export class AuthService {
   getToken(){
     return localStorage.getItem('token');
   }
+  
 
 
 

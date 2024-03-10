@@ -80,8 +80,6 @@ export class SignUpPage implements OnInit {
             }
           });
         }
-
-        
       },
       error: (res : HttpErrorResponse ) => {
         console.log(res);

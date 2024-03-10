@@ -17,7 +17,6 @@ export class FirebaseService {
       apiKey: "AIzaSyA6ChSIyUR6Qdh14Z5gTKZbV-daOrv7MUg",
       authDomain: "todolist-db4bc.firebaseapp.com",
       databaseURL: "https://todolist-db4bc-default-rtdb.firebaseio.com",
-      projectId: "todolist-db4bc",
       storageBucket: "todolist-db4bc.appspot.com",
       messagingSenderId: "683819826637",
       appId: "1:683819826637:web:d56bf5c5f5f2f8417f5884"

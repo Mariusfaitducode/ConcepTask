@@ -1,31 +1,66 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../models/todo';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/user';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+  ) { }
 
+  private tasksSubject = new BehaviorSubject<Todo[]>([]);
 
   // Storage
 
-  loadTodos(){
+
+  loadTodos(user : User | null){
     let todos = [];
-    todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    return todos;
+
+
+    if (user){
+      todos = user.todos;
+    }
+    else{
+      todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    }
+
+    return this.tasksSubject.next(todos as Todo[]);
+
   }
 
 
-  setTodos(todos : Todo[]){
-    localStorage.setItem('todos', JSON.stringify(todos));
+  setTodos(todos : Todo[], user : User | null = null){
+
+    // Si pas d'utilisateur connecté
+
+    if (user){
+      user.todos = todos;
+
+      console.log('UPDATE USER TODOS')
+      console.log(user)
+      this.userService.updateUser(user).subscribe((res) => {
+        console.log('User updated:', res);
+      });
+    }
+    else{
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
+    this.tasksSubject.next(todos);
+  }
+
+  getTodos(){
+    return this.tasksSubject.asObservable();
   }
 
 
   // CRUD
 
-  deleteTodoById(todos : Todo[], mainTodo: Todo, todoToDelete: Todo){
+  deleteTodoById(todos : Todo[], mainTodo: Todo, todoToDelete: Todo, user : User | null){
 
     if (todoToDelete.main == true){ // Remove the main todo
 
@@ -36,7 +71,7 @@ export class TaskService {
       Todo.deleteTodoById(mainTodo, todoToDelete.subId!);
     }
 
-    this.setTodos(todos);
+    this.setTodos(todos, user);
     return todos;
   }
 
