@@ -3,6 +3,7 @@ import { Todo } from "./todo";
 
 export class User{
 
+    uid: string = "";
     _id: number = 0;
 
     firstname: string = "";

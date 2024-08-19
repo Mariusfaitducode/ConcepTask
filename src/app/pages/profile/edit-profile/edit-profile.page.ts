@@ -51,23 +51,23 @@ export class EditProfilePage implements OnInit {
           
         // });
 
-        this.firebaseService.uploadAvatarImage(this.user, this.file).then(url => {
+        // this.firebaseService.uploadAvatarImage(this.user, this.file).then(url => {
 
-          this.user!.avatar = url;
+        //   this.user!.avatar = url;
 
-          console.log('user with updated avatar',this.user);
+        //   console.log('user with updated avatar',this.user);
 
-          this.userService.updateUser(this.user!).subscribe(res => {
-            // console.log(res);
-            this.router.navigate(['tabs/profile']);
-          });
-        });
+        //   this.userService.updateUser(this.user!).subscribe(res => {
+        //     // console.log(res);
+        //     this.router.navigate(['tabs/profile']);
+        //   });
+        // });
       }
       else {
-        this.userService.updateUser(this.user!).subscribe(res => {
-          // console.log(res);
-          this.router.navigate(['tabs/profile']);
-        });
+        // this.userService.updateUser(this.user!).subscribe(res => {
+        //   // console.log(res);
+        //   this.router.navigate(['tabs/profile']);
+        // });
       }
       
     }

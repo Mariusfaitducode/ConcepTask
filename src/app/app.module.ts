@@ -14,6 +14,9 @@ import { SharedModule } from './shared/shared.module';
 import { APP_INITIALIZER } from '@angular/core';
 import { AppInitService } from './services/app-init.service';
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { environment } from '../environments/environment';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): any => { 
@@ -27,7 +30,10 @@ export function initializeApp(appInitService: AppInitService) {
     IonicModule.forRoot(),
     AppRoutingModule, 
     IonicStorageModule.forRoot(),
-    SharedModule
+    SharedModule,
+    
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
   ],
   providers: [
     { 

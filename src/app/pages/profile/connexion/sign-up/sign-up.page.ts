@@ -16,6 +16,7 @@ export class SignUpPage implements OnInit {
   constructor(
     private router : Router,
     private authService : AuthService,
+    private userService : UserService,
     private syncService : SyncService) { }
 
   newUser : User = new User();
@@ -55,37 +56,39 @@ export class SignUpPage implements OnInit {
 
   signUp(){
 
-    this.authService.signUp(this.newUser).subscribe(
-      {
-      next: (res : any) => {
-        console.log(res);
+    this.userService.postUser(this.newUser);
 
-        // Synchronisation BDD res.token
+    // this.authService.signUp(this.newUser).subscribe(
+    //   {
+    //   next: (res : any) => {
+    //     console.log(res);
 
-        let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    //     // Synchronisation BDD res.token
 
-        if (todos.length == 0){ 
-          this.router.navigate(['tabs/profile/log-in']);
-        }
-        else{
-          this.syncService.setDatabaseTodos(res.token, todos).subscribe({
+    //     let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-            next: (res : any) => {
-              console.log(res);
-              console.log('Synchronisation todos réussie')
-              this.router.navigate(['tabs/profile/log-in']);
-            },
-            error: (res : HttpErrorResponse ) => {
-              console.log(res);
-            }
-          });
-        }
-      },
-      error: (res : HttpErrorResponse ) => {
-        console.log(res);
-        this.errorMessage = res.error.message;
-      }
-    });
+    //     if (todos.length == 0){ 
+    //       this.router.navigate(['tabs/profile/log-in']);
+    //     }
+    //     else{
+    //       this.syncService.setDatabaseTodos(res.token, todos).subscribe({
+
+    //         next: (res : any) => {
+    //           console.log(res);
+    //           console.log('Synchronisation todos réussie')
+    //           this.router.navigate(['tabs/profile/log-in']);
+    //         },
+    //         error: (res : HttpErrorResponse ) => {
+    //           console.log(res);
+    //         }
+    //       });
+    //     }
+    //   },
+    //   error: (res : HttpErrorResponse ) => {
+    //     console.log(res);
+    //     this.errorMessage = res.error.message;
+    //   }
+    // });
   }
 
 }

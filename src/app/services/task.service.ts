@@ -43,9 +43,9 @@ export class TaskService {
 
       console.log('UPDATE USER TODOS')
       console.log(user)
-      this.userService.updateUser(user).subscribe((res) => {
-        console.log('User updated:', res);
-      });
+      // this.userService.updateUser(user).subscribe((res) => {
+      //   console.log('User updated:', res);
+      // });
     }
     else{
       localStorage.setItem('todos', JSON.stringify(todos));

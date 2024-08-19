@@ -21,6 +21,8 @@ export class AppInitService {
     // this.productService.loadProducts().subscribe();
     // this.sellerService.loadSellers().subscribe();
 
+    console.log('START APP INIT');
+
     if (token) {
       this.userService.getUserWithToken().subscribe((res) => {
           
