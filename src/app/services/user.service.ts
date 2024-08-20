@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -15,33 +16,50 @@ export class UserService {
 
   private userSubject = new BehaviorSubject<User | null>(null);
 
+  private userRef: AngularFirestoreDocument<User> | null = null;
+
   // url : string = 'http://localhost:3000/';
 
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) {
+
+    // Récupérer l'utilisateur connecté -> AppInit
+
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        // Mettez à jour le sujet utilisateur avec les informations de Firebase
-        const userData : User = {
-          uid: user.uid,
-          _id: 0, // You might want to generate this or get it from somewhere else
-          firstname: user.displayName?.split(' ')[0] || '',
-          lastname: user.displayName?.split(' ')[1] || '',
-          pseudo: user.displayName || '',
-          email: user.email || '',
-          password: '', // For security reasons, don't store the password here
-          status: 'active', // You can set a default status
-          phone: user.phoneNumber || '',
-          avatar: user.photoURL || '',
-          todos: [] // Initialize with an empty array
-        };
-        this.userSubject.next(userData as User);
+
+        this.userRef = this.firestore.doc<User>(`users/${user.uid}`);
+        this.userRef.valueChanges().subscribe(userData => {
+          this.userSubject.next(userData as User);
+        });
       } else {
         this.userSubject.next(null);
       }
     });
   }
   
+
+  // Charger les données utilisateur après connexion ou inscription
+  async loadUserData(uid: string): Promise<User | null> {
+    this.userRef = this.firestore.doc<User>(`users/${uid}`);
+    const userDoc = await this.userRef.get().toPromise();
+    const userData = userDoc?.data();
+    if (userData) {
+      this.userSubject.next(userData);
+      return userData;
+    }
+    return null;
+  }
+
+  // Mettre à jour les données utilisateur localement
+  setUserData(userData: User): void {
+    this.userSubject.next(userData);
+  }
+
+  // Nettoyer les données utilisateur lors de la déconnexion
+  clearUserData(): void {
+    this.userSubject.next(null);
+  }
 
 
   getUserWithToken() {
@@ -57,18 +75,42 @@ export class UserService {
   //   // return this.http.post(this.url + 'api/users', user);
   // }
 
-  async postUser(user: User) {
+  // async postUser(user: User) {
 
-    const email = user.email;
-    const password = user.password;
-    const displayName = user.pseudo;
+  //   const email = user.email;
+  //   const password = user.password;
+  //   const displayName = user.pseudo;
 
-    const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
-    await userCredential.user?.updateProfile({ displayName });
-    return userCredential;
-  }
+  //   const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+  //   await userCredential.user?.updateProfile({ displayName });
+  //   return userCredential;
+  // }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // User Gestion
 
 
   updateUser(user : User){

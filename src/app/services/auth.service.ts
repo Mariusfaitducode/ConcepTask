@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
+// import { tap } from 'rxjs';
+
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,43 +13,84 @@ import { tap } from 'rxjs';
 export class AuthService {
 
   constructor(
-    private http : HttpClient) { }
+    private afAuth: AngularFireAuth, 
+    private firestore: AngularFirestore,
+    private userService: UserService
+  ) { }
 
   url : string = 'http://localhost:3000/';
+
+
+
+
+    // Méthode pour s'inscrire
+    async signUp(email: string, password: string, pseudo: string, firstname: string, lastname: string): Promise<void> {
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      const uid = userCredential.user?.uid;
+  
+      if (uid) {
+        const userData: User = {
+          uid,
+          pseudo,
+          email,
+          firstname,
+          lastname,
+          todos: []
+        };
+  
+        await this.firestore.collection('users').doc(uid).set(userData);
+        this.userService.setUserData(userData);
+      }
+    }
+  
+  
+    // Méthode pour connecter un utilisateur avec email et mot de passe
+    async login(email: string, password: string): Promise<User | null> {
+      try {
+        const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
+        const uid = userCredential.user?.uid;
+        if (uid) {
+          return await this.userService.loadUserData(uid);
+        }
+        return null;
+      } 
+      catch (error) {
+        console.error("Login failed", error);
+        return null;
+      }
+    }
+  
+    // Méthode pour déconnecter l'utilisateur
+    async logout(): Promise<void> {
+      await this.afAuth.signOut();
+      this.userService.clearUserData();
+    }
+  
 
 
   // TODO : afficher authentification problems
 
 
-  signUp(user : User){
-    // return this.http.post(this.url + 'api/users', user);
+  // signUp(user : User){
+  //   // return this.http.post(this.url + 'api/users', user);
 
-    return this.http.post<User>(this.url + 'api/auth/signup', user);
+  //   return this.http.post<User>(this.url + 'api/auth/signup', user);
     
-    // .pipe(tap({
-    //   next: res => { console.log('Response:', res); },
-    //   error: err => { console.error('Error:', err); }
-    // }));
-  }
+  //   // .pipe(tap({
+  //   //   next: res => { console.log('Response:', res); },
+  //   //   error: err => { console.error('Error:', err); }
+  //   // }));
+  // }
 
-  logIn(user : User){
+  // logIn(user : User){
 
-    return this.http.post<User>(this.url + 'api/auth/login', user);
+  //   return this.http.post<User>(this.url + 'api/auth/login', user);
     
-    // .pipe(tap({
-    //   next: res => { console.log('Response:', res); },
-    //   error: err => { console.error('Error:', err); }
-    // }));
-  }
-
-
-  setToken(token : string){
-    localStorage.setItem('token', token);
-  }
-
-  getToken(){
-    return localStorage.getItem('token');
-  }
+  //   // .pipe(tap({
+  //   //   next: res => { console.log('Response:', res); },
+  //   //   error: err => { console.error('Error:', err); }
+  //   // }));
+  // }
   
 
 

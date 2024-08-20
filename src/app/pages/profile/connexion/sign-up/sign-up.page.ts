@@ -56,7 +56,7 @@ export class SignUpPage implements OnInit {
 
   signUp(){
 
-    this.userService.postUser(this.newUser);
+    this.authService.signUp(this.newUser.email, this.newUser.password!, this.newUser.pseudo, this.newUser.firstname!, this.newUser.lastname!);
 
     // this.authService.signUp(this.newUser).subscribe(
     //   {

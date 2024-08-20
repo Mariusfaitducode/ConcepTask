@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularDelegate } from '@ionic/angular';
-import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
+// import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
 import { TranslateService } from '@ngx-translate/core';
 
 // import { d3 } from 'src/assets/d3/d3.js';
 
 import * as d3 from 'd3';
 import { update } from 'firebase/database';
-import { last } from 'rxjs';
+// import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';

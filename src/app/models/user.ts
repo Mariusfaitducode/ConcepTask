@@ -4,17 +4,17 @@ import { Todo } from "./todo";
 export class User{
 
     uid: string = "";
-    _id: number = 0;
+    _id?: number = 0;
 
-    firstname: string = "";
-    lastname: string = "";
+    firstname?: string = "";
+    lastname?: string = "";
     pseudo: string = "";
     email: string = "";
-    password: string = "";
-    status: string = "test";
-    phone: string = "test";
+    password?: string = "";
+    status?: string = "test";
+    phone?: string = "test";
 
-    avatar: string = "";
+    avatar?: string = "";
 
     todos : Todo[] = [];
     
