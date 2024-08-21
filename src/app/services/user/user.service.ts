@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { SyncService } from '../sync.service';
 
 // import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -29,7 +30,8 @@ export class UserService {
   constructor(
     private afAuth: AngularFireAuth, 
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private syncService : SyncService
   ) {
 
     // Subscribe to the authState observable to get the current user at beginning, connect or disconnect
@@ -54,6 +56,8 @@ export class UserService {
 
     this.userSubscription = this.userRef.valueChanges().subscribe(userData => {
       // console.log('UserRef subscription : userData = ', userData)
+
+      this.syncService.setUserId(userData!.uid);
       this.userSubject.next(userData as User);
     });
   }

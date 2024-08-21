@@ -23,18 +23,18 @@ export class AppInitService {
 
     console.log('START APP INIT');
 
-    if (token) {
-      this.userService.getUser().subscribe((res) => {
+    // if (token) {
+    //   this.userService.getUser().subscribe((res) => {
           
-          console.log('App init : User connected:', res);
-          this.taskService.loadTodos(res as User);
-          console.log('Todos loaded');
-        }
-      );
-    }
-    else{
-      this.taskService.loadTodos(null);
-    }
+    //       console.log('App init : User connected:', res);
+    //       // this.taskService.loadTodos(res as User);
+    //       console.log('Todos loaded');
+    //     }
+    //   );
+    // }
+    // else{
+    //   // this.taskService.loadTodos(null);
+    // }
 
   }
 }

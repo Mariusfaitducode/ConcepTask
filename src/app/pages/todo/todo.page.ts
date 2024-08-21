@@ -13,6 +13,7 @@ import { TodoDate } from 'src/app/utils/todo-date';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
+import { SyncService } from 'src/app/services/sync.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class TodoPage implements OnInit {
 
     private taskService : TaskService,
     private userService : UserService,
+    private syncService : SyncService
   ){}
 
 
@@ -81,7 +83,7 @@ export class TodoPage implements OnInit {
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      this.syncService.getTodos().subscribe((todos: Todo[]) => {
 
         console.log('Todos loaded in todo page:', todos)
         this.todos = todos;
@@ -157,10 +159,12 @@ export class TodoPage implements OnInit {
   
   async drop(event: CdkDragDrop<any[]>) {
 
-    await DragAndDrop.drop(event, this.mainTodo, this.translate);
-    this.initializeSubTasksList();
-    // localStorage.setItem('todos', JSON.stringify(this.todos));
-    this.taskService.actualizeTodos(this.todos, this.user);
+    // TODO : fix drop event
+
+    // await DragAndDrop.drop(event, this.mainTodo, this.translate);
+    // this.initializeSubTasksList();
+    // // localStorage.setItem('todos', JSON.stringify(this.todos));
+    // this.taskService.actualizeTodos(this.todos, this.user);
   }
 
   // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
@@ -255,7 +259,10 @@ export class TodoPage implements OnInit {
     });
 
     if (value) {
-      this.todos = this.taskService.deleteTodoById(this.todos, this.mainTodo, this.todo, this.user);
+
+
+      this.syncService.deleteTodoById(this.mainTodo, this.todo);
+      
       this.navCtrl.back();
     }
   };
@@ -266,13 +273,15 @@ export class TodoPage implements OnInit {
 
   validateTodo(){
     this.todo.isDone = true;
-    this.taskService.actualizeTodos(this.todos, this.user);
+    // this.taskService.actualizeTodos(this.todos, this.user);
+    this.syncService.updateTodo(this.todo);
   }
 
 
   unvalidateTodo(){
     this.todo.isDone = false;
-    this.taskService.actualizeTodos(this.todos);
+    // this.taskService.actualizeTodos(this.todos);
+    this.syncService.updateTodo(this.todo);
   }
 
 

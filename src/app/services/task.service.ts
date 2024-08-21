@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../models/todo';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user';
 import { UserService } from './user/user.service';
 import { SyncService } from './sync.service';
@@ -22,34 +22,34 @@ export class TaskService {
   private tasksSubject = new BehaviorSubject<Todo[]>([]);
 
 
-  getTodos(){
-    return this.tasksSubject.asObservable();
-  }
+  // getTodos(): Observable<Todo[]>{
+  //   return this.tasksSubject.asObservable();
+  // }
 
 
   // Actualize todos on app
-  actualizeTodos(todos : Todo[], user : User | null = null){
+  // actualizeTodos(todos : Todo[], user : User | null = null){
 
-    this.tasksSubject.next(todos);
-    this.syncService.synchronizeTodos(todos, user);
-  }
+  //   this.tasksSubject.next(todos);
+  //   // this.syncService.synchronizeTodos(todos, user);
+  // }
 
 
 
 
   // Load todos from account or local storage
-  loadTodos(user : User | null){
-    let todos = [];
+  // loadTodos(user : User | null){
+  //   let todos = [];
 
-    if (user){
-      todos = user.todos;
-    }
-    else{
-      todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    }
+  //   if (user){
+  //     todos = user.todos;
+  //   }
+  //   else{
+  //     todos = JSON.parse(localStorage.getItem('todos') || '[]');
+  //   }
 
-    return this.tasksSubject.next(todos as Todo[]);
-  }
+  //   return this.tasksSubject.next(todos as Todo[]);
+  // }
 
 
  
@@ -57,32 +57,19 @@ export class TaskService {
 
 
 
-  deleteTodoById(todos : Todo[], mainTodo: Todo, todoToDelete: Todo, user : User | null){
-
-    if (todoToDelete.main == true){ // Remove the main todo
-
-      todos = todos.filter((todo : Todo) => todo.mainId != todoToDelete.mainId);
-    }
-    else{ // Remove the sub todo from the main todo
-
-      Todo.deleteTodoById(mainTodo, todoToDelete.subId!);
-    }
-
-    this.syncService.synchronizeTodos(todos, user);
-    return todos;
-  }
+  
 
 
   // Update a todo (not a subtask)
-  updateTodoById(todos : Todo[], mainTodoToUpdate: Todo){
+  // updateTodoById(todos : Todo[], mainTodoToUpdate: Todo){
       
-    todos.forEach((todo: Todo, index: number) => {
-      if (todo.mainId === mainTodoToUpdate.mainId) {
-        todos[index] = mainTodoToUpdate;
-      }
-    });
+  //   todos.forEach((todo: Todo, index: number) => {
+  //     if (todo.mainId === mainTodoToUpdate.mainId) {
+  //       todos[index] = mainTodoToUpdate;
+  //     }
+  //   });
 
-    this.syncService.synchronizeTodos(todos);
-    return todos;
-  }
+  //   // this.syncService.synchronizeTodos(todos); 
+  //   return todos;
+  // }
 }

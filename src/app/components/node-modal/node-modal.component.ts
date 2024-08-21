@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { path } from 'd3';
 import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
+import { SyncService } from 'src/app/services/sync.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -20,7 +21,9 @@ export class NodeModalComponent implements OnInit {
     private router : Router, 
     private translate : TranslateService,
     private taskService : TaskService,
-    private userService : UserService) { }
+    private userService : UserService,
+    private syncService : SyncService
+  ) { }
 
 
   user : User | null = null;  
@@ -34,7 +37,7 @@ export class NodeModalComponent implements OnInit {
 
   ngOnInit() {
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+    this.syncService.getTodos().subscribe((todos: Todo[]) => {
 
       console.log('Todos loaded node modal:', todos)
       this.todos = todos;
@@ -125,7 +128,7 @@ export class NodeModalComponent implements OnInit {
   deleteTodo(){
     console.log("delete");
 
-    this.todos = this.taskService.deleteTodoById(this.todos, this.mainTodo, this.todo, this.user);
+    this.syncService.deleteTodoById(this.mainTodo, this.todo);
 
     // if (this.todo.main == true){
     //   console.log("main")
@@ -146,7 +149,11 @@ export class NodeModalComponent implements OnInit {
     this.todo.isDone = true;
     // localStorage.setItem('todos', JSON.stringify(this.todos));
     
-    this.taskService.actualizeTodos(this.todos, this.user);
+    // this.taskService.actualizeTodos(this.todos, this.user);
+
+    this.syncService.updateTodo(this.todo);
+
+
 
     console.log(this.todos);
     // window.location.reload();
@@ -158,7 +165,9 @@ export class NodeModalComponent implements OnInit {
     this.todo.isDone = false;
     // localStorage.setItem('todos', JSON.stringify(this.todos));
 
-    this.taskService.actualizeTodos(this.todos, this.user);
+    // this.taskService.actualizeTodos(this.todos, this.user);
+
+    this.syncService.updateTodo(this.todo);
 
     console.log(this.todos);
     // window.location.reload();

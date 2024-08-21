@@ -16,6 +16,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
+import { SyncService } from 'src/app/services/sync.service';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class AddPage implements OnInit {
     private translate: TranslateService,
     private taskService : TaskService,
     private userService : UserService,
+    private syncService : SyncService
   ) 
   {}
 
@@ -90,7 +92,7 @@ export class AddPage implements OnInit {
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      this.syncService.getTodos().subscribe((todos: Todo[]) => {
         this.todos = todos;
 
         // if (this.todos.length == 0) return;
@@ -237,14 +239,18 @@ export class AddPage implements OnInit {
 
     if (this.modifyExistingTodo) {  // Modification d'un Todo existant
 
-      this.todos = this.taskService.updateTodoById(this.todos, this.newTodo);
+      // this.todos = this.taskService.updateTodoById(this.todos, this.newTodo);
+
+      this.syncService.updateTodo(this.newTodo);
 
       this.navCtrl.navigateForward('/todo/' + this.newTodo.mainId);
     }
     else{
-      this.todos.push(this.newTodo);
+      // this.todos.push(this.newTodo);
 
-      this.taskService.actualizeTodos(this.todos, this.user);
+      // this.taskService.actualizeTodos(this.todos, this.user);
+
+      this.syncService.addTodo(this.newTodo);
 
       this.navCtrl.navigateForward('/home');
     }

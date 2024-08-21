@@ -9,6 +9,7 @@ import { UserService } from '../user/user.service';
 
 import firebase from 'firebase/compat/app';
 import { SyncService } from '../sync.service';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,13 @@ export class AuthService {
     private userService: UserService,
     private syncService: SyncService
   ) { }
+
+
+  get isConnected(): Observable<boolean> {
+    return this.afAuth.authState.pipe(
+      map(user => !!user)
+    );
+  }
 
 
   // Méthode pour s'inscrire
@@ -44,7 +52,8 @@ export class AuthService {
       await this.firestore.collection('users').doc(uid).set(userData);
 
       // Todos synchronisation
-      this.syncService.accountGetLocalTodos(userData);
+      // this.syncService.setUserId(uid)
+      this.syncService.initializeTodosFromLocalStorage(uid)
 
 
       return userData;
@@ -65,9 +74,7 @@ export class AuthService {
         let userData = await this.userService.loadUserData(uid);
 
         // Todos synchronisation
-        if (userData){
-          this.syncService.localGetAccountTodos(userData);
-        }
+        this.syncService.setUserId(uid)
 
         return userData;
       }
@@ -92,7 +99,10 @@ export class AuthService {
         const userData = await this.userService.loadUserData(uid);
         
         if (userData) {
-          this.syncService.localGetAccountTodos(userData);
+          // this.syncService.localGetAccountTodos(userData);
+
+          this.syncService.setUserId(uid)
+
           return userData; // L'utilisateur existe déjà dans Firestore
         } 
         else if (userCredential.user) { // Sign in
@@ -122,7 +132,10 @@ export class AuthService {
         const userData = await this.userService.loadUserData(uid);
         
         if (userData) {
-          this.syncService.localGetAccountTodos(userData);
+
+          this.syncService.setUserId(uid);
+
+          // this.syncService.localGetAccountTodos(userData);
           return userData; // L'utilisateur existe déjà dans Firestore
         } 
         else if (userCredential.user) { // Sign in
@@ -156,7 +169,8 @@ export class AuthService {
 
     console.log('USER DATA : ', userData)
 
-    await this.syncService.accountGetLocalTodos(userData);
+    // this.syncService.setUserId(uid)
+    this.syncService.initializeTodosFromLocalStorage(uid)
 
     return userData;
   }
@@ -166,7 +180,7 @@ export class AuthService {
   async logout(): Promise<void> {
     await this.afAuth.signOut();
 
-    this.syncService.clearLocalTodos();
+    this.syncService.clearLocalStorage();
 
     // this.userService.clearUserData();
   }
