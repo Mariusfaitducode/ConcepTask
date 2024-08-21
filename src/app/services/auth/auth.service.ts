@@ -8,6 +8,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { UserService } from '../user/user.service';
 
 import firebase from 'firebase/compat/app';
+import { SyncService } from '../sync.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +18,18 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth, 
     private firestore: AngularFirestore,
-    private userService: UserService
+    private userService: UserService,
+    private syncService: SyncService
   ) { }
 
 
   // Méthode pour s'inscrire
-  async signUp(email: string, password: string, pseudo: string, firstname: string, lastname: string): Promise<void> {
+  async signUp(email: string, password: string, pseudo: string, firstname: string, lastname: string): Promise<User | null> {
     const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
     const uid = userCredential.user?.uid;
 
     if (uid) {
-      const userData: User = {
+      let userData: User = {
         uid,
         pseudo,
         email,
@@ -36,8 +38,19 @@ export class AuthService {
         todos: []
       };
 
+      
+
+      // Créé le user dans firestore
       await this.firestore.collection('users').doc(uid).set(userData);
-      // this.userService.setUserData(userData);
+
+      // Todos synchronisation
+      this.syncService.accountGetLocalTodos(userData);
+
+
+      return userData;
+    }
+    else{
+      return null;
     }
   }
 
@@ -48,8 +61,17 @@ export class AuthService {
       const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
       const uid = userCredential.user?.uid;
       if (uid) {
-        return await this.userService.loadUserData(uid);
+        
+        let userData = await this.userService.loadUserData(uid);
+
+        // Todos synchronisation
+        if (userData){
+          this.syncService.localGetAccountTodos(userData);
+        }
+
+        return userData;
       }
+      console.error("No user id, login failed");
       return null;
     } 
     catch (error) {
@@ -67,15 +89,18 @@ export class AuthService {
       const uid = userCredential.user?.uid;
 
       if (uid) {
-        const existingUser = await this.userService.loadUserData(uid);
+        const userData = await this.userService.loadUserData(uid);
         
-        if (existingUser) {
-          return existingUser; // L'utilisateur existe déjà dans Firestore
+        if (userData) {
+          this.syncService.localGetAccountTodos(userData);
+          return userData; // L'utilisateur existe déjà dans Firestore
         } 
-        else if (userCredential.user) {
+        else if (userCredential.user) { // Sign in
+
           return this.setUserDataWithFromFirebaseUser(userCredential.user);
         }
       }
+      console.error("No user id, google login failed");
       return null;
     } 
     catch (error) {
@@ -94,15 +119,18 @@ export class AuthService {
 
       if (uid) {
 
-        const existingUser = await this.userService.loadUserData(uid);
+        const userData = await this.userService.loadUserData(uid);
         
-        if (existingUser) {
-          return existingUser; // L'utilisateur existe déjà dans Firestore
+        if (userData) {
+          this.syncService.localGetAccountTodos(userData);
+          return userData; // L'utilisateur existe déjà dans Firestore
         } 
-        else if (userCredential.user) {
+        else if (userCredential.user) { // Sign in
+
           return this.setUserDataWithFromFirebaseUser(userCredential.user);
         }
       }
+      console.error("No user id, github login failed");
       return null;
     } catch (error) {
       console.error("GitHub login failed", error);
@@ -110,13 +138,13 @@ export class AuthService {
     }
   }
 
-  
 
+  // Sign in with Firebase user
   async setUserDataWithFromFirebaseUser(user: firebase.User): Promise<User> {
 
     const uid = user.uid;
 
-    const newUser: User = {
+    let userData: User = {
       uid: user.uid || '',
       email: user.email || '',
       pseudo: user.displayName || '',
@@ -124,31 +152,22 @@ export class AuthService {
       todos: []
     };
 
-    await this.firestore.collection('users').doc(uid).set(newUser);
-    // this.userService.setUserData(newUser);
+    await this.firestore.collection('users').doc(uid).set(userData);
 
-    return newUser;
+    console.log('USER DATA : ', userData)
+
+    await this.syncService.accountGetLocalTodos(userData);
+
+    return userData;
   }
-
-
 
 
   // Méthode pour déconnecter l'utilisateur
   async logout(): Promise<void> {
     await this.afAuth.signOut();
+
+    this.syncService.clearLocalTodos();
+
     // this.userService.clearUserData();
   }
-
-  // TODO : réflechir à une gestion générique des erreurs
-
-  // private handleError(error: HttpErrorResponse) {
-  //   if (error.status === 409) {
-  //     // Conflict exception
-  //     alert('Cette adresse email est déjà utilisée.'); // Utilisez plutôt un service de notification ou un mécanisme similaire
-  //   } else {
-  //     // Autres types d'erreurs
-  //     console.error('An error occurred:', error.error);
-  //   }
-  //   return throwError('Something bad happened; please try again later.');
-  // }
 }

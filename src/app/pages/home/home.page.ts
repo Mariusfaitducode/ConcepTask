@@ -85,7 +85,7 @@ export class HomePage {
     ev.stopPropagation();
 
     this.todos = [...this.results];
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
   }
 
 

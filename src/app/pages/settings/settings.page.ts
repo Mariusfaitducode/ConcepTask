@@ -109,7 +109,7 @@ export class SettingsPage implements OnInit {
     });
 
     // localStorage.setItem('todos', JSON.stringify(todos));
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
   }
 
 
@@ -187,6 +187,6 @@ export class SettingsPage implements OnInit {
     }
     console.log("todos", this.todos)
     // localStorage.setItem('todos', JSON.stringify(todos));
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
   }
 }

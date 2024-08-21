@@ -146,7 +146,7 @@ export class NodeModalComponent implements OnInit {
     this.todo.isDone = true;
     // localStorage.setItem('todos', JSON.stringify(this.todos));
     
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
 
     console.log(this.todos);
     // window.location.reload();
@@ -158,7 +158,7 @@ export class NodeModalComponent implements OnInit {
     this.todo.isDone = false;
     // localStorage.setItem('todos', JSON.stringify(this.todos));
 
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
 
     console.log(this.todos);
     // window.location.reload();

@@ -93,7 +93,7 @@ export class AddPage implements OnInit {
       this.taskService.getTodos().subscribe((todos: Todo[]) => {
         this.todos = todos;
 
-        if (this.todos.length == 0) return;
+        // if (this.todos.length == 0) return;
 
         // Setup android back button
         this.setupBackButtonHandler();
@@ -244,7 +244,7 @@ export class AddPage implements OnInit {
     else{
       this.todos.push(this.newTodo);
 
-      this.taskService.setTodos(this.todos, this.user);
+      this.taskService.actualizeTodos(this.todos, this.user);
 
       this.navCtrl.navigateForward('/home');
     }

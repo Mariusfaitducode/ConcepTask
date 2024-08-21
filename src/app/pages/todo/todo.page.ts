@@ -154,12 +154,13 @@ export class TodoPage implements OnInit {
     console.log(this.subTasksList)
   }
 
+  
   async drop(event: CdkDragDrop<any[]>) {
 
     await DragAndDrop.drop(event, this.mainTodo, this.translate);
     this.initializeSubTasksList();
     // localStorage.setItem('todos', JSON.stringify(this.todos));
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
   }
 
   // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
@@ -265,13 +266,13 @@ export class TodoPage implements OnInit {
 
   validateTodo(){
     this.todo.isDone = true;
-    this.taskService.setTodos(this.todos, this.user);
+    this.taskService.actualizeTodos(this.todos, this.user);
   }
 
 
   unvalidateTodo(){
     this.todo.isDone = false;
-    this.taskService.setTodos(this.todos);
+    this.taskService.actualizeTodos(this.todos);
   }
 
 
