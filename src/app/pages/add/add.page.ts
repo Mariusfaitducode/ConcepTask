@@ -15,7 +15,7 @@ import { Category } from 'src/app/models/category';
 import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 
 @Component({
@@ -77,6 +77,7 @@ export class AddPage implements OnInit {
     
 
     this.userService.getUser().subscribe((user : User | null) => {
+      console.log('Add page : user = ', user)
       this.user = user;
     });
 

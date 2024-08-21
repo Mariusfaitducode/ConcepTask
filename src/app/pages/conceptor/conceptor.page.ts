@@ -13,7 +13,7 @@ import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
 import { TaskService } from 'src/app/services/task.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { TodoDate } from 'src/app/utils/todo-date';
 

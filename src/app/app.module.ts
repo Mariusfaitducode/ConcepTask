@@ -12,10 +12,12 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { SharedModule } from './shared/shared.module';
 
 import { APP_INITIALIZER } from '@angular/core';
-import { AppInitService } from './services/app-init.service';
+import { AppInitService } from './services/init/app-init.service';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 
 export function initializeApp(appInitService: AppInitService) {
@@ -34,6 +36,8 @@ export function initializeApp(appInitService: AppInitService) {
     
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
+    // AngularFirestoreModule,
+    // AngularFireStorageModule
   ],
   providers: [
     { 

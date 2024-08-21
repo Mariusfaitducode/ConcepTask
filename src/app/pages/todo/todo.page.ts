@@ -12,7 +12,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 
 @Component({
@@ -72,6 +72,7 @@ export class TodoPage implements OnInit {
     
 
     this.userService.getUser().subscribe((user : User | null) => {
+      console.log('Todo page : User get', user)
       this.user = user;
     });
 

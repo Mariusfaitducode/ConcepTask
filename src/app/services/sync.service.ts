@@ -9,14 +9,14 @@ export class SyncService {
 
   constructor(private http : HttpClient) { }
 
-  url : string = 'http://localhost:3000/';
+  // url : string = 'http://localhost:3000/';
 
 
-  setDatabaseTodos(token : string, todos : Todo[]){
+  // setDatabaseTodos(token : string, todos : Todo[]){
 
 
-    let headers = { 'Authorization' : 'Bearer ' + token };
+  //   let headers = { 'Authorization' : 'Bearer ' + token };
 
-    return this.http.post(this.url + 'api/todos/setDatabase', todos, { headers });
-  }
+  //   return this.http.post(this.url + 'api/todos/setDatabase', todos, { headers });
+  // }
 }

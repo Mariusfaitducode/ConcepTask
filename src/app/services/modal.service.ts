@@ -7,11 +7,11 @@ import { Todo } from '../models/todo';
 })
 export class ModalService {
 
-  private openModalSubject = new BehaviorSubject<number>(0);
-  private subTaskSubject = new BehaviorSubject<Todo | null >(null);
+  // private openModalSubject = new BehaviorSubject<number>(0);
+  // private subTaskSubject = new BehaviorSubject<Todo | null >(null);
 
-  openModal$ = this.openModalSubject.asObservable();
-  subTask$ = this.subTaskSubject.asObservable();
+  // openModal$ = this.openModalSubject.asObservable();
+  // subTask$ = this.subTaskSubject.asObservable();
 
   constructor() { }
 

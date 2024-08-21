@@ -1,7 +1,5 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 
-import { FirebaseService } from '../../services/firebase.service';
-
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
 // import { NavParams } from '@ionic/angular';

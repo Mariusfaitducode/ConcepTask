@@ -8,7 +8,7 @@ import { Todo } from '../../models/todo';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskService } from 'src/app/services/task.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -56,7 +56,7 @@ export class HomePage {
     });
 
     this.userService.getUser().subscribe((user : User | null) => {
-      console.log('User get', user)
+      console.log('Home page : User get', user)
       this.user = user;
     });
 

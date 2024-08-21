@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { FirebaseService } from 'src/app/services/firebase.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -14,7 +13,6 @@ export class EditProfilePage implements OnInit {
   constructor(
     private router : Router,
     private userService : UserService,
-    private firebaseService : FirebaseService,
   ) { }
 
   user : User | null = null;
@@ -25,6 +23,9 @@ export class EditProfilePage implements OnInit {
 
   ngOnInit() {
     this.userService.getUser().subscribe(user => {
+
+      console.log('Edit profile page : user = ', user)
+
       this.user = user;
       this.lastUser = JSON.parse(JSON.stringify(user));
     });
@@ -34,6 +35,8 @@ export class EditProfilePage implements OnInit {
   fileUpload(event : any){
 
     this.file = event.target.files[0];
+
+    // TODO : display file after selecting it
   }
 
 
@@ -41,35 +44,20 @@ export class EditProfilePage implements OnInit {
     return this.user != null && this.lastUser != null && JSON.stringify(this.user) != JSON.stringify(this.lastUser) || this.file != null;
   }
 
-  modifyUser(){
+  async modifyUser(){
+    
     if(this.user != null){
 
-      if (this.file != null){
-        // this.userService.updateUser(this.user, this.file).then(res => {
-        //   // console.log(res);
-        //   this.router.navigate(['tabs/profile']);
-          
-        // });
+      // await this.userService.updateUser(this.user, this.file);
 
-        // this.firebaseService.uploadAvatarImage(this.user, this.file).then(url => {
-
-        //   this.user!.avatar = url;
-
-        //   console.log('user with updated avatar',this.user);
-
-        //   this.userService.updateUser(this.user!).subscribe(res => {
-        //     // console.log(res);
-        //     this.router.navigate(['tabs/profile']);
-        //   });
-        // });
+      const success = await this.userService.updateUser(this.user, this.file);
+      if (success) {
+        console.log('User profile updated successfully');
+        this.router.navigate(['/profile']); // Naviguer vers la page de profil
+      } else {
+        console.log('Failed to update profile');
+        // Afficher un message d'erreur ou effectuer une autre action
       }
-      else {
-        // this.userService.updateUser(this.user!).subscribe(res => {
-        //   // console.log(res);
-        //   this.router.navigate(['tabs/profile']);
-        // });
-      }
-      
     }
   }
 

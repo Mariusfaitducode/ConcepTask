@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Todo } from '../models/todo';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
-import { UserService } from './user.service';
+import { UserService } from './user/user.service';
 
 @Injectable({
   providedIn: 'root'

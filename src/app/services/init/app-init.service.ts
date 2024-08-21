@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
-import { TaskService } from './task.service';
-import { User } from '../models/user';
+import { UserService } from '../user/user.service';
+import { TaskService } from '../task.service';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +24,9 @@ export class AppInitService {
     console.log('START APP INIT');
 
     if (token) {
-      this.userService.getUserWithToken().subscribe((res) => {
+      this.userService.getUser().subscribe((res) => {
           
-          console.log('User connected:', res);
+          console.log('App init : User connected:', res);
           this.taskService.loadTodos(res as User);
           console.log('Todos loaded');
         }

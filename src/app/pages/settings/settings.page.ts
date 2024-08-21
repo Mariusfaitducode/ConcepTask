@@ -8,7 +8,7 @@ import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
 import { WelcomeTodo } from 'src/app/models/welcome-todo';
 import { TaskService } from 'src/app/services/task.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -41,7 +41,7 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
 
     this.userService.getUser().subscribe((user : User | null) => {
-      console.log('User get', user)
+      console.log('Settings page :User get', user)
       this.user = user;
     });
 

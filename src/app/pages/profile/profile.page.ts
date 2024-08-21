@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { TaskService } from 'src/app/services/task.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,7 @@ export class ProfilePage implements OnInit {
     private router : Router,
     private route : ActivatedRoute,
     private userService : UserService,
+    private authService : AuthService,
     private taskService : TaskService) { }
 
 
@@ -28,6 +30,8 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
 
     this.userService.getUser().subscribe((user : User | null) => {
+
+      console.log('ProfilePage : user = ', user);
       this.user = user;
       
       if (this.user != null){
@@ -43,7 +47,7 @@ export class ProfilePage implements OnInit {
 
       // this.user = this.userService.getUser();
 
-      console.log(this.user)
+      // console.log(this.user)
 
       
     });
@@ -66,10 +70,16 @@ export class ProfilePage implements OnInit {
   }
 
   disconnect(){
-    localStorage.removeItem('token');
-    this.userConnected = false;
 
-    this.taskService.loadTodos(null);
+    console.log('Profile page : disconnect')
+
+    // localStorage.removeItem('token');
+    this.userConnected = false;
+    this.user = null;
+
+    // this.taskService.loadTodos(null);
+
+    this.authService.logout();
   }
 
 }

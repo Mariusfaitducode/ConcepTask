@@ -6,7 +6,7 @@ import { path } from 'd3';
 import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
 import { TaskService } from 'src/app/services/task.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-node-modal',
@@ -41,7 +41,7 @@ export class NodeModalComponent implements OnInit {
     });
 
     this.userService.getUser().subscribe((user : User | null) => {
-      console.log('User get', user)
+      console.log('Node modal component :User get', user)
       this.user = user;
     });
 
