@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { Notif } from 'src/app/models/notif';
 import { TaskConfig } from 'src/app/models/task-config';
 import { Todo } from 'src/app/models/todo';
+import { TodoNotification } from 'src/app/utils/todo-notification';
 
 @Component({
   selector: 'app-custom-config',
@@ -47,7 +48,7 @@ export class CustomConfigComponent  implements OnInit {
       if (this.todo.reminder && this.todo.notifId){
         this.todo.reminder = false;
 
-        let result = await Notif.cancelNotification(this.todo);
+        let result = await TodoNotification.cancelNotification(this.todo);
         if (result) this.presentToast("Notification canceled");
       }
     }

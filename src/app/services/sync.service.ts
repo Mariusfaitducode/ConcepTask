@@ -6,6 +6,7 @@ import { UserService } from './user/user.service';
 import { TaskService } from './task.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { TodoUtils } from '../utils/todo-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,7 @@ export class SyncService {
       .valueChanges({ idField: 'id' })
       .pipe(
         tap(todosFromFirestore => {
+          console.log('SYNC SERVICE TODOS FROM FIRESTORE : ', todosFromFirestore)
           this.todosSubject.next(todosFromFirestore);
           this.updateLocalStorage(todosFromFirestore);
         })
@@ -77,6 +79,10 @@ export class SyncService {
 
   addTodo(todo: Todo) {
 
+    console.log('SYNC SERVICE ADD TODO : ', todo)
+
+    todo = JSON.parse(JSON.stringify(todo));
+
     todo.id = this.firestore.createId(); 
 
     const todos = [...this.todosSubject.value, todo];
@@ -86,6 +92,11 @@ export class SyncService {
   }
 
   updateTodo(todo: Todo) {
+
+    console.log('SYNC SERVICE UPDATE TODO : ', todo)
+
+    todo = JSON.parse(JSON.stringify(todo));
+
     const todos = this.todosSubject.value.map(t => t.id === todo.id ? todo : t);
     this.todosSubject.next(todos);
     this.updateLocalStorage(todos);
@@ -93,6 +104,9 @@ export class SyncService {
   }
 
   deleteMainTodo(todoId: string) {
+
+    console.log('SYNC SERVICE DELETE MAIN TODO : ', todoId)
+
     const todos = this.todosSubject.value.filter(t => t.id !== todoId);
     this.todosSubject.next(todos);
     this.updateLocalStorage(todos);
@@ -100,6 +114,8 @@ export class SyncService {
   }
 
   deleteTodoById(mainTodo: Todo, todoToDelete: Todo){
+
+    console.log('SYNC SERVICE DELETE TODO BY ID : ', todoToDelete)
 
     let todos = this.todosSubject.value
 
@@ -110,7 +126,7 @@ export class SyncService {
     }
     else{ // Remove the sub todo from the main todo
 
-      Todo.deleteTodoById(mainTodo, todoToDelete.subId!);
+      TodoUtils.deleteTodoById(mainTodo, todoToDelete.subId!);
       this.updateTodo(mainTodo);
     }
   }

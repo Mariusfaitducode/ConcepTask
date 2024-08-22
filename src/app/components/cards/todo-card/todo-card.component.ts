@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Todo } from 'src/app/models/todo';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { TodoUtils } from 'src/app/utils/todo-utils';
 
 @Component({
   selector: 'app-todo-card',
@@ -60,7 +61,7 @@ export class TodoCardComponent  implements OnInit {
 
     if (this.todo.list.length < 1) return null;
 
-    let percent = Todo.getDoneTasksPercent(this.todo);
+    let percent = TodoUtils.getDoneTasksPercent(this.todo);
 
     if (percent == 0) return null;
 

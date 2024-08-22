@@ -43,7 +43,7 @@ export class AuthService {
         email,
         firstname,
         lastname,
-        todos: []
+        // todos: []
       };
 
       
@@ -162,7 +162,6 @@ export class AuthService {
       email: user.email || '',
       pseudo: user.displayName || '',
       avatar: user.photoURL || '',
-      todos: []
     };
 
     await this.firestore.collection('users').doc(uid).set(userData);

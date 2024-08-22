@@ -1,7 +1,8 @@
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
-import { Todo } from "./todo";
+import { Todo } from "../models/todo";
 import { Dialog } from "@capacitor/dialog";
 import { TranslateService } from "@ngx-translate/core";
+import { TodoUtils } from "./todo-utils";
 
 export class DragAndDrop {
 
@@ -36,7 +37,7 @@ export class DragAndDrop {
         if (parentTodo.subId == item.parentId) return;
 
 
-        if (Todo.findSubTodoById(item, parentTodo.subId!)) return;
+        if (TodoUtils.findSubTodoById(item, parentTodo.subId!)) return;
         
         await this.moveItem(item, parentTodo, mainTodo, translate);
         
@@ -61,8 +62,8 @@ export class DragAndDrop {
                 parentTodo.config.subtasks = true;
             }
 
-            Todo.deleteTodoById(mainTodo, item.subId!);
-            let parent = Todo.findSubTodoById(mainTodo, parentTodo.subId!);
+            TodoUtils.deleteTodoById(mainTodo, item.subId!);
+            let parent = TodoUtils.findSubTodoById(mainTodo, parentTodo.subId!);
             parent!.list.splice(0, 0, item);
             item.parentId = parentTodo.subId;
             

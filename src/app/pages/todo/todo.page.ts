@@ -5,7 +5,7 @@ import { Todo } from 'src/app/models/todo';
 import { Dialog } from '@capacitor/dialog';
 
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DragAndDrop } from 'src/app/models/drag-and-drop';
+import { DragAndDrop } from 'src/app/utils/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskService } from 'src/app/services/task.service';
@@ -14,6 +14,7 @@ import { TodoColor } from 'src/app/utils/todo-color';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { SyncService } from 'src/app/services/sync.service';
+import { TodoUtils } from 'src/app/utils/todo-utils';
 
 
 @Component({
@@ -104,7 +105,7 @@ export class TodoPage implements OnInit {
           // this.todos = this.taskService.loadTodos();
           this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
   
-          this.todo = Todo.findSubTodoById(this.mainTodo, subId)!;
+          this.todo = TodoUtils.findSubTodoById(this.mainTodo, subId)!;
         }
 
         // Initialisation pour drag and drop indexs
@@ -150,7 +151,7 @@ export class TodoPage implements OnInit {
 
     for (let subTask of this.todo.list!) {
       if (!this.hideDoneTasks || !subTask.isDone){
-        this.subTasksList.push(Todo.transformTodoInListByDepth(subTask, this.hideDoneTasks));
+        this.subTasksList.push(TodoUtils.transformTodoInListByDepth(subTask, this.hideDoneTasks));
       }
     }
     console.log(this.subTasksList)

@@ -52,13 +52,6 @@ export class TaskService {
   // }
 
 
- 
-
-
-
-
-  
-
 
   // Update a todo (not a subtask)
   // updateTodoById(todos : Todo[], mainTodoToUpdate: Todo){

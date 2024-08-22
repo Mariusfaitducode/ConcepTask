@@ -9,7 +9,7 @@ export class User{
     email: string = "";
 
     avatar?: string = "";
-    todos : Todo[] = [];
+    // todos : Todo[] = [];
 
 
     // Used to create a new user

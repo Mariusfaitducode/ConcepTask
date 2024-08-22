@@ -7,7 +7,7 @@ import { Todo } from 'src/app/models/todo';
 
 import { Dialog } from '@capacitor/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { DragAndDrop } from 'src/app/models/drag-and-drop';
+import { DragAndDrop } from 'src/app/utils/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskModal } from 'src/app/models/task-modal';
@@ -17,6 +17,7 @@ import { TodoDate } from 'src/app/utils/todo-date';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { SyncService } from 'src/app/services/sync.service';
+import { TodoUtils } from 'src/app/utils/todo-utils';
 
 
 @Component({
@@ -115,7 +116,7 @@ export class AddPage implements OnInit {
           if (params['subId']){ // Modification d'un sous-todo
 
             this.modalConfig.open = true
-            this.modalConfig.task = Todo.findSubTodoById(this.newTodo, params['subId'])
+            this.modalConfig.task = TodoUtils.findSubTodoById(this.newTodo, params['subId'])
             this.modalConfig.modify = true
             this.modalConfig.parentTask = null
           }
@@ -186,7 +187,7 @@ export class AddPage implements OnInit {
     this.subTasksList = [];
 
     for (let subTask of this.newTodo.list!) {
-      this.subTasksList.push(Todo.transformTodoInListByDepth(subTask));
+      this.subTasksList.push(TodoUtils.transformTodoInListByDepth(subTask));
     }
   }
 
@@ -265,7 +266,7 @@ export class AddPage implements OnInit {
 
   showCloseConfirm = async () => {
 
-    if (!Todo.areSameTodos(this.newTodo, this.initialTodo)){
+    if (!TodoUtils.areSameTodos(this.newTodo, this.initialTodo)){
 
       const { value } = await Dialog.confirm({
         title: 'Confirm',
@@ -286,7 +287,7 @@ export class AddPage implements OnInit {
   private setupBackButtonHandler() {
     this.platform.backButton.subscribeWithPriority(0, async () => {
       
-      if (!Todo.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){
+      if (!TodoUtils.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){
 
         const { value } = await Dialog.confirm({
           title: 'Confirm',

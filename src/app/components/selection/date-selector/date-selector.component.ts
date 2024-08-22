@@ -7,6 +7,7 @@ import { set } from 'firebase/database';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { TodoNotification } from 'src/app/utils/todo-notification';
 
 @Component({
   selector: 'app-date-selector',
@@ -81,7 +82,7 @@ export class DateSelectorComponent  implements OnInit {
 
 
     if (this.todo.reminder) {
-      let result = await Notif.scheduleNotification(this.todo, this.router);
+      let result = await TodoNotification.scheduleNotification(this.todo, this.router);
 
       if (result){
         // console.log("notification scheduled")
@@ -95,7 +96,7 @@ export class DateSelectorComponent  implements OnInit {
 
     }
     else{
-      let result = await Notif.cancelNotification(this.todo);
+      let result = await TodoNotification.cancelNotification(this.todo);
       if (result) this.presentToast(`${this.translate.instant('NOTIF CANCELED')}`);
     }
   }
@@ -117,7 +118,7 @@ export class DateSelectorComponent  implements OnInit {
     }
 
     if (this.todo.reminder) {
-      let result = await Notif.scheduleRecurringNotification(this.todo, this.router);
+      let result = await TodoNotification.scheduleRecurringNotification(this.todo, this.router);
 
       if (result){
         // console.log("notification scheduled")
@@ -130,7 +131,7 @@ export class DateSelectorComponent  implements OnInit {
       }
     }
     else{
-      let result = await Notif.cancelNotification(this.todo);
+      let result = await TodoNotification.cancelNotification(this.todo);
       if (result) this.presentToast(`${this.translate.instant('NOTIF CANCELED')}`);
     }
   }
@@ -146,9 +147,9 @@ export class DateSelectorComponent  implements OnInit {
     console.log("update notification")
 
     if (this.todo.reminder){
-      let result = await Notif.cancelNotification(this.todo);
+      let result = await TodoNotification.cancelNotification(this.todo);
       if (result){
-        let result = await Notif.scheduleNotification(this.todo, this.router);
+        let result = await TodoNotification.scheduleNotification(this.todo, this.router);
         if (result){
           this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }
@@ -165,9 +166,9 @@ export class DateSelectorComponent  implements OnInit {
     }
 
     if (this.todo.reminder){
-      let result = await Notif.cancelNotification(this.todo);
+      let result = await TodoNotification.cancelNotification(this.todo);
       if (result){
-        let result = await Notif.scheduleRecurringNotification(this.todo, this.router);
+        let result = await TodoNotification.scheduleRecurringNotification(this.todo, this.router);
         if (result){
           this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }
