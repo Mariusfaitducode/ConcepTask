@@ -1,0 +1,38 @@
+{
+
+    "firstVisitedDone":false,
+
+    "darkMode":true,
+    "themeColor":"#3880ff",
+
+    "language":"en",
+
+    "categories":[
+        {
+          "id": 0,
+          "name": "Task",
+          "color": "#e83c53"
+        },
+        {
+          "id": 1,
+          "name": "Project",
+          "color": "#428cff"
+        },
+        {
+          "id": 2,
+          "name": "Work",
+          "color": "#ffd948"
+        },
+        {
+          "id": 3,
+          "name": "Personal",
+          " color": "#29c467"
+        },
+        {
+          "id": 4,
+          "name": "Event",
+          "color": "#5d58e0"
+        }
+      ]
+
+}

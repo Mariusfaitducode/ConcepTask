@@ -1,4 +1,5 @@
 import { TranslateService } from "@ngx-translate/core";
+import { Category } from "./category";
 
 
 
@@ -6,10 +7,18 @@ export class Settings{
 
     firstVisitedDone : boolean = false;
     
+    // Theme color settings
     darkMode : boolean = false;
     themeColor : string = '#3880ff';
 
+    // Language settings
     language : string = 'en';
+
+
+    // Todo settings
+    categories : Category[] = [];
+
+
 
     
     constructor(){
@@ -23,15 +32,15 @@ export class Settings{
         this.language = settings.language;
     }
 
-    initPage( translate : TranslateService){
+    // initPage( translate : TranslateService){
 
-        if (this.darkMode) {
-            document.body.setAttribute('color-theme', 'dark');
-        }
-        else{
-            document.body.setAttribute('color-theme', 'light');
-        }
+    //     // if (this.darkMode) {
+    //     //     document.body.setAttribute('color-theme', 'dark');
+    //     // }
+    //     // else{
+    //     //     document.body.setAttribute('color-theme', 'light');
+    //     // }
       
-        translate.use(this.language); 
-    }
+    //     // translate.use(this.language); 
+    // }
 }

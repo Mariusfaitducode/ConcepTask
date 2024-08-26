@@ -12,6 +12,7 @@ import { update } from 'firebase/database';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TodoColor } from 'src/app/utils/todo-color';
@@ -44,10 +45,12 @@ export class ConceptorPage implements OnInit {
   constructor(private route : ActivatedRoute, 
               private router : Router,
               private translate : TranslateService,
-              private taskService : TaskService,) 
+              private taskService : TaskService,
+              private settingsService : SettingsService
+            ) 
   { 
-    let settings = new Settings();
-    settings.initPage(translate);
+    // let settings = new Settings();
+    // settings.initPage(translate);
   }
 
   ngOnInit() {
@@ -60,6 +63,8 @@ export class ConceptorPage implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
+
+        this.settingsService.initPage(this.translate);
 
         //Init data
 

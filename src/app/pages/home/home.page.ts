@@ -10,6 +10,7 @@ import { Settings } from 'src/app/models/settings';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 import { TaskService } from 'src/app/services/task/task.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomePage {
     private route : ActivatedRoute,
     private taskService : TaskService,
     private userService : UserService,
+    private settingsService : SettingsService
   )
   {}
 
@@ -48,18 +50,12 @@ export class HomePage {
       this.user = user;
     });
 
-
-    // TODO : simplify route.queryParams.subscribe (initPage not needed every time)
-
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
 
-      let settings = new Settings();
-      settings.initPage(this.translate);
-
-      this.darkMode = settings.darkMode;
-
-      // this.todos = this.taskService.loadTodos();
+      this.settingsService.initPage(this.translate);
+      this.darkMode = this.settingsService.settings.darkMode;
+    
     });
   }
 

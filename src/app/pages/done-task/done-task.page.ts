@@ -13,6 +13,7 @@ import { WelcomeTodo } from '../../models/welcome-todo';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +26,12 @@ export class DoneTaskPage {
     private translate: TranslateService,
     private menuCtrl : MenuController,
     private route : ActivatedRoute,
+    private settingsService : SettingsService
   )
   {
-    let settings = new Settings();
-    settings.initPage(translate);
+    // let settings = new Settings();
+    // settings.initPage(translate);
+
   }
 
   todos : Todo[] = []
@@ -62,15 +65,20 @@ export class DoneTaskPage {
 
     this.route.queryParams.subscribe(params =>{
 
-      console.log("HOME PAGEEEE CHANGE")
-      let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+      this.settingsService.initPage(this.translate);
 
-      this.darkMode = settings.darkMode;
-      this.translate.use(settings.language); 
+
+      console.log("HOME PAGEEEE CHANGE")
+      // let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+      this.darkMode = this.settingsService.settings.darkMode;
+      // this.translate.use(settings.language); 
 
       // window.location.reload();
       // this.loadTodos();
       this.results = [...this.todos];
+
+
     });
 
     // this.loadTodos();

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -18,7 +19,9 @@ export class ProfilePage implements OnInit {
     private router : Router,
     private route : ActivatedRoute,
     private userService : UserService,
-    private authService : AuthService) { }
+    private authService : AuthService,
+    private settingsService : SettingsService
+  ) { }
 
 
   user : User | null = new User();
@@ -40,14 +43,7 @@ export class ProfilePage implements OnInit {
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
 
-      let settings = new Settings();
-      settings.initPage(this.translate);
-
-      // this.user = this.userService.getUser();
-
-      // console.log(this.user)
-
-      
+      this.settingsService.initPage(this.translate);
     });
   }
 

@@ -18,6 +18,7 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class AddPage implements OnInit {
     private platform : Platform,
     private translate: TranslateService,
     private userService : UserService,
-    private taskService : TaskService
+    private taskService : TaskService,
+    private settingsService : SettingsService
   ) 
   {}
 
@@ -84,8 +86,7 @@ export class AddPage implements OnInit {
       console.log('add page changed');
 
       // Initilisation des settings
-      let settings = new Settings();
-      settings.initPage(this.translate);
+      this.settingsService.initPage(this.translate);
 
       this.taskService.getTodos().subscribe((todos: Todo[]) => {
         this.todos = todos;
