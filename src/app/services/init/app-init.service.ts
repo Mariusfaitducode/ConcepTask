@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
-import { TaskService } from '../task.service';
 import { User } from '../../models/user';
 
 @Injectable({
@@ -9,8 +8,7 @@ import { User } from '../../models/user';
 export class AppInitService {
 
   constructor(
-    private userService: UserService,
-    private taskService: TaskService,) {}
+    private userService: UserService,) {}
 
   init() {
     const token = localStorage.getItem('token');

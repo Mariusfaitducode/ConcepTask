@@ -8,7 +8,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { UserService } from '../user/user.service';
 
 import firebase from 'firebase/compat/app';
-import { SyncService } from '../sync.service';
+import { TaskService } from '../task/task.service';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class AuthService {
     private afAuth: AngularFireAuth, 
     private firestore: AngularFirestore,
     private userService: UserService,
-    private syncService: SyncService
+    private taskService: TaskService
   ) { }
 
 
@@ -53,7 +53,7 @@ export class AuthService {
 
       // Todos synchronisation
       // this.syncService.setUserId(uid)
-      this.syncService.initializeTodosFromLocalStorage(uid)
+      this.taskService.initializeTodosFromLocalStorage(uid)
 
 
       return userData;
@@ -74,7 +74,7 @@ export class AuthService {
         let userData = await this.userService.loadUserData(uid);
 
         // Todos synchronisation
-        this.syncService.setUserId(uid)
+        this.taskService.setUserId(uid)
 
         return userData;
       }
@@ -101,7 +101,7 @@ export class AuthService {
         if (userData) {
           // this.syncService.localGetAccountTodos(userData);
 
-          this.syncService.setUserId(uid)
+          this.taskService.setUserId(uid)
 
           return userData; // L'utilisateur existe déjà dans Firestore
         } 
@@ -133,7 +133,7 @@ export class AuthService {
         
         if (userData) {
 
-          this.syncService.setUserId(uid);
+          this.taskService.setUserId(uid);
 
           // this.syncService.localGetAccountTodos(userData);
           return userData; // L'utilisateur existe déjà dans Firestore
@@ -169,7 +169,7 @@ export class AuthService {
     console.log('USER DATA : ', userData)
 
     // this.syncService.setUserId(uid)
-    this.syncService.initializeTodosFromLocalStorage(uid)
+    this.taskService.initializeTodosFromLocalStorage(uid)
 
     return userData;
   }
@@ -179,7 +179,7 @@ export class AuthService {
   async logout(): Promise<void> {
     await this.afAuth.signOut();
 
-    this.syncService.clearLocalStorage();
+    this.taskService.clearLocalStorage();
 
     // this.userService.clearUserData();
   }

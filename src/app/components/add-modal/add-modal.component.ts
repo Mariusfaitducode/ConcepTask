@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, OnChang
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
 import { set } from 'firebase/database';
 import { Todo } from 'src/app/models/todo';
-import { ModalService } from 'src/app/services/modal.service';
 import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
@@ -37,7 +36,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   categories : Category[] = [];
 
 
-  constructor(private modalService: ModalService, private translate : TranslateService) { }
+  constructor(private translate : TranslateService) { }
 
   ngAfterViewInit() {
     

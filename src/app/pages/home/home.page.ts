@@ -7,10 +7,9 @@ import { Todo } from '../../models/todo';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
-import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
-import { SyncService } from 'src/app/services/sync.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +21,7 @@ export class HomePage {
   constructor(
     private translate: TranslateService,
     private route : ActivatedRoute,
-    private syncService : SyncService,
+    private taskService : TaskService,
     private userService : UserService,
   )
   {}
@@ -32,24 +31,12 @@ export class HomePage {
   todos : Todo[] = []
   results : Todo[] = []
 
-  darkMode : boolean = false;
+  darkMode : boolean = false; // Used for ConcepTask logo version
 
-  // filters = {
-  //   today: false,
-  //   week: false,
-  //   month: false,
-  //   overdue: false,
-  //   done: false,
-  //   priority: false,
-  //   priorityChoosed: '',
-  //   category: false,
-  //   categoryChoosed: '',
-  // };
-  
 
   ngOnInit() {
 
-    this.syncService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
 
       console.log('Todos loaded in home page:', todos)
       this.todos = todos;
@@ -61,7 +48,8 @@ export class HomePage {
       this.user = user;
     });
 
-    
+
+    // TODO : simplify route.queryParams.subscribe (initPage not needed every time)
 
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
@@ -72,7 +60,6 @@ export class HomePage {
       this.darkMode = settings.darkMode;
 
       // this.todos = this.taskService.loadTodos();
-      
     });
   }
 

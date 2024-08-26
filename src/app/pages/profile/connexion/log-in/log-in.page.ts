@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { local } from 'd3';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -17,8 +16,7 @@ export class LogInPage implements OnInit {
   constructor(
     private router : Router,
     private authService : AuthService,
-    private userService : UserService,
-    private taskService : TaskService) { }
+    private userService : UserService,) { }
 
   newUser : User = new User();
 

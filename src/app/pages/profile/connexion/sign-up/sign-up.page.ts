@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { SyncService } from 'src/app/services/sync.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -15,9 +15,7 @@ export class SignUpPage implements OnInit {
 
   constructor(
     private router : Router,
-    private authService : AuthService,
-    private userService : UserService,
-    private syncService : SyncService) { }
+    private authService : AuthService,) { }
 
   newUser : User = new User();
 
@@ -54,41 +52,12 @@ export class SignUpPage implements OnInit {
     return this.newUser.password == this.passwordConfirmation;
   }
 
+
+  // AUTHENTIFICATION
+
   signUp(){
 
     this.authService.signUp(this.newUser.email, this.newUser.password!, this.newUser.pseudo, this.newUser.firstname!, this.newUser.lastname!);
-
-    // this.authService.signUp(this.newUser).subscribe(
-    //   {
-    //   next: (res : any) => {
-    //     console.log(res);
-
-    //     // Synchronisation BDD res.token
-
-    //     let todos = JSON.parse(localStorage.getItem('todos') || '[]');
-
-    //     if (todos.length == 0){ 
-    //       this.router.navigate(['tabs/profile/log-in']);
-    //     }
-    //     else{
-    //       this.syncService.setDatabaseTodos(res.token, todos).subscribe({
-
-    //         next: (res : any) => {
-    //           console.log(res);
-    //           console.log('Synchronisation todos réussie')
-    //           this.router.navigate(['tabs/profile/log-in']);
-    //         },
-    //         error: (res : HttpErrorResponse ) => {
-    //           console.log(res);
-    //         }
-    //       });
-    //     }
-    //   },
-    //   error: (res : HttpErrorResponse ) => {
-    //     console.log(res);
-    //     this.errorMessage = res.error.message;
-    //   }
-    // });
   }
 
 }

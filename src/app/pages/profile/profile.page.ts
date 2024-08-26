@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -19,8 +18,7 @@ export class ProfilePage implements OnInit {
     private router : Router,
     private route : ActivatedRoute,
     private userService : UserService,
-    private authService : AuthService,
-    private taskService : TaskService) { }
+    private authService : AuthService) { }
 
 
   user : User | null = new User();

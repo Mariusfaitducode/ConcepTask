@@ -7,8 +7,7 @@ import { CalendarComponent } from './src/calendar';
 import * as moment from 'moment';
 import { Todo } from 'src/app/models/todo';
 import { TodoDate } from 'src/app/utils/todo-date';
-import { TaskService } from 'src/app/services/task.service';
-import { SyncService } from 'src/app/services/sync.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 
 @Component({
@@ -20,8 +19,7 @@ export class CalendarPage implements OnInit {
 
   constructor(
     private router : Router,
-    private taskService : TaskService,
-    private syncService : SyncService
+    private taskService : TaskService
   ) { }
 
   @ViewChild(CalendarComponent, { static: false }) myCalendar!: CalendarComponent;
@@ -39,7 +37,7 @@ export class CalendarPage implements OnInit {
 
     // this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    this.syncService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
       console.log('Todos loaded in calendar page:', todos)
       this.todos = todos;
       this.initTodoList();

@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Todo } from '../models/todo';
-import { User } from '../models/user';
-import { UserService } from './user/user.service';
-import { TaskService } from './task.service';
+import { Todo } from '../../models/todo';
+import { User } from '../../models/user';
+import { UserService } from '../user/user.service';
+// import { TaskService } from '../task.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { TodoUtils } from '../utils/todo-utils';
+import { TodoUtils } from '../../utils/todo-utils';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SyncService {
+export class TaskService {
 
   // Gère les interactions entre l'application et firebase liées aux todos
   // Permet de synchroniser les todos entre le local storage et l'account
@@ -113,6 +113,7 @@ export class SyncService {
     this.firestore.collection(`users/${this.userId}/todos`).doc(todoId).delete();
   }
 
+  // TODO : externalise or simplify this system
   deleteTodoById(mainTodo: Todo, todoToDelete: Todo){
 
     console.log('SYNC SERVICE DELETE TODO BY ID : ', todoToDelete)

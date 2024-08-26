@@ -7,8 +7,7 @@ import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
 import { WelcomeTodo } from 'src/app/models/welcome-todo';
-import { SyncService } from 'src/app/services/sync.service';
-import { TaskService } from 'src/app/services/task.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -20,9 +19,8 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private taskService : TaskService,
     private userService : UserService,
-    private syncService : SyncService
+    private taskService : TaskService
   ) 
     {
     this.settings = new Settings();
@@ -48,7 +46,7 @@ export class SettingsPage implements OnInit {
       this.user = user;
     });
 
-    this.syncService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
       console.log('Todos loaded in settings:', todos)
       this.todos = todos;
     });
@@ -108,7 +106,7 @@ export class SettingsPage implements OnInit {
     this.todos.forEach((todo : Todo) => {
       if (todo.category.name == cat.name){
         todo.category.color = cat.color;
-        this.syncService.updateTodo(todo);
+        this.taskService.updateTodo(todo);
       }
     });
 
@@ -185,7 +183,7 @@ export class SettingsPage implements OnInit {
           todo = WelcomeTodo.getWelcomeTodoFr() as Todo;
         }
 
-        this.syncService.updateTodo(todo);
+        this.taskService.updateTodo(todo);
 
         // this.todos.push(todo);
         break;

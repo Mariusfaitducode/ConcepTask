@@ -12,8 +12,7 @@ import { update } from 'firebase/database';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
-import { SyncService } from 'src/app/services/sync.service';
-import { TaskService } from 'src/app/services/task.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { TodoDate } from 'src/app/utils/todo-date';
@@ -45,8 +44,7 @@ export class ConceptorPage implements OnInit {
   constructor(private route : ActivatedRoute, 
               private router : Router,
               private translate : TranslateService,
-              private syncService : SyncService,
-              private userService : UserService,) 
+              private taskService : TaskService,) 
   { 
     let settings = new Settings();
     settings.initPage(translate);
@@ -54,7 +52,7 @@ export class ConceptorPage implements OnInit {
 
   ngOnInit() {
 
-    this.syncService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
         
         console.log('Todos loaded in conceptor page:', todos)
         this.todos = todos;

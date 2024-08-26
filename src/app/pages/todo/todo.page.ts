@@ -8,12 +8,12 @@ import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@an
 import { DragAndDrop } from 'src/app/utils/drag-and-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
-import { TaskService } from 'src/app/services/task.service';
+// import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
-import { SyncService } from 'src/app/services/sync.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
 
 
@@ -28,12 +28,11 @@ export class TodoPage implements OnInit {
     private route : ActivatedRoute, 
     private router : Router,
     private translate : TranslateService,
-
-    private taskService : TaskService,
     private userService : UserService,
-    private syncService : SyncService
+    private taskService : TaskService
   ){}
 
+  // User
 
   user : User | null = null;
 
@@ -61,30 +60,22 @@ export class TodoPage implements OnInit {
   subMode : string = "tree";
 
 
-  // Scroll position
-  // lastScrollPosition: number = 0;
-  // subTaskModePosY : number = 0;
-  
-
-  // newTodoOnListTitle: string = "";
-
- 
-
   ngOnInit() {
-
-    
 
     this.userService.getUser().subscribe((user : User | null) => {
       console.log('Todo page : User get', user)
       this.user = user;
     });
 
+
+    // TODO : simplify route.queryParams.subscribe
+
     this.route.params.subscribe((params) => {
 
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      this.syncService.getTodos().subscribe((todos: Todo[]) => {
+      this.taskService.getTodos().subscribe((todos: Todo[]) => {
 
         console.log('Todos loaded in todo page:', todos)
         this.todos = todos;
@@ -116,11 +107,6 @@ export class TodoPage implements OnInit {
     });
 
     
-  }
-
-
-  ngAfterViewInit() {
-    // this.actualizeWhenDeveloppedClicked();
   }
 
 
@@ -181,32 +167,8 @@ export class TodoPage implements OnInit {
 
   goBackTodo(){
     this.navCtrl.back();
-
-    // if (this.inSubTask) { // If we are in a subtask
-
-    //   console.log(this.todo.parentId);
-
-    //   if (this.todo.parentId != undefined && this.todo.parentId != 0){
-        
-    //     // Retourne au parent du subTodo
-    //     this.navCtrl.back();
-    //   }
-    //   else{
-        
-    //     // Retourne au mainTodo
-    //     this.router.navigate(['/todo', this.mainTodo.mainId]);
-    //   }
-    // }
-    // else{ // Retour à la page d'accueil
-
-    //   if (this.todo.isDone){
-    //     this.router.navigate(['/done-task']);
-    //   }
-    //   else{
-    //     this.router.navigate(['/home']);
-    //   }
-    // }
   }
+
 
   goToConceptor(){
     console.log("go to conceptor")
@@ -220,6 +182,7 @@ export class TodoPage implements OnInit {
         seg!.value = "tree";
       })
   }
+
 
   modifyTodo(){ // redirection to add page
 
@@ -261,9 +224,7 @@ export class TodoPage implements OnInit {
 
     if (value) {
 
-
-      this.syncService.deleteTodoById(this.mainTodo, this.todo);
-      
+      this.taskService.deleteTodoById(this.mainTodo, this.todo);
       this.navCtrl.back();
     }
   };
@@ -275,28 +236,18 @@ export class TodoPage implements OnInit {
   validateTodo(){
     this.todo.isDone = true;
     // this.taskService.actualizeTodos(this.todos, this.user);
-    this.syncService.updateTodo(this.todo);
+    this.taskService.updateTodo(this.todo);
   }
 
 
   unvalidateTodo(){
     this.todo.isDone = false;
     // this.taskService.actualizeTodos(this.todos);
-    this.syncService.updateTodo(this.todo);
+    this.taskService.updateTodo(this.todo);
   }
 
 
-
-  // DISPLAY INFORMATIONS
-
-  // haveProperties(){
-  //   return this.exist(this.todo.description) || this.exist(this.todo.date) || this.exist(this.todo.time) || this.exist(this.todo.repeat)
-  // }
-
-  // exist(item : any){
-  //   return item != undefined && item != '';
-  // }
-
+  // DISPLAY INFORMATIONS TODO
 
   passedDate(){
     return TodoDate.passedDate(this.todo);
@@ -325,67 +276,5 @@ export class TodoPage implements OnInit {
     return color
   }
 
-
-  // UTILS
-
-  // Réinitialisation config todo en cas de besoin
-
-  // setConfig(){
-  //   console.log("set config")
-  //   let configArray = {
-  //      description: this.todo.description ? true : false ,
-  //      priority: this.todo.priority ? true : false,
-  //      date: this.todo.date ? true : false ,
-  //      repeat: this.todo.repeat ? true : false ,
-  //     // { key: 'note', value: false },
-  //      subtasks: this.todo.list?.length ? true : false ,
-  //   };
-
-  //   this.todo.config = configArray;
-  // }
-
-  // Export todo
-
-  // async exportTodo(){
-  //   console.log("export")
-  //   // console.log(this.todo)
-  //   // let todo = Todo.transformTodoInListByDepth(this.todo);
-  //   // console.log(todo)
-  //   let todoString = JSON.stringify(this.todo);
-  //   console.log(todoString)
-
-  //   const blob = new Blob([todoString], { type: 'text/plain' });
-
-  //   const a = document.createElement('a');
-  //   a.href = window.URL.createObjectURL(blob);
-  //   a.download = this.todo.title + '.json';
-  //   // document.body.appendChild(a);
-  //   a.click();
-
-  //   // document.body.removeChild(a);
-
-
-  // //   const downloadPath = (
-  // //     this.platform.is('android')
-  // //  ) ? this.file.externalDataDirectory : this.file.documentsDirectory;
-   
-   
-  // //  let vm = this;
-   
-  // //  /** HttpClient - @angular/common/http */
-  // //  this.http.get(
-  // //     uri, 
-  // //     {
-  // //        responseType: 'blob', 
-  // //        headers: {
-  // //           'Authorization': 'Bearer ' + yourTokenIfYouNeed,
-  // //        }
-  // //     }
-  // //  ).subscribe((fileBlob: Blob) => {
-  // //     /** File - @ionic-native/file/ngx */
-  // //     vm.file.writeFile(downloadPath, "YourFileName.pdf", fileBlob, {replace: true});
-  // //  });
-
-  // }
 
 }

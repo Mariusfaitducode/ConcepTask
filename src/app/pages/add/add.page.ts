@@ -12,11 +12,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Category } from 'src/app/models/category';
-import { TaskService } from 'src/app/services/task.service';
+// import { TaskService } from 'src/app/services/task.service';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
-import { SyncService } from 'src/app/services/sync.service';
+import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
 
 
@@ -32,12 +32,12 @@ export class AddPage implements OnInit {
     private route : ActivatedRoute, 
     private platform : Platform,
     private translate: TranslateService,
-    private taskService : TaskService,
     private userService : UserService,
-    private syncService : SyncService
+    private taskService : TaskService
   ) 
   {}
 
+  // User
 
   user : User | null = null;
 
@@ -50,6 +50,7 @@ export class AddPage implements OnInit {
 
   modifyExistingTodo : boolean = false;
 
+
   // Drag and drop need
   subTasksList : {todo: Todo, level: number}[][] = [];
 
@@ -59,18 +60,11 @@ export class AddPage implements OnInit {
   modalConfig: TaskModal = new TaskModal();
   newModalConfig: TaskModal = new TaskModal();
 
-
-  // index?: number = undefined;
-
-  subType: string = 'customize';
+  // Categories
 
   categories : Category[] = [];
   categoryName : string = "";
 
-
-  showDate: boolean = false;
-
-  
 
 
   ngOnInit() {
@@ -93,7 +87,7 @@ export class AddPage implements OnInit {
       let settings = new Settings();
       settings.initPage(this.translate);
 
-      this.syncService.getTodos().subscribe((todos: Todo[]) => {
+      this.taskService.getTodos().subscribe((todos: Todo[]) => {
         this.todos = todos;
 
         // if (this.todos.length == 0) return;
@@ -199,29 +193,6 @@ export class AddPage implements OnInit {
   }
 
 
-
-
-  // SET TODO -> TODO CLASS
-
-  //Remplacer par unique id avec database
-
-  // setMainTodoId(){
-  //   let todoId = JSON.parse(localStorage.getItem('mainTodoId') || '0');
-
-  //   if (this.newTodo.mainId) {
-  //     this.newTodo.main = true;
-  //   }
-  //   else{
-  //     this.newTodo.main = true;
-  //     this.newTodo.mainId = todoId++;
-  //   }
-
-  //   localStorage.setItem('mainTodoId', JSON.stringify(todoId));
-  // }
-
-  
-
-
   // SAVE TODO
 
   canSaveTodo(){
@@ -242,7 +213,7 @@ export class AddPage implements OnInit {
 
       // this.todos = this.taskService.updateTodoById(this.todos, this.newTodo);
 
-      this.syncService.updateTodo(this.newTodo);
+      this.taskService.updateTodo(this.newTodo);
 
       this.navCtrl.navigateForward('/todo/' + this.newTodo.id);
     }
@@ -251,7 +222,7 @@ export class AddPage implements OnInit {
 
       // this.taskService.actualizeTodos(this.todos, this.user);
 
-      this.syncService.addTodo(this.newTodo);
+      this.taskService.addTodo(this.newTodo);
 
       this.navCtrl.navigateForward('/home');
     }
@@ -316,6 +287,8 @@ export class AddPage implements OnInit {
   // UTILS 
 
   //Id 
+
+  // TODO : simplify this system
 
   // Fonction pour parcourir l'arbre et attribuer des IDs
   assignIds(): void {

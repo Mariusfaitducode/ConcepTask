@@ -5,7 +5,6 @@ import { Todo } from 'src/app/models/todo';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskModal } from 'src/app/models/task-modal';
 import { TodoDate } from 'src/app/utils/todo-date';
-import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-sub-task',
