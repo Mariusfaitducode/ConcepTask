@@ -4,21 +4,28 @@ import { TaskConfig } from "./task-config";
 import { Category } from "./category";
 import { TranslateService } from "@ngx-translate/core";
 
+import { v4 as uuidv4 } from 'uuid';
+
 export class Todo {
 
-    public id? : string; 
+    // IDs
+    public id? : string; // id of the todo
 
-    public welcomeTodo?: boolean = false;
+    public subId?: number; // id of reference on the tree 
+    public parentId?: number; // id of the parent todo  
 
-    public subId?: number;
-    public parentId?: number;
-
-    public main: boolean;
-    public mainId?: number;
+    public mainId?: number; // id of the main todo
 
     public notifId?: number;
 
+
+    public main: boolean;  // The todo is main if it have no parent
+    public welcomeTodo?: boolean = false;
+
+
     public isDone: boolean = false;
+    public developped?: boolean = false;  // The todo is developped if we see his sub todos
+
 
     // Propriety to choose
 
@@ -44,10 +51,12 @@ export class Todo {
     };
 
     public list: Todo[];
-    public developped?: boolean = false;
 
 
-    constructor(title?: string, category?: Category, main?: boolean) {
+    constructor(
+        title?: string, category?: Category, main?: boolean) {
+
+        this.id = uuidv4();
 
         //this.id = id;
         this.main = main || false;
@@ -62,10 +71,6 @@ export class Todo {
 
         this.config = new TaskConfig(); 
     }
-
-
-    
-
   }
 
 

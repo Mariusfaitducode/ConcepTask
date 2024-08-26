@@ -83,7 +83,7 @@ export class SyncService {
 
     todo = JSON.parse(JSON.stringify(todo));
 
-    todo.id = this.firestore.createId(); 
+    
 
     const todos = [...this.todosSubject.value, todo];
     this.todosSubject.next(todos);

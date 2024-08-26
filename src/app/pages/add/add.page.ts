@@ -106,10 +106,10 @@ export class AddPage implements OnInit {
 
           this.modifyExistingTodo = true;
 
-          let mainId = +params['id'];
+          let id = params['id'];
 
           
-          this.newTodo = this.todos.find((todo:Todo) => todo.mainId == mainId)!;
+          this.newTodo = this.todos.find((todo:Todo) => todo.id == id)!;
 
           this.categoryName = this.newTodo.category.name;
 
@@ -148,7 +148,7 @@ export class AddPage implements OnInit {
             document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
           }
         }
-        this.setMainTodoId();
+        // this.setMainTodoId();
         
         // Initialisation pour drag and drop indexs
         this.initializeSubTasksList();
@@ -205,19 +205,19 @@ export class AddPage implements OnInit {
 
   //Remplacer par unique id avec database
 
-  setMainTodoId(){
-    let todoId = JSON.parse(localStorage.getItem('mainTodoId') || '0');
+  // setMainTodoId(){
+  //   let todoId = JSON.parse(localStorage.getItem('mainTodoId') || '0');
 
-    if (this.newTodo.mainId) {
-      this.newTodo.main = true;
-    }
-    else{
-      this.newTodo.main = true;
-      this.newTodo.mainId = todoId++;
-    }
+  //   if (this.newTodo.mainId) {
+  //     this.newTodo.main = true;
+  //   }
+  //   else{
+  //     this.newTodo.main = true;
+  //     this.newTodo.mainId = todoId++;
+  //   }
 
-    localStorage.setItem('mainTodoId', JSON.stringify(todoId));
-  }
+  //   localStorage.setItem('mainTodoId', JSON.stringify(todoId));
+  // }
 
   
 
@@ -244,7 +244,7 @@ export class AddPage implements OnInit {
 
       this.syncService.updateTodo(this.newTodo);
 
-      this.navCtrl.navigateForward('/todo/' + this.newTodo.mainId);
+      this.navCtrl.navigateForward('/todo/' + this.newTodo.id);
     }
     else{
       // this.todos.push(this.newTodo);
