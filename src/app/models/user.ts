@@ -1,3 +1,4 @@
+import { Settings } from "./settings";
 import { Todo } from "./todo";
 
 
@@ -9,7 +10,9 @@ export class User{
     email: string = "";
 
     avatar?: string = "";
-    // todos : Todo[] = [];
+
+    settings: Settings = new Settings();
+
 
 
     // Used to create a new user

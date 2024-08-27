@@ -8,6 +8,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { TaskService } from '../task/task.service';
+import { SettingsService } from '../settings/settings.service';
 
 // import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -27,7 +28,8 @@ export class UserService {
     private afAuth: AngularFireAuth, 
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
-    private taskService : TaskService
+    private taskService : TaskService,
+    // private settingsService : SettingsService
   ) {
 
     // Subscribe to the authState observable to get the current user at beginning, connect or disconnect
@@ -53,6 +55,7 @@ export class UserService {
     this.userSubscription = this.userRef.valueChanges().subscribe(userData => {
       // console.log('UserRef subscription : userData = ', userData)
 
+      // this.settingsService.setUserSettings(userData as User);
       this.taskService.setUserId(userData!.uid);
       this.userSubject.next(userData as User);
     });

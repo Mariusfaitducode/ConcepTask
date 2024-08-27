@@ -10,6 +10,8 @@ import { UserService } from '../user/user.service';
 import firebase from 'firebase/compat/app';
 import { TaskService } from '../task/task.service';
 import { map, Observable } from 'rxjs';
+import { Settings } from 'src/app/models/settings';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,8 @@ export class AuthService {
     private afAuth: AngularFireAuth, 
     private firestore: AngularFirestore,
     private userService: UserService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private settingsService: SettingsService
   ) { }
 
 
@@ -43,7 +46,7 @@ export class AuthService {
         email,
         firstname,
         lastname,
-        // todos: []
+        settings: this.settingsService.getLocalSettings()
       };
 
       
@@ -52,7 +55,6 @@ export class AuthService {
       await this.firestore.collection('users').doc(uid).set(userData);
 
       // Todos synchronisation
-      // this.syncService.setUserId(uid)
       this.taskService.initializeTodosFromLocalStorage(uid)
 
 
@@ -74,6 +76,7 @@ export class AuthService {
         let userData = await this.userService.loadUserData(uid);
 
         // Todos synchronisation
+        this.settingsService.setUserSettings(userData as User);
         this.taskService.setUserId(uid)
 
         return userData;
@@ -101,6 +104,7 @@ export class AuthService {
         if (userData) {
           // this.syncService.localGetAccountTodos(userData);
 
+          this.settingsService.setUserSettings(userData as User);
           this.taskService.setUserId(uid)
 
           return userData; // L'utilisateur existe déjà dans Firestore
@@ -133,6 +137,7 @@ export class AuthService {
         
         if (userData) {
 
+          this.settingsService.setUserSettings(userData as User);
           this.taskService.setUserId(uid);
 
           // this.syncService.localGetAccountTodos(userData);
@@ -162,13 +167,13 @@ export class AuthService {
       email: user.email || '',
       pseudo: user.displayName || '',
       avatar: user.photoURL || '',
+      settings: this.settingsService.getLocalSettings()
     };
 
     await this.firestore.collection('users').doc(uid).set(userData);
 
     console.log('USER DATA : ', userData)
 
-    // this.syncService.setUserId(uid)
     this.taskService.initializeTodosFromLocalStorage(uid)
 
     return userData;

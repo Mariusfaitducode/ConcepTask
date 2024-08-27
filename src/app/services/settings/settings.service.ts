@@ -1,33 +1,53 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Settings } from 'src/app/models/settings';
+import { User } from 'src/app/models/user';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
 
-
+  user : User | null = null;
   settings : Settings = new Settings();
+
+  // private settingsSubject = new BehaviorSubject<Settings>(new Settings());
+  // settings$: Observable<Settings> = this.settingsSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
+    private userService : UserService
   ) { }
 
 
-  loadInitialSettings(): Observable<Settings> {
-    return this.http.get<Settings>('/assets/initialisation/settings.json').pipe(
-      tap(settings => {
+  setUserSettings(user : User){
+    this.user = user;
 
-        console.log(settings)
-        this.settings = settings;
-        localStorage.setItem('settings', JSON.stringify(settings));
-        this.applySettings();
-      })
-    );
+    if (user.settings){
+      this.settings = user.settings;
+      localStorage.setItem('settings', JSON.stringify(this.settings));
+    }
+    this.applySettings();
+
+  }
+
+  updateSettings(user : User | null, settings : Settings){
+
+    settings = JSON.parse(JSON.stringify(settings));
+
+    if (user){
+      user.settings = settings;
+      this.userService.updateUser(user, null);
+    }
+    this.settings = settings;
+    localStorage.setItem('settings', JSON.stringify(this.settings));
+
+    this.applySettings();
+
   }
 
 
@@ -38,16 +58,13 @@ export class SettingsService {
     this.settings = JSON.parse(localStorage.getItem('settings') || 'null');
 
     if (this.settings === null){
-
       console.log('settings is null : load settings');
-
-      this.loadInitialSettings();
-
+      // this.loadInitialSettings();
+      this.settings = new Settings();
+      localStorage.setItem('settings', JSON.stringify(this.settings));
+      // this.applySettings();
     }
-    else{
-      this.applySettings();
-    }
- 
+    this.applySettings();
     
   }
 
@@ -84,7 +101,7 @@ export class SettingsService {
 
 
   // TODO : verify if needed
-  initPage(  translate : TranslateService){
+  initPage(translate : TranslateService){
 
     if (this.settings.darkMode) {
         document.body.setAttribute('color-theme', 'dark');
@@ -94,5 +111,10 @@ export class SettingsService {
     }
   
     translate.use(this.settings.language); 
-}
+  }
+
+
+  getLocalSettings(){
+    return this.settings;
+  }
 }

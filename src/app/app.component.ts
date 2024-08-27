@@ -24,7 +24,7 @@ export class AppComponent {
 
     // INITIALISATION APP SETTINGS
     
-    this.settingsService.initSettingsOnAppStart();
+    
     
     
   }

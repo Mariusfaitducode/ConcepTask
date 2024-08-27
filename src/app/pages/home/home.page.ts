@@ -50,6 +50,14 @@ export class HomePage {
       this.user = user;
     });
 
+
+    // this.settingsService.getSettings().subscribe((settings : Settings) => {
+    //   console.log('Home page : Settings get', settings)
+
+    //   this.settingsService.initPage(this.translate);
+    //   this.darkMode = this.settingsService.settings.darkMode;
+    // });
+
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
 

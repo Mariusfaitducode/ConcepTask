@@ -60,7 +60,7 @@ export class DoneTaskPage {
 
     console.log("HOME PAGEEEE")
 
-    this.darkMode = JSON.parse(localStorage.getItem('settings') || '{}').darkMode;
+    // this.darkMode = JSON.parse(localStorage.getItem('settings') || '{}').darkMode;
     
 
     this.route.queryParams.subscribe(params =>{

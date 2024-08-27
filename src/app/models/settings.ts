@@ -8,7 +8,7 @@ export class Settings{
     firstVisitedDone : boolean = false;
     
     // Theme color settings
-    darkMode : boolean = false;
+    darkMode : boolean = true;
     themeColor : string = '#3880ff';
 
     // Language settings
@@ -16,31 +16,50 @@ export class Settings{
 
 
     // Todo settings
-    categories : Category[] = [];
-
-
+    categories : Category[] = [
+        {
+          id: 0,
+          name: "Task",
+          color: "#e83c53"
+        },
+        {
+          id: 1,
+          name: "Project",
+          color: "#428cff"
+        },
+        {
+          id: 2,
+          name: "Work",
+          color: "#ffd948"
+        },
+        {
+          id: 3,
+          name: "Personal",
+          color: "#29c467"
+        },
+        {
+          id: 4,
+          name: "Event",
+          color: "#5d58e0"
+        }
+      ];
 
     
     constructor(){
-        let settings = JSON.parse(localStorage.getItem('settings') || '{}');
+        let settings = JSON.parse(localStorage.getItem('settings') || 'null');
 
-        this.firstVisitedDone = settings.firstVisitedDone;
+        if (settings){
 
-        this.darkMode = settings.darkMode;
-        this.themeColor = settings.themeMode || '#3880ff';
+            console.log('get settings from local storage in constructor');
 
-        this.language = settings.language;
+            this.firstVisitedDone = settings.firstVisitedDone;
+
+            this.darkMode = settings.darkMode;
+            this.themeColor = settings.themeMode || '#3880ff';
+
+            this.language = settings.language;
+
+            this.categories = settings.categories;
+        }
     }
-
-    // initPage( translate : TranslateService){
-
-    //     // if (this.darkMode) {
-    //     //     document.body.setAttribute('color-theme', 'dark');
-    //     // }
-    //     // else{
-    //     //     document.body.setAttribute('color-theme', 'light');
-    //     // }
-      
-    //     // translate.use(this.language); 
-    // }
 }

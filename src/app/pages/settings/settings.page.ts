@@ -27,19 +27,16 @@ export class SettingsPage implements OnInit {
     private settingsService : SettingsService
   ) 
     {
-    // this.settings = new Settings();
-    // this.settings.initPage(translate);
   }
 
   user : User | null = null;
 
+  settings : Settings = new Settings();
+
   todos : Todo[] = []
 
-  settings : Settings = new Settings();
-  darkMode : boolean = false;
-  themeColor : string = this.settings.themeColor || '#3880ff';
-
-  categories : Category[] = [];
+  darkMode : boolean = this.settings.darkMode;
+  themeColor : string = '#3880ff';
 
   newCategory : Category = new Category();
 
@@ -54,9 +51,6 @@ export class SettingsPage implements OnInit {
       console.log('Todos loaded in settings:', todos)
       this.todos = todos;
     });
-
-    this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
-
 
     this.route.queryParams.subscribe(params =>{
       this.settingsService.initPage(this.translate);
@@ -80,22 +74,22 @@ export class SettingsPage implements OnInit {
 
 
   removeCategory(category : Category){
-    this.categories = this.categories.filter((c) => c.id !== category.id);
-    this.saveCategory();
+    this.settings.categories = this.settings.categories.filter((c) => c.id !== category.id);
+    this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
   addCategory(){
 
     if (!this.newCategory.name) return;
-    this.categories.push({
-      id: this.categories.length,
+    this.settings.categories.push({
+      id: this.settings.categories.length,
       name: this.newCategory.name,
       color: this.newCategory.color,
     });
 
     this.newCategory = new Category();
-    this.saveCategory();
+    this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
@@ -106,7 +100,7 @@ export class SettingsPage implements OnInit {
 
     this.updateColorCategory(category);
 
-    this.saveCategory();
+    this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
@@ -119,15 +113,6 @@ export class SettingsPage implements OnInit {
         this.taskService.updateTodo(todo);
       }
     });
-
-    // localStorage.setItem('todos', JSON.stringify(todos));
-    // this.taskService.actualizeTodos(this.todos, this.user);
-  }
-
-
-  saveCategory(){
-    console.log(this.categories);
-    localStorage.setItem('categories', JSON.stringify(this.categories));
   }
 
 
@@ -140,7 +125,7 @@ export class SettingsPage implements OnInit {
       document.body.setAttribute('color-theme', 'light');
     }
     this.settings.darkMode = this.darkMode;
-    localStorage.setItem('settings', JSON.stringify(this.settings));
+    this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
@@ -150,7 +135,8 @@ export class SettingsPage implements OnInit {
     this.themeColor = selectedColor;
 
     this.settings.themeColor = this.themeColor;
-    localStorage.setItem('settings', JSON.stringify(this.settings));
+
+    this.settingsService.updateSettings(this.user, this.settings);
 
     this.applyTheme(this.themeColor)
   }
@@ -175,12 +161,9 @@ export class SettingsPage implements OnInit {
 
 
   onLanguageChange() {
-    localStorage.setItem('settings', JSON.stringify(this.settings));
     this.translate.use(this.settings.language); 
 
-    // let todos = JSON.parse(localStorage.getItem('todos') || '[]');
-
-    for (let todo of this.todos){
+    for (let todo of this.todos){  // TODO : find a better way to do this
       if (todo.welcomeTodo === true){
 
         console.log("found welcome todo", todo)
@@ -199,8 +182,7 @@ export class SettingsPage implements OnInit {
         break;
       }
     }
-    console.log("todos", this.todos)
-    // localStorage.setItem('todos', JSON.stringify(todos));
-    // this.taskService.actualizeTodos(this.todos, this.user);
+    
+    this.settingsService.updateSettings(this.user, this.settings);
   }
 }
