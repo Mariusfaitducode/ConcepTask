@@ -13,10 +13,14 @@ export class TodoUtils {
 
     public static deleteTodoById(rootTodo: Todo, idToDelete: number): Todo {
 
+        console.log('Delete todo by id, todo-utils :', idToDelete)
+
         TodoNotification.cancelNotification(rootTodo);
     
         // Créez une copie du todo actuel
+        // const updatedTodo: Todo = { ...rootTodo, initializeMainTodo: rootTodo.initializeMainTodo };
         const updatedTodo: Todo = { ...rootTodo };
+
     
         // Parcourez les sous-todos récursivement
         rootTodo.list!.forEach((subTodo) => {

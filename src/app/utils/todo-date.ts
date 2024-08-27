@@ -7,6 +7,27 @@ export class TodoDate {
 
 
 
+    public static getFormattedDateFromYearMonthDay(year: string, month: string, day: string) {
+
+      console.log("getFormattedDateFromYearMonthDay")
+
+      // Convert month to a number and add 1 (JavaScript months are 0-indexed)
+      const monthNumber = parseInt(month, 10) + 1;
+      // Convert back to string and ensure it's two digits
+      const formattedMonth = monthNumber.toString().padStart(2, '0');
+      // Ensure month and day are two digits // +1 because month is 0 based
+      const formattedDay = day.padStart(2, '0');
+
+      // Create the formatted date string
+      const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+
+      return formattedDate;
+    }
+
+
+
+
+
     // DATE
 
     public static getDate(newDate: Date | string, newTime?: string) {

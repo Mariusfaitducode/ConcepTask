@@ -43,7 +43,7 @@ export class TodoPage implements OnInit {
   todos: Todo[] = [];
 
   mainTodo! : Todo;
-  todo: Todo = new Todo();
+  todo!: Todo;
   
   // Drag and drop need
 
@@ -69,6 +69,11 @@ export class TodoPage implements OnInit {
       this.user = user;
     });
 
+    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+
+      console.log('Todos loaded in todo page:', todos)
+      this.todos = todos;
+    });
 
     // TODO : simplify route.queryParams.subscribe
 
@@ -76,38 +81,22 @@ export class TodoPage implements OnInit {
 
       this.settingsService.initPage(this.translate);
 
-      this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      if (this.todos.length == 0) return;
 
-        console.log('Todos loaded in todo page:', todos)
-        this.todos = todos;
+      if (params['subId'] == undefined) { // MAIN TODO
 
-        if (this.todos.length == 0) return;
+        this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
+        this.todo = this.mainTodo;
+      }
+      else{ // SUB TODO
 
-        if (params['subId'] == undefined) { // Into the main todo
-          let mainId = +params['id'];
-  
-          // this.todos = this.taskService.loadTodos();
-          this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
-          this.todo = this.mainTodo;
-        }
-        else{ // Into a sub todo
-          let mainId = +params['id'];
-          let subId = +params['subId']!;
-  
-          // this.todos = this.taskService.loadTodos();
-          this.mainTodo = this.todos.find(todo => todo.mainId == mainId)!;
-  
-          this.todo = TodoUtils.findSubTodoById(this.mainTodo, subId)!;
-        }
+        this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
+        this.todo = TodoUtils.findSubTodoById(this.mainTodo, +params['subId'])!;
+      }
 
-        // Initialisation pour drag and drop indexs
-        this.initializeSubTasksList();
-      });
-
-      
+      // Initialisation pour drag and drop indexs
+      this.initializeSubTasksList();
     });
-
-    
   }
 
 
@@ -177,7 +166,7 @@ export class TodoPage implements OnInit {
     const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
 
       this.subMode = "tree";
-      this.router.navigate(['/conceptor', this.mainTodo.mainId]);
+      this.router.navigate(['/conceptor', this.mainTodo.id]);
 
       segment!.forEach((seg) => {
         seg!.value = "tree";
@@ -190,9 +179,9 @@ export class TodoPage implements OnInit {
     const params = this.route.snapshot.params;
 
     if (params['subId'] == undefined) {
-      this.router.navigate(['/add', this.mainTodo.mainId]);
+      this.router.navigate(['/add', this.mainTodo.id]);
     } else {
-      this.router.navigate(['/add', this.mainTodo.mainId, params['subId']]);
+      this.router.navigate(['/add', this.mainTodo.id, params['subId']]);
     }
   }
 

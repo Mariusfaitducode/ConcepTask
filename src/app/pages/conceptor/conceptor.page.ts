@@ -27,7 +27,7 @@ import { TodoDate } from 'src/app/utils/todo-date';
 })
 export class ConceptorPage implements OnInit {
 
-  index : number = 0;
+  index : string = '';
 
   todos : Todo[] = [];
   todo! : Todo;
@@ -68,11 +68,11 @@ export class ConceptorPage implements OnInit {
 
         //Init data
 
-        this.index = +params['id'];
+        this.index = params['id'];
 
         // this.loadTodo(this.index);
 
-        this.todo = this.todos.find(todo => todo.mainId == this.index)!;
+        this.todo = this.todos.find(todo => todo.id == this.index)!;
 
 
         this.initData();

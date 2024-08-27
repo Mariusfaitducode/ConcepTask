@@ -171,8 +171,14 @@
               <div cdkDropList [cdkDropListData]="subTasksList[index]" 
               (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
 
-                <app-sub-task [todos]="todos" [parentTask]="todo" 
-                [subTask]="subTodo" [index]="index" [page]="'todo'" [hideSubTasks]="hideDoneTasks"></app-sub-task>
+                <app-sub-task 
+                [mainId]="todo.id"
+                [todos]="todos" 
+                [parentTask]="todo" 
+                [subTask]="subTodo" 
+                [page]="'todo'" 
+                [hideSubTasks]="hideDoneTasks"
+                ></app-sub-task>
               </div>
             </div >
           </div>

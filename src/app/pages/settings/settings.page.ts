@@ -169,12 +169,12 @@ export class SettingsPage implements OnInit {
         console.log("found welcome todo", todo)
         // this.todos.splice(this.todos.indexOf(todo), 1);
 
-        if (this.settings.language === 'en'){
-          todo = WelcomeTodo.getWelcomeTodo() as Todo;
-        }
-        else{
-          todo = WelcomeTodo.getWelcomeTodoFr() as Todo;
-        }
+        // if (this.settings.language === 'en'){
+        //   todo = WelcomeTodo.getWelcomeTodo() as Todo;
+        // }
+        // else{
+        //   todo = WelcomeTodo.getWelcomeTodoFr() as Todo;
+        // }
 
         this.taskService.updateTodo(todo);
 

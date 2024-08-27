@@ -122,6 +122,8 @@ export class TaskService {
 
     if (todoToDelete.main == true){ // Remove the main todo
 
+      console.log("DELETE MAIN TODO")
+
       // todos = todos.filter((todo : Todo) => todo.mainId != todoToDelete.mainId);
       this.deleteMainTodo(todoToDelete.id!);
     }
@@ -131,84 +133,5 @@ export class TaskService {
       this.updateTodo(mainTodo);
     }
   }
-
-
-// // Ajouter un todo avec un ID généré automatiquement
-// async addTodoForUser(user: User, todo: Todo): Promise<void> {
-
-//   console.log('ADD TODO FOR USER : ', user.pseudo, todo.title)
-  
-//   const todosRef = this.firestore.collection(`users/${user.uid}/todos`);
-
-//   const todoId = this.firestore.createId();  // Génère un ID unique
-  
-//   todo.id = todoId;  // Assurez-vous que votre modèle Todo a un champ id
-  
-//   await todosRef.doc(todoId).set(todo);
-// }
-
-
-
-
-
-  // constructor(
-  //   private userService : UserService,
-  //   private firestore: AngularFirestore,
-  //   // private taskService : TaskService
-  // ) { }
-
-
-
-  // // Set todos from local storage to account
-  
-
-
-  // // Set todos from account to local storage
-  // localGetAccountTodos(user : User){
-  //   localStorage.setItem('todos', JSON.stringify(user.todos));
-  // }
-
-
-  
-
-
-  // synchronizeTodos(todos : Todo[], user : User | null = null){
-
-  //   // Si pas d'utilisateur connecté
-
-  //   if (user){
-  //     user.todos = todos;
-
-  //     console.log('UPDATE USER TODOS : ', user)
-
-  //     this.userService.updateUser(user, null);
-  //   }
-  //   localStorage.setItem('todos', JSON.stringify(todos));
-    
-  //   // this.taskService.updateTodosOnApp(todos);
-  // }
-
-
-
-  // // CRUD
-
-  // // Récupérer les todos d'un utilisateur
-  // getTodosForUser(userId: string): Observable<Todo[]> {
-  //   return this.firestore.collection<Todo>(`users/${userId}/todos`).valueChanges();
-  // }
-
-
-  
-
-  // // Mettre à jour un todo spécifique
-  // async updateTodoForUser(userId: string, todo: Todo): Promise<void> {
-  //   await this.firestore.collection(`users/${userId}/todos`).doc(todo.id).update(todo);
-  // }
-
-  // // Supprimer un todo
-  // async deleteTodoForUser(userId: string, todoId: string): Promise<void> {
-  //   await this.firestore.collection(`users/${userId}/todos`).doc(todoId).delete();
-  // }
-
 
 }

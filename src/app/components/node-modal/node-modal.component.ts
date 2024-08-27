@@ -29,9 +29,9 @@ export class NodeModalComponent implements OnInit {
 
   todos : Todo[] = [];
 
-  todo : Todo = new Todo();
+  todo! : Todo;
 
-  mainTodo : Todo = new Todo();
+  mainTodo! : Todo;
 
 
   ngOnInit() {
@@ -71,14 +71,14 @@ export class NodeModalComponent implements OnInit {
 
     let pathAr = window.location.pathname.split('/');
 
-    let id = Number(pathAr[pathAr.length-2]);
+    let id = pathAr[pathAr.length-2];
     let modalId = Number(pathAr[pathAr.length-1]);
 
     // console.log("id",id)
     // console.log("modalId",modalId)
 
     //Détermine main todo
-    let mainTodo = this.todos.find(todo => todo.mainId == id)!;
+    let mainTodo = this.todos.find(todo => todo.id == id)!;
     this.mainTodo = mainTodo;
 
     console.log(this.todos)
@@ -178,10 +178,10 @@ export class NodeModalComponent implements OnInit {
     console.log(this.todo)
 
     if (this.todo.main == false){
-      this.router.navigate(['/add', this.mainTodo.mainId, this.todo.subId]);
+      this.router.navigate(['/add', this.mainTodo.id, this.todo.subId]);
     }
     else{
-      this.router.navigate(['/add', this.mainTodo.mainId]);
+      this.router.navigate(['/add', this.mainTodo.id]);
     }
     
   }

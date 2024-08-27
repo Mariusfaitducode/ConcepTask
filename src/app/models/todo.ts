@@ -9,17 +9,17 @@ import { v4 as uuidv4 } from 'uuid';
 export class Todo {
 
     // IDs
-    public id? : string; // id of the todo
+    public id: string; // id of the todo
 
     public subId?: number; // id of reference on the tree 
     public parentId?: number; // id of the parent todo  
 
-    public mainId?: number; // id of the main todo
+    // public mainId?: string; // id of the main todo
 
     public notifId?: number;
 
 
-    public main: boolean;  // The todo is main if it have no parent
+    public main: boolean = false;  // The todo is main if it have no parent
     public welcomeTodo?: boolean = false;
 
 
@@ -43,34 +43,33 @@ export class Todo {
 
     public reminder?: boolean;
     
-
+    // TODO : add a class for repeat
     public repeat?: {
         startDate?: Date | string,
         startTime?: string,
         delayType?: ScheduleEvery,
     };
 
-    public list: Todo[];
+    public list: Todo[] = [];
 
 
-    constructor(
-        title?: string, category?: Category, main?: boolean) {
+    constructor() {
 
         this.id = uuidv4();
-
-        //this.id = id;
-        this.main = main || false;
-        this.category = category || { name: 'task', color: 'var(--ion-color-tertiary)', id: 0};
-        this.title = title || '';
-
+        
+        this.category = { name: 'Task', color: 'var(--ion-color-tertiary)', id: 0};
         this.developped = true;
 
         this.repeat = {};
 
-        this.list = [];
-
         this.config = new TaskConfig(); 
     }
+
+
+    // initializeMainTodo(){
+    //     this.main = true;
+    // }
+
   }
 
 

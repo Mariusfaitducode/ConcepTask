@@ -82,8 +82,16 @@
         <div *ngIf="!hideSubTasks || sub.isDone === false">
 
           <app-sub-task 
-          [todos]="todos" [parentTask]="subTask" [subTask]="sub" 
-          [index]="id" [page]="page" [level]="level + 1" [openModal]="openModal" [hideSubTasks]="hideSubTasks"></app-sub-task>
+          [mainId]="mainId"
+          [todos]="todos" 
+          [parentTask]="subTask" 
+          [subTask]="sub" 
+          [page]="page" 
+          [level]="level + 1" 
+          [openModal]="openModal" 
+          [hideSubTasks]="hideSubTasks">
+        
+        </app-sub-task>
 
         </div>
         

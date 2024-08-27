@@ -44,7 +44,7 @@
   <ion-list>
     <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
       <ion-row *ngFor="let todo of results">
-        <app-todo-card *ngIf="todo.isDone" [todo]="todo" [routerLink]="'/todo/' + todo.mainId"></app-todo-card>
+        <app-todo-card *ngIf="todo.isDone" [todo]="todo" [routerLink]="'/todo/' + todo.id"></app-todo-card>
       </ion-row >
     </ion-reorder-group>
 

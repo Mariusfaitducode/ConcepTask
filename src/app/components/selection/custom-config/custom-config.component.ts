@@ -15,7 +15,7 @@ export class CustomConfigComponent  implements OnInit {
 
   @Input() configArray: TaskConfig = new TaskConfig();
 
-  @Input() todo: Todo = new Todo();
+  @Input() todo!: Todo;
 
   constructor(public toastController: ToastController) { }
 

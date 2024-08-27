@@ -22,7 +22,8 @@ export class ButtonAddSubTaskComponent  implements OnInit {
 
   // Add simple todo
   addTodoOnList(){
-    let newTodoOnList = new Todo(this.newTodoOnListTitle);
+    let newTodoOnList = new Todo();
+    newTodoOnList.title = this.newTodoOnListTitle;
     this.parentTask.list?.push(newTodoOnList);
     this.newTodoOnListTitle = '';
   }

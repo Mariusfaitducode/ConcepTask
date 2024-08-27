@@ -54,7 +54,7 @@
 
     <ion-list>
       <ion-row *ngFor="let todo of findTodosByDate(myCalendar.currentDate)">
-        <app-todo-card [todo]="todo" [routerLink]="'/todo/'+ todo.mainId"></app-todo-card>
+        <app-todo-card [todo]="todo" [routerLink]="'/todo/'+ todo.id"></app-todo-card>
       </ion-row>
     </ion-list>
   </div>

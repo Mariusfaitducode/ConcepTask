@@ -67,7 +67,7 @@ export class TodoNotification {
           if (available) {
 
             const notificationData = {
-              pageToNavigate: '/todo/'+todo.mainId, // Remplacez par le chemin de la page cible
+              pageToNavigate: '/todo/'+todo.id, // Remplacez par le chemin de la page cible
               // Autres données de notification
             };
 
@@ -138,7 +138,7 @@ export class TodoNotification {
           if (available) {
 
             const notificationData = {
-              pageToNavigate: '/todo/'+todo.mainId, // Remplacez par le chemin de la page cible
+              pageToNavigate: '/todo/'+todo.id, // Remplacez par le chemin de la page cible
               // Autres données de notification
             };
 

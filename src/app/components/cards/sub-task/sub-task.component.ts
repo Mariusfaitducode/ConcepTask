@@ -18,14 +18,16 @@ export class SubTaskComponent  implements OnInit {
     // private taskService : TaskService
     ) { }
 
+  @Input() mainId!: string;
+
   @Input() todos?: Todo[];
-  @Input() subTask: Todo = new Todo();
+  @Input() subTask!: Todo;
 
   //Main Todo
-  @Input() parentTask: Todo = new Todo();
+  @Input() parentTask!: Todo;
   
   //Index = mainTodo in todo page / subTodo in add page
-  @Input() index: number = 0;
+  // @Input() index: number = 0;
   @Input() page: string = "";
   @Input() level: number = 0;
 
@@ -98,7 +100,7 @@ export class SubTaskComponent  implements OnInit {
       //   localStorage.setItem('todos', JSON.stringify(this.todos));
       // }
 
-      this.router.navigate(['/todo', this.subTask.mainId, this.subTask.subId]);
+      this.router.navigate(['/todo', this.mainId, this.subTask.subId]);
     }
     else{
 
@@ -112,7 +114,7 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.open = true;
     this.openModal.modify = true;
     this.openModal.parentTask = this.parentTask;
-    this.openModal.index = this.index;
+    // this.openModal.index = this.index;
   }
 
   addSubTaskOnList(){

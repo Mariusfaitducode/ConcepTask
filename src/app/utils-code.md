@@ -88,6 +88,14 @@ setMainTodoId(){
 }
 
 
+// DATE CONVERSION
+
+let date = new Date(params['year'], params['month'], params['day'])
+
+const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
+const month = (date.getMonth()).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
+const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
+
 
 ### SETTINGS PAGE
 

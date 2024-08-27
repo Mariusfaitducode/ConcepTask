@@ -8,7 +8,7 @@ export class TaskModal{
     public modify: boolean = false;
     public index?: number;
 
-    public task: Todo | null = new Todo();
-    public parentTask: Todo | null = new Todo();
+    public task: Todo | null = null;
+    public parentTask: Todo | null = null;
       
 }
