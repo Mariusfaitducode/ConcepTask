@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { CustomConfigComponent } from './custom-config.component';
+import { TestingModule } from 'src/app/test-helpers';
 
 describe('CustomConfigComponent', () => {
   let component: CustomConfigComponent;
@@ -10,7 +11,9 @@ describe('CustomConfigComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomConfigComponent ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        TestingModule
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CustomConfigComponent);

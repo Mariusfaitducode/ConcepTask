@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { AddModalComponent } from './add-modal.component';
+import { TestingModule } from 'src/app/test-helpers';
 
 describe('AddModalComponent', () => {
   let component: AddModalComponent;
@@ -10,7 +11,10 @@ describe('AddModalComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddModalComponent ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        IonicModule.forRoot(),
+        TestingModule
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddModalComponent);

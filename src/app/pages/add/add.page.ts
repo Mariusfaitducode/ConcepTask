@@ -254,7 +254,7 @@ export class AddPage implements OnInit {
 
 
   // A vérifier
-  private setupBackButtonHandler() {
+  setupBackButtonHandler() {
     this.platform.backButton.subscribeWithPriority(0, async () => {
       
       if (!TodoUtils.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){

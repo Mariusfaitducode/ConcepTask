@@ -2,12 +2,16 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
+import { TestingModule } from './test-helpers';
 
 describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
+      imports: [
+        TestingModule
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
