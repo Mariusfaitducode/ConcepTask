@@ -85,10 +85,11 @@ export class TodoPage implements OnInit {
 
         this.initializeTodoPage(params);
         // Initialisation pour drag and drop indexs
-        this.initializeSubTasksList();
-      });
 
-      
+        if (this.todo){
+          this.initializeSubTasksList();
+        }
+      });
     });
   }
 
@@ -175,12 +176,14 @@ export class TodoPage implements OnInit {
 
     const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
 
-      this.subMode = "tree";
-      this.router.navigate(['/conceptor', this.mainTodo.id]);
+    this.subMode = "tree";
+    this.router.navigate(['/conceptor', this.mainTodo.id]);
 
-      segment!.forEach((seg) => {
-        seg!.value = "tree";
-      })
+    console.log("navigation to conceptor done")
+
+    segment!.forEach((seg) => {
+      seg!.value = "tree";
+    })
   }
 
 

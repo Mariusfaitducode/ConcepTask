@@ -18,19 +18,24 @@ export class TaskService {
 
   private todosSubject = new BehaviorSubject<Todo[]>([]);
   todos$: Observable<Todo[]> = this.todosSubject.asObservable();
-  private userId: string = '';
+  private user: User | null = null;
 
-  constructor(private firestore: AngularFirestore) {}
+  private firestoreSubscription : any;
+
+  constructor(private firestore: AngularFirestore) {
+
+    this.getTodosFromLocalStorage();
+  }
 
 
-  setUserId(userId: string) {
-    this.userId = userId;
+  setUserId(user: User) {
+    this.user = user;
     this.syncTodosWithFirestore();
   }
 
 
-  async initializeTodosFromLocalStorage(userId : string){
-    this.userId = userId;
+  async initializeTodosFromLocalStorage(user : User){
+    this.user = user;
     let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
     for (let todo of todos){
@@ -44,16 +49,24 @@ export class TaskService {
   private syncTodosWithFirestore() {
     this.getTodosFromLocalStorage();
 
-    this.firestore.collection<Todo>(`users/${this.userId}/todos`)
+    if (this.user){
+      this.firestoreSubscription = this.firestore.collection<Todo>(`users/${this.user!.uid}/todos`)
       .valueChanges({ idField: 'id' })
       .pipe(
         tap(todosFromFirestore => {
-          console.log('SYNC SERVICE TODOS FROM FIRESTORE : ', todosFromFirestore)
-          this.todosSubject.next(todosFromFirestore);
-          this.updateLocalStorage(todosFromFirestore);
+
+          console.log('TRY SYNC SERVICE TODOS FROM FIRESTORE : ')
+          
+          if (this.user){
+            console.log('SYNC SERVICE TODOS FROM FIRESTORE : ', todosFromFirestore)
+            this.todosSubject.next(todosFromFirestore);
+            this.updateLocalStorage(todosFromFirestore);
+          }
+          
         })
       )
       .subscribe();
+    }
   }
 
 
@@ -67,11 +80,24 @@ export class TaskService {
     localStorage.setItem(`todos`, JSON.stringify(todos));
   }
 
-  clearLocalStorage(){
+  
+  clearLocalStorageOnLogout(){
+    this.user = null;
+    
+    console.log("LOGOUT UNSUBSCRIBE");
+
+    if (this.firestoreSubscription) {
+      this.firestoreSubscription.unsubscribe();
+    }
+
+    this.todosSubject.next([]);
     localStorage.removeItem('todos');
+
+    // Ensure the subscription is nullified to prevent further updates
+    this.firestoreSubscription = null;
   }
 
-  // CRUD
+  // CRUD TODO MANIPULATION
 
   getTodos(): Observable<Todo[]> {
     return this.todos$;
@@ -94,7 +120,11 @@ export class TaskService {
     const todos = [...this.todosSubject.value, todo];
     this.todosSubject.next(todos);
     this.updateLocalStorage(todos);
-    this.firestore.collection(`users/${this.userId}/todos`).doc(todo.id).set(todo);
+
+    if (this.user){
+      this.firestore.collection(`users/${this.user.uid}/todos`).doc(todo.id).set(todo);
+    }
+
   }
 
   updateTodo(todo: Todo) {
@@ -106,7 +136,11 @@ export class TaskService {
     const todos = this.todosSubject.value.map(t => t.id === todo.id ? todo : t);
     this.todosSubject.next(todos);
     this.updateLocalStorage(todos);
-    this.firestore.collection(`users/${this.userId}/todos`).doc(todo.id).update(todo);
+
+    if (this.user){
+      this.firestore.collection(`users/${this.user.uid}/todos`).doc(todo.id).update(todo);
+
+    }
   }
 
   deleteMainTodo(todoId: string) {
@@ -116,7 +150,11 @@ export class TaskService {
     const todos = this.todosSubject.value.filter(t => t.id !== todoId);
     this.todosSubject.next(todos);
     this.updateLocalStorage(todos);
-    this.firestore.collection(`users/${this.userId}/todos`).doc(todoId).delete();
+
+    if (this.user){
+      this.firestore.collection(`users/${this.user.uid}/todos`).doc(todoId).delete();
+
+    }
   }
 
   // TODO : externalise or simplify this system

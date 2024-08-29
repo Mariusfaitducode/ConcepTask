@@ -218,20 +218,17 @@ export class AddPage implements OnInit {
 
     if (this.modifyExistingTodo) {  // Modification d'un Todo existant
 
-      // this.todos = this.taskService.updateTodoById(this.todos, this.newTodo);
-
       this.taskService.updateTodo(this.newTodo);
 
-      this.navCtrl.navigateForward('/todo/' + this.newTodo.id);
+      // this.navCtrl.navigateForward('/todo/' + this.newTodo.id);
+      this.navCtrl.back()
     }
     else{
-      // this.todos.push(this.newTodo);
-
-      // this.taskService.actualizeTodos(this.todos, this.user);
 
       this.taskService.addTodo(this.newTodo);
 
-      this.navCtrl.navigateForward('/home');
+      // this.navCtrl.navigateForward('/home');
+      this.navCtrl.back()
     }
 
     console.log(this.todos)
@@ -262,7 +259,7 @@ export class AddPage implements OnInit {
 
 
   // A vérifier
-  setupBackButtonHandler() {
+  setupBackButtonHandler() { // Verify if there is change when modify task
     this.platform.backButton.subscribeWithPriority(0, async () => {
       
       if (!TodoUtils.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){
@@ -299,7 +296,6 @@ export class AddPage implements OnInit {
 
   // Fonction pour parcourir l'arbre et attribuer des IDs
   assignIds(): void {
-
 
     console.log("assign ids function")
 

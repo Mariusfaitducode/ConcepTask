@@ -58,7 +58,7 @@ export class UserService {
       // console.log('UserRef subscription : userData = ', userData)
 
       // this.settingsService.setUserSettings(userData as User);
-      this.taskService.setUserId(userData!.uid);
+      this.taskService.setUserId(userData!);
       this.userSubject.next(userData as User);
     });
   }

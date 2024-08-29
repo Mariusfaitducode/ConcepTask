@@ -78,12 +78,11 @@ export class ConceptorPage implements OnInit {
 
         this.todo = this.todos.find(todo => todo.id == this.index)!;
 
-        console.log("Conceptor found todo :", this.todo)
-
-        this.initData();
-
-        this.initializeConceptorGraph();
-
+        if (this.todo){
+          console.log("Conceptor found todo :", this.todo)
+          this.initData();
+          this.initializeConceptorGraph();
+        }
       });
     });
   }
@@ -102,7 +101,14 @@ export class ConceptorPage implements OnInit {
 
 
     // Clear the graph container before initialization
-    d3.select("#graph-container").selectAll("*").remove();
+
+    console.log('conceptor size',d3.select("#graph-container").selectAll("*").size())
+
+    if (d3.select("#graph-container").selectAll("*").size() > 0){
+      d3.select("#graph-container").selectAll("*").remove();
+
+    }
+
 
 
     let svg = d3.select("#graph-container");
@@ -192,6 +198,11 @@ export class ConceptorPage implements OnInit {
       .enter().append("text")
         .attr("class", "node-label")
         .text(function(d) { return d.todo.title });
+
+
+    console.log("Graph initialisation good", svg)
+
+
 
         
     // Fonction de mise à jour du graphique

@@ -55,7 +55,7 @@ export class AuthService {
       await this.firestore.collection('users').doc(uid).set(userData);
 
       // Todos synchronisation
-      this.taskService.initializeTodosFromLocalStorage(uid)
+      this.taskService.initializeTodosFromLocalStorage(userData)
 
 
       return userData;
@@ -77,7 +77,7 @@ export class AuthService {
 
         // Todos synchronisation
         this.settingsService.setUserSettings(userData as User);
-        this.taskService.setUserId(uid)
+        this.taskService.setUserId(userData!)
 
         return userData;
       }
@@ -105,7 +105,7 @@ export class AuthService {
           // this.syncService.localGetAccountTodos(userData);
 
           this.settingsService.setUserSettings(userData as User);
-          this.taskService.setUserId(uid)
+          this.taskService.setUserId(userData)
 
           return userData; // L'utilisateur existe déjà dans Firestore
         } 
@@ -138,7 +138,7 @@ export class AuthService {
         if (userData) {
 
           this.settingsService.setUserSettings(userData as User);
-          this.taskService.setUserId(uid);
+          this.taskService.setUserId(userData);
 
           // this.syncService.localGetAccountTodos(userData);
           return userData; // L'utilisateur existe déjà dans Firestore
@@ -174,7 +174,7 @@ export class AuthService {
 
     console.log('USER DATA : ', userData)
 
-    this.taskService.initializeTodosFromLocalStorage(uid)
+    this.taskService.initializeTodosFromLocalStorage(userData)
 
     return userData;
   }
@@ -184,7 +184,7 @@ export class AuthService {
   async logout(): Promise<void> {
     await this.afAuth.signOut();
 
-    this.taskService.clearLocalStorage();
+    this.taskService.clearLocalStorageOnLogout();
 
     // this.userService.clearUserData();
   }
