@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" *ngIf="todo">
   <ion-toolbar class="toolbar-parent">
     <div class="toolbar-content">
 
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <ion-segment value="graph" id="sub-task-mode" class="sub-task-mode">
+    <ion-segment [(ngModel)]="subMode" id="sub-task-mode" class="sub-task-mode">
       <ion-segment-button value="default" (click)="goToTree()" class="sub-task-mode">
         <div class="greyded-text">{{'TREE' | translate}}</div>
       </ion-segment-button>
@@ -25,10 +25,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="page-content" width="100%" height="100%">
+<ion-content id="page-content" width="100%" height="100%" *ngIf="todo">
 
   <svg id="graph-container" width="100%" height="100%"></svg>
       
-  <app-node-modal id="modal-node" class="close-modal"></app-node-modal>
+  <!-- <app-node-modal id="modal-node" class="close-modal"></app-node-modal> -->
 
 </ion-content>

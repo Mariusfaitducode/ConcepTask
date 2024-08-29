@@ -59,6 +59,8 @@ export class NodeModalComponent implements OnInit {
 
       console.log(params)
 
+      this.loadTodo()
+
 
       // if (params['modalId']) {
       //   console.log(params['modalId'])

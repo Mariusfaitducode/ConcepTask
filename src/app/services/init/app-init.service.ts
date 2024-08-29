@@ -13,31 +13,16 @@ export class AppInitService {
     private settingsService : SettingsService
   ) {}
 
-  init() {
-    const token = localStorage.getItem('token');
-
-    // this.taskService.loadTodos(null);
-    
-
-    // this.productService.loadProducts().subscribe();
-    // this.sellerService.loadSellers().subscribe();
+  async init() {
 
     console.log('START APP INIT');
 
+    await this.userService.initUserService();
+
+    console.log('START APP INIT USER')
+
     this.settingsService.initSettingsOnAppStart();
 
-    // if (token) {
-    //   this.userService.getUser().subscribe((res) => {
-          
-    //       console.log('App init : User connected:', res);
-    //       // this.taskService.loadTodos(res as User);
-    //       console.log('Todos loaded');
-    //     }
-    //   );
-    // }
-    // else{
-    //   // this.taskService.loadTodos(null);
-    // }
-
+    console.log('START APP SETTINGS')
   }
 }

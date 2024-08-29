@@ -29,11 +29,13 @@ export class UserService {
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
     private taskService : TaskService,
-    // private settingsService : SettingsService
-  ) {
+  ) {}
 
+  async initUserService(){
     // Subscribe to the authState observable to get the current user at beginning, connect or disconnect
     this.afAuth.authState.subscribe(user => {
+
+      console.log('init user', user )
       if (user) {
         this.setUserSubscription(user.uid);
       } else {

@@ -77,6 +77,12 @@ export class TaskService {
     return this.todos$;
   }
 
+  // Méthode pour obtenir les todos directement
+  getCurrentTodos(): Todo[] {
+    return this.todosSubject.getValue();
+  }
+  
+
   addTodo(todo: Todo) {
 
     console.log('SYNC SERVICE ADD TODO : ', todo)

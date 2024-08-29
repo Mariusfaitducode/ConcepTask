@@ -69,34 +69,44 @@ export class TodoPage implements OnInit {
       this.user = user;
     });
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
-
-      console.log('Todos loaded in todo page:', todos)
-      this.todos = todos;
-    });
-
     // TODO : simplify route.queryParams.subscribe
 
     this.route.params.subscribe((params) => {
 
       this.settingsService.initPage(this.translate);
 
-      if (this.todos.length == 0) return;
+      // TODO : could be change with getTodoById
+      this.taskService.getTodos().subscribe((todos: Todo[]) =>{
 
-      if (params['subId'] == undefined) { // MAIN TODO
+        console.log('Todos loaded in todo page:', todos)
+        this.todos = todos;
 
-        this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
-        this.todo = this.mainTodo;
-      }
-      else{ // SUB TODO
+        if (this.todos.length == 0) return;
 
-        this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
-        this.todo = TodoUtils.findSubTodoById(this.mainTodo, +params['subId'])!;
-      }
+        this.initializeTodoPage(params);
+        // Initialisation pour drag and drop indexs
+        this.initializeSubTasksList();
+      });
 
-      // Initialisation pour drag and drop indexs
-      this.initializeSubTasksList();
+      
     });
+  }
+
+
+  // INITIALIZATION
+
+  initializeTodoPage(params : any){
+
+    if (params['subId'] == undefined) { // MAIN TODO
+
+      this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
+      this.todo = this.mainTodo;
+    }
+    else{ // SUB TODO
+
+      this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
+      this.todo = TodoUtils.findSubTodoById(this.mainTodo, +params['subId'])!;
+    } 
   }
 
 
@@ -226,14 +236,14 @@ export class TodoPage implements OnInit {
   validateTodo(){
     this.todo.isDone = true;
     // this.taskService.actualizeTodos(this.todos, this.user);
-    this.taskService.updateTodo(this.todo);
+    this.taskService.updateTodo(this.mainTodo);
   }
 
 
   unvalidateTodo(){
     this.todo.isDone = false;
     // this.taskService.actualizeTodos(this.todos);
-    this.taskService.updateTodo(this.todo);
+    this.taskService.updateTodo(this.mainTodo);
   }
 
 

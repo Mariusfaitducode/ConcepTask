@@ -81,10 +81,7 @@ export class AddPage implements OnInit {
     });
 
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
-      console.log("Add page : get todos = ", todos)
-      this.todos = todos;
-    });
+    
 
     // Récupère chemins et paramètres de la route active -> provenance : Todo / Home  
     this.route.params.subscribe((params) => {
@@ -97,59 +94,20 @@ export class AddPage implements OnInit {
       // Setup android back button
       this.setupBackButtonHandler();
 
-      // MODIFICATION D'UN TODO EXISTANT
-      if (params['id']) {  
 
-        console.log('MODIFICATION TODO EXISTANT')
+      this.taskService.getTodos().subscribe((todos: Todo[]) => {
+        console.log("Add page : get todos = ", todos)
+        this.todos = todos;
 
-        this.modifyExistingTodo = true;
-        
-        this.newTodo = this.todos.find((todo:Todo) => todo.id == params['id'])!;
+        this.initializeAddPage(params)
 
-        this.categoryName = this.newTodo.category.name;
-
-        if (params['subId']){ // Modification d'un sous-todo
-
-          // TODO : verify and simplify TaskModal
-
-          this.modalConfig.open = true
-          this.modalConfig.task = TodoUtils.findSubTodoById(this.newTodo, params['subId'])
-          this.modalConfig.modify = true
-          this.modalConfig.parentTask = null
+        if (this.newTodo){
+          // Initialisation pour drag and drop indexs
+          this.initializeSubTasksList();
+          // Todo without modif in case of abandon
+          this.initialTodo = JSON.parse(JSON.stringify(this.newTodo));
         }
-      }
-      // NOUVEAU TODO
-
-      else{
-
-        this.modifyExistingTodo = false;
-
-
-        // TODO : Initialize new todo basis
-
-        this.newTodo = new Todo();
-
-        // this.newTodo.mainId = this.newTodo.id;
-        this.newTodo.main = true;
-
-        if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
-
-          this.newTodo.config.date = true;
-
-          const formattedDate = TodoDate.getFormattedDateFromYearMonthDay(params['year'], params['month'], params['day'])
-
-          this.newTodo.date = formattedDate;
-          document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
-        }
-      }
-      
-      // Initialisation pour drag and drop indexs
-      this.initializeSubTasksList();
-
-      this.initialTodo = JSON.parse(JSON.stringify(this.newTodo));
-      
-
-      
+      });
     });
   }
 
@@ -157,6 +115,56 @@ export class AddPage implements OnInit {
   ngAfterViewInit() {
     this.actualizeWhenDeveloppedClicked();
   }
+
+
+  // INITIALIZATION
+
+
+  initializeAddPage(params : any){
+
+    // MODIFICATION D'UN TODO EXISTANT
+    if (params['id']) {  
+
+      console.log('MODIFICATION TODO EXISTANT')
+      this.modifyExistingTodo = true;
+
+      if (this.todos.length == 0) return;
+      
+      this.newTodo = this.todos.find((todo:Todo) => todo.id == params['id'])!;
+      this.categoryName = this.newTodo.category.name;
+
+      if (params['subId']){ // Modification d'un sous-todo
+
+        // TODO : verify and simplify TaskModal
+
+        this.modalConfig.open = true
+        this.modalConfig.task = TodoUtils.findSubTodoById(this.newTodo, params['subId'])
+        this.modalConfig.modify = true
+        this.modalConfig.parentTask = null
+      }
+    }
+    // NOUVEAU TODO
+    else{
+
+      this.modifyExistingTodo = false;
+
+      // TODO : Initialize new todo basis
+
+      this.newTodo = new Todo();
+      this.newTodo.main = true;
+
+      if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
+
+        this.newTodo.config.date = true;
+
+        const formattedDate = TodoDate.getFormattedDateFromYearMonthDay(params['year'], params['month'], params['day'])
+
+        this.newTodo.date = formattedDate;
+        document.getElementById('datePicker')?.setAttribute('value', this.newTodo.date);
+      }
+    }
+  }
+
 
 
   // DRAG AND DROP SETUP
