@@ -1,8 +1,9 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/category';
 import { Settings } from 'src/app/models/settings';
 import { Todo } from 'src/app/models/todo';
@@ -17,7 +18,7 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage implements OnInit, OnDestroy {
 
   constructor(
     private route : ActivatedRoute, 
@@ -29,10 +30,12 @@ export class SettingsPage implements OnInit {
     {
   }
 
+  userSubscription! : Subscription;
   user : User | null = null;
 
   settings : Settings = new Settings();
 
+  todoSubscription! : Subscription;
   todos : Todo[] = []
 
   darkMode : boolean = this.settings.darkMode;
@@ -57,6 +60,20 @@ export class SettingsPage implements OnInit {
     });
 
   }
+
+
+  ngOnDestroy(){
+
+    console.log("SETTINGS PAGE ON DESTROY")
+
+    if (this.userSubscription){
+      this.userSubscription.unsubscribe();
+    }
+    if (this.todoSubscription){
+      this.todoSubscription.unsubscribe();
+    }
+  }
+
 
 
   showConfirmDelete(category : Category) {

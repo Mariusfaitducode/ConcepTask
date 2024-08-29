@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NavController, Platform } from '@ionic/angular';
@@ -19,6 +19,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
 import { SettingsService } from 'src/app/services/settings/settings.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
   templateUrl: './add.page.html',
   styleUrls: ['./add.page.scss'],
 })
-export class AddPage implements OnInit {
+export class AddPage implements OnInit, OnDestroy {
 
 
   constructor(private navCtrl: NavController, 
@@ -41,9 +42,12 @@ export class AddPage implements OnInit {
 
   // User
 
+  userSubscription! : Subscription;
   user : User | null = null;
 
   // Todo objects
+
+  todoSubscription! : Subscription;
 
   todos : Todo[] = [];
 
@@ -75,7 +79,7 @@ export class AddPage implements OnInit {
 
     
 
-    this.userService.getUser().subscribe((user : User | null) => {
+    this.userSubscription = this.userService.getUser().subscribe((user : User | null) => {
       console.log('Add page : get user = ', user)
       this.user = user;
     });
@@ -95,7 +99,7 @@ export class AddPage implements OnInit {
       this.setupBackButtonHandler();
 
 
-      this.taskService.getTodos().subscribe((todos: Todo[]) => {
+      this.todoSubscription = this.taskService.getTodos().subscribe((todos: Todo[]) => {
         console.log("Add page : get todos = ", todos)
         this.todos = todos;
 
@@ -117,6 +121,18 @@ export class AddPage implements OnInit {
   }
 
 
+  ngOnDestroy(){
+
+    console.log("ADD PAGE ON DESTROY")
+
+    if (this.userSubscription){
+      this.userSubscription.unsubscribe();
+    }
+    if (this.todoSubscription){
+      this.todoSubscription.unsubscribe();
+    }
+  }
+
   // INITIALIZATION
 
 
@@ -135,12 +151,12 @@ export class AddPage implements OnInit {
 
       if (params['subId']){ // Modification d'un sous-todo
 
-        // TODO : verify and simplify TaskModal
+        const subTask = TodoUtils.findSubTodoById(this.newTodo, params['subId']);
+        if (subTask){
+          const parentTask = TodoUtils.findSubTodoById(this.newTodo, subTask?.parentId!);
 
-        this.modalConfig.open = true
-        this.modalConfig.task = TodoUtils.findSubTodoById(this.newTodo, params['subId'])
-        this.modalConfig.modify = true
-        this.modalConfig.parentTask = null
+          this.modalConfig.openModifyTaskModal(subTask, parentTask)
+        }
       }
     }
     // NOUVEAU TODO
@@ -151,7 +167,7 @@ export class AddPage implements OnInit {
       // TODO : Initialize new todo basis
 
       this.newTodo = new Todo();
-      this.newTodo.main = true;
+      // this.newTodo.main = true;
 
       if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
 
@@ -249,6 +265,16 @@ export class AddPage implements OnInit {
       });
   
       if (value) {
+        console.log("should loose change")
+
+        this.newTodo = this.initialTodo;
+        
+        // Replace newTodo with initialTodo in todos list
+        const index = this.todos.findIndex(todo => todo.id === this.newTodo.id);
+        if (index !== -1) {
+          this.todos[index] = this.initialTodo;
+        }
+        
         this.navCtrl.back();
       }
     }
@@ -258,30 +284,34 @@ export class AddPage implements OnInit {
   };
 
 
-  // A vérifier
+  // IMPORTANT FOR ANDROID BACK BUTTON
   setupBackButtonHandler() { // Verify if there is change when modify task
     this.platform.backButton.subscribeWithPriority(0, async () => {
-      
-      if (!TodoUtils.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){
 
-        const { value } = await Dialog.confirm({
-          title: 'Confirm',
-          message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
-        });
+      console.log("SETUP BACK BUTTON")
+
+      this.showCloseConfirm();
       
-        console.log('Confirmed:', value);
+      // if (!TodoUtils.areSameTodos(this.newTodo, this.initialTodo) && window.location.pathname.includes("add")){
+
+      //   const { value } = await Dialog.confirm({
+      //     title: 'Confirm',
+      //     message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
+      //   });
+      
+      //   console.log('Confirmed:', value);
     
-        if (value) {
-          console.log("change")
-          this.navCtrl.back();
-        }
-      }
-      else{
+      //   if (value) {
+      //     console.log("change")
+      //     this.navCtrl.back();
+      //   }
+      // }
+      // else{
   
-        console.log("no change")
+      //   console.log("no change")
   
-        this.navCtrl.back();
-      }
+      //   this.navCtrl.back();
+      // }
     });
   }
 
@@ -312,7 +342,7 @@ export class AddPage implements OnInit {
 
         let todo = queue[i].list.shift()!;
 
-        todo.main = false;
+        // todo.main = false;
 
         // TODO : verify mainId use
         // todo.mainId = this.newTodo.mainId; 

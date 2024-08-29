@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { Settings } from 'src/app/models/settings';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -12,7 +13,7 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, OnDestroy {
 
   constructor(
     private translate: TranslateService,
@@ -24,6 +25,7 @@ export class ProfilePage implements OnInit {
   ) { }
 
 
+  userSubscription! : Subscription;
   user : User | null = new User();
   userConnected : boolean = false;
 
@@ -46,6 +48,19 @@ export class ProfilePage implements OnInit {
       this.settingsService.initPage(this.translate);
     });
   }
+
+
+  ngOnDestroy(){
+
+    console.log("PROFILE PAGE ON DESTROY")
+
+    if (this.userSubscription){
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+
+
 
   goToSettings(){
     this.router.navigate(['/settings']);

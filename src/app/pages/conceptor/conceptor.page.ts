@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularDelegate } from '@ionic/angular';
 // import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import * as d3 from 'd3';
 import { update } from 'firebase/database';
+import { Subscription } from 'rxjs';
 // import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
@@ -25,10 +26,11 @@ import { TodoDate } from 'src/app/utils/todo-date';
   templateUrl: './conceptor.page.html',
   styleUrls: ['./conceptor.page.scss'],
 })
-export class ConceptorPage implements OnInit {
+export class ConceptorPage implements OnInit, OnDestroy {
 
   index : string = '';
 
+  todoSubscription! : Subscription;
   todos : Todo[] = [];
   todo! : Todo;
 
@@ -86,6 +88,17 @@ export class ConceptorPage implements OnInit {
       });
     });
   }
+
+
+  ngOnDestroy(){
+
+    console.log("CONCEPTOR PAGE ON DESTROY")
+    
+    if (this.todoSubscription){
+      this.todoSubscription.unsubscribe();
+    }
+  }
+
 
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // import { NgCalendarModule } from 'ionic2-calendar'; 
 // import { CalendarComponent } from 'ionic2-calendar/calendar';
@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { Todo } from 'src/app/models/todo';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TaskService } from 'src/app/services/task/task.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { TaskService } from 'src/app/services/task/task.service';
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
 })
-export class CalendarPage implements OnInit {
+export class CalendarPage implements OnInit, OnDestroy {
 
   constructor(
     private router : Router,
@@ -26,7 +27,9 @@ export class CalendarPage implements OnInit {
 
   eventSource : any[] = [];
 
+  todoSubscription! : Subscription;
   todos : Todo[] = [];
+
   currentMonth = moment(new Date()).format('MMMM YYYY');
   viewTitle: string = '';
   selectedDay = new Date();
@@ -46,6 +49,18 @@ export class CalendarPage implements OnInit {
 
     // this.initTodoList();
   }
+
+
+  ngOnDestroy(){
+
+    console.log("CALENDAR PAGE ON DESTROY")
+    
+    if (this.todoSubscription){
+      this.todoSubscription.unsubscribe();
+    }
+  }
+
+
 
 
   initTodoList(){

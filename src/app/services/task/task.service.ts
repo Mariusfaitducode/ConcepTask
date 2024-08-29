@@ -164,7 +164,7 @@ export class TaskService {
 
     let todos = this.todosSubject.value
 
-    if (todoToDelete.main == true){ // Remove the main todo
+    if (todoToDelete == mainTodo){ // Remove the main todo
 
       console.log("DELETE MAIN TODO")
 

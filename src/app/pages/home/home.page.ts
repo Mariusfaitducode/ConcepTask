@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
@@ -11,13 +11,14 @@ import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 import { TaskService } from 'src/app/services/task/task.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
+import { Subscribable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private translate: TranslateService,
@@ -28,8 +29,10 @@ export class HomePage {
   )
   {}
 
+  userSubscription! : Subscription;
   user : User | null = null;
 
+  todoSubscription! : Subscription;
   todos : Todo[] = []
   results : Todo[] = []
 
@@ -57,6 +60,18 @@ export class HomePage {
       this.darkMode = this.settingsService.settings.darkMode;
     
     });
+  }
+
+  ngOnDestroy(){
+
+    console.log("HOME PAGE ON DESTROY")
+
+    if (this.userSubscription){
+      this.userSubscription.unsubscribe();
+    }
+    if (this.todoSubscription){
+      this.todoSubscription.unsubscribe();
+    }
   }
 
 

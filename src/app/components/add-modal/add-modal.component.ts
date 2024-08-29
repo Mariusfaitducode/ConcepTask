@@ -78,32 +78,14 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   };
 
 
-  // showCloseConfirm = async () => {
-
-  //   if (!Todo.areSameTodos(this.subTask, this.initialSubTask)){
-
-  //     const { value } = await Dialog.confirm({
-  //       title: 'Confirm',
-  //       message: `Your change will be loosed ?`,
-  //     });
-    
-  //     console.log('Confirmed:', value);
-  
-  //     if (value) {
-  //       this.modalConfig.open = false;
-  //     }
-  //   }
-  //   else{
-  //     this.modalConfig.open = false;
-  //   }
-  // };
-
-
 
   deleteSubTask(){
-    this.modalConfig.parentTask!.list!.splice(this.modalConfig.index!, 1);
+    console.log('delete subTask with index : ')
 
-    //this.modalConfig.parentTask.list.filter((item: Todo) => item !== this.subTask)
+    const index = this.modalConfig.parentTask!.list!.findIndex(task => task.id === this.subTask.id);
+    if (index !== -1) {
+      this.modalConfig.parentTask!.list!.splice(index, 1);
+    }
 
     
     console.log( this.modalConfig.parentTask!.list )

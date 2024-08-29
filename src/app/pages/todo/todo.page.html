@@ -172,7 +172,7 @@
               (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
 
                 <app-sub-task 
-                [mainId]="todo.id"
+                [mainId]="mainTodo.id"
                 [todos]="todos" 
                 [parentTask]="todo" 
                 [subTask]="subTodo" 

@@ -179,12 +179,12 @@ export class NodeModalComponent implements OnInit {
     this.loadTodo()
     console.log(this.todo)
 
-    if (this.todo.main == false){
-      this.router.navigate(['/add', this.mainTodo.id, this.todo.subId]);
-    }
-    else{
-      this.router.navigate(['/add', this.mainTodo.id]);
-    }
+    // if (this.todo.main == false){
+    //   this.router.navigate(['/add', this.mainTodo.id, this.todo.subId]);
+    // }
+    // else{
+    //   this.router.navigate(['/add', this.mainTodo.id]);
+    // }
     
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
@@ -16,6 +16,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
 import { SettingsService } from 'src/app/services/settings/settings.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
   templateUrl: './todo.page.html',
   styleUrls: ['./todo.page.scss'],
 })
-export class TodoPage implements OnInit {
+export class TodoPage implements OnInit, OnDestroy {
 
   constructor(private navCtrl: NavController, 
     private route : ActivatedRoute, 
@@ -35,11 +36,11 @@ export class TodoPage implements OnInit {
   ){}
 
   // User
-
+  userSubscription! : Subscription;
   user : User | null = null;
 
   // Todo objects
-
+  todoSubscription! : Subscription;
   todos: Todo[] = [];
 
   mainTodo! : Todo;
@@ -92,6 +93,20 @@ export class TodoPage implements OnInit {
       });
     });
   }
+
+
+  ngOnDestroy(){
+
+    console.log("TODO PAGE ON DESTROY")
+
+    if (this.userSubscription){
+      this.userSubscription.unsubscribe();
+    }
+    if (this.todoSubscription){
+      this.todoSubscription.unsubscribe();
+    }
+  }
+
 
 
   // INITIALIZATION

@@ -110,18 +110,13 @@ export class SubTaskComponent  implements OnInit {
   }
 
   modifyTaskOnList(subTask : Todo){
-    this.openModal.task = subTask;
-    this.openModal.open = true;
-    this.openModal.modify = true;
-    this.openModal.parentTask = this.parentTask;
-    // this.openModal.index = this.index;
+
+    this.openModal.openModifyTaskModal(subTask, this.parentTask);
   }
 
   addSubTaskOnList(){
-    this.openModal.task = new Todo();
-    this.openModal.open = true;
-    this.openModal.modify = false;
-    this.openModal.parentTask = this.subTask;
+
+    this.openModal.openNewTaskModal(this.subTask);
   }
 
 

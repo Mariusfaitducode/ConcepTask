@@ -19,7 +19,7 @@ export class Todo {
     public notifId?: number;
 
 
-    public main: boolean = false;  // The todo is main if it have no parent
+    // public main: boolean = false;  // The todo is main if it have no parent
     public welcomeTodo?: boolean = false;
 
 

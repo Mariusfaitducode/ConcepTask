@@ -31,10 +31,9 @@ export class ButtonAddSubTaskComponent  implements OnInit {
 
   // Add sub task with modal
   addTaskOnList(){
-    this.modalConfig.task = new Todo();
-    this.modalConfig.open = true;
-    this.modalConfig.modify = false;
-    this.modalConfig.parentTask = this.parentTask;
+
+    this.modalConfig.openNewTaskModal(this.parentTask)
+
     console.log(this.modalConfig);
   }
 
