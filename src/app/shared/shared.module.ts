@@ -18,6 +18,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HabitTrackerComponent } from '../components/habit-tracker/habit-tracker.component';
+import { GraphComponent } from '../components/graph/graph.component';
 
 
 
@@ -53,6 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonAddSubTaskComponent,
     DateSelectorComponent,
     HabitTrackerComponent,
+    GraphComponent,
   ],
   exports:[
     TodoCardComponent, 
@@ -66,6 +68,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DateSelectorComponent,
     TranslateModule,
     HabitTrackerComponent,
+    GraphComponent,
   ]
 })
 export class SharedModule { }

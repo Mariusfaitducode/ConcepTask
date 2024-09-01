@@ -1,6 +1,8 @@
 
 
 <ion-header *ngIf="todo" [translucent]="true" id="header">
+
+  <!-- HEADER -->
   <ion-toolbar class="toolbar-parent">
 
     <div class="toolbar-content">
@@ -71,7 +73,7 @@
 
     <div  [ngClass]="{ 'header-appear': hideSubToolbar, 'header-disappear': !hideSubToolbar }">
 
-      <ion-segment [(ngModel)]="subMode" *ngIf="changePositionSubMode" class="sub-task-mode tree-segment" (ionChange)="goToConceptor()" ngDefaultControl="tree">
+      <ion-segment [(ngModel)]="subMode" *ngIf="changePositionSubMode" class="sub-task-mode tree-segment" ngDefaultControl="tree">
         <ion-segment-button value="tree">
           <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
         </ion-segment-button>
@@ -155,7 +157,7 @@
           </div>
         </div>
         
-        <ion-segment [(ngModel)]="subMode"  class="tree-segment" (ionChange)="goToConceptor()" >
+        <ion-segment [(ngModel)]="subMode"  class="tree-segment" >
           <ion-segment-button value="tree">
             <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
           </ion-segment-button>
@@ -164,7 +166,10 @@
           </ion-segment-button>
         </ion-segment>
 
-        <div>
+
+        <!-- SUBTAKS LIST -->
+
+        <div *ngIf="subMode === 'tree'">
           <!-- <div cdkDropList [cdkDropListData]="todo.list" (cdkDropListDropped)="drop($event)"> -->
           <div cdkDropListGroup>
             <div *ngFor="let subTodo of todo.list; let index = index" >
@@ -182,9 +187,13 @@
               </div>
             </div >
           </div>
-
-           
         </div>
+
+        <!-- CONCEPTOR -->
+
+
+        <app-graph *ngIf="subMode === 'graph'" [todo]="mainTodo"></app-graph>
+
       </ion-list> 
 
     </div>
