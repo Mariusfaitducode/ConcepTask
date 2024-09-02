@@ -88,7 +88,7 @@
 
 
 
-<ion-content *ngIf="todo" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll()">
+<ion-content *ngIf="todo" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll($event)">
 
 
   <!-- <ion-button (click)="exportTodo()">
@@ -189,15 +189,20 @@
           </div>
         </div>
 
-        <!-- CONCEPTOR -->
 
 
-        <app-graph *ngIf="subMode === 'graph'" [todo]="mainTodo"></app-graph>
+        
 
       </ion-list> 
 
     </div>
 
   </ion-list>
+
+  <!-- CONCEPTOR -->
+
+  <app-graph *ngIf="subMode === 'graph'" [todo]="mainTodo"></app-graph>
+
+  <div class='scroll-step'></div>
 
 </ion-content>

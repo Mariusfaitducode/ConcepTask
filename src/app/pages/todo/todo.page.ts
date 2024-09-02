@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
@@ -17,6 +17,7 @@ import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { Subscription } from 'rxjs';
+import { GraphComponent } from 'src/app/components/graph/graph.component';
 
 
 @Component({
@@ -26,13 +27,15 @@ import { Subscription } from 'rxjs';
 })
 export class TodoPage implements OnInit, OnDestroy {
 
-  constructor(private navCtrl: NavController, 
+  constructor(
+    private navCtrl: NavController, 
     private route : ActivatedRoute, 
     private router : Router,
     private translate : TranslateService,
     private userService : UserService,
     private taskService : TaskService,
-    private settingsService : SettingsService
+    private settingsService : SettingsService,
+    private elRef: ElementRef
   ){}
 
   // User
@@ -61,6 +64,9 @@ export class TodoPage implements OnInit, OnDestroy {
 
   changePositionSubMode : boolean = false;
   subMode : string = "tree";
+
+  // Graph conceptor
+  @ViewChild(GraphComponent) graphComponent!: GraphComponent;
 
 
   ngOnInit() {
@@ -216,7 +222,11 @@ export class TodoPage implements OnInit, OnDestroy {
 
   // SCROLL Tree / Graph management
 
-  onContentScroll(){
+  onContentScroll(event : any){
+
+    console.log('scroll')
+
+    // subMode
 
     const subTaskMode = document.getElementById('sub-task-mode')!;
     let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
@@ -229,6 +239,27 @@ export class TodoPage implements OnInit, OnDestroy {
       this.changePositionSubMode = false;
       this.hideSubToolbar = false;
     }
+
+    // graph height calculation
+
+    if (this.graphComponent){
+      const scrollTop = event.detail.scrollTop;
+      const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+      const windowHeight = window.innerHeight;
+  
+      // Calculez la nouvelle hauteur pour le graphique
+      const newHeight = windowHeight - contentHeight + scrollTop - 156;
+  
+      // Ajustez la taille du graphique
+      this.graphComponent.resizeGraph(newHeight);
+  
+      // Pour éviter de scroller plus loin que nécessaire
+      if (scrollTop >= contentHeight) {
+        event.target.scrollToPoint(0, contentHeight);
+      }
+    }
+
+    
   }
 
 
