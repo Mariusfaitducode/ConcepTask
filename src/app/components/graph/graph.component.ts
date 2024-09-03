@@ -34,10 +34,10 @@ export class GraphComponent implements OnInit {
   // todos : Todo[] = [];
   @Input() todo! : Todo;
 
-  @Input() minHeight: number = 300; // Hauteur minimale du graphique
-  @Input() maxHeight: number = 600; // Hauteur maximale du graphique
+  minHeight: number = 300; // Hauteur minimale du graphique
+  // maxHeight: number = 600; // Hauteur maximale du graphique
 
-  height : number = 100;
+  @Input() height : number = 300;
 
   nodes : any[] = []
   links : any[] = []
@@ -81,7 +81,7 @@ export class GraphComponent implements OnInit {
 
   public resizeGraph(newHeight: number): void {
 
-    console.log("CHANGE HEIGHT : ", newHeight)
+    // console.log("resize graph")
 
     const svg = this.graphElements.svg;
     const width = window.innerWidth;
@@ -100,6 +100,9 @@ export class GraphComponent implements OnInit {
 
     // Initialiser la taille du graphique
     let { width, height } = this.getGraphDimensions();
+
+    console.log("HEIGHT ON INIT :", height, this.height, this.minHeight)
+
 
     // Initialiser le conteneur SVG
     const svg = this.initializeSVGContainer(width, height);
@@ -123,7 +126,13 @@ export class GraphComponent implements OnInit {
 // Fonction pour obtenir les dimensions du graphique
 getGraphDimensions() {
     const width = window.innerWidth;
-    const height = this.minHeight; // Calcul initial de la hauteur
+    let height = 0;
+    if (this.height){
+      height = Math.max(this.minHeight, this.height);
+    }
+    else{
+      height = this.minHeight;
+    }
     return { width, height };
 }
 

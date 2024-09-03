@@ -60,10 +60,16 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
   // Tree / Graph mode 
-  hideSubToolbar: boolean = false;
+  treeGraphChoiceOnHeader: boolean = false;
 
-  changePositionSubMode : boolean = false;
+  // changePositionSubMode : boolean = false;
   subMode : string = "tree";
+
+
+  changeModeToGraph : boolean = false;
+
+  // graphHeight : number = 300;
+  scrollTop : number = 0;
 
   // Graph conceptor
   @ViewChild(GraphComponent) graphComponent!: GraphComponent;
@@ -192,22 +198,6 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  goToConceptor(){
-    console.log("go to conceptor")
-
-    const segment = document.querySelectorAll('.tree-segment') as NodeListOf<HTMLIonSegmentElement>;
-
-    this.subMode = "tree";
-    this.router.navigate(['/conceptor', this.mainTodo.id]);
-
-    console.log("navigation to conceptor done")
-
-    segment!.forEach((seg) => {
-      seg!.value = "tree";
-    })
-  }
-
-
   modifyTodo(){ // redirection to add page
 
     const params = this.route.snapshot.params;
@@ -224,42 +214,116 @@ export class TodoPage implements OnInit, OnDestroy {
 
   onContentScroll(event : any){
 
-    console.log('scroll')
+    // this.scrollRef = event.detail.scrollTop;
+
+    // if (this.changeModeToGraph && this.treeGraphChoiceOnHeader) {
+    //   console.log("scroll on max graph and avoid toolbar mode change")
+    //   // const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+    //   // event.target.scrollToPoint(0, contentHeight);
+    //   this.changeModeToGraph = false;
+    //   return;
+    // }
 
     // subMode
 
-    const subTaskMode = document.getElementById('sub-task-mode')!;
-    let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
-
-    if (subTaskModePosY < -20) {
-      this.changePositionSubMode = true;
-      this.hideSubToolbar = true;
-    }
-    else {
-      this.changePositionSubMode = false;
-      this.hideSubToolbar = false;
-    }
+    this.switchTreeGraphToolbar()
 
     // graph height calculation
 
-    if (this.graphComponent){
-      const scrollTop = event.detail.scrollTop;
-      const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
-      const windowHeight = window.innerHeight;
-  
-      // Calculez la nouvelle hauteur pour le graphique
-      const newHeight = windowHeight - contentHeight + scrollTop - 156;
-  
-      // Ajustez la taille du graphique
-      this.graphComponent.resizeGraph(newHeight);
-  
-      // Pour éviter de scroller plus loin que nécessaire
-      if (scrollTop >= contentHeight) {
-        event.target.scrollToPoint(0, contentHeight);
-      }
+    this.calcGraphHeightOnScroll(event)
+    
+  }
+
+  // SUBMODE SWITCH
+
+  switchTreeGraphToolbar(){
+    const subTaskMode = document.getElementById('sub-task-mode')!;
+    let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
+
+    if (subTaskModePosY < 0) {
+
+      console.log("toolbar mode")
+
+      // this.changePositionSubMode = true;
+      this.treeGraphChoiceOnHeader = true;
     }
+    else {
+
+      console.log("normal mode")
+
+      // this.changePositionSubMode = false;
+      this.treeGraphChoiceOnHeader = false;
+    }
+  }
+
+  // GRAPH HEIGHT CALCULATION
+
+  calcGraphHeightOnScroll(event : any){
 
     
+    this.scrollTop = event.detail.scrollTop;
+
+    if (this.graphComponent){
+
+      
+      const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+      const windowHeight = window.innerHeight;
+
+      // Calculez la nouvelle hauteur pour le graphique
+      let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
+
+      
+
+      // console.log("calc graph height on scroll", graphHeight)
+
+      // Pour éviter de scroller plus loin que nécessaire
+      if (this.scrollTop >= contentHeight) {
+        console.log("scroll stop")
+        event.target.scrollToPoint(0, contentHeight);
+        return;
+      }
+
+      // Ajustez la taille du graphique
+      this.graphComponent.resizeGraph(graphHeight);
+    }
+  }
+
+
+  initializeGraphHeight(event : Event){
+
+    this.changeModeToGraph = false;
+
+    // if (this.subMode == 'graph'){
+    //   console.log("change mode to graph")
+    //   this.changeModeToGraph = true;
+    // }
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    setTimeout(() => {
+      if (this.graphComponent){
+
+        
+
+        console.log("INIT GRAPH SIZE WHEN CLICKED")
+
+        const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+        const windowHeight = window.innerHeight;
+
+        // Calculez la nouvelle hauteur pour le graphique
+        let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
+
+        if (this.treeGraphChoiceOnHeader){
+          console.log("tree / graph on header toolbar")
+          graphHeight = windowHeight - 156;
+          // window.scrollTo(0, contentHeight)
+        }
+        
+        // // Ajustez la taille du graphique
+        this.graphComponent.resizeGraph(graphHeight);
+      }
+    }, 0)
   }
 
 

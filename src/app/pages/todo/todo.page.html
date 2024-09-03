@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div  [ngClass]="{ 'header-appear': !hideSubToolbar, 'header-disappear': hideSubToolbar }">
+    <div  [ngClass]="{ 'header-appear': !treeGraphChoiceOnHeader, 'header-disappear': treeGraphChoiceOnHeader }">
       <ion-row class="sub-toolbar" id="sub-toolbar">
 
         <ion-row class="header-infos">
@@ -71,9 +71,14 @@
       </ion-row>
     </div>
 
-    <div  [ngClass]="{ 'header-appear': hideSubToolbar, 'header-disappear': !hideSubToolbar }">
+    <div  [ngClass]="{ 'header-appear': treeGraphChoiceOnHeader, 'header-disappear': !treeGraphChoiceOnHeader }">
 
-      <ion-segment [(ngModel)]="subMode" *ngIf="changePositionSubMode" class="sub-task-mode tree-segment" ngDefaultControl="tree">
+      <ion-segment 
+      [(ngModel)]="subMode" (ionChange)="initializeGraphHeight($event)"
+       *ngIf="treeGraphChoiceOnHeader" 
+       class="sub-task-mode tree-segment" 
+       ngDefaultControl="tree">
+
         <ion-segment-button value="tree">
           <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
         </ion-segment-button>
@@ -157,7 +162,11 @@
           </div>
         </div>
         
-        <ion-segment [(ngModel)]="subMode"  class="tree-segment" >
+        <ion-segment 
+          [(ngModel)]="subMode"  
+          class="tree-segment" [class.hide-tree-task]="treeGraphChoiceOnHeader" 
+          (ionChange)="initializeGraphHeight($event)">
+
           <ion-segment-button value="tree">
             <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
           </ion-segment-button>
@@ -203,6 +212,6 @@
 
   <app-graph *ngIf="subMode === 'graph'" [todo]="mainTodo"></app-graph>
 
-  <div class='scroll-step'></div>
+  <div  class='scroll-step'></div>
 
 </ion-content>
