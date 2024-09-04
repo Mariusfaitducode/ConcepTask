@@ -214,27 +214,15 @@ export class TodoPage implements OnInit, OnDestroy {
 
   onContentScroll(event : any){
 
-    // this.scrollRef = event.detail.scrollTop;
-
-    if (this.changeModeToGraph && this.treeGraphChoiceOnHeader) {
-      console.log("scroll on max graph and avoid toolbar mode change")
-      // const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
-      // event.target.scrollToPoint(0, contentHeight);
-      this.changeModeToGraph = false;
-      return;
-    }
-
-    // subMode
-
     this.scrollTop = event.detail.scrollTop;
 
+    // Permet d'adapter la positioon du switch tree / graph en fonction du scroll
     this.switchTreeGraphToolbar()
 
     // graph height calculation
-
     this.calcGraphHeightOnScroll(event)
 
-    // Prevent scroll on header
+    // Permet de bloquer le scroll sur la division scroll-step
     if (this.subMode == 'tree'){
       const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
 
@@ -250,6 +238,16 @@ export class TodoPage implements OnInit, OnDestroy {
   // SUBMODE SWITCH
 
   switchTreeGraphToolbar(){
+
+    // Permet d'éviter de changer la place du switch tree / graph lorsqu'on passe en mode graph en étant en mode header
+    if (this.changeModeToGraph && this.treeGraphChoiceOnHeader) {
+      console.log("scroll on max graph and avoid toolbar mode change")
+      // const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+      // event.target.scrollToPoint(0, contentHeight);
+      this.changeModeToGraph = false;
+      return;
+    }
+
     const subTaskMode = document.getElementById('sub-task-mode')!;
     let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
 
@@ -291,15 +289,15 @@ export class TodoPage implements OnInit, OnDestroy {
 
   initializeGraphHeight(event : Event){
 
+    event.preventDefault()
+    event.stopPropagation()
+
     this.changeModeToGraph = false;
 
     if (this.subMode == 'graph'){ // Prevent tree / graph toolbar switch
       // console.log("change mode to graph")
       this.changeModeToGraph = true;
     }
-
-    event.preventDefault()
-    event.stopPropagation()
 
     setTimeout(() => {
       if (this.graphComponent){

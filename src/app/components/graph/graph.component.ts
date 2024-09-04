@@ -37,11 +37,18 @@ export class GraphComponent implements OnInit {
 
   @Input() height : number = 300;
 
-  nodes : any[] = []
-  links : any[] = []
+//   nodes : any[] = []
+//   links : any[] = []
+
+  graphData : any = {
+    nodes : [],
+    links : []
+  };
 
 
-  graphElements : any;
+//   graphElements : any;
+
+    svg : any;
 
   simulation : any;
   link : any;
@@ -62,46 +69,60 @@ export class GraphComponent implements OnInit {
   }
 
 
-  public resizeGraph(newHeight: number): void {
-    // console.log("resize graph")
+  // DATA INITIALIZATION
 
-    const svg = this.graphElements.svg;
-    const width = window.innerWidth - 8;
+  initData(){
+    this.graphData.nodes = [];
+    this.graphData.links = [];
 
-    svg.attr('height', newHeight);
+    this.graphData.nodes.push({id: 0, level : 0, todo: this.todo});
 
-    // Recentrer la force de gravité au milieu du nouveau conteneur
-    this.graphElements.simulation
-      .force('center', d3.forceCenter(width / 2, newHeight / 2))
-      .alpha(0.3).restart();
+    if (this.todo.developped){
+        this.traverseList(this.todo.list, 0);
+    }
   }
 
 
+  traverseList(list : any, level : any) {
+    if (!list || list.length === 0) return;
+
+    for (let todo of list) {
+      this.graphData.nodes.push({ id: todo.subId, level: level, todo: todo });
+      this.graphData.links.push({ source: todo.parentId, target: todo.subId });
+
+      if (todo.developped && todo.list && todo.list.length > 0) {
+          this.traverseList(todo.list, level + 1); // Appel récursif pour les sous-listes avec un niveau incrémenté
+      }
+    }
+  }
+
+  
+  // GRAPH INITIALIZATION
+
   initializeConceptorGraph() {
-      const graph = { nodes: this.nodes, links: this.links };
+    // Initialiser la taille du graphique
+    let { width, height } = this.getGraphDimensions();
 
-      // Initialiser la taille du graphique
-      let { width, height } = this.getGraphDimensions();
+    // Initialiser le conteneur SVG
+    const svg = this.initializeSVGContainer(width, height);
 
-      // console.log("HEIGHT ON INIT :", height, this.height, this.minHeight)
+    // Initialiser les forces de simulation
+    const simulation = this.initializeSimulation(this.graphData, width, height);
 
+    // Initialiser les éléments du graphique (liens, nœuds, icônes, labels)
+    const { link, circle, nodeIcon, text } = this.initializeGraphElements(svg, this.graphData);
 
-      // Initialiser le conteneur SVG
-      const svg = this.initializeSVGContainer(width, height);
+    // Attacher les événements de zoom et de drag
+    this.attachZoomAndDrag(svg);
 
-      // Initialiser les forces de simulation
-      const simulation = this.initializeSimulation(graph, width, height);
+    this.svg = svg;
+    this.simulation = simulation;
+    this.link = link;
+    this.circle = circle;
+    this.nodeIcon = nodeIcon;
+    this.text = text;
 
-      // Initialiser les éléments du graphique (liens, nœuds, icônes, labels)
-      const { link, circle, nodeIcon, text } = this.initializeGraphElements(svg, graph);
-
-      // Attacher les événements de zoom et de drag
-      this.attachZoomAndDrag(svg, simulation, link, circle, nodeIcon, text);
-
-      // Stocker les éléments pour mise à jour future
-      this.graphElements = { svg, simulation, link, circle, nodeIcon, text, graph };
-
-      console.log('Graph initialization complete', svg);
+    console.log('Graph initialization complete', svg);
   }
 
 
@@ -193,18 +214,12 @@ export class GraphComponent implements OnInit {
   }
 
   // Fonction pour attacher les événements de zoom et drag
-  attachZoomAndDrag(svg: any, simulation: any, link: any, circle: any, nodeIcon: any, text: any) {
+  attachZoomAndDrag(svg: any) {
       const zoom = d3.zoom()
           .scaleExtent([0.1, 10])
           .on("zoom", (event) => this.zoomed(event, svg));
 
       svg.call(zoom);
-
-      this.simulation = simulation;
-      this.link = link;
-      this.circle = circle;
-      this.nodeIcon = nodeIcon;
-      this.text = text;
   }
 
   // Fonction pour mettre à jour les positions des éléments du graphique
@@ -286,97 +301,71 @@ export class GraphComponent implements OnInit {
       // Logique pour gérer le clic sur un nœud
       console.log('On click circle:', d);
 
-    //   console.log(JSON.parse(JSON.stringify(this.graphElements)))
-
       // Développer ou réduire les sous-tâches
       this.toggleSubTodos(d);
 
-    //   console.log(JSON.parse(JSON.stringify(this.graphElements)))
       this.updateGraph();
   }
 
+
   // Fonction pour ajouter ou retirer les sous-tâches
   toggleSubTodos(d: any) {
-    //   for (let subTodo of d.todo.list!) {
-    //       if (this.graphElements.graph.nodes.find((node: any) => node.id == subTodo.subId)) {
-    //           d.todo.developped = false;
-    //           this.graphElements.graph.nodes = this.graphElements.graph.nodes.filter((node: any) => node.id != subTodo.subId);
-    //           this.graphElements.graph.links = this.graphElements.graph.links.filter((link: any) => link.target.id != subTodo.subId);
-    //           this.removeSubTodos(subTodo);
-    //       } else {
-    //           d.todo.developped = true;
-    //           this.graphElements.graph.nodes.push({ 
-    //             id: subTodo.subId, 
-    //             level: d.level + 1, 
-    //             todo: subTodo,
-    //             x: Math.random() * 200 - 100,  // Coordonnées initiales aléatoires pour éviter chevauchement
-    //             y: Math.random() * 200 - 100
-    //         });
-    //           this.graphElements.graph.links.push({ source: d.id, target: subTodo.subId });
-    //         //   if (subTodo.developped) this.addSubTodos(subTodo, d.level + 1);
-    //       }
-    //   }
-
-    if (d.todo.developped){
-        d.todo.developped = false;
-        
+    for (let subTodo of d.todo.list!) {
+        if (this.graphData.nodes.find((node: any) => node.id == subTodo.subId)) {
+            d.todo.developped = false;
+            this.graphData.nodes = this.graphData.nodes.filter((node: any) => node.id != subTodo.subId);
+            this.graphData.links = this.graphData.links.filter((link: any) => link.target.id != subTodo.subId);
+            this.removeSubTodos(subTodo);
+        } else {
+            d.todo.developped = true;
+            this.graphData.nodes.push({ id: subTodo.subId, level: d.level + 1, todo: subTodo,});
+            this.graphData.links.push({ source: d.id, target: subTodo.subId });
+            if (subTodo.developped) this.addSubTodos(subTodo, d.level + 1);
+        }
     }
-    else{
-        d.todo.developped = true;
-    }
-
-    this.initData();
-
-    this.graphElements.graph.nodes = this.nodes;
-    this.graphElements.graph.links = this.links;
   }
 
   // Fonctions pour ajouter et retirer des sous-tâches
   addSubTodos(todo: Todo, level: number) {
-      for (let subTodo of todo.list!) {
-          this.graphElements.graph.nodes.push({ id: subTodo.subId, 
-            level: level + 1, 
-            todo: subTodo,
-            x: Math.random() * 200 - 100,  // Coordonnées initiales aléatoires pour éviter chevauchement
-            y: Math.random() * 200 - 100
-        });
-          this.graphElements.graph.links.push({ source: todo.subId, target: subTodo.subId });
-      }
+    for (let subTodo of todo.list!) {
+        this.graphData.nodes.push({ id: subTodo.subId, level: level + 1, todo: subTodo});
+        this.graphData.links.push({ source: todo.subId, target: subTodo.subId });
+    }
   }
 
   removeSubTodos(todo: Todo) {
-      for (let subTodo of todo.list!) {
-          this.graphElements.graph.nodes = this.graphElements.graph.nodes.filter((node: any) => node.id != subTodo.subId);
-          this.graphElements.graph.links = this.graphElements.graph.links.filter((link: any) => link.target.id != subTodo.subId);
-          this.removeSubTodos(subTodo);
-      }
+    for (let subTodo of todo.list!) {
+        this.graphData.nodes = this.graphData.nodes.filter((node: any) => node.id != subTodo.subId);
+        this.graphData.links = this.graphData.links.filter((link: any) => link.target.id != subTodo.subId);
+        this.removeSubTodos(subTodo);
+    }
   }
 
   // Mise à jour du graphique
   updateGraph() {
-      this.updateLink();
-      this.updateCircle();
-      this.updateEmoji();
-      this.updateText();
-      this.updateSimulation();
+    this.updateLink();
+    this.updateCircle();
+    this.updateEmoji();
+    this.updateText();
+    this.updateSimulation();
   }
 
   updateLink() {
-      this.graphElements.link = this.graphElements.link.data(this.graphElements.graph.links, (d: any) => d.target.id);
-      this.graphElements.link.exit().remove();
-      this.graphElements.link = this.graphElements.link.enter().append("line")
-          .merge(this.graphElements.link)
-          .attr("stroke-width", 3)
-          .attr("stroke", "var(--ion-color-step-700)");
+    this.link = this.link.data(this.graphData.links, (d: any) => d.target.id);
+    this.link.exit().remove();
+    this.link = this.link.enter().append("line")
+        .merge(this.link)
+        .attr("stroke-width", 3)
+        .attr("stroke", "var(--ion-color-step-700)");
 
-    console.log(this.graphElements.link)
+    console.log(this.link)
   }
 
   updateCircle() {
-    this.graphElements.circle = this.graphElements.circle.data(this.graphElements.graph.nodes, (d: any) => d.id);
-    this.graphElements.circle.exit().remove();
-    this.graphElements.circle = this.graphElements.circle.enter().append("circle")
-        .merge(this.graphElements.circle)
+    this.circle = this.circle.data(this.graphData.nodes, (d: any) => d.id);
+    this.circle.exit().remove();
+    this.circle = this.circle.enter().append("circle")
+        .merge(this.circle)
         .attr("r", this.sizeNode)
         .attr("fill", this.nodeColor)
         .attr("stroke", "var(--ion-color-step-700)")
@@ -384,91 +373,56 @@ export class GraphComponent implements OnInit {
         .call(this.initializeDrag())
         .on("click", this.onClickCircle.bind(this));
 
-    console.log(this.graphElements.circle)
+    console.log(this.circle)
   }
 
   updateEmoji() {
-      this.graphElements.nodeIcon = this.graphElements.nodeIcon.data(this.graphElements.graph.nodes, (d: any) => d.id);
-      this.graphElements.nodeIcon.exit().remove();
-      this.graphElements.nodeIcon = this.graphElements.nodeIcon.enter().append("text")
-          .merge(this.graphElements.nodeIcon)
-          .text(this.emojiNode)
-          .attr('font-size', '10px')
-          .attr('letter-spacing', '-3px');
+    this.nodeIcon = this.nodeIcon.data(this.graphData.nodes, (d: any) => d.id);
+    this.nodeIcon.exit().remove();
+    this.nodeIcon = this.nodeIcon.enter().append("text")
+        .merge(this.nodeIcon)
+        .text(this.emojiNode)
+        .attr('font-size', '10px')
+        .attr('letter-spacing', '-3px');
   }
 
   updateText() {
-      this.graphElements.text = this.graphElements.text.data(this.graphElements.graph.nodes, (d: any) => d.id);
-      this.graphElements.text.exit().remove();
-      this.graphElements.text = this.graphElements.text.enter().append("text")
-          .merge(this.graphElements.text)
-          .attr("class", "node-label")
-          .text((d: any) => d.todo.title);
+    this.text = this.text.data(this.graphData.nodes, (d: any) => d.id);
+    this.text.exit().remove();
+    this.text = this.text.enter().append("text")
+        .merge(this.text)
+        .attr("class", "node-label")
+        .text((d: any) => d.todo.title);
   }
 
   updateSimulation() {
 
     console.log("UPDATE SIMULATION : ")
 
-    // this.graphElements.simulation.stop();
+    this.simulation.stop();
 
-    //   console.log(JSON.parse(JSON.stringify(this.graphElements.links)))
-
-      let width = window.innerWidth - 8;
-        let height = this.height;
-
-      this.graphElements.simulation = this.initializeSimulation(this.graphElements.graph, width, height);
-
-    //   this.graphElements.simulation.restart();
-
-    // this.graphElements.simulation
-    //     .nodes(this.graphElements.graph.nodes)
-
-    // this.graphElements.simulation
-    //     .force("link").links(this.graphElements.graph.links).distance(100);
+    this.simulation
+        .nodes(this.graphData.nodes)
+        .force("link").links(this.graphData.links)
           
-    // //   this.graphElements.simulation.restart();
-    // // this.graphElements.simulation.alpha(1).restart();
-
-    // setTimeout(() => {
-    //     this.graphElements.simulation.alpha(1).restart();
-
-    //   console.log(JSON.parse(JSON.stringify(this.graphElements)))
-
-    // }, 100);
+    this.simulation.alpha(1).restart();
   }
 
 
+  // GRAPH RESIZE ON SCROLL
 
+  public resizeGraph(newHeight: number): void {
 
-  initData(){
-    this.nodes = [];
-    this.links = [];
+    const width = window.innerWidth - 8;
 
-    this.nodes.push({id: 0, level : 0, todo: this.todo});
+    this.svg.attr('height', newHeight);
 
-    if (this.todo.developped){
-        this.traverseList(this.todo.list, 0);
-    }
+    // Recentrer la force de gravité au milieu du nouveau conteneur
+    this.simulation
+      .force('center', d3.forceCenter(width / 2, newHeight / 2))
+      .alpha(0.3).restart();
   }
 
-
-  traverseList(list : any, level : any) {
-    if (!list || list.length === 0) return;
-
-    for (let todo of list) {
-        this.nodes.push({ id: todo.subId, level: level, todo: todo });
-        this.links.push({ source: todo.parentId, target: todo.subId });
-
-        if (todo.developped && todo.list && todo.list.length > 0) {
-            this.traverseList(todo.list, level + 1); // Appel récursif pour les sous-listes avec un niveau incrémenté
-        }
-    }
-  }
-
-//   goBackTodo(){
-//     this.router.navigate(['/home']);
-//   }
-
+  
 }
 
