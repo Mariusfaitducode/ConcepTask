@@ -28,10 +28,8 @@ import { TodoDate } from 'src/app/utils/todo-date';
 })
 export class GraphComponent implements OnInit {
 
-  index : string = '';
+  // index : string = '';
 
-  // todoSubscription! : Subscription;
-  // todos : Todo[] = [];
   @Input() todo! : Todo;
 
   minHeight: number = 300; // Hauteur minimale du graphique
@@ -51,11 +49,6 @@ export class GraphComponent implements OnInit {
   nodeIcon : any;
   text : any;
 
-  // modalNode: any = {
-  //   open: false,
-  //   task: Todo,
-  // };
-
   constructor(private router : Router,) { }
 
 
@@ -69,22 +62,11 @@ export class GraphComponent implements OnInit {
   }
 
 
-  // ngOnDestroy(){
-
-  //   console.log("CONCEPTOR PAGE ON DESTROY")
-    
-  //   if (this.todoSubscription){
-  //     this.todoSubscription.unsubscribe();
-  //   }
-  // }
-
-
   public resizeGraph(newHeight: number): void {
-
     // console.log("resize graph")
 
     const svg = this.graphElements.svg;
-    const width = window.innerWidth;
+    const width = window.innerWidth - 8;
 
     svg.attr('height', newHeight);
 
@@ -96,137 +78,137 @@ export class GraphComponent implements OnInit {
 
 
   initializeConceptorGraph() {
-    const graph = { nodes: this.nodes, links: this.links };
+      const graph = { nodes: this.nodes, links: this.links };
 
-    // Initialiser la taille du graphique
-    let { width, height } = this.getGraphDimensions();
+      // Initialiser la taille du graphique
+      let { width, height } = this.getGraphDimensions();
 
-    console.log("HEIGHT ON INIT :", height, this.height, this.minHeight)
-
-
-    // Initialiser le conteneur SVG
-    const svg = this.initializeSVGContainer(width, height);
-
-    // Initialiser les forces de simulation
-    const simulation = this.initializeSimulation(graph, width, height);
-
-    // Initialiser les éléments du graphique (liens, nœuds, icônes, labels)
-    const { link, circle, nodeIcon, text } = this.initializeGraphElements(svg, graph);
-
-    // Attacher les événements de zoom et de drag
-    this.attachZoomAndDrag(svg, simulation, link, circle, nodeIcon, text);
-
-    // Stocker les éléments pour mise à jour future
-    this.graphElements = { svg, simulation, link, circle, nodeIcon, text, graph };
-
-    console.log('Graph initialization complete', svg);
-}
+      // console.log("HEIGHT ON INIT :", height, this.height, this.minHeight)
 
 
-// Fonction pour obtenir les dimensions du graphique
-getGraphDimensions() {
-    const width = window.innerWidth;
-    let height = 0;
-    if (this.height){
-      height = Math.max(this.minHeight, this.height);
-    }
-    else{
-      height = this.minHeight;
-    }
-    return { width, height };
-}
+      // Initialiser le conteneur SVG
+      const svg = this.initializeSVGContainer(width, height);
+
+      // Initialiser les forces de simulation
+      const simulation = this.initializeSimulation(graph, width, height);
+
+      // Initialiser les éléments du graphique (liens, nœuds, icônes, labels)
+      const { link, circle, nodeIcon, text } = this.initializeGraphElements(svg, graph);
+
+      // Attacher les événements de zoom et de drag
+      this.attachZoomAndDrag(svg, simulation, link, circle, nodeIcon, text);
+
+      // Stocker les éléments pour mise à jour future
+      this.graphElements = { svg, simulation, link, circle, nodeIcon, text, graph };
+
+      console.log('Graph initialization complete', svg);
+  }
 
 
-// Fonction pour initialiser le conteneur SVG
-initializeSVGContainer(width: number, height: number) {
-    const svg = d3.select("#graph-container")
-        .attr("width", width)
-        .attr("height", height);
+  // Fonction pour obtenir les dimensions du graphique
+  getGraphDimensions() {
+      const width = window.innerWidth - 8;
+      let height = 0;
+      if (this.height){
+        height = Math.max(this.minHeight, this.height);
+      }
+      else{
+        height = this.minHeight;
+      }
+      return { width, height };
+  }
 
-    // Nettoyer le conteneur avant l'initialisation
-    svg.selectAll("*").remove();
 
-    // Ajouter un groupe pour contenir les éléments graphiques
-    svg.append("g");
+  // Fonction pour initialiser le conteneur SVG
+  initializeSVGContainer(width: number, height: number) {
+      const svg = d3.select("#graph-container")
+          .attr("width", width)
+          .attr("height", height);
 
-    return svg;
-}
+      // Nettoyer le conteneur avant l'initialisation
+      svg.selectAll("*").remove();
 
-// Fonction pour initialiser la simulation de forces
-initializeSimulation(graph: any, width: number, height: number) {
-    return d3.forceSimulation(graph.nodes)
-        .force("link", d3.forceLink().id((d: any) => d.id).links(graph.links))
-        .force("charge", d3.forceManyBody().strength(-100))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .on("tick", this.ticked.bind(this));
-}
+      // Ajouter un groupe pour contenir les éléments graphiques
+      svg.append("g");
 
-// Fonction pour initialiser les éléments du graphique (liens, nœuds, icônes, labels)
-initializeGraphElements(svg: any, graph: any) {
-    const g = svg.select("g");
+      return svg;
+  }
 
-    const link = g.append("g").attr("class", "links")
-        .selectAll("line")
-        .data(graph.links)
-        .enter().append("line")
-        .attr("stroke-width", 3)
-        .attr("stroke", "var(--ion-color-step-700)");
+  // Fonction pour initialiser la simulation de forces
+  initializeSimulation(graph: any, width: number, height: number) {
+      return d3.forceSimulation(graph.nodes)
+          .force("link", d3.forceLink().id((d: any) => d.id).links(graph.links))
+          .force("charge", d3.forceManyBody().strength(-100))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .on("tick", this.ticked.bind(this));
+  }
 
-    const drag = this.initializeDrag();
+  // Fonction pour initialiser les éléments du graphique (liens, nœuds, icônes, labels)
+  initializeGraphElements(svg: any, graph: any) {
+      const g = svg.select("g");
 
-    const circle = g.append("g").attr("class", "nodes")
-        .selectAll("circle")
-        .data(graph.nodes)
-        .enter().append("circle")
-        .attr("r", this.sizeNode)
-        .attr("fill", this.nodeColor)
-        .attr("stroke", "var(--ion-color-step-700)")
-        .call(drag)
-        .on("click", this.onClickCircle.bind(this));
+      const link = g.append("g").attr("class", "links")
+          .selectAll("line")
+          .data(graph.links)
+          .enter().append("line")
+          .attr("stroke-width", 3)
+          .attr("stroke", "var(--ion-color-step-700)");
 
-    const nodeIcon = g.append("g").attr("class", "emoji")
-        .selectAll("text")
-        .data(graph.nodes)
-        .enter().append("text")
-        .text(this.emojiNode)
-        .attr('font-size', '10px')
-        .attr('letter-spacing', '-3px');
+      const drag = this.initializeDrag();
 
-    const text = g.append("g").attr("class", "labels")
-        .selectAll("text")
-        .data(graph.nodes)
-        .enter().append("text")
-        .attr("class", "node-label")
-        .text((d: any) => d.todo.title);
+      const circle = g.append("g").attr("class", "nodes")
+          .selectAll("circle")
+          .data(graph.nodes)
+          .enter().append("circle")
+          .attr("r", this.sizeNode)
+          .attr("fill", this.nodeColor)
+          .attr("stroke", "var(--ion-color-step-700)")
+          .call(drag)
+          .on("click", this.onClickCircle.bind(this));
 
-    return { link, circle, nodeIcon, text };
-}
+      const nodeIcon = g.append("g").attr("class", "emoji")
+          .selectAll("text")
+          .data(graph.nodes)
+          .enter().append("text")
+          .text(this.emojiNode)
+          .attr('font-size', '10px')
+          .attr('letter-spacing', '-3px');
 
-// Fonction pour initialiser le drag des nœuds
-initializeDrag() {
-    return d3.drag()
-        .on('start', this.dragStarted.bind(this))
-        .on('drag', this.dragged.bind(this))
-        .on('end', this.dragEnded.bind(this));
-}
+      const text = g.append("g").attr("class", "labels")
+          .selectAll("text")
+          .data(graph.nodes)
+          .enter().append("text")
+          .attr("class", "node-label")
+          .text((d: any) => d.todo.title);
 
-// Fonction pour attacher les événements de zoom et drag
-attachZoomAndDrag(svg: any, simulation: any, link: any, circle: any, nodeIcon: any, text: any) {
-    const zoom = d3.zoom()
-        .scaleExtent([0.1, 10])
-        .on("zoom", (event) => this.zoomed(event, svg));
+      return { link, circle, nodeIcon, text };
+  }
 
-    svg.call(zoom);
+  // Fonction pour initialiser le drag des nœuds
+  initializeDrag() {
+      return d3.drag()
+          .on('start', this.dragStarted.bind(this))
+          .on('drag', this.dragged.bind(this))
+          .on('end', this.dragEnded.bind(this));
+  }
 
-    this.simulation = simulation;
-    this.link = link;
-    this.circle = circle;
-    this.nodeIcon = nodeIcon;
-    this.text = text;
-}
+  // Fonction pour attacher les événements de zoom et drag
+  attachZoomAndDrag(svg: any, simulation: any, link: any, circle: any, nodeIcon: any, text: any) {
+      const zoom = d3.zoom()
+          .scaleExtent([0.1, 10])
+          .on("zoom", (event) => this.zoomed(event, svg));
 
-// Fonction pour mettre à jour les positions des éléments du graphique
-ticked() {
+      svg.call(zoom);
+
+      this.simulation = simulation;
+      this.link = link;
+      this.circle = circle;
+      this.nodeIcon = nodeIcon;
+      this.text = text;
+  }
+
+  // Fonction pour mettre à jour les positions des éléments du graphique
+  ticked() {
     this.link
         .attr("x1", (d: any) => d.source.x)
         .attr("y1", (d: any) => d.source.y)
@@ -244,121 +226,153 @@ ticked() {
     this.nodeIcon
         .attr("x", (d: any) => d.x + 3)
         .attr("y", (d: any) => d.y - 2);
-}
 
-// Fonction pour gérer le zoom
-zoomed(event: any, svg: any) {
-    svg.select("g").attr("transform", event.transform);
-}
+    // console.log("Nœuds après tick :", this.graphElements.graph.nodes);
+  }
 
-// Fonctions de drag
-dragStarted(event: any, d: any) {
-    if (!event.active) this.simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-}
+  // Fonction pour gérer le zoom
+  zoomed(event: any, svg: any) {
+      svg.select("g").attr("transform", event.transform);
+  }
 
-dragged(event: any, d: any) {
-    d.fx = event.x;
-    d.fy = event.y;
-}
+  // Fonctions de drag
+  dragStarted(event: any, d: any) {
+      if (!event.active) this.simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+  }
 
-dragEnded(event: any, d: any) {
-    if (!event.active) this.simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-}
+  dragged(event: any, d: any) {
+      d.fx = event.x;
+      d.fy = event.y;
+  }
 
-// Propriétés visuelles des éléments du graphique
-nodeColor(d: any) {
-    if (d.todo.isDone) {
-        return "var(--is-done-color-node)";
-    } else if (d.todo.config.date && TodoDate.passedDate(d.todo)) {
-        return "var(--ion-color-danger)";
-    } else {
-        const levelShade = (d.level * 150) + 100;
-        if (levelShade > 700) return 'var(--ion-color-step-700)';
-        return 'var(--ion-color-step-' + levelShade + ')';
+  dragEnded(event: any, d: any) {
+      if (!event.active) this.simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+  }
+
+  // Propriétés visuelles des éléments du graphique
+  nodeColor(d: any) {
+      if (d.todo.isDone) {
+          return "var(--is-done-color-node)";
+      } else if (d.todo.config.date && TodoDate.passedDate(d.todo)) {
+          return "var(--ion-color-danger)";
+      } else {
+          const levelShade = (d.level * 150) + 100;
+          if (levelShade > 700) return 'var(--ion-color-step-700)';
+          return 'var(--ion-color-step-' + levelShade + ')';
+      }
+  }
+
+  sizeNode(d: any) {
+      return d.todo.main ? 12 : 10;
+  }
+
+  emojiNode(d: any) {
+      let emoji = '';
+      if (d.todo.isDone) emoji += '✅';
+      if (d.todo.config.date) emoji += TodoDate.passedDate(d.todo) ? '⏰' : '📅';
+      if (d.todo.config.repeat && d.todo.reminder) emoji += '🔁';
+      if (d.todo.priority == 'high') emoji += '‼️';
+      if (d.todo.priority == 'medium') emoji += '❗';
+      if (d.todo.priority == 'low') emoji += '❕';
+      return emoji;
+  }
+
+  // Fonction pour gérer le clic sur les nœuds
+  onClickCircle(event: any, d: any) {
+      // Logique pour gérer le clic sur un nœud
+      console.log('On click circle:', d);
+
+    //   console.log(JSON.parse(JSON.stringify(this.graphElements)))
+
+      // Développer ou réduire les sous-tâches
+      this.toggleSubTodos(d);
+
+    //   console.log(JSON.parse(JSON.stringify(this.graphElements)))
+      this.updateGraph();
+  }
+
+  // Fonction pour ajouter ou retirer les sous-tâches
+  toggleSubTodos(d: any) {
+    //   for (let subTodo of d.todo.list!) {
+    //       if (this.graphElements.graph.nodes.find((node: any) => node.id == subTodo.subId)) {
+    //           d.todo.developped = false;
+    //           this.graphElements.graph.nodes = this.graphElements.graph.nodes.filter((node: any) => node.id != subTodo.subId);
+    //           this.graphElements.graph.links = this.graphElements.graph.links.filter((link: any) => link.target.id != subTodo.subId);
+    //           this.removeSubTodos(subTodo);
+    //       } else {
+    //           d.todo.developped = true;
+    //           this.graphElements.graph.nodes.push({ 
+    //             id: subTodo.subId, 
+    //             level: d.level + 1, 
+    //             todo: subTodo,
+    //             x: Math.random() * 200 - 100,  // Coordonnées initiales aléatoires pour éviter chevauchement
+    //             y: Math.random() * 200 - 100
+    //         });
+    //           this.graphElements.graph.links.push({ source: d.id, target: subTodo.subId });
+    //         //   if (subTodo.developped) this.addSubTodos(subTodo, d.level + 1);
+    //       }
+    //   }
+
+    if (d.todo.developped){
+        d.todo.developped = false;
+        
     }
-}
-
-sizeNode(d: any) {
-    return d.todo.main ? 12 : 10;
-}
-
-emojiNode(d: any) {
-    let emoji = '';
-    if (d.todo.isDone) emoji += '✅';
-    if (d.todo.config.date) emoji += TodoDate.passedDate(d.todo) ? '⏰' : '📅';
-    if (d.todo.config.repeat && d.todo.reminder) emoji += '🔁';
-    if (d.todo.priority == 'high') emoji += '‼️';
-    if (d.todo.priority == 'medium') emoji += '❗';
-    if (d.todo.priority == 'low') emoji += '❕';
-    return emoji;
-}
-
-// Fonction pour gérer le clic sur les nœuds
-onClickCircle(event: any, d: any) {
-    // Logique pour gérer le clic sur un nœud
-    console.log('On click circle:', d);
-
-    // Développer ou réduire les sous-tâches
-    this.toggleSubTodos(d);
-    this.updateGraph();
-}
-
-// Fonction pour ajouter ou retirer les sous-tâches
-toggleSubTodos(d: any) {
-    for (let subTodo of d.todo.list!) {
-        if (this.graphElements.graph.nodes.find((node: any) => node.id == subTodo.subId)) {
-            d.todo.developped = false;
-            this.graphElements.graph.nodes = this.graphElements.graph.nodes.filter((node: any) => node.id != subTodo.subId);
-            this.graphElements.graph.links = this.graphElements.graph.links.filter((link: any) => link.target.id != subTodo.subId);
-            this.removeSubTodos(subTodo);
-        } else {
-            d.todo.developped = true;
-            this.graphElements.graph.nodes.push({ id: subTodo.subId, level: d.level + 1, todo: subTodo });
-            this.graphElements.graph.links.push({ source: d.id, target: subTodo.subId });
-            if (subTodo.developped) this.addSubTodos(subTodo, d.level + 1);
-        }
+    else{
+        d.todo.developped = true;
     }
-}
 
-// Fonctions pour ajouter et retirer des sous-tâches
-addSubTodos(todo: Todo, level: number) {
-    for (let subTodo of todo.list!) {
-        this.graphElements.graph.nodes.push({ id: subTodo.subId, level: level + 1, todo: subTodo });
-        this.graphElements.graph.links.push({ source: todo.subId, target: subTodo.subId });
-    }
-}
+    this.initData();
 
-removeSubTodos(todo: Todo) {
-    for (let subTodo of todo.list!) {
-        this.graphElements.graph.nodes = this.graphElements.graph.nodes.filter((node: any) => node.id != subTodo.subId);
-        this.graphElements.graph.links = this.graphElements.graph.links.filter((link: any) => link.target.id != subTodo.subId);
-        this.removeSubTodos(subTodo);
-    }
-}
+    this.graphElements.graph.nodes = this.nodes;
+    this.graphElements.graph.links = this.links;
+  }
 
-// Mise à jour du graphique
-updateGraph() {
-    this.updateLink();
-    this.updateCircle();
-    this.updateEmoji();
-    this.updateText();
-    this.updateSimulation();
-}
+  // Fonctions pour ajouter et retirer des sous-tâches
+  addSubTodos(todo: Todo, level: number) {
+      for (let subTodo of todo.list!) {
+          this.graphElements.graph.nodes.push({ id: subTodo.subId, 
+            level: level + 1, 
+            todo: subTodo,
+            x: Math.random() * 200 - 100,  // Coordonnées initiales aléatoires pour éviter chevauchement
+            y: Math.random() * 200 - 100
+        });
+          this.graphElements.graph.links.push({ source: todo.subId, target: subTodo.subId });
+      }
+  }
 
-updateLink() {
-    this.graphElements.link = this.graphElements.link.data(this.graphElements.graph.links);
-    this.graphElements.link.exit().remove();
-    this.graphElements.link = this.graphElements.link.enter().append("line")
-        .merge(this.graphElements.link)
-        .attr("stroke-width", 3)
-        .attr("stroke", "var(--ion-color-step-700)");
-}
+  removeSubTodos(todo: Todo) {
+      for (let subTodo of todo.list!) {
+          this.graphElements.graph.nodes = this.graphElements.graph.nodes.filter((node: any) => node.id != subTodo.subId);
+          this.graphElements.graph.links = this.graphElements.graph.links.filter((link: any) => link.target.id != subTodo.subId);
+          this.removeSubTodos(subTodo);
+      }
+  }
 
-updateCircle() {
+  // Mise à jour du graphique
+  updateGraph() {
+      this.updateLink();
+      this.updateCircle();
+      this.updateEmoji();
+      this.updateText();
+      this.updateSimulation();
+  }
+
+  updateLink() {
+      this.graphElements.link = this.graphElements.link.data(this.graphElements.graph.links, (d: any) => d.target.id);
+      this.graphElements.link.exit().remove();
+      this.graphElements.link = this.graphElements.link.enter().append("line")
+          .merge(this.graphElements.link)
+          .attr("stroke-width", 3)
+          .attr("stroke", "var(--ion-color-step-700)");
+
+    console.log(this.graphElements.link)
+  }
+
+  updateCircle() {
     this.graphElements.circle = this.graphElements.circle.data(this.graphElements.graph.nodes, (d: any) => d.id);
     this.graphElements.circle.exit().remove();
     this.graphElements.circle = this.graphElements.circle.enter().append("circle")
@@ -366,441 +380,63 @@ updateCircle() {
         .attr("r", this.sizeNode)
         .attr("fill", this.nodeColor)
         .attr("stroke", "var(--ion-color-step-700)")
+        .attr("class", "node")
         .call(this.initializeDrag())
         .on("click", this.onClickCircle.bind(this));
-}
 
-updateEmoji() {
-    this.graphElements.nodeIcon = this.graphElements.nodeIcon.data(this.graphElements.graph.nodes, (d: any) => d.id);
-    this.graphElements.nodeIcon.exit().remove();
-    this.graphElements.nodeIcon = this.graphElements.nodeIcon.enter().append("text")
-        .merge(this.graphElements.nodeIcon)
-        .text(this.emojiNode)
-        .attr('font-size', '10px')
-        .attr('letter-spacing', '-3px');
-}
+    console.log(this.graphElements.circle)
+  }
 
-updateText() {
-    this.graphElements.text = this.graphElements.text.data(this.graphElements.graph.nodes, (d: any) => d.id);
-    this.graphElements.text.exit().remove();
-    this.graphElements.text = this.graphElements.text.enter().append("text")
-        .merge(this.graphElements.text)
-        .attr("class", "node-label")
-        .text((d: any) => d.todo.title);
-}
+  updateEmoji() {
+      this.graphElements.nodeIcon = this.graphElements.nodeIcon.data(this.graphElements.graph.nodes, (d: any) => d.id);
+      this.graphElements.nodeIcon.exit().remove();
+      this.graphElements.nodeIcon = this.graphElements.nodeIcon.enter().append("text")
+          .merge(this.graphElements.nodeIcon)
+          .text(this.emojiNode)
+          .attr('font-size', '10px')
+          .attr('letter-spacing', '-3px');
+  }
 
-updateSimulation() {
-    this.graphElements.simulation.stop();
-    this.graphElements.simulation
-        .nodes(this.graphElements.graph.nodes)
-        .force("link").links(this.graphElements.graph.links);
-    this.graphElements.simulation.restart();
-}
+  updateText() {
+      this.graphElements.text = this.graphElements.text.data(this.graphElements.graph.nodes, (d: any) => d.id);
+      this.graphElements.text.exit().remove();
+      this.graphElements.text = this.graphElements.text.enter().append("text")
+          .merge(this.graphElements.text)
+          .attr("class", "node-label")
+          .text((d: any) => d.todo.title);
+  }
 
+  updateSimulation() {
 
+    console.log("UPDATE SIMULATION : ")
 
+    // this.graphElements.simulation.stop();
 
-  // initializeConceptorGraph(){
-  //   let graph = {nodes: this.nodes, links: this.links};
+    //   console.log(JSON.parse(JSON.stringify(this.graphElements.links)))
 
-  //   let width = window.innerWidth
-  //   let height = window.innerHeight - 156
+      let width = window.innerWidth - 8;
+        let height = this.height;
 
-  //   // Initialiser le graphique
+      this.graphElements.simulation = this.initializeSimulation(this.graphElements.graph, width, height);
 
-  //   console.log('Conceptor graph :',graph)
+    //   this.graphElements.simulation.restart();
 
+    // this.graphElements.simulation
+    //     .nodes(this.graphElements.graph.nodes)
 
-  //   // Clear the graph container before initialization
+    // this.graphElements.simulation
+    //     .force("link").links(this.graphElements.graph.links).distance(100);
+          
+    // //   this.graphElements.simulation.restart();
+    // // this.graphElements.simulation.alpha(1).restart();
 
-  //   console.log('conceptor size',d3.select("#graph-container").selectAll("*").size())
+    // setTimeout(() => {
+    //     this.graphElements.simulation.alpha(1).restart();
 
-  //   if (d3.select("#graph-container").selectAll("*").size() > 0){
-  //     d3.select("#graph-container").selectAll("*").remove();
+    //   console.log(JSON.parse(JSON.stringify(this.graphElements)))
 
-  //   }
-
-
-
-  //   let svg = d3.select("#graph-container");
-
-  //   console.log('Conceptor svg :',svg)
-
-
-  //   let g = svg.append("g");
-
-  //   let maxLevel = 0;
-  //   let linkColor = "var(--ion-color-step-700)";
-  //   let lastSelectedNode : any = null;
-
-  //   let zoom = d3.zoom()
-  //     .scaleExtent([0.1, 10]) // Définissez les limites du zoom
-  //     .on("zoom", zoomed);
-    
-
-  //   svg.call(zoom as any);
-
-
-  //   var simulation = d3
-  //     .forceSimulation(graph.nodes)
-  //     .force(
-  //       "link",
-  //       d3
-  //         .forceLink()
-  //         .id(function(d: any) {
-  //           return d.id;
-  //         })
-  //         .links(graph.links)
-  //     )
-  //     .force("charge", d3.forceManyBody().strength(-100))
-  //     .force("center", d3.forceCenter(width / 2, height / 2))
-  //     .on("tick", ticked);
-
-      
-  //   var link = g.append("g")
-  //   .attr("class", "links")    
-  //     .selectAll("line")
-  //     .data(graph.links)
-  //     .enter()
-  //       .append("line")
-  //       .attr("stroke-width", function(d) {
-  //         return 3;
-  //       })
-  //       .attr("stroke", linkColor)
-
-
-  //   const drag = d3.drag()
-  //   .on('start', dragStarted)
-  //   .on('drag', dragged)
-  //   .on('end', dragEnded);
-    
-
-  //   var circle = g.append("g")
-  //       .attr("class", "nodes")
-  //     .selectAll<SVGCircleElement, any>("circle")
-  //     .data(graph.nodes)
-  //     .enter()
-  //       .append("circle")
-  //       .attr("r", sizeNode)
-  //       .attr("fill", nodeColor)
-  //       .attr("stroke", linkColor)
-  //       .attr("class", "node")
-  //       .call(drag as any)
-  //       .on("click", onClickCircle)
-  //       // .on("click", onClickCircleModal)
-  //       // .on("dblclick", onClickCircle)
-
-
-  //   var nodeIcon = g.append("g")
-  //       .attr("class", "emoji")
-  //       .attr("width", '10px')
-  //       .attr("height", '10px')
-  //     .selectAll("text")
-  //       .data(graph.nodes)
-  //     .enter().append("text")
-  //       .text(emojiNode) // Utilisez un emoji pour une icône
-  //       .attr('font-size', '10px')
-  //       .attr('letter-spacing', '-3px')
-
-  //   var text = g.append("g")
-  //       .attr("class", "labels")
-  //     .selectAll("text")
-  //       .data(graph.nodes)
-  //     .enter().append("text")
-  //       .attr("class", "node-label")
-  //       .text(function(d) { return d.todo.title });
-
-
-  //   console.log("Graph initialisation good", svg)
-
-
-
-        
-  //   // Fonction de mise à jour du graphique
-  //   function onClickCircle(event : any, d : any){
-
-  //     //Développer sous todo
-  //     console.log('On click circle :',d)
-
-  //     for (let subTodo of d.todo.list!) {
-
-
-  //       if (graph.nodes.find(node => node.id == subTodo.subId)) {
-
-  //         d.todo.developped = false;
-
-  //         // Enlever tous les sous todos
-
-  //         graph.nodes = graph.nodes.filter(node => node.id != subTodo.subId);
-  //         graph.links = graph.links.filter(link => link.target.id != subTodo.subId);
-  //         removeSubTodos(subTodo);
-
-  //       }
-  //       else{
-
-  //         d.todo.developped = true;
-
-  //         if (d.level + 1 > maxLevel) {
-  //           maxLevel = d.level + 1;
-  //         }
-
-  //         graph.nodes.push({id: subTodo.subId, level : d.level + 1, todo: subTodo});
-
-  //         graph.links.push({ source: d.id, target: subTodo.subId });
-
-  //         if (subTodo.developped) addSubTodos(subTodo, d.level + 1);
-  //       }
-  //     }
-
-  //     updateGraph();
-  //   }
-
-
-  //   function addSubTodos(todo : Todo, level : number){
-
-  //     for (let subTodo of todo.list!) {
-  //       if (level + 1 > maxLevel) {
-  //         maxLevel = level + 1;
-  //       }
-
-  //       graph.nodes.push({id: subTodo.subId, level : level + 1, todo: subTodo});
-
-  //       graph.links.push({ source: todo.subId, target: subTodo.subId });
-  //     }
-  //   }
-
-  //   function removeSubTodos(todo : Todo){
-        
-  //     for (let subTodo of todo.list!) {
-
-  //       if (graph.nodes.find(node => node.id == subTodo.subId)) {
-
-  //         // Enlever tous les sous todos
-
-  //         graph.nodes = graph.nodes.filter(node => node.id != subTodo.subId);
-  //         graph.links = graph.links.filter(link => link.target.id != subTodo.subId);
-
-  //         removeSubTodos(subTodo);
-  //       }
-  //     }
-  //   }
-
-
-  //   function updateLink(){
-  //     link = link.data(graph.links);
-  //     link.exit().remove();
-  //     link = link.enter().append("line")
-  //       .merge(link)
-  //       .attr("stroke-width", function(d) {
-  //       return 3;
-  //       })
-  //       .attr("stroke", linkColor)
-  //   }
-      
-
-  //   function updateCircle(){
-  //     circle = circle.data(graph.nodes, (d: any) => d.id);
-  //     circle.exit().remove();
-  //     circle = circle.enter().append("circle")
-  //       .merge(circle)
-  //       .attr("r", sizeNode)
-  //       .attr("stroke", linkColor)
-  //       .attr("fill", nodeColor)
-  //       .attr("class", "node")
-  //       .call(drag as any)
-  //       .on("click", onClickCircle)
-  //       // .on("click", onClickCircleModal) // TODO : fix node-modal and onClickCircleModal
-  //       // .on("dblclick", onClickCircle)
-  //   }
-
-  //   function updateEmoji(){
-  //     nodeIcon = nodeIcon.data(graph.nodes, (d: any) => d.id);
-  //     nodeIcon.exit().remove();
-  //     nodeIcon = nodeIcon.enter().append("text")
-  //       .merge(nodeIcon)
-  //       .text(emojiNode) // Utilisez un emoji pour une icône
-  //       .attr('font-size', '10px')
-  //       .attr('letter-spacing', '-3px')
-  //   }
-
-  //   function updateText(){
-  //     text = text.data(graph.nodes, (d: any) => d.id);
-  //     text.exit().remove();
-  //     text = text.enter().append("text")
-  //       .merge(text)
-  //       .attr("class", "node-label")
-  //       .text(function(d) { return d.todo.title });
-  //   }
-    
-  //   function updateSimulation(){
-  //     simulation.stop();
-
-  //     simulation = d3
-  //     .forceSimulation(graph.nodes)
-  //     .force(
-  //       "link",
-  //       d3
-  //         .forceLink()
-  //         .id(function(d: any) {
-  //           return d.id;
-  //         })
-  //         .links(graph.links)
-  //     )
-  //     .force("charge", d3.forceManyBody().strength(-60))
-  //     .force("center", d3.forceCenter(width / 2, height / 2))
-  //     .on("tick", ticked);
-
-  //     simulation.restart();
-  //   }
-
-
-  //   function updateGraph() {
-  //     // Mettez à jour le graphique en fonction des données actuelles, y compris les nœuds enfants
-  //     updateLink();
-  //     updateCircle();
-  //     updateEmoji();
-  //     updateText();
-  //     updateSimulation();
-  //   }
-
-
-  //   // Propriété visuelles des éléments du graphique
-
-
-  //   function nodeColor(d : any) {
-  //     if (d.todo.isDone) {
-  //       return "var(--is-done-color-node)";
-  //     }
-  //     else if (d.todo.config.date && TodoDate.passedDate(d.todo)) {
-  //       return "var(--ion-color-danger)";
-  //     }
-  //     else {
-
-  //       console.log('nodeColor level :',d.level)
-  //       // const levelShade = 300 - ((maxLevel - d.level) * 100);
-
-  //       const levelShade = (d.level * 150) + 100;
-
-  //       if (levelShade > 700) return 'var(--ion-color-step-700)';
-        
-  //       return 'var(--ion-color-step-' + levelShade + ')';
-  //     }
-  //   }
-
-  //   function sizeNode(d : any){
-
-  //     if (d.todo.main){
-  //       return 12;
-  //     }
-  //     else{
-  //       return 10;
-  //     }
-  //   }
-
-  //   function emojiNode(d : any){
-
-  //     let emoji = '';
-
-  //     if (d.todo.isDone){
-  //       emoji += '✅';
-  //     }
-  //     else {
-  //       if (d.todo.config.date && TodoDate.passedDate(d.todo)){
-  //         emoji+= '⏰';
-  //       }
-  //       if (d.todo.config.date && !TodoDate.passedDate(d.todo)){
-  //         emoji+= '📅';
-  //       }
-  //       if (d.todo.config.repeat && d.todo.reminder){
-  //         emoji += '🔁';
-  //       }
-  //       if (d.todo.priority == 'high'){
-  //         emoji += '‼️';
-  //       }
-  //       if (d.todo.priority == 'medium'){
-  //         emoji += '❗';
-  //       }
-  //       if (d.todo.priority == 'low'){
-  //         emoji += '❕';
-  //       }
-  //     }
-
-  //     return emoji;
-  //   }
-
-
-  //   // Fonction de mise à jour des positions des éléments du graphique
-
-  //   function ticked() {
-  //     link
-  //       .attr("x1", function(d) {
-  //         return d.source.x;
-  //       })
-  //       .attr("y1", function(d) {
-  //         return d.source.y;
-  //       })
-  //       .attr("x2", function(d) {
-  //         return d.target.x;
-  //       })
-  //       .attr("y2", function(d) {
-  //         return d.target.y;
-  //       });
-  
-  //     circle
-  //       .attr("cx", function(d) {
-  //         return d.x;
-  //       })
-  //       .attr("cy", function(d) {
-  //         return d.y;
-  //       });
-
-
-  //     let textOffsetX = 5;
-  //     let textOffsetY = 8;
-
-  //     text
-  //       .attr("x", function(d) {
-  //         return d.x + textOffsetX;
-  //       })
-  //       .attr("y", function(d) {
-  //         return d.y + textOffsetY;
-  //       });
-
-  //     nodeIcon
-  //       .attr("x", function(d) {
-  //         return d.x + 3;
-  //       })
-  //       .attr("y", function(d) {
-  //         return d.y - 2;
-  //       });
-  //   }
-
-
-  //   function dragStarted(event : any, d : any) {
-  //       if (!event.active) simulation.alphaTarget(0.3).restart();
-  //       d.fx = d.x;
-  //       d.fy = d.y;
-  //   }
-    
-    
-  //   function dragged(event : any, d : any) {
-  //       d.fx = event.x;
-  //       d.fy = event.y;
-  //   }
-    
-    
-  //   function dragEnded(event : any, d : any) {
-  //       if (!event.active) simulation.alphaTarget(0);
-  //       d.fx = null;
-  //       d.fy = null;
-  //   }
-
-
-  //   function zoomed(event : any) {
-  //     let transform = event.transform;
-  //     g.attr("transform", transform);
-  //   }
-  // }
+    // }, 100);
+  }
 
 
 
@@ -811,7 +447,9 @@ updateSimulation() {
 
     this.nodes.push({id: 0, level : 0, todo: this.todo});
 
-    this.traverseList(this.todo.list, 0);
+    if (this.todo.developped){
+        this.traverseList(this.todo.list, 0);
+    }
   }
 
 
@@ -828,14 +466,9 @@ updateSimulation() {
     }
   }
 
-  goToTree(){
-
-    this.router.navigate(['/todo', this.index], {fragment: 'conceptor'});
-  }
-
-  goBackTodo(){
-    this.router.navigate(['/home']);
-  }
+//   goBackTodo(){
+//     this.router.navigate(['/home']);
+//   }
 
 }
 

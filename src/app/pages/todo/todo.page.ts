@@ -216,21 +216,34 @@ export class TodoPage implements OnInit, OnDestroy {
 
     // this.scrollRef = event.detail.scrollTop;
 
-    // if (this.changeModeToGraph && this.treeGraphChoiceOnHeader) {
-    //   console.log("scroll on max graph and avoid toolbar mode change")
-    //   // const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
-    //   // event.target.scrollToPoint(0, contentHeight);
-    //   this.changeModeToGraph = false;
-    //   return;
-    // }
+    if (this.changeModeToGraph && this.treeGraphChoiceOnHeader) {
+      console.log("scroll on max graph and avoid toolbar mode change")
+      // const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+      // event.target.scrollToPoint(0, contentHeight);
+      this.changeModeToGraph = false;
+      return;
+    }
 
     // subMode
+
+    this.scrollTop = event.detail.scrollTop;
 
     this.switchTreeGraphToolbar()
 
     // graph height calculation
 
     this.calcGraphHeightOnScroll(event)
+
+    // Prevent scroll on header
+    if (this.subMode == 'tree'){
+      const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
+
+      if (this.scrollTop >= contentHeight - window.innerHeight + 180) {
+        console.log("scroll stop on tree mode")
+        event.target.scrollToPoint(0, contentHeight - window.innerHeight + 180);
+        return;
+      }
+    }
     
   }
 
@@ -241,17 +254,11 @@ export class TodoPage implements OnInit, OnDestroy {
     let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
 
     if (subTaskModePosY < 0) {
-
-      console.log("toolbar mode")
-
-      // this.changePositionSubMode = true;
+      // console.log("toolbar mode")
       this.treeGraphChoiceOnHeader = true;
     }
     else {
-
-      console.log("normal mode")
-
-      // this.changePositionSubMode = false;
+      // console.log("normal mode")
       this.treeGraphChoiceOnHeader = false;
     }
   }
@@ -259,26 +266,19 @@ export class TodoPage implements OnInit, OnDestroy {
   // GRAPH HEIGHT CALCULATION
 
   calcGraphHeightOnScroll(event : any){
-
-    
-    this.scrollTop = event.detail.scrollTop;
-
     if (this.graphComponent){
 
-      
       const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
       const windowHeight = window.innerHeight;
 
       // Calculez la nouvelle hauteur pour le graphique
       let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
 
-      
-
       // console.log("calc graph height on scroll", graphHeight)
 
       // Pour éviter de scroller plus loin que nécessaire
       if (this.scrollTop >= contentHeight) {
-        console.log("scroll stop")
+        // console.log("scroll stop")
         event.target.scrollToPoint(0, contentHeight);
         return;
       }
@@ -293,10 +293,10 @@ export class TodoPage implements OnInit, OnDestroy {
 
     this.changeModeToGraph = false;
 
-    // if (this.subMode == 'graph'){
-    //   console.log("change mode to graph")
-    //   this.changeModeToGraph = true;
-    // }
+    if (this.subMode == 'graph'){ // Prevent tree / graph toolbar switch
+      // console.log("change mode to graph")
+      this.changeModeToGraph = true;
+    }
 
     event.preventDefault()
     event.stopPropagation()
@@ -304,9 +304,7 @@ export class TodoPage implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.graphComponent){
 
-        
-
-        console.log("INIT GRAPH SIZE WHEN CLICKED")
+        // console.log("INIT GRAPH SIZE WHEN CLICKED")
 
         const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
         const windowHeight = window.innerHeight;
@@ -315,7 +313,7 @@ export class TodoPage implements OnInit, OnDestroy {
         let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
 
         if (this.treeGraphChoiceOnHeader){
-          console.log("tree / graph on header toolbar")
+          // console.log("tree / graph on header toolbar")
           graphHeight = windowHeight - 156;
           // window.scrollTo(0, contentHeight)
         }
@@ -325,6 +323,7 @@ export class TodoPage implements OnInit, OnDestroy {
       }
     }, 0)
   }
+
 
 
   // GESTION TODOS
