@@ -25,7 +25,7 @@ export class SubTaskComponent  implements OnInit {
 
   @Output() todoSelectedEmitter = new EventEmitter<Todo>();
 
-  //Main Todo
+  //Parent of subTask
   @Input() parentTask!: Todo;
   
   //Index = mainTodo in todo page / subTodo in add page
@@ -36,6 +36,8 @@ export class SubTaskComponent  implements OnInit {
   @Input() hideSubTasks: boolean = false;
 
   @Input() openModal: TaskModal = new TaskModal();
+
+  @Input() developped: boolean = true;
 
   subType : string = "customize";
 

@@ -70,7 +70,7 @@
   </div>
   
  
-  <div>
+  <div *ngIf="developped">
     <ion-list class="sub-sub-task" *ngIf="this.subTask.config.subtasks && this.subTask.developped && this.subTask.list.length !== 0" [style.background-color]="'var(--ion-background-color)'">
 
       <!-- <div *ngIf="page === 'add'">

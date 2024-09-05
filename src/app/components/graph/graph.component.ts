@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 // import { d3 } from 'src/assets/d3/d3.js';
 
 import * as d3 from 'd3';
-import { update } from 'firebase/database';
+import { set, update } from 'firebase/database';
 import { Subscription } from 'rxjs';
 // import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
@@ -56,6 +56,8 @@ export class GraphComponent implements OnInit {
   circle : any;
   nodeIcon : any;
   text : any;
+
+  isZooming : boolean = false;
 
   constructor(private router : Router,) { }
 
@@ -235,14 +237,25 @@ export class GraphComponent implements OnInit {
           .on('end', this.dragEnded.bind(this));
   }
 
+
   // Fonction pour attacher les événements de zoom et drag
   attachZoomAndDrag(svg: any) {
-      const zoom = d3.zoom()
-          .scaleExtent([0.1, 10])
-          .on("zoom", (event) => this.zoomed(event, svg));
+    const zoom = d3.zoom()
+        .scaleExtent([0.1, 10])
+        .filter((event: any) => {
+          // Activer uniquement si deux doigts sont utilisés
+          if (event.touches.length === 2) {
+            event.preventDefault();
+            return true;
+          }
+          // Activer également le zoom pour les autres événements si besoin (ex : molette de souris)
+          return !event.touches;
+        })
+        .on("zoom", (event) => this.zoomed(event, svg));
 
-      svg.call(zoom);
+    svg.call(zoom);  // Active le zoom
   }
+
 
   // Fonction pour mettre à jour les positions des éléments du graphique
   ticked() {
@@ -280,8 +293,8 @@ export class GraphComponent implements OnInit {
   }
 
   dragged(event: any, d: any) {
-      d.fx = event.x;
-      d.fy = event.y;
+    d.fx = event.x;
+    d.fy = event.y;
   }
 
   dragEnded(event: any, d: any) {
