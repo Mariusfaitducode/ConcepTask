@@ -120,6 +120,19 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
+  onNewTodoSelected(todo: Todo){
+    this.todo = todo;
+    
+    window.scrollTo(0, 0);
+
+    this.initializeGraphHeight();
+
+    // TODO : add history to navigate back
+
+    // TODO : update html -> switch between tree and graph
+  }
+
+
 
   // INITIALIZATION
 
@@ -217,7 +230,7 @@ export class TodoPage implements OnInit, OnDestroy {
     this.scrollTop = event.detail.scrollTop;
 
     // Permet d'adapter la positioon du switch tree / graph en fonction du scroll
-    this.switchTreeGraphToolbar()
+    // this.switchTreeGraphToolbar()
 
     // graph height calculation
     this.calcGraphHeightOnScroll(event)
@@ -287,10 +300,10 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  initializeGraphHeight(event : Event){
+  initializeGraphHeight(){
 
-    event.preventDefault()
-    event.stopPropagation()
+    // event.preventDefault()
+    // event.stopPropagation()
 
     this.changeModeToGraph = false;
 

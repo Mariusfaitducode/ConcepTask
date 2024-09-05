@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularDelegate } from '@ionic/angular';
 // import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
@@ -30,7 +30,11 @@ export class GraphComponent implements OnInit {
 
   // index : string = '';
 
-  @Input() todo! : Todo;
+  @Input() mainTodo! : Todo;
+
+  @Input() selectedTodo! : Todo;
+
+  @Output() todoSelectedEmitter = new EventEmitter<Todo>();
 
   minHeight: number = 300; // Hauteur minimale du graphique
   // maxHeight: number = 600; // Hauteur maximale du graphique
@@ -61,8 +65,8 @@ export class GraphComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.todo){
-      console.log("Conceptor found todo :", this.todo)
+    if (this.mainTodo){
+      console.log("Conceptor found todo :", this.mainTodo)
       this.initData();
       this.initializeConceptorGraph();
     }
@@ -75,10 +79,10 @@ export class GraphComponent implements OnInit {
     this.graphData.nodes = [];
     this.graphData.links = [];
 
-    this.graphData.nodes.push({id: 0, level : 0, todo: this.todo});
+    this.graphData.nodes.push({id: 0, level : 0, todo: this.mainTodo});
 
-    if (this.todo.developped){
-        this.traverseList(this.todo.list, 0);
+    if (this.mainTodo.developped){
+        this.traverseList(this.mainTodo.list, 0);
     }
   }
 
@@ -184,8 +188,10 @@ export class GraphComponent implements OnInit {
           .attr("r", this.sizeNode)
           .attr("fill", this.nodeColor)
           .attr("stroke", "var(--ion-color-step-700)")
+          .attr("class", "node")
           .call(drag)
-          .on("click", this.onClickCircle.bind(this));
+          .on("click", this.onClickCircle.bind(this))
+          .on("dblclick", this.onDoubleClickCircle.bind(this));
 
       const nodeIcon = g.append("g").attr("class", "emoji")
           .selectAll("text")
@@ -296,8 +302,34 @@ export class GraphComponent implements OnInit {
       return emoji;
   }
 
-  // Fonction pour gérer le clic sur les nœuds
+
   onClickCircle(event: any, d: any) {
+      console.log('On click circle:', d);
+
+      d3.selectAll('.node').classed('selected', false); 
+
+      if (d.todo == this.selectedTodo) {
+          this.selectedTodo = this.mainTodo;
+
+          // Put the selected class to highlight the fisrt node on the graph
+
+          d3.select('.node').classed('selected', true);
+      }
+      else{
+          this.selectedTodo = d.todo;
+
+          // Ajouter la classe selected pour mettre en évidence le nœud sélectionné
+          d3.select(event.target).classed('selected', true);
+      }
+
+      // TODO : Renvoyé selectedTodo à la page todo
+
+      this.todoSelectedEmitter.emit(this.selectedTodo);
+  }
+
+
+  // Fonction pour gérer le clic sur les nœuds
+  onDoubleClickCircle(event: any, d: any) {
       // Logique pour gérer le clic sur un nœud
       console.log('On click circle:', d);
 
@@ -330,6 +362,7 @@ export class GraphComponent implements OnInit {
     for (let subTodo of todo.list!) {
         this.graphData.nodes.push({ id: subTodo.subId, level: level + 1, todo: subTodo});
         this.graphData.links.push({ source: todo.subId, target: subTodo.subId });
+        if (subTodo.developped) this.addSubTodos(subTodo, level + 1);
     }
   }
 
@@ -341,6 +374,8 @@ export class GraphComponent implements OnInit {
     }
   }
 
+
+  // UPDATE GRAPH
   // Mise à jour du graphique
   updateGraph() {
     this.updateLink();
@@ -371,7 +406,8 @@ export class GraphComponent implements OnInit {
         .attr("stroke", "var(--ion-color-step-700)")
         .attr("class", "node")
         .call(this.initializeDrag())
-        .on("click", this.onClickCircle.bind(this));
+        .on("click", this.onClickCircle.bind(this))
+        .on("dblclick", this.onDoubleClickCircle.bind(this));
 
     console.log(this.circle)
   }

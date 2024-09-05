@@ -74,7 +74,7 @@
     <div  [ngClass]="{ 'header-appear': treeGraphChoiceOnHeader, 'header-disappear': !treeGraphChoiceOnHeader }">
 
       <ion-segment 
-      [(ngModel)]="subMode" (ionChange)="initializeGraphHeight($event)"
+      [(ngModel)]="subMode" (ionChange)="initializeGraphHeight()"
        *ngIf="treeGraphChoiceOnHeader" 
        class="sub-task-mode tree-segment" 
        ngDefaultControl="tree">
@@ -165,7 +165,7 @@
         <ion-segment 
           [(ngModel)]="subMode"  
           class="tree-segment" [class.hide-tree-task]="treeGraphChoiceOnHeader" 
-          (ionChange)="initializeGraphHeight($event)">
+          (ionChange)="initializeGraphHeight()">
 
           <ion-segment-button value="tree">
             <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
@@ -206,7 +206,12 @@
 
   <!-- CONCEPTOR -->
 
-  <app-graph *ngIf="subMode === 'graph'" [todo]="mainTodo"></app-graph>
+  <app-graph *ngIf="subMode === 'graph'" 
+    [mainTodo]="mainTodo"
+    [selectedTodo]="todo"
+    (todoSelectedEmitter)="onNewTodoSelected($event)"
+
+    ></app-graph>
 
   <div  class='scroll-step'></div>
 
