@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
+import { IonContent, ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
 import { Dialog } from '@capacitor/dialog';
 
@@ -49,8 +49,10 @@ export class TodoPage implements OnInit, OnDestroy {
   mainTodo! : Todo;
   todo!: Todo;
   
-  // Drag and drop need
+  // History for navigation
+  todoHistoryList : Todo[] = [];
 
+  // Drag and drop need
   subTasksList : {todo: Todo, level: number}[][] = [];
 
   // Visualisation
@@ -73,6 +75,8 @@ export class TodoPage implements OnInit, OnDestroy {
 
   // Graph conceptor
   @ViewChild(GraphComponent) graphComponent!: GraphComponent;
+
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
 
 
   ngOnInit() {
@@ -121,15 +125,26 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
   onNewTodoSelected(todo: Todo){
-    this.todo = todo;
-    
-    window.scrollTo(0, 0);
 
-    this.initializeGraphHeight();
+    if (todo !== this.todo){
 
-    // TODO : add history to navigate back
+      if (todo != this.mainTodo){
+        this.todoHistoryList.push(this.todo);
+      }
+      else{
+        this.todoHistoryList = [];
+      }
+      this.todo = todo;
 
-    // TODO : update html -> switch between tree and graph
+      // window.scrollTo(0, 0);
+
+      console.log("automatic scroll to top")
+      this.content.scrollToTop(300);
+      
+      this.initializeGraphHeight();
+
+      
+    }
   }
 
 
@@ -207,7 +222,12 @@ export class TodoPage implements OnInit, OnDestroy {
   // NAVIGATION
 
   goBackTodo(){
-    this.navCtrl.back();
+    if (this.todoHistoryList.length > 0 && this.subMode == 'tree'){
+      this.todo = this.todoHistoryList.pop()!;
+    }
+    else{
+      this.navCtrl.back();
+    }
   }
 
 

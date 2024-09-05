@@ -147,7 +147,7 @@
     
     <!-- List sub tasks -->
 
-    <div *ngIf="this.todo.config.subtasks && todo.list!.length > 0" >
+    <div *ngIf="this.mainTodo.config.subtasks && mainTodo.list!.length > 0" >
 
       <ion-list class="sub-todo-list item-padding">
 
@@ -190,6 +190,8 @@
                 [todos]="todos" 
                 [parentTask]="todo" 
                 [subTask]="subTodo" 
+                
+                (todoSelectedEmitter)="onNewTodoSelected($event)"
                 [page]="'todo'" 
                 [hideSubTasks]="hideDoneTasks"
                 ></app-sub-task>

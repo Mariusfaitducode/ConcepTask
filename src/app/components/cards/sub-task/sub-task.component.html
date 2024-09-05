@@ -86,6 +86,7 @@
           [todos]="todos" 
           [parentTask]="subTask" 
           [subTask]="sub" 
+          (todoSelectedEmitter)="onNewTodoSelected($event)"
           [page]="page" 
           [level]="level + 1" 
           [openModal]="openModal" 

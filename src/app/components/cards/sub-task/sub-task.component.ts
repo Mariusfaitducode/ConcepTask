@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Todo } from 'src/app/models/todo';
 
@@ -22,6 +22,8 @@ export class SubTaskComponent  implements OnInit {
 
   @Input() todos?: Todo[];
   @Input() subTask!: Todo;
+
+  @Output() todoSelectedEmitter = new EventEmitter<Todo>();
 
   //Main Todo
   @Input() parentTask!: Todo;
@@ -90,23 +92,33 @@ export class SubTaskComponent  implements OnInit {
   }
 
 
+  // Navigation
+
+  onNewTodoSelected(todo: Todo){
+    this.todoSelectedEmitter.emit(todo);
+  }
+
+
   clickSubTask(){
+
+    this.todoSelectedEmitter.emit(this.subTask);
+
     // [routerLink]="'/todo/' + this.index + '/' + subTodo.subId"
 
-    if (this.page == "todo") {
+    // if (this.page == "todo") {
 
-      // if (this.todos){
-      //   console.log(this.todos);
-      //   localStorage.setItem('todos', JSON.stringify(this.todos));
-      // }
+    //   // if (this.todos){
+    //   //   console.log(this.todos);
+    //   //   localStorage.setItem('todos', JSON.stringify(this.todos));
+    //   // }
 
-      this.router.navigate(['/todo', this.mainId, this.subTask.subId]);
-    }
-    else{
+    //   this.router.navigate(['/todo', this.mainId, this.subTask.subId]);
+    // }
+    // else{
 
-      // add page
-      this.modifyTaskOnList(this.subTask);
-    }
+    //   // add page
+    //   this.modifyTaskOnList(this.subTask);
+    // }
   }
 
   modifyTaskOnList(subTask : Todo){

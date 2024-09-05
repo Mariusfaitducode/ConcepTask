@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularDelegate } from '@ionic/angular';
 // import { AngularFrameworkDelegate } from '@ionic/angular/providers/angular-delegate';
@@ -49,10 +49,7 @@ export class GraphComponent implements OnInit {
     links : []
   };
 
-
-//   graphElements : any;
-
-    svg : any;
+  svg : any;
 
   simulation : any;
   link : any;
@@ -71,6 +68,18 @@ export class GraphComponent implements OnInit {
       this.initializeConceptorGraph();
     }
   }
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['selectedTodo']) {
+  //     const prevValue = changes['someInput'].previousValue;
+  //     const currentValue = changes['someInput'].currentValue;
+
+  //     if (prevValue !== currentValue) {
+  //       // Do something with the new value
+  //       console.log("Selected Todo changed :", this.selectedTodo)
+  //     }
+  //   }
+  // }
 
 
   // DATA INITIALIZATION
@@ -116,6 +125,8 @@ export class GraphComponent implements OnInit {
     // Initialiser les éléments du graphique (liens, nœuds, icônes, labels)
     const { link, circle, nodeIcon, text } = this.initializeGraphElements(svg, this.graphData);
 
+    // TODO : set selected node on initialization and on todo changed
+
     // Attacher les événements de zoom et de drag
     this.attachZoomAndDrag(svg);
 
@@ -136,6 +147,7 @@ export class GraphComponent implements OnInit {
       let height = 0;
       if (this.height){
         height = Math.max(this.minHeight, this.height);
+        height -= 8;
       }
       else{
         height = this.minHeight;
@@ -176,7 +188,7 @@ export class GraphComponent implements OnInit {
           .selectAll("line")
           .data(graph.links)
           .enter().append("line")
-          .attr("stroke-width", 3)
+          .attr("stroke-width", 2)
           .attr("stroke", "var(--ion-color-step-700)");
 
       const drag = this.initializeDrag();
@@ -192,6 +204,10 @@ export class GraphComponent implements OnInit {
           .call(drag)
           .on("click", this.onClickCircle.bind(this))
           .on("dblclick", this.onDoubleClickCircle.bind(this));
+
+      // Ajouter la classe "selected" au cercle ayant l'id spécifique
+      circle.filter((d: any) => d.todo.id === this.selectedTodo.id)
+          .classed("selected", true); // Ajoute la classe "selected"
 
       const nodeIcon = g.append("g").attr("class", "emoji")
           .selectAll("text")
@@ -390,7 +406,7 @@ export class GraphComponent implements OnInit {
     this.link.exit().remove();
     this.link = this.link.enter().append("line")
         .merge(this.link)
-        .attr("stroke-width", 3)
+        .attr("stroke-width", 2)
         .attr("stroke", "var(--ion-color-step-700)");
 
     console.log(this.link)
@@ -451,7 +467,7 @@ export class GraphComponent implements OnInit {
 
     const width = window.innerWidth - 8;
 
-    this.svg.attr('height', newHeight);
+    this.svg.attr('height', newHeight - 8);
 
     // Recentrer la force de gravité au milieu du nouveau conteneur
     this.simulation
