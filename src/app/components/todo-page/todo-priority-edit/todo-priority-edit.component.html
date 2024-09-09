@@ -1,0 +1,14 @@
+<ion-row *ngIf="this.todo.config.priority" class="item-margin">
+  <ion-label class="sub-todos-label" color="primary">{{'PRIORITY' | translate}}</ion-label>
+  <ion-segment [(ngModel)]="todo.priority" color="primary">
+    <ion-segment-button value="low">
+      <div [class.greyded-text]="todo.priority !== 'low'">{{'LOW' | translate}}</div>
+    </ion-segment-button>
+    <ion-segment-button value="medium">
+      <div [class.greyded-text]="todo.priority !== 'medium'">{{'MEDIUM' | translate}}</div>
+    </ion-segment-button>
+    <ion-segment-button value="high">
+      <div [class.greyded-text]="todo.priority !== 'high'">{{'HIGH' | translate}}</div>
+    </ion-segment-button>
+  </ion-segment>
+</ion-row>

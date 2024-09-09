@@ -19,6 +19,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HabitTrackerComponent } from '../components/habit-tracker/habit-tracker.component';
 import { GraphComponent } from '../components/graph/graph.component';
+import { TitleCategoryEditComponent } from '../components/todo-page/title-category-edit/title-category-edit.component';
+import { TodoDescriptionComponent } from '../components/todo-page/todo-description/todo-description.component';
+import { TodoPriorityEditComponent } from '../components/todo-page/todo-priority-edit/todo-priority-edit.component';
 
 
 
@@ -55,6 +58,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     DateSelectorComponent,
     HabitTrackerComponent,
     GraphComponent,
+
+    TitleCategoryEditComponent,
+    TodoDescriptionComponent,
+    TodoPriorityEditComponent
   ],
   exports:[
     TodoCardComponent, 
@@ -69,6 +76,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule,
     HabitTrackerComponent,
     GraphComponent,
+
+    TitleCategoryEditComponent,
+    TodoDescriptionComponent,
+    TodoPriorityEditComponent
   ]
 })
 export class SharedModule { }

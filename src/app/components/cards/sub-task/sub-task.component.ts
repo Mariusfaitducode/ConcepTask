@@ -116,11 +116,11 @@ export class SubTaskComponent  implements OnInit {
 
     //   this.router.navigate(['/todo', this.mainId, this.subTask.subId]);
     // }
-    // else{
+    if (this.page == "add"){
 
-    //   // add page
-    //   this.modifyTaskOnList(this.subTask);
-    // }
+      // add page
+      this.modifyTaskOnList(this.subTask);
+    }
   }
 
   modifyTaskOnList(subTask : Todo){

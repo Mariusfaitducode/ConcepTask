@@ -48,6 +48,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/add/add.module').then( m => m.AddPageModule)
       },
       {
+        path: 'todo',
+        loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
+      },
+      {
         path: 'todo/:id',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
       },

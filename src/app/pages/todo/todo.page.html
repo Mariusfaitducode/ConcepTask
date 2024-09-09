@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div  [ngClass]="{ 'header-appear': !treeGraphChoiceOnHeader, 'header-disappear': treeGraphChoiceOnHeader }">
+    <div>
       <ion-row class="sub-toolbar" id="sub-toolbar">
 
         <ion-row class="header-infos">
@@ -51,8 +51,17 @@
         <ion-row class="header-buttons" >
     
           <button class="header-button" (click)="modifyTodo()">
-              <svg width="28px" height="28px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z"  stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-          </button>
+
+            <svg *ngIf="this.editMode" id="Layer_1"  width="26px" height="26px" style="enable-background:new 0 0 128 128;" version="1.1" viewBox="0 0 128 128" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style type="text/css">
+              .st0{fill:var(--ion-color-step-800);}
+              .st1{fill:#00000a;}
+            </style><circle class="st0" cx="64" cy="64" r="64"/><g><path class="st1" d="M87.4,50.5l9.9-9.9c0.4-0.4,0.4-1,0-1.4l-8.5-8.5c-0.4-0.4-1-0.4-1.4,0l-9.9,9.9L87.4,50.5z"/><path class="st1" d="M74.6,43.5L38,80.1l-4.4,13c-0.3,0.8,0.5,1.5,1.3,1.3l13-4.4l36.6-36.6L74.6,43.5z"/></g></svg>
+
+            <!-- <svg  fill="none" width="24px" height="24px" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> -->
+
+              <svg *ngIf="!this.editMode" width="28px" height="28px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z"  stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              <!-- <ion-icon name="create-outline"></ion-icon> -->
+            </button>
     
           <button class="header-button" (click)="showConfirmDeleteTodo()">
             <ion-icon name="trash-outline" ></ion-icon>
@@ -66,26 +75,12 @@
           </button>
           <button class="header-button unvalidate-button" *ngIf="todo.isDone" (click)="unvalidateTodo()">
             <ion-icon name="refresh-outline" class="validate-icon"></ion-icon>
+
+            <!-- <ion-icon name="checkmark-circle" class="validate-icon"></ion-icon> -->
+
           </button>
         </ion-row>
       </ion-row>
-    </div>
-
-    <div  [ngClass]="{ 'header-appear': treeGraphChoiceOnHeader, 'header-disappear': !treeGraphChoiceOnHeader }">
-
-      <ion-segment 
-      [(ngModel)]="subMode" (ionChange)="initializeGraphHeight()"
-       *ngIf="treeGraphChoiceOnHeader" 
-       class="sub-task-mode tree-segment" 
-       ngDefaultControl="tree">
-
-        <ion-segment-button value="tree">
-          <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
-        </ion-segment-button>
-        <ion-segment-button value="graph">
-          <div [class.greyded-text]="subMode !== 'graph'">{{'GRAPH' | translate}}</div>
-        </ion-segment-button>
-      </ion-segment>
     </div>
     
   </ion-toolbar>
@@ -99,45 +94,34 @@
   <!-- <ion-button (click)="exportTodo()">
     Export data
   </ion-button> -->
+
+  
+
   
   <ion-list class="list-page" >
 
-    <ion-item *ngIf="this.todo.config.description" class="item-margin">
+
+    <app-title-category-edit *ngIf="this.editMode" [todo]="this.todo"></app-title-category-edit>
+
+
+    <app-custom-config *ngIf="this.editMode" [configArray]="this.todo.config" [todo]="this.todo"></app-custom-config>
+
+
+    <app-todo-description [todo]="todo"></app-todo-description>
+
+    <!-- <ion-item *ngIf="this.todo.config.description" class="item-margin">
 
       <ion-textarea [readonly]="true" value="{{todo.description}}"
       label="{{'DESCRIPTION' | translate}}" labelPlacement="floating" class="label-padding"
       placeholder="{{'DESCRIPTION' | translate}}" autoGrow="true"></ion-textarea>
-    </ion-item>
+    </ion-item> -->
+
+    <app-todo-priority-edit *ngIf="this.editMode" [todo]="this.todo"></app-todo-priority-edit>
 
 
-    <!-- <app-date-selector [todo]="todo"></app-date-selector> -->
+    <app-date-selector [todo]="todo"></app-date-selector>
 
-    <div *ngIf="todo.config.date" class="date-selector item-padding" >
     
-      <ion-item >
-        <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
-        label="{{'DUE DATE' | translate}}" labelPlacement="floating" class="label-padding"
-          [ngClass]="{'passed-date' : !validDate()}">
-        </ion-input>
-
-        <ion-icon *ngIf="!passedDate() && todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
-        <ion-icon *ngIf="!passedDate() && todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
-
-      </ion-item>
-    </div>
-
-    <div *ngIf="todo.config.repeat" class="date-selector item-padding" >
-      <ion-item >
-        <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
-        label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
-          [ngClass]="{'passed-date' : !validDate()}">
-        </ion-input>
-
-        <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
-        <ion-icon *ngIf="todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
-
-      </ion-item>
-    </div>
 
     <!-- <div *ngIf="haveProperties() === false" [ngClass]="{'ecart' : true}">
     </div> -->
@@ -151,7 +135,7 @@
 
       <ion-list class="sub-todo-list item-padding">
 
-        <div *ngIf="this.todo != this.mainTodo" class="project-task">
+        <div *ngIf="this.todo !== this.mainTodo" class="project-task">
           <ion-label class="sub-todos-label" color="primary">{{'PROJECT' | translate}}</ion-label>
 
           <app-sub-task 
@@ -181,7 +165,7 @@
         
         <ion-segment 
           [(ngModel)]="subMode"  
-          class="tree-segment" [class.hide-tree-task]="treeGraphChoiceOnHeader" 
+          class="tree-segment"
           (ionChange)="initializeGraphHeight()">
 
           <ion-segment-button value="tree">
@@ -216,7 +200,7 @@
             </div >
           </div>
 
-          <div *ngIf="todo.list.length == 0">
+          <div *ngIf="todo.list.length === 0">
             <ion-label class="sub-todos-label" color="primary">{{'NO SUB TASKS' | translate}}</ion-label>
           </div>
         </div>

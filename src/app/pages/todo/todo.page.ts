@@ -48,6 +48,11 @@ export class TodoPage implements OnInit, OnDestroy {
 
   mainTodo! : Todo;
   todo!: Todo;
+
+
+  isNewTodo : boolean = false;
+  editMode : boolean = false;
+
   
   // History for navigation
   todoHistoryList : Todo[] = [];
@@ -60,15 +65,8 @@ export class TodoPage implements OnInit, OnDestroy {
   // Toggle sub task
   hideDoneTasks : boolean = false;
 
-
-  // Tree / Graph mode 
-  treeGraphChoiceOnHeader: boolean = false;
-
   // changePositionSubMode : boolean = false;
   subMode : string = "tree";
-
-
-  changeModeToGraph : boolean = false;
 
   // graphHeight : number = 300;
   scrollTop : number = 0;
@@ -86,21 +84,33 @@ export class TodoPage implements OnInit, OnDestroy {
       this.user = user;
     });
 
-    // TODO : simplify route.queryParams.subscribe
-
     this.route.params.subscribe((params) => {
 
       this.settingsService.initPage(this.translate);
 
-      // TODO : could be change with getTodoById
       this.taskService.getTodos().subscribe((todos: Todo[]) =>{
+
+        if (JSON.stringify(this.todos) == JSON.stringify(todos)) return;
 
         console.log('Todos loaded in todo page:', todos)
         this.todos = todos;
 
-        if (this.todos.length == 0) return;
+        if (params['id'] == undefined) { // NEW TODO
 
-        this.initializeTodoPage(params);
+          this.mainTodo = new Todo();
+          this.todo = this.mainTodo;
+
+          this.isNewTodo = true;
+          this.editMode = true;
+        
+        }
+        else { // EXISTING TODO
+          if (this.todos.length == 0) return;
+
+          this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
+          this.todo = this.mainTodo;
+        }
+        
         // Initialisation pour drag and drop indexs
 
         if (this.todo){
@@ -112,7 +122,6 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
   ngOnDestroy(){
-
     console.log("TODO PAGE ON DESTROY")
 
     if (this.userSubscription){
@@ -142,27 +151,7 @@ export class TodoPage implements OnInit, OnDestroy {
       this.content.scrollToTop(300);
       
       this.initializeGraphHeight();
-
-      
     }
-  }
-
-
-
-  // INITIALIZATION
-
-  initializeTodoPage(params : any){
-
-    if (params['subId'] == undefined) { // MAIN TODO
-
-      this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
-      this.todo = this.mainTodo;
-    }
-    else{ // SUB TODO
-
-      this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
-      this.todo = TodoUtils.findSubTodoById(this.mainTodo, +params['subId'])!;
-    } 
   }
 
 
@@ -233,13 +222,14 @@ export class TodoPage implements OnInit, OnDestroy {
 
   modifyTodo(){ // redirection to add page
 
-    const params = this.route.snapshot.params;
+    this.editMode = !this.editMode;
 
-    if (params['subId'] == undefined) {
-      this.router.navigate(['/add', this.mainTodo.id]);
-    } else {
-      this.router.navigate(['/add', this.mainTodo.id, params['subId']]);
-    }
+    // if (this.mainTodo == this.todo){ 
+    //   this.router.navigate(['/add', this.mainTodo.id]);
+    // } 
+    // else {
+    //   this.router.navigate(['/add', this.mainTodo.id, this.todo.id]);
+    // }
   }
 
 
@@ -248,9 +238,6 @@ export class TodoPage implements OnInit, OnDestroy {
   onContentScroll(event : any){
 
     this.scrollTop = event.detail.scrollTop;
-
-    // Permet d'adapter la positioon du switch tree / graph en fonction du scroll
-    // this.switchTreeGraphToolbar()
 
     // graph height calculation
     this.calcGraphHeightOnScroll(event)
@@ -264,34 +251,7 @@ export class TodoPage implements OnInit, OnDestroy {
         event.target.scrollToPoint(0, contentHeight - window.innerHeight + 180);
         return;
       }
-    }
-    
-  }
-
-  // SUBMODE SWITCH
-
-  switchTreeGraphToolbar(){
-
-    // Permet d'éviter de changer la place du switch tree / graph lorsqu'on passe en mode graph en étant en mode header
-    if (this.changeModeToGraph && this.treeGraphChoiceOnHeader) {
-      console.log("scroll on max graph and avoid toolbar mode change")
-      // const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
-      // event.target.scrollToPoint(0, contentHeight);
-      this.changeModeToGraph = false;
-      return;
-    }
-
-    const subTaskMode = document.getElementById('sub-task-mode')!;
-    let subTaskModePosY = subTaskMode.getBoundingClientRect().top;
-
-    if (subTaskModePosY < 0) {
-      // console.log("toolbar mode")
-      this.treeGraphChoiceOnHeader = true;
-    }
-    else {
-      // console.log("normal mode")
-      this.treeGraphChoiceOnHeader = false;
-    }
+    } 
   }
 
   // GRAPH HEIGHT CALCULATION
@@ -321,17 +281,6 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
   initializeGraphHeight(){
-
-    // event.preventDefault()
-    // event.stopPropagation()
-
-    this.changeModeToGraph = false;
-
-    if (this.subMode == 'graph'){ // Prevent tree / graph toolbar switch
-      // console.log("change mode to graph")
-      this.changeModeToGraph = true;
-    }
-
     setTimeout(() => {
       if (this.graphComponent){
 
@@ -342,12 +291,6 @@ export class TodoPage implements OnInit, OnDestroy {
 
         // Calculez la nouvelle hauteur pour le graphique
         let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
-
-        if (this.treeGraphChoiceOnHeader){
-          // console.log("tree / graph on header toolbar")
-          graphHeight = windowHeight - 156;
-          // window.scrollTo(0, contentHeight)
-        }
         
         // // Ajustez la taille du graphique
         this.graphComponent.resizeGraph(graphHeight);
@@ -386,7 +329,7 @@ export class TodoPage implements OnInit, OnDestroy {
   unvalidateTodo(){
     this.todo.isDone = false;
     // this.taskService.actualizeTodos(this.todos);
-    this.taskService.updateTodo(this.mainTodo);
+    this.taskService.updateTodo(this.mainTodo);  // WARNING : restart the page with todos.subscription
   }
 
 

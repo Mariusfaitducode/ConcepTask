@@ -244,7 +244,7 @@ export class GraphComponent implements OnInit {
         .scaleExtent([0.1, 10])
         .filter((event: any) => {
           // Activer uniquement si deux doigts sont utilisés
-          if (event.touches.length === 2) {
+          if (event.touches && event.touches.length === 2) {
             event.preventDefault();
             return true;
           }

@@ -1,0 +1,6 @@
+<ion-item *ngIf="this.todo.config.description" class="item-margin">
+
+  <ion-textarea [readonly]="true" value="{{todo.description}}"
+  label="{{'DESCRIPTION' | translate}}" labelPlacement="floating" class="label-padding"
+  placeholder="{{'DESCRIPTION' | translate}}" autoGrow="true"></ion-textarea>
+</ion-item>

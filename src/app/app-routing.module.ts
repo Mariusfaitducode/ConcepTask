@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
   },
   {
     path: '',
@@ -19,33 +19,25 @@ const routes: Routes = [
     path: 'add',
     redirectTo: 'tabs/add',
   },
+  // {
+  //   path: 'add/:id',
+  //   redirectTo: 'tabs/add/:id',
+  // },
+  // {
+  //   path: 'add/:id/:subId',
+  //   redirectTo: 'tabs/add/:id/:subId',
+  // },
+  // {
+  //   path: 'add/:day/:month/:year',
+  //   redirectTo: 'tabs/add/:day/:month/:year',
+  // },
   {
-    path: 'add/:id',
-    redirectTo: 'tabs/add/:id',
-  },
-  {
-    path: 'add/:id/:subId',
-    redirectTo: 'tabs/add/:id/:subId',
-  },
-  {
-    path: 'add/:day/:month/:year',
-    redirectTo: 'tabs/add/:day/:month/:year',
+    path: 'todo',
+    redirectTo: 'tabs/todo',
   },
   {
     path: 'todo/:id',
     redirectTo: 'tabs/todo/:id',
-  },
-  {
-    path: 'todo/:id/:subId',
-    redirectTo: 'tabs/todo/:id/:subId',
-  },
-  {
-    path: 'conceptor/:id',
-    redirectTo: 'tabs/conceptor/:id',
-  },
-  {
-    path: 'conceptor/:id/:modalId',
-    redirectTo: 'tabs/conceptor/:id/:modalId',
   },
   {
     path: 'calendar',
