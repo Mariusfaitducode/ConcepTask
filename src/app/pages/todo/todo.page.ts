@@ -100,6 +100,7 @@ export class TodoPage implements OnInit, OnDestroy {
 
         if (params['id'] == undefined) { // NEW TODO
 
+          // TODO : Add calendar creation case
           this.mainTodo = new Todo();
           this.todo = this.mainTodo;
 
@@ -136,26 +137,7 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  onNewTodoSelected(todo: Todo){
-
-    if (todo !== this.todo){
-
-      if (todo != this.mainTodo){
-        this.todoHistoryList.push(this.todo);
-      }
-      else{
-        this.todoHistoryList = [];
-      }
-      this.todo = todo;
-
-      // window.scrollTo(0, 0);
-
-      console.log("automatic scroll to top")
-      this.content.scrollToTop(300);
-      
-      this.initializeGraphHeight();
-    }
-  }
+  
 
 
   // DRAG AND DROP SETUP
@@ -208,32 +190,6 @@ export class TodoPage implements OnInit, OnDestroy {
   //   ev.detail.complete(this.todo.list);
   //   console.log(this.todo.list);
   // }
-
-
-
-  // NAVIGATION
-
-  goBackTodo(){
-    if (this.todoHistoryList.length > 0 && this.subMode == 'tree'){
-      this.todo = this.todoHistoryList.pop()!;
-    }
-    else{
-      this.navCtrl.back();
-    }
-  }
-
-
-  modifyTodo(){ // redirection to add page
-
-    this.editMode = !this.editMode;
-
-    // if (this.mainTodo == this.todo){ 
-    //   this.router.navigate(['/add', this.mainTodo.id]);
-    // } 
-    // else {
-    //   this.router.navigate(['/add', this.mainTodo.id, this.todo.id]);
-    // }
-  }
 
 
   // SCROLL Tree / Graph management
@@ -306,6 +262,53 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
+
+  // NAVIGATION
+
+  onNewTodoSelected(todo: Todo){
+
+    if (todo !== this.todo){
+
+      if (todo != this.mainTodo){
+        this.todoHistoryList.push(this.todo);
+      }
+      else{
+        this.todoHistoryList = [];
+      }
+      this.todo = todo;
+
+      // window.scrollTo(0, 0);
+
+      console.log("automatic scroll to top")
+      this.content.scrollToTop(300);
+      
+      this.initializeGraphHeight();
+    }
+  }
+
+  goBackTodo(){
+    if (this.todoHistoryList.length > 0 && this.subMode == 'tree'){
+      this.todo = this.todoHistoryList.pop()!;
+    }
+    else{
+      this.navCtrl.back();
+    }
+  }
+
+
+  modifyTodo(editMode : boolean){ // redirection to add page
+
+    this.editMode = editMode;
+
+    // TODO : Message pop up if changes are not saved
+
+    // Navigation control
+  }
+
+
+  
+
+
   changeSubMode(subMode : string){
     this.subMode = subMode;
 
@@ -318,68 +321,16 @@ export class TodoPage implements OnInit, OnDestroy {
     this.hideDoneTasks = hideDoneTasks;
   }
 
-
-
-  // GESTION TODOS
-
-  showConfirmDeleteTodo = async () => {
-    const { value } = await Dialog.confirm({
-      title: 'Confirm',
-      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
-    });
-
-    if (value) {
-
-      this.taskService.deleteTodoById(this.mainTodo, this.todo);
-      this.navCtrl.back();
-    }
-  };
-
+  
 
 
   // MODIFICATION PROPRIETES TODO
 
-  validateTodo(){
-    this.todo.isDone = true;
-    // this.taskService.actualizeTodos(this.todos, this.user);
-    this.taskService.updateTodo(this.mainTodo);
-  }
 
-
-  unvalidateTodo(){
-    this.todo.isDone = false;
+  setTodoValidation(isDone: boolean){
+    this.todo.isDone = isDone;
     // this.taskService.actualizeTodos(this.todos);
-    this.taskService.updateTodo(this.mainTodo);  // WARNING : restart the page with todos.subscription
-  }
-
-
-  // DISPLAY INFORMATIONS TODO
-
-  passedDate(){
-    return TodoDate.passedDate(this.todo);
-  }
-
-
-  formatDateToCustomString() {
-    return TodoDate.formatDateToCustomString(this.todo, this.translate); 
-  }
-
-
-  validDate(){
-    if (this.todo.config.date){
-      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
-      let now = new Date();
-      return date! > now;
-    }
-    if (this.todo.config.repeat && this.todo.repeat!.delayType){
-      return true;
-    }
-    return false;
-  }
-
-  contrastColor(){
-    let color = TodoColor.getCorrectTextColor(this.todo.category.color);
-    return color
+    this.taskService.updateTodo(this.mainTodo);
   }
 
 
@@ -397,27 +348,69 @@ export class TodoPage implements OnInit, OnDestroy {
   saveTodo(){
 
     // console.log(this.todos)
+    this.assignIds(); // A vérifier
 
-    // this.assignIds(); // A vérifier
+    if (!this.isNewTodo) {  // Modification d'un Todo existant
 
-    // if (this.modifyExistingTodo) {  // Modification d'un Todo existant
+      this.taskService.updateTodo(this.mainTodo);
+      this.navCtrl.back()
+    }
+    else{
 
-    //   this.taskService.updateTodo(this.newTodo);
+      this.taskService.addTodo(this.mainTodo);
+      this.navCtrl.back()
+    }
 
-    //   // this.navCtrl.navigateForward('/todo/' + this.newTodo.id);
-    //   this.navCtrl.back()
-    // }
-    // else{
-
-    //   this.taskService.addTodo(this.newTodo);
-
-    //   // this.navCtrl.navigateForward('/home');
-    //   this.navCtrl.back()
-    // }
-
-    // console.log(this.todos)
-
-    // this.newTodo = new Todo();
+    console.log(this.todos)
   }
+
+
+  assignIds(): void {
+
+    console.log("assign ids function")
+
+    // this.newTodo.mainId = this.newTodo.id;
+
+    let copyList = [...this.todo.list!];
+
+    let queue = [{ list: copyList, parentId: 0 }];
+
+    let id = 1;
+
+    for (let i = 0; i < queue.length; i++) {
+      while (queue[i].list.length > 0) {
+
+        let todo = queue[i].list.shift()!;
+
+        // todo.main = false;
+        todo.subId = id++;
+        todo.parentId = queue[i].parentId;
+
+        if (todo.list) {
+          queue.push({ list: [...todo.list], parentId: todo.subId });
+        }
+      }
+    }
+  }
+
+
+    // MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
+
+    showConfirmDeleteTodo = async () => {
+      const { value } = await Dialog.confirm({
+        title: 'Confirm',
+        message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
+      });
+  
+      if (value) {
+  
+        this.taskService.deleteTodoById(this.mainTodo, this.todo);
+        this.navCtrl.back();
+      }
+    };
+
+
+    // TODO : On modify button, on go back arrow, on platform back button
+  
 
 }

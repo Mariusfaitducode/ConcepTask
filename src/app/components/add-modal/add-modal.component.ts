@@ -21,7 +21,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   @Input() modalConfig: TaskModal = new TaskModal();
 
-  @Input() newModalConfig: TaskModal = new TaskModal();
+  // @Input() newModalConfig: TaskModal = new TaskModal();
 
 
   //@Input() subTodo! : Todo;

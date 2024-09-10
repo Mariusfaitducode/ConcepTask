@@ -9,7 +9,8 @@ import { Todo } from 'src/app/models/todo';
 export class TodoSubTasksHeaderComponent  implements OnInit {
 
 
-  // @Input() todo!: Todo;
+  @Input() todo!: Todo;
+  @Input() mainTodo!: Todo;
   subMode : string = "tree";
   hideDoneTasks : boolean = false;
 

@@ -10,7 +10,7 @@ import { Todo } from 'src/app/models/todo';
 export class ButtonAddSubTaskComponent  implements OnInit {
 
   @Input() parentTask!: Todo;
-  @Input() modalConfig: TaskModal = new TaskModal();
+  @Input() modalConfig!: TaskModal;
 
   subType : string = "customize";
   newTodoOnListTitle: string = "";

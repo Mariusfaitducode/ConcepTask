@@ -1,0 +1,33 @@
+
+.header-infos{
+    padding-top: 4px;
+    height: 40px;
+}
+
+.chip-category{
+    padding: 6px 16px;
+    border-radius: 16px;
+    // margin-right: 10px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.priority-icon{
+    font-size: 30px;
+    margin-left: 10px;
+}
+
+
+.done-header{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.done-text{
+    font-size: 16px;
+    padding-left: 5px;
+}
