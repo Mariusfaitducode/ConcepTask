@@ -22,6 +22,7 @@ import { GraphComponent } from '../components/graph/graph.component';
 import { TitleCategoryEditComponent } from '../components/todo-page/title-category-edit/title-category-edit.component';
 import { TodoDescriptionComponent } from '../components/todo-page/todo-description/todo-description.component';
 import { TodoPriorityEditComponent } from '../components/todo-page/todo-priority-edit/todo-priority-edit.component';
+import { TodoSubTasksHeaderComponent } from '../components/todo-page/todo-sub-tasks-header/todo-sub-tasks-header.component';
 
 
 
@@ -61,7 +62,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     TitleCategoryEditComponent,
     TodoDescriptionComponent,
-    TodoPriorityEditComponent
+    TodoPriorityEditComponent,
+    TodoSubTasksHeaderComponent,
   ],
   exports:[
     TodoCardComponent, 
@@ -79,7 +81,9 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     TitleCategoryEditComponent,
     TodoDescriptionComponent,
-    TodoPriorityEditComponent
+    TodoPriorityEditComponent,
+    TodoSubTasksHeaderComponent,
+
   ]
 })
 export class SharedModule { }

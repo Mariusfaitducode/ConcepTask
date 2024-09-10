@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from 'src/app/models/category';
 import { Todo } from 'src/app/models/todo';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 @Component({
   selector: 'app-title-category-edit',
@@ -15,11 +16,14 @@ export class TitleCategoryEditComponent  implements OnInit {
 
   categories : Category[] = [];
 
-  constructor() { }
+  constructor(private settingsService : SettingsService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.categories = this.settingsService.getLocalSettings().categories
+  }
 
   changeCategory(){
-    
+    this.todo.category = this.categories.find((category: Category) => category.name === this.categoryName)!;
   }
 }

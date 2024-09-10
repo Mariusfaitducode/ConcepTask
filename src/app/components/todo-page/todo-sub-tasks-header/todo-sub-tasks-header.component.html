@@ -1,0 +1,22 @@
+<div>
+  <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
+
+  <div class="toggle-done-tasks">
+    <ion-toggle labelPlacement="end" [(ngModel)]="hideDoneTasks" (ionChange)="changeHideDoneTasks()"></ion-toggle>
+    <!-- <ion-label>{{'HIDE DONE TASKS' | translate}}</ion-label> -->
+    <div>{{'HIDE DONE TASKS' | translate}}</div>
+    
+  </div>
+</div>
+
+<ion-segment 
+  [(ngModel)]="subMode"  
+  (ionChange)="changeSubMode()">
+
+  <ion-segment-button value="tree">
+    <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
+  </ion-segment-button>
+  <ion-segment-button value="graph">
+    <div [class.greyded-text]="subMode !== 'graph'">{{'GRAPH' | translate}}</div>
+  </ion-segment-button>
+</ion-segment>

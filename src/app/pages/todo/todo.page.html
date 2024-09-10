@@ -109,24 +109,18 @@
 
     <app-todo-description [todo]="todo"></app-todo-description>
 
-    <!-- <ion-item *ngIf="this.todo.config.description" class="item-margin">
-
-      <ion-textarea [readonly]="true" value="{{todo.description}}"
-      label="{{'DESCRIPTION' | translate}}" labelPlacement="floating" class="label-padding"
-      placeholder="{{'DESCRIPTION' | translate}}" autoGrow="true"></ion-textarea>
-    </ion-item> -->
 
     <app-todo-priority-edit *ngIf="this.editMode" [todo]="this.todo"></app-todo-priority-edit>
 
 
-    <app-date-selector [todo]="todo"></app-date-selector>
+    <app-date-selector [todo]="todo" [editMode]="editMode"></app-date-selector>
 
     
 
     <!-- <div *ngIf="haveProperties() === false" [ngClass]="{'ecart' : true}">
     </div> -->
     
-    <div id="sub-task-mode"></div>
+    <!-- <div id="sub-task-mode"></div>  -->
 
     
     <!-- List sub tasks -->
@@ -152,29 +146,14 @@
           ></app-sub-task>
         </div>
 
-        <div>
-          <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
 
-          <div class="toggle-done-tasks">
-            <ion-toggle labelPlacement="end" [(ngModel)]="hideDoneTasks" (ionChange)="initializeSubTasksList()"></ion-toggle>
-            <!-- <ion-label>{{'HIDE DONE TASKS' | translate}}</ion-label> -->
-            <div>{{'HIDE DONE TASKS' | translate}}</div>
-            
-          </div>
-        </div>
-        
-        <ion-segment 
-          [(ngModel)]="subMode"  
-          class="tree-segment"
-          (ionChange)="initializeGraphHeight()">
+        <app-todo-sub-tasks-header
+          
+          (subModeChangeEmitter)="changeSubMode($event)"
+          (hideDoneTasksChangeEmitter)="changeHideDoneTasks($event)"
+        ></app-todo-sub-tasks-header>
 
-          <ion-segment-button value="tree">
-            <div [class.greyded-text]="subMode !== 'tree'">{{'TREE' | translate}}</div>
-          </ion-segment-button>
-          <ion-segment-button value="graph">
-            <div [class.greyded-text]="subMode !== 'graph'">{{'GRAPH' | translate}}</div>
-          </ion-segment-button>
-        </ion-segment>
+        <app-button-add-sub-task *ngIf="editMode" [parentTask]="todo"></app-button-add-sub-task>
 
         
         <!-- SUBTAKS LIST -->
@@ -223,3 +202,10 @@
   <div  class='scroll-step'></div>
 
 </ion-content>
+
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="editMode && !modalConfig.open">
+  <ion-fab-button [disabled]="!canSaveTodo()" (click)="saveTodo()">
+    <ion-icon name="checkmark-outline" ></ion-icon>
+  </ion-fab-button>
+</ion-fab>

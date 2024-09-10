@@ -18,6 +18,7 @@ import { TodoUtils } from 'src/app/utils/todo-utils';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { Subscription } from 'rxjs';
 import { GraphComponent } from 'src/app/components/graph/graph.component';
+import { TaskModal } from 'src/app/models/task-modal';
 
 
 @Component({
@@ -52,6 +53,8 @@ export class TodoPage implements OnInit, OnDestroy {
 
   isNewTodo : boolean = false;
   editMode : boolean = false;
+
+  modalConfig: TaskModal = new TaskModal();
 
   
   // History for navigation
@@ -281,6 +284,10 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
   initializeGraphHeight(){
+
+    console.log(this.subMode)
+
+
     setTimeout(() => {
       if (this.graphComponent){
 
@@ -296,6 +303,19 @@ export class TodoPage implements OnInit, OnDestroy {
         this.graphComponent.resizeGraph(graphHeight);
       }
     }, 0)
+  }
+
+
+  changeSubMode(subMode : string){
+    this.subMode = subMode;
+
+    if (subMode == 'graph'){
+      this.initializeGraphHeight();
+    }
+  }
+
+  changeHideDoneTasks(hideDoneTasks : boolean){
+    this.hideDoneTasks = hideDoneTasks;
   }
 
 
@@ -362,5 +382,42 @@ export class TodoPage implements OnInit, OnDestroy {
     return color
   }
 
+
+
+   // SAVE TODO
+
+   canSaveTodo(){
+    if (this.todo.title == undefined || this.todo.title == "") {
+      return false;
+    }
+    return true;
+  }
+
+
+  saveTodo(){
+
+    // console.log(this.todos)
+
+    // this.assignIds(); // A vérifier
+
+    // if (this.modifyExistingTodo) {  // Modification d'un Todo existant
+
+    //   this.taskService.updateTodo(this.newTodo);
+
+    //   // this.navCtrl.navigateForward('/todo/' + this.newTodo.id);
+    //   this.navCtrl.back()
+    // }
+    // else{
+
+    //   this.taskService.addTodo(this.newTodo);
+
+    //   // this.navCtrl.navigateForward('/home');
+    //   this.navCtrl.back()
+    // }
+
+    // console.log(this.todos)
+
+    // this.newTodo = new Todo();
+  }
 
 }

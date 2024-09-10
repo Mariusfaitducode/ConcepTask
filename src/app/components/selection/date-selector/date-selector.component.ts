@@ -18,6 +18,8 @@ export class DateSelectorComponent  implements OnInit {
 
   @Input() todo!: Todo;
 
+  @Input() editMode : boolean = false;
+
   @Input() page?: string;
 
 
@@ -185,5 +187,30 @@ export class DateSelectorComponent  implements OnInit {
       // color: 'success', // Couleur du toast (vous pouvez utiliser 'danger' pour une couleur rouge, etc.)
     });
     toast.present();
+  }
+
+
+  // VISU
+
+  passedDate(){
+    return TodoDate.passedDate(this.todo);
+  }
+
+
+  formatDateToCustomString() {
+    return TodoDate.formatDateToCustomString(this.todo, this.translate); 
+  }
+
+
+  validDate(){
+    if (this.todo.config.date){
+      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
+      let now = new Date();
+      return date! > now;
+    }
+    if (this.todo.config.repeat && this.todo.repeat!.delayType){
+      return true;
+    }
+    return false;
   }
 }

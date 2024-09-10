@@ -3,8 +3,8 @@
 
 
 <!-- TODO : fix component -->
-<div>
-  <!-- <div *ngIf="todo.config.date" class="date-selector item-padding" >
+<div *ngIf="!editMode">
+  <div *ngIf="todo.config.date" class="item-padding" >
     
     <ion-item >
       <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
@@ -18,7 +18,7 @@
     </ion-item>
   </div>
 
-  <div *ngIf="todo.config.repeat" class="date-selector item-padding" >
+  <div *ngIf="todo.config.repeat" class="item-padding" >
     <ion-item >
       <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
       label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
@@ -29,11 +29,11 @@
       <ion-icon *ngIf="todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
 
     </ion-item>
-  </div> -->
+  </div>
 </div>
 
 
-<div>
+<div *ngIf="editMode">
 
   <div *ngIf="this.todo.config.date">
     <div class="date-selector" >
