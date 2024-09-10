@@ -1,0 +1,22 @@
+<div cdkDropListGroup>
+  <div *ngFor="let subTodo of todo.list; let index = index" >
+    <div cdkDropList [cdkDropListData]="subTasksList[index]" 
+    (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
+
+      <app-sub-task 
+      [mainId]="mainTodo.id"
+      [todos]="todos" 
+      [parentTask]="todo" 
+      [subTask]="subTodo" 
+      
+      (todoSelectedEmitter)="onNewTodoSelected($event)"
+      [page]="'todo'" 
+      [hideSubTasks]="hideDoneTasks"
+      ></app-sub-task>
+    </div>
+  </div >
+</div>
+
+<div *ngIf="todo.list.length === 0">
+  <ion-label class="sub-todos-label" color="primary">{{'NO SUB TASKS' | translate}}</ion-label>
+</div>

@@ -174,15 +174,7 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
   
-  async drop(event: CdkDragDrop<any[]>) {
-
-    // TODO : fix drop event
-
-    // await DragAndDrop.drop(event, this.mainTodo, this.translate);
-    // this.initializeSubTasksList();
-    // // localStorage.setItem('todos', JSON.stringify(this.todos));
-    // this.taskService.actualizeTodos(this.todos, this.user);
-  }
+  
 
   // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
    
@@ -313,6 +305,7 @@ export class TodoPage implements OnInit, OnDestroy {
     this.subMode = subMode;
 
     if (subMode == 'graph'){
+      this.assignIds();
       this.initializeGraphHeight();
     }
   }
@@ -371,7 +364,7 @@ export class TodoPage implements OnInit, OnDestroy {
 
     // this.newTodo.mainId = this.newTodo.id;
 
-    let copyList = [...this.todo.list!];
+    let copyList = [...this.mainTodo.list!];
 
     let queue = [{ list: copyList, parentId: 0 }];
 

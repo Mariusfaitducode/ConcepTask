@@ -5,133 +5,35 @@
 
 
 
-  <div class="content">
+  <div class="content" *ngIf="subTask">
 
     <ion-header>
-      <!-- <ion-toolbar [ngClass]="{'doneHeader': subTask.isDone === true, 'passedHeader' : passedDate()}"> -->
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-icon name="close-outline" class="close-icon" (click)="closeSubTask()"></ion-icon>
-        </ion-buttons>
-        <!-- level: {{level}} -->
-    
-        <div *ngIf="subTask.title === ''">
-          <ion-title size="large">{{'NEW TASK' | translate}}</ion-title>
-        </div>
-        <div *ngIf="subTask.title !== ''">
-          <ion-title size="large">{{subTask.title}}</ion-title>
-        </div>
-        <!-- <ion-progress-bar type="indeterminate"></ion-progress-bar> -->
-    
-        <ion-button *ngIf="!modify" class="save-button" slot="end" fill="clear" (click)="addSubTask()">
-          {{'ADD' | translate}}
-        </ion-button >
-
-        <ion-buttons *ngIf="modify" slot="end">
-
-          <ion-button *ngIf="modalConfig.parentTask" (click)="showConfirm()">
-            <ion-icon name="trash-outline" color="danger" class="delete-button"></ion-icon>
-
-          </ion-button>
-          
-          
-          <ion-button color="primary" class="save-button" fill="clear" (click)="closeSubTask()">
-          {{'DONE_MODIFY' | translate}}
-          </ion-button >
-        </ion-buttons>
-    
-      </ion-toolbar>
+      <app-modal-header [subTask]="subTask" (addSubTaskEmitter)="addSubTask()" (closeSubTaskEmitter)="closeSubTask()"></app-modal-header>
     </ion-header>
-
-    <!-- <div *ngIf="openModal.open == true" [style.margin-bottom.px]="getMaxHeight()">
-
-    </div> -->
     
     
     <ion-list class="list-page">
   
-      <div class="title-type-header">
-  
-        <ion-item class="title">
-          <!-- <ion-label position="floating" [color]="subTask.title ? 'primary' : ''">{{'TITLE' | translate}}</ion-label> -->
-          <ion-input type="text" 
-            label="{{'TITLE' | translate}}" labelPlacement="floating"
-            [(ngModel)]="subTask.title"></ion-input>
-        </ion-item>
-  
-        <ion-row  class="type">
-          <ion-select label="{{'CATEGORY' | translate}}" label-placement="floating"  [(ngModel)]="subTask.category" aria-label="Type">
-            
-            <ion-select-option  *ngFor="let cat of categories" [value]="cat">{{cat.name}}</ion-select-option>
-          </ion-select>
-        </ion-row>
-      </div>
-  
-      <app-custom-config [configArray]="subTask.config"></app-custom-config>
+      <app-title-category-edit [todo]="subTask"></app-title-category-edit>
 
-      <div *ngIf="this.subTask.config.description" class="description-textarea">
-        <ion-textarea [(ngModel)]="subTask.description" [autoGrow]="true"
-        label="{{'DESCRIPTION' | translate}}" labelPlacement="floating"
-        fill="outline" placeholder="Enter text"></ion-textarea>
-      </div>
+      <app-custom-config [configArray]="subTask.config" [todo]="subTask"></app-custom-config>
 
-      <ion-row *ngIf="this.subTask.config.priority">
-        <ion-label class="sub-todos-label" color="primary" >{{'PRIORITY' | translate}}</ion-label>
-        <ion-segment [(ngModel)]="subTask.priority" color="primary">
-          <ion-segment-button value="low">
-            <div [class.greyded-text]="subTask.priority !== 'low'">{{'LOW' | translate}}</div>
-          </ion-segment-button>
-          <ion-segment-button value="medium">
-            <div [class.greyded-text]="subTask.priority !== 'medium'">{{'MEDIUM' | translate}}</div>
-          </ion-segment-button>
-          <ion-segment-button value="high">
-            <div [class.greyded-text]="subTask.priority !== 'high'">{{'HIGH' | translate}}</div>
-          </ion-segment-button>
-        </ion-segment>
-      </ion-row>
+      <app-todo-description [todo]="subTask"></app-todo-description>
+
+      <app-todo-priority-edit  [todo]="subTask"></app-todo-priority-edit>
   
-      <app-date-selector [todo]="subTask" [page]="'modal'"></app-date-selector>
+      <app-date-selector [todo]="subTask" [editMode]="true"></app-date-selector>
   
   
       <div *ngIf="this.subTask.config.subtasks" class="sub-tasks item-padding">
   
         <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
-        <div *ngIf="!modify" class="info-sub-task">
+        <div class="info-sub-task">
           <ion-text>{{'SUB TASKS WARNING' | translate}}</ion-text>
         </div>
-
-        <!-- <div *ngIf="modify">
-         <app-button-add-sub-task [modalConfig]="newModalConfig" [parentTask]="subTask"></app-button-add-sub-task>
-        </div> -->
-        <ion-list class="no-padding">
-
-          <!-- <div *ngIf="page === 'add'">
-          <app-button-add-sub-task [modalConfig]="openModal" [parentTask]="subTask"></app-button-add-sub-task>
-  
-        </div> -->
-
-
-          
-
-          <div *ngFor="let newSubTodo of subTask.list; let id = index">
-
-            <app-sub-todo [todo]="subTask" [subTodo]="newSubTodo" [index]="id" [page]="'add'"></app-sub-todo>
-
-          </div > 
-
-        </ion-list>
   
       </div>
     </ion-list>
-  
-    <!-- <div  #child>
-      <div *ngIf="openModal.open">
-      
-        <app-add-modal [subTodo]="openModal.task" [level]="incrementLevel()" [modify]="openModal.modify"></app-add-modal>
-    
-      </div>
-
-    </div> -->
    
   
   </div>

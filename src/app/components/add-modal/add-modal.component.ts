@@ -29,7 +29,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   initialSubTask!: Todo;
 
-  modify : boolean = false;
+  // modify : boolean = false;
 
   showDate: boolean = false;
   subType: string = 'customize';
@@ -54,7 +54,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
 
     this.subTask = this.modalConfig.task!;
-    this.modify = this.modalConfig.modify;
+    // this.modify = this.modalConfig.modify;
 
     //this.setConfig();
     

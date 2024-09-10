@@ -30,6 +30,9 @@ export class DateSelectorComponent  implements OnInit {
                 private router : Router) { }
 
   ngOnInit() {
+
+    console.log('date selector todo',this.todo)
+
     // if (!this.todo.repeat){
     //   this.todo.repeat = {};
     // }

@@ -1,0 +1,17 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-icon name="close-outline" class="close-icon" (click)="closeSubTask()"></ion-icon>
+  </ion-buttons>
+
+  <div *ngIf="subTask.title === ''">
+    <ion-title size="large">{{'NEW TASK' | translate}}</ion-title>
+  </div>
+  <div *ngIf="subTask.title !== ''">
+    <ion-title size="large">{{subTask.title}}</ion-title>
+  </div>
+
+  <ion-button class="save-button" slot="end" fill="clear" (click)="addSubTask()">
+    {{'ADD' | translate}}
+  </ion-button >
+
+</ion-toolbar>

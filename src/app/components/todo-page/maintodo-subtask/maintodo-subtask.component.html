@@ -1,0 +1,16 @@
+<div *ngIf="this.todo !== this.mainTodo" class="project-task">
+  <ion-label class="sub-todos-label" color="primary">{{'PROJECT' | translate}}</ion-label>
+
+  <app-sub-task 
+    [mainId]="mainTodo.id"
+    [todos]="todos" 
+    [parentTask]="mainTodo" 
+    [subTask]="mainTodo" 
+    
+    (todoSelectedEmitter)="onNewTodoSelected($event)"
+    [page]="'todo'" 
+    [hideSubTasks]="hideDoneTasks"
+
+    [developped]="false"
+  ></app-sub-task>
+</div>

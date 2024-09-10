@@ -26,6 +26,9 @@ import { TodoSubTasksHeaderComponent } from '../components/todo-page/todo-sub-ta
 import { TodoHeaderTopComponent } from '../components/todo-page/todo-header-top/todo-header-top.component';
 import { TodoHeaderLeftInformationsComponent } from '../components/todo-page/todo-header-left-informations/todo-header-left-informations.component';
 import { TodoHeaderRightButtonsComponent } from '../components/todo-page/todo-header-right-buttons/todo-header-right-buttons.component';
+import { ModalHeaderComponent } from '../components/add-modal/modal-header/modal-header.component';
+import { MaintodoSubtaskComponent } from '../components/todo-page/maintodo-subtask/maintodo-subtask.component';
+import { TodoSubtasksTreeComponent } from '../components/todo-page/todo-subtasks-tree/todo-subtasks-tree.component';
 
 
 
@@ -70,6 +73,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     TodoHeaderTopComponent,
     TodoHeaderLeftInformationsComponent,
     TodoHeaderRightButtonsComponent,
+    MaintodoSubtaskComponent,
+    TodoSubtasksTreeComponent,
+
+    ModalHeaderComponent,
   ],
   exports:[
     TodoCardComponent, 
@@ -92,6 +99,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     TodoHeaderTopComponent,
     TodoHeaderLeftInformationsComponent,
     TodoHeaderRightButtonsComponent,
+    MaintodoSubtaskComponent,
+    TodoSubtasksTreeComponent,
+
+  
+    ModalHeaderComponent,
   ]
 })
 export class SharedModule { }

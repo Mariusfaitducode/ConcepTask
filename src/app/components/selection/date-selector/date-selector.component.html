@@ -1,108 +1,112 @@
 
 <!-- Date -->
 
-
-<!-- TODO : fix component -->
-<div *ngIf="!editMode">
-  <div *ngIf="todo.config.date" class="item-padding" >
-    
-    <ion-item >
-      <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
-      label="{{'DUE DATE' | translate}}" labelPlacement="floating" class="label-padding"
-        [ngClass]="{'passed-date' : !validDate()}">
-      </ion-input>
-
-      <ion-icon *ngIf="!passedDate() && todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
-      <ion-icon *ngIf="!passedDate() && todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
-
-    </ion-item>
-  </div>
-
-  <div *ngIf="todo.config.repeat" class="item-padding" >
-    <ion-item >
-      <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
-      label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
-        [ngClass]="{'passed-date' : !validDate()}">
-      </ion-input>
-
-      <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
-      <ion-icon *ngIf="todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
-
-    </ion-item>
-  </div>
-</div>
+<!-- <div *ngIf="todo"> -->
 
 
-<div *ngIf="editMode">
-
-  <div *ngIf="this.todo.config.date">
-    <div class="date-selector" >
+  <div *ngIf="!editMode">
+    <div *ngIf="todo.config.date" class="item-padding" >
+      
+      <ion-item >
+        <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
+        label="{{'DUE DATE' | translate}}" labelPlacement="floating" class="label-padding"
+          [ngClass]="{'passed-date' : !validDate()}">
+        </ion-input>
   
-      <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
-        
-        <ion-input id="datePicker" placeholder="MM/DD/YYYY" type="date" 
-          label="{{'DUE DATE' | translate}}" labelPlacement="floating"
-          [(ngModel)]="todo.date" (ionChange)="updateNotification()"></ion-input>  
-      </ion-item>
+        <ion-icon *ngIf="!passedDate() && todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
+        <ion-icon *ngIf="!passedDate() && todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
   
-      <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
-  
-        <ion-input type="time" placeholder="{{'TIME' | translate}}" 
-          label="{{'DUE TIME' | translate}}" labelPlacement="floating"
-          [(ngModel)]="todo.time" (ionChange)="updateNotification()"></ion-input>
       </ion-item>
     </div>
-    
-    <ion-row *ngIf="todo.date !== undefined && todo.time !== undefined" >
-      <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">{{'REMINDER' | translate}}</ion-toggle>
-    </ion-row>
-  </div>
   
-  <!-- Repetition -->
+    <div *ngIf="todo.config.repeat" class="item-padding" >
+      <ion-item >
+        <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
+        label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
+          [ngClass]="{'passed-date' : !validDate()}">
+        </ion-input>
   
-  <div *ngIf="this.todo.config.repeat">
-    <div class="date-selector" *ngIf="todo.repeat">
+        <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
+        <ion-icon *ngIf="todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
   
-      <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
-        <!-- <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">{{'START DATE' | translate}}</ion-label> -->
-        <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
-  
-        <ion-input type="date" placeholder="MM/DD/YYYY"  
-          label="{{'START DATE' | translate}}" labelPlacement="floating"
-          [(ngModel)]="todo.repeat.startDate" (ionChange)="updateNotification()"></ion-input>
-      </ion-item>
-  
-      <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
-        <!-- <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">{{'TIME' | translate}}</ion-label> -->
-        <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
-  
-        <ion-input type="time" placeholder="Time" 
-          label="{{'TIME' | translate}}" labelPlacement="floating"
-          [(ngModel)]="todo.repeat.startTime" (ionChange)="updateRepeatNotification()"></ion-input>
       </ion-item>
     </div>
+  </div>
+  
+  
+  <div *ngIf="editMode">
+  
+    <div *ngIf="this.todo.config.date">
+      <div class="date-selector" >
     
-    <div class="date-selector" >
-      <ion-row class="repeat" *ngIf="todo.repeat">
-        <ion-select label="{{'REPEAT' | translate}}" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type" (ionChange)="updateNotification()">
-          <ion-select-option value="day">{{'EVERY DAY' | translate}}</ion-select-option>
-          <!-- <ion-select-option value="personnal">Week days</ion-select-option> -->
-          <ion-select-option value="week">{{'EVERY WEEK' | translate}}</ion-select-option>
-          <ion-select-option value="two-weeks">{{'EVERY TWO WEEKS' | translate}}</ion-select-option>
-          <ion-select-option value="month">{{'EVERY MONTH' | translate}}</ion-select-option>
-          <ion-select-option value="year">{{'EVERY YEAR' | translate}}</ion-select-option>
+        <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
           
-        </ion-select>
+          <ion-input id="datePicker" placeholder="MM/DD/YYYY" type="date" 
+            label="{{'DUE DATE' | translate}}" labelPlacement="floating"
+            [(ngModel)]="todo.date" (ionChange)="updateNotification()"></ion-input>  
+        </ion-item>
+    
+        <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
+    
+          <ion-input type="time" placeholder="{{'TIME' | translate}}" 
+            label="{{'DUE TIME' | translate}}" labelPlacement="floating"
+            [(ngModel)]="todo.time" (ionChange)="updateNotification()"></ion-input>
+        </ion-item>
+      </div>
+      
+      <ion-row *ngIf="todo.date !== undefined && todo.time !== undefined" >
+        <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageNotification()">{{'REMINDER' | translate}}</ion-toggle>
       </ion-row>
-  
-      <ion-row *ngIf="repeatReminderPossible()">
-        <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageRepeatNotification()">{{'REMINDER' | translate}}</ion-toggle>
-      </ion-row>
-  
     </div>
     
+    <!-- Repetition -->
+    
+    <div *ngIf="this.todo.config.repeat">
+      <div class="date-selector" *ngIf="todo.repeat">
+    
+        <ion-item class="date-left" [ngClass]="{'modal-item' : page === 'modal'}">
+          <!-- <ion-label position="floating" [color]="todo.repeat.startDate ? 'primary' : ''">{{'START DATE' | translate}}</ion-label> -->
+          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('date')"></ion-icon> -->
+    
+          <ion-input type="date" placeholder="MM/DD/YYYY"  
+            label="{{'START DATE' | translate}}" labelPlacement="floating"
+            [(ngModel)]="todo.repeat.startDate" (ionChange)="updateNotification()"></ion-input>
+        </ion-item>
+    
+        <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
+          <!-- <ion-label position="floating" [color]="todo.repeat.startTime ? 'primary' : ''">{{'TIME' | translate}}</ion-label> -->
+          <!-- <ion-icon slot="end" name="close-outline" class="close-item" (click)="closeOnConfig('time')"></ion-icon> -->
+    
+          <ion-input type="time" placeholder="Time" 
+            label="{{'TIME' | translate}}" labelPlacement="floating"
+            [(ngModel)]="todo.repeat.startTime" (ionChange)="updateRepeatNotification()"></ion-input>
+        </ion-item>
+      </div>
+      
+      <div class="date-selector" >
+        <ion-row class="repeat" *ngIf="todo.repeat">
+          <ion-select label="{{'REPEAT' | translate}}" label-placement="floating" [(ngModel)]="todo.repeat.delayType" aria-label="Type" (ionChange)="updateNotification()">
+            <ion-select-option value="day">{{'EVERY DAY' | translate}}</ion-select-option>
+            <!-- <ion-select-option value="personnal">Week days</ion-select-option> -->
+            <ion-select-option value="week">{{'EVERY WEEK' | translate}}</ion-select-option>
+            <ion-select-option value="two-weeks">{{'EVERY TWO WEEKS' | translate}}</ion-select-option>
+            <ion-select-option value="month">{{'EVERY MONTH' | translate}}</ion-select-option>
+            <ion-select-option value="year">{{'EVERY YEAR' | translate}}</ion-select-option>
+            
+          </ion-select>
+        </ion-row>
+    
+        <ion-row *ngIf="repeatReminderPossible()">
+          <ion-toggle labelPlacement="end" [(ngModel)]="todo.reminder" (ionChange)="manageRepeatNotification()">{{'REMINDER' | translate}}</ion-toggle>
+        </ion-row>
+    
+      </div>
+      
+    </div>
+  
   </div>
+<!-- </div> -->
+<!-- TODO : fix component -->
 
-</div>
 
 

@@ -32,14 +32,6 @@
 
 
 <ion-content *ngIf="todo" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll($event)">
-
-
-  <!-- <ion-button (click)="exportTodo()">
-    Export data
-  </ion-button> -->
-
-  
-
   
   <ion-list class="list-page" >
 
@@ -65,22 +57,10 @@
 
       <ion-list class="sub-todo-list item-padding">
 
-        <div *ngIf="this.todo !== this.mainTodo" class="project-task">
-          <ion-label class="sub-todos-label" color="primary">{{'PROJECT' | translate}}</ion-label>
-
-          <app-sub-task 
-            [mainId]="mainTodo.id"
-            [todos]="todos" 
-            [parentTask]="mainTodo" 
-            [subTask]="mainTodo" 
-            
-            (todoSelectedEmitter)="onNewTodoSelected($event)"
-            [page]="'todo'" 
-            [hideSubTasks]="hideDoneTasks"
-
-            [developped]="false"
-          ></app-sub-task>
-        </div>
+        <app-maintodo-subtask
+          [todo]="todo" [mainTodo]="mainTodo" [todos]="todos" [hideDoneTasks]="hideDoneTasks"
+          (todoSelectedEmitter)="onNewTodoSelected($event)"
+        ></app-maintodo-subtask>
 
 
         <app-todo-sub-tasks-header
@@ -94,29 +74,16 @@
         <!-- SUBTAKS LIST -->
 
         <div *ngIf="subMode === 'tree'">
-          <!-- <div cdkDropList [cdkDropListData]="todo.list" (cdkDropListDropped)="drop($event)"> -->
-          <div cdkDropListGroup>
-            <div *ngFor="let subTodo of todo.list; let index = index" >
-              <div cdkDropList [cdkDropListData]="subTasksList[index]" 
-              (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
 
-                <app-sub-task 
-                [mainId]="mainTodo.id"
-                [todos]="todos" 
-                [parentTask]="todo" 
-                [subTask]="subTodo" 
-                
-                (todoSelectedEmitter)="onNewTodoSelected($event)"
-                [page]="'todo'" 
-                [hideSubTasks]="hideDoneTasks"
-                ></app-sub-task>
-              </div>
-            </div >
-          </div>
+          <app-todo-subtasks-tree
+            [todo]="todo"
+            [mainTodo]="mainTodo"
+            [todos]="todos"
+            [hideDoneTasks]="hideDoneTasks"
+            [subTasksList]="subTasksList"
+            (todoSelectedEmitter)="onNewTodoSelected($event)"
+          ></app-todo-subtasks-tree>
 
-          <div *ngIf="todo.list.length === 0">
-            <ion-label class="sub-todos-label" color="primary">{{'NO SUB TASKS' | translate}}</ion-label>
-          </div>
         </div>
 
       </ion-list> 
@@ -149,6 +116,3 @@
 <div *ngIf="modalConfig.open">
   <app-add-modal [modalConfig]="modalConfig"></app-add-modal>
 </div>
-<!-- <div *ngIf="newModalConfig.open">
-  <app-add-modal [modalConfig]="newModalConfig"></app-add-modal>
-</div> -->

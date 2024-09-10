@@ -41,7 +41,7 @@ export class Todo {
     public date?: Date | string;
     public time?: string;
 
-    public reminder?: boolean;
+    public reminder: boolean = false;
     
     // TODO : add a class for repeat
     public repeat?: {
