@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Todo } from 'src/app/models/todo';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-todo-header-top',
@@ -9,11 +10,13 @@ import { Todo } from 'src/app/models/todo';
 })
 export class TodoHeaderTopComponent  implements OnInit {
 
+  @Input() mainTodo!: Todo;
   @Input() todo!: Todo;
   @Output() goBackEmitter = new EventEmitter();
 
   constructor(
-    private navCtrl: NavController, ) { }
+    private taskService: TaskService,    
+  ) { }
 
   ngOnInit() {}
 
@@ -29,4 +32,8 @@ export class TodoHeaderTopComponent  implements OnInit {
     this.goBackEmitter.emit();
   }
 
+
+  isTodoSynchronized(): boolean {
+    return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
+  }
 }

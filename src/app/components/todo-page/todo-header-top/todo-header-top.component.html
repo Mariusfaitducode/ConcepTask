@@ -6,7 +6,14 @@
     </ion-button>
   </ion-buttons>
 
-  <h1 class="title-input">{{todo.title}}</h1>
+  <h1 class="title-input">
+    {{todo.title || ('NEW TASK' | translate)}}
+    <span class="sync-status" [ngClass]="isTodoSynchronized() ? 'green' : 'orange'"></span>
+  </h1>
+
+  
+
+  
 
   <div class="center-title">
   </div>

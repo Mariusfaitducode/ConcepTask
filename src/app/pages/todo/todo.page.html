@@ -6,7 +6,7 @@
   <ion-toolbar class="toolbar-parent">
 
     <app-todo-header-top 
-      [todo]="todo"
+      [mainTodo]="mainTodo" [todo]="todo"
       (goBackEmitter)="goBackTodo()"
 
     ></app-todo-header-top>
@@ -37,17 +37,22 @@
   
   <ion-list class="list-page" >
 
-    <div *ngIf="isTodoSynchronized()">
+    <!-- <div *ngIf="isTodoSynchronized()">
       Synchronized
 
     </div>
     <div *ngIf="!isTodoSynchronized()">
       Not Synchronized
 
-    </div>
+    </div> -->
 
 
     <app-title-category-edit *ngIf="this.editMode" [todo]="this.todo"></app-title-category-edit>
+
+    <app-maintodo-subtask
+          [todo]="todo" [mainTodo]="mainTodo" [todos]="todos" [hideDoneTasks]="hideDoneTasks"
+          (todoSelectedEmitter)="onNewTodoSelected($event)"
+        ></app-maintodo-subtask>
 
 
     <app-custom-config *ngIf="this.editMode" [configArray]="this.todo.config" [todo]="this.todo"></app-custom-config>
@@ -68,10 +73,7 @@
 
       <ion-list class="sub-todo-list item-padding">
 
-        <app-maintodo-subtask
-          [todo]="todo" [mainTodo]="mainTodo" [todos]="todos" [hideDoneTasks]="hideDoneTasks"
-          (todoSelectedEmitter)="onNewTodoSelected($event)"
-        ></app-maintodo-subtask>
+        
 
 
         <app-todo-sub-tasks-header
@@ -117,7 +119,7 @@
 </ion-content>
 
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isNewTodo && !modalConfig.open">
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isNewTodo && !isKeyboardVisible && !modalConfig.open">
   <ion-fab-button [disabled]="!canSaveTodo()" (click)="addNewTodo()">
     <ion-icon name="checkmark-outline" ></ion-icon>
   </ion-fab-button>

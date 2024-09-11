@@ -15,10 +15,13 @@
     width: 100%;
     height: 100%;
     background-color: #0100008c;
+
+    z-index: 1000;
 }
 
 .content{
 
+    z-index: 2000;
 
     // border-radius: 25px;
 

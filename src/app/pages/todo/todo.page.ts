@@ -19,6 +19,8 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { Subscription } from 'rxjs';
 import { GraphComponent } from 'src/app/components/graph/graph.component';
 import { TaskModal } from 'src/app/models/task-modal';
+import { Keyboard } from '@capacitor/keyboard';
+import { Capacitor } from '@capacitor/core';
 
 
 @Component({
@@ -32,6 +34,7 @@ export class TodoPage implements OnInit, OnDestroy {
     private navCtrl: NavController, 
     private route : ActivatedRoute, 
     private router : Router,
+    private platform : Platform,
     private translate : TranslateService,
     private userService : UserService,
     private taskService : TaskService,
@@ -76,6 +79,8 @@ export class TodoPage implements OnInit, OnDestroy {
   // graphHeight : number = 300;
   scrollTop : number = 0;
 
+  isKeyboardVisible = false;
+
   // Graph conceptor
   @ViewChild(GraphComponent) graphComponent!: GraphComponent;
 
@@ -83,6 +88,24 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+
+    // Événement lorsque le clavier est affiché
+
+    if (Capacitor.isPluginAvailable('Keyboard')) {
+      Keyboard.addListener('keyboardWillShow', () => {
+        this.isKeyboardVisible = true;
+      });
+  
+      // Événement lorsque le clavier est masqué
+      Keyboard.addListener('keyboardWillHide', () => {
+        this.isKeyboardVisible = false;
+      });
+    }
+
+    this.platform.backButton.subscribeWithPriority(0, async () => {
+      this.goBackTodo();
+    });
+    
 
     this.userService.getUser().subscribe((user : User | null) => {
       console.log('Todo page : User get', user)
