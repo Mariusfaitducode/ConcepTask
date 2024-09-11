@@ -18,6 +18,10 @@ export class TaskService {
 
   private todosSubject = new BehaviorSubject<Todo[]>([]);
   todos$: Observable<Todo[]> = this.todosSubject.asObservable();
+
+
+  // todoListOnStorage: Todo[] = [];
+
   private user: User | null = null;
 
   private firestoreSubscription : any;
@@ -60,6 +64,9 @@ export class TaskService {
           if (this.user){
             console.log('SYNC SERVICE TODOS FROM FIRESTORE : ', todosFromFirestore)
             this.todosSubject.next(todosFromFirestore);
+
+            // this.todoListOnStorage = todosFromFirestore;
+
             this.updateLocalStorage(todosFromFirestore);
           }
           
@@ -75,6 +82,9 @@ export class TaskService {
     this.todosSubject.next(todos);
   }
 
+  getTodosAsInStorageWithoutSync(): Todo[]{
+    return JSON.parse(localStorage.getItem(`todos`) || '[]');
+  }
 
   private updateLocalStorage(todos: Todo[]) {
     localStorage.setItem(`todos`, JSON.stringify(todos));
@@ -102,6 +112,17 @@ export class TaskService {
   getTodos(): Observable<Todo[]> {
     return this.todos$;
   }
+
+
+  // getTodosFromFirestore(id: string){
+
+  //   // if (this.user){
+  //   //   return this.firestore.collection(`users/${this.user.uid}/todos`).doc(id).valueChanges();
+  //   // }
+  //   // else{
+  //   //   return this.todosSubject.value.find(t => t.id === id);
+  //   // }
+  // }
 
   // Méthode pour obtenir les todos directement
   getCurrentTodos(): Todo[] {

@@ -42,7 +42,7 @@ export class TodoUtils {
 
     // FIND SUB TODO
 
-    public static findSubTodoById(rootTodo: Todo, subId : number){
+    public static findSubTodoBySubId(rootTodo: Todo, subId : number){
 
         let copyList = [...rootTodo.list!];
 
@@ -58,6 +58,27 @@ export class TodoUtils {
         for (let subTodo of todo.list!) {
             copyList.push(subTodo);
         }
+        }
+        return null;
+    }
+
+
+    public static findSubTodoById(rootTodo: Todo, id : string){
+
+        let copyList = [...rootTodo.list!];
+
+        // Bfs algorithm
+        while (copyList.length > 0) {
+
+            let todo = copyList.shift()!;
+
+            if (todo.id == id) {
+                return todo;
+            }
+
+            for (let subTodo of todo.list!) {
+                copyList.push(subTodo);
+            }
         }
         return null;
     }

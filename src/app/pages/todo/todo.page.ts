@@ -44,11 +44,13 @@ export class TodoPage implements OnInit, OnDestroy {
   user : User | null = null;
 
   // Todo objects
-  todoSubscription! : Subscription;
+  // todoSubscription! : Subscription;
   todos: Todo[] = [];
 
   mainTodo! : Todo;
   todo!: Todo;
+
+  initialTodoWithoutModification! : Todo | undefined;
 
 
   isNewTodo : boolean = false;
@@ -93,9 +95,9 @@ export class TodoPage implements OnInit, OnDestroy {
 
       this.taskService.getTodos().subscribe((todos: Todo[]) =>{
 
-        if (JSON.stringify(this.todos) == JSON.stringify(todos)) return;
+        if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
 
-        console.log('Todos loaded in todo page:', todos)
+        console.log('Todos loaded in todo page:', todos, this.todos)
         this.todos = todos;
 
         if (params['id'] == undefined) { // NEW TODO
@@ -111,14 +113,36 @@ export class TodoPage implements OnInit, OnDestroy {
         else { // EXISTING TODO
           if (this.todos.length == 0) return;
 
+          // if (this.isTodoSynchronized()) return;
+
+
+          // this.todoHistoryList = [];
+
           this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
-          this.todo = this.mainTodo;
+
+          if (this.todo){
+            this.todo = TodoUtils.findSubTodoById(this.mainTodo, this.todo.id) || this.mainTodo;
+
+            // Re init todoHistoryList
+            for (let i = 0; i < this.todoHistoryList.length; i++) {
+              this.todoHistoryList[i] = TodoUtils.findSubTodoById(this.mainTodo, this.todoHistoryList[i].id) || this.mainTodo;
+            }
+          }
+          else{
+            this.todo = this.mainTodo;
+            
+          }
+
         }
         
         // Initialisation pour drag and drop indexs
 
         if (this.todo){
-          this.initializeSubTasksList();
+          this.initializeSubTasksList(); 
+        }
+        if (!this.isTodoSynchronized()) {
+          console.log("TODO NOT SYNCHRONIZED")
+          this.taskService.updateTodo(this.mainTodo);
         }
       });
     });
@@ -128,14 +152,23 @@ export class TodoPage implements OnInit, OnDestroy {
   ngOnDestroy(){
     console.log("TODO PAGE ON DESTROY")
 
+    if (!this.isTodoSynchronized()) {
+      console.log("TODO NOT SYNCHRONIZED")
+      this.taskService.updateTodo(this.mainTodo);
+    }
+
     if (this.userSubscription){
       this.userSubscription.unsubscribe();
     }
-    if (this.todoSubscription){
-      this.todoSubscription.unsubscribe();
-    }
+    // if (this.todoSubscription){
+    //   this.todoSubscription.unsubscribe();
+    // }
   }
 
+
+  isTodoSynchronized(): boolean {
+    return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
+  }
 
   
 
@@ -283,6 +316,7 @@ export class TodoPage implements OnInit, OnDestroy {
       this.todo = this.todoHistoryList.pop()!;
     }
     else{
+      // Quit page
       this.navCtrl.back();
     }
   }
@@ -291,6 +325,17 @@ export class TodoPage implements OnInit, OnDestroy {
   modifyTodo(editMode : boolean){ // redirection to add page
 
     this.editMode = editMode;
+
+    if (!editMode){
+      
+      if (!this.isTodoSynchronized()) {
+        console.log("TODO NOT SYNCHRONIZED")
+
+        this.taskService.updateTodo(this.mainTodo);
+      }
+
+    }
+
 
     // TODO : Message pop up if changes are not saved
 
@@ -310,6 +355,7 @@ export class TodoPage implements OnInit, OnDestroy {
     }
   }
 
+
   changeHideDoneTasks(hideDoneTasks : boolean){
     this.hideDoneTasks = hideDoneTasks;
   }
@@ -323,7 +369,7 @@ export class TodoPage implements OnInit, OnDestroy {
   setTodoValidation(isDone: boolean){
     this.todo.isDone = isDone;
     // this.taskService.actualizeTodos(this.todos);
-    this.taskService.updateTodo(this.mainTodo);
+    // this.taskService.updateTodo(this.mainTodo);
   }
 
 
@@ -338,21 +384,21 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  saveTodo(){
+  addNewTodo(){
 
     // console.log(this.todos)
     this.assignIds(); // A vérifier
 
-    if (!this.isNewTodo) {  // Modification d'un Todo existant
+    // if (!this.isNewTodo) {  // Modification d'un Todo existant
 
-      this.taskService.updateTodo(this.mainTodo);
-      this.navCtrl.back()
-    }
-    else{
+    //   this.taskService.updateTodo(this.mainTodo);
+    //   this.navCtrl.back()
+    // }
+    // else{
 
-      this.taskService.addTodo(this.mainTodo);
-      this.navCtrl.back()
-    }
+    this.taskService.addTodo(this.mainTodo);
+    this.navCtrl.back()
+    // }
 
     console.log(this.todos)
   }
@@ -387,20 +433,20 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-    // MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
+  // MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
 
-    showConfirmDeleteTodo = async () => {
-      const { value } = await Dialog.confirm({
-        title: 'Confirm',
-        message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
-      });
-  
-      if (value) {
-  
-        this.taskService.deleteTodoById(this.mainTodo, this.todo);
-        this.navCtrl.back();
-      }
-    };
+  showConfirmDeleteTodo = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
+    });
+
+    if (value) {
+
+      this.taskService.deleteTodoById(this.mainTodo, this.todo);
+      this.navCtrl.back();
+    }
+  };
 
 
     // TODO : On modify button, on go back arrow, on platform back button

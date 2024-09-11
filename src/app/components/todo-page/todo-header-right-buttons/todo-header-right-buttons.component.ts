@@ -10,6 +10,8 @@ export class TodoHeaderRightButtonsComponent  implements OnInit {
 
   @Input() todo!: Todo;
 
+  @Input() isNewTodo!: boolean;
+
   editMode: boolean = false;
 
   @Output() editModeEmitter = new EventEmitter<boolean>();

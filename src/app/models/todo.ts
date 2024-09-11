@@ -5,6 +5,7 @@ import { Category } from "./category";
 import { TranslateService } from "@ngx-translate/core";
 
 import { v4 as uuidv4 } from 'uuid';
+import { SettingsService } from "../services/settings/settings.service";
 
 export class Todo {
 
@@ -57,7 +58,7 @@ export class Todo {
 
         this.id = uuidv4();
         
-        this.category = { name: 'Task', color: 'var(--ion-color-tertiary)', id: 0};
+        this.category = SettingsService.getCategories()[0];
         this.developped = true;
 
         this.repeat = {};

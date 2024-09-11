@@ -117,4 +117,8 @@ export class SettingsService {
   getLocalSettings(){
     return this.settings;
   }
+
+  static getCategories(){
+    return JSON.parse(localStorage.getItem('settings') || 'null').categories;
+  }
 }

@@ -21,6 +21,17 @@ export class TitleCategoryEditComponent  implements OnInit {
   ngOnInit() {
 
     this.categories = this.settingsService.getLocalSettings().categories
+
+    // if (!this.todo.category){
+    //   this.todo.category = this.categories[0];
+    // }
+    
+    // if (this.categories.find((category: Category) => category === this.todo.category) === undefined){
+    //   this.todo.category = this.categories.find((category: Category) => category.id === this.todo.category.id)!;
+    // }
+
+    this.categoryName = this.todo.category.name;
+
   }
 
   changeCategory(){

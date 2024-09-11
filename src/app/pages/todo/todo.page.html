@@ -16,8 +16,10 @@
 
         <app-todo-header-left-informations [todo]="todo"></app-todo-header-left-informations>
     
-        <app-todo-header-right-buttons 
+        <app-todo-header-right-buttons
+        *ngIf="!modalConfig.open" 
           [todo]="todo"
+          [isNewTodo]="isNewTodo"
           (editModeEmitter)="modifyTodo($event)"
           (deleteEmitter)="showConfirmDeleteTodo()"
           (validationEmitter)="setTodoValidation($event)"
@@ -34,6 +36,15 @@
 <ion-content *ngIf="todo" [fullscreen]="true" [scrollEvents]="true" (ionScroll)="onContentScroll($event)">
   
   <ion-list class="list-page" >
+
+    <div *ngIf="isTodoSynchronized()">
+      Synchronized
+
+    </div>
+    <div *ngIf="!isTodoSynchronized()">
+      Not Synchronized
+
+    </div>
 
 
     <app-title-category-edit *ngIf="this.editMode" [todo]="this.todo"></app-title-category-edit>
@@ -106,8 +117,8 @@
 </ion-content>
 
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="editMode && !modalConfig.open">
-  <ion-fab-button [disabled]="!canSaveTodo()" (click)="saveTodo()">
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isNewTodo && !modalConfig.open">
+  <ion-fab-button [disabled]="!canSaveTodo()" (click)="addNewTodo()">
     <ion-icon name="checkmark-outline" ></ion-icon>
   </ion-fab-button>
 </ion-fab>

@@ -92,7 +92,7 @@ export class NodeModalComponent implements OnInit {
       this.todo = mainTodo;
     }
     else{
-      this.todo = TodoUtils.findSubTodoById(mainTodo, modalId)!;
+      // this.todo = TodoUtils.findSubTodoById(mainTodo, modalId)!;
     }
   }
   

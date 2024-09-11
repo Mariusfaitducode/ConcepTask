@@ -153,7 +153,7 @@ export class AddPage implements OnInit, OnDestroy {
 
         const subTask = TodoUtils.findSubTodoById(this.newTodo, params['subId']);
         if (subTask){
-          const parentTask = TodoUtils.findSubTodoById(this.newTodo, subTask?.parentId!);
+          const parentTask = TodoUtils.findSubTodoById(this.newTodo, subTask?.id!);
 
           this.modalConfig.openModifyTaskModal(subTask, parentTask)
         }

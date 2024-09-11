@@ -11,8 +11,10 @@
   <ion-row class="type">
     <!-- {{newTodo.category.name}} -->
     <ion-select 
-      [(ngModel)]="categoryName" (ionChange)="changeCategory()"
-      label="{{ 'CATEGORY' | translate}}" label-placement="floating"
+      [(ngModel)]="categoryName"
+       (ionChange)="changeCategory()"
+      label="{{ 'CATEGORY' | translate}}" 
+      label-placement="floating"
       [interfaceOptions]="{'cssClass': 'label-select-color'}">
 
       <ion-select-option  *ngFor="let cat of categories" [value]="cat.name">{{cat.name | translate}}</ion-select-option>
