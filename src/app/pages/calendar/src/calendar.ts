@@ -24,12 +24,12 @@ SwiperCore.use([IonicSlides]);
                     <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">{{allDayLabel}}</span>
                     <span class="event-detail">  |  {{event.title}}</span>
                 </ion-item>
-                <ion-item *ngIf="selectedDate?.events.length==0">
+                <ion-item *ngIf="selectedDate?.events.length===0">
                     <div class="no-events-label">{{noEventsLabel}}</div>
                 </ion-item>
             </ion-list>
         </ng-template>
-        <ng-template #defaultWeekviewHeaderTemplate let-viewDate="viewDate">
+        <!-- <ng-template #defaultWeekviewHeaderTemplate let-viewDate="viewDate">
             {{ viewDate.dayHeader }}
         </ng-template>
         <ng-template #defaultAllDayEventTemplate let-displayEvent="displayEvent">
@@ -74,7 +74,7 @@ SwiperCore.use([IonicSlides]);
         <ng-template #defaultInactiveAllDayEventSectionTemplate>
         </ng-template>
         <ng-template #defaultInactiveNormalEventSectionTemplate>
-        </ng-template>
+        </ng-template> -->
 
         <div [ngSwitch]="calendarMode" class="{{calendarMode}}view-container">
             <monthview *ngSwitchCase="'month'"
@@ -102,7 +102,7 @@ SwiperCore.use([IonicSlides]);
                 (onTimeSelected)="timeSelected($event)"
                 (onTitleChanged)="titleChanged($event)">
             </monthview>
-            <weekview *ngSwitchCase="'week'"
+            <!-- <weekview *ngSwitchCase="'week'"
                 [formatWeekTitle]="formatWeekTitle"
                 [formatWeekViewDayHeader]="formatWeekViewDayHeader"
                 [formatHourColumn]="formatHourColumn"
@@ -166,7 +166,7 @@ SwiperCore.use([IonicSlides]);
                 (onEventSelected)="eventSelected($event)"
                 (onTimeSelected)="timeSelected($event)"
                 (onTitleChanged)="titleChanged($event)">
-            </dayview>
+            </dayview> -->
         </div>
     `,
     styles: [`

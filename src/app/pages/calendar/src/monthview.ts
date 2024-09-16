@@ -18,15 +18,21 @@ import {SwiperOptions} from 'swiper/types';
 
 import {ICalendarComponent, IEvent, IMonthView, IMonthViewRow, ITimeSelected, IRange, CalendarMode, IDateFormatter, IMonthViewDisplayEventTemplateContext} from './calendar.interface';
 import {CalendarService} from './calendar.service';
+import { set } from 'firebase/database';
 
 @Component({
     selector: 'monthview',
     template: `
+
+    <!-- <div>
+    currentViewIndex: {{currentViewIndex}}
+    </div> -->
         <div class="swiper monthview-swiper">
             <div class="swiper-wrapper">
 
             
-                <div class="swiper-slide" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9]">                    
+                <div class="swiper-slide" *ngFor="let i of preLoadedMonthSliders ">   
+                    <!-- {{i}} -->
                     <table class="table table-bordered table-fixed monthview-datetable">
                         <thead>
                         <tr>
@@ -47,6 +53,8 @@ import {CalendarService} from './calendar.service';
                         </tbody>
                     </table>
                 </div>
+
+                
 
 
                 <!-- <div class="swiper-slide">                    
@@ -165,11 +173,11 @@ import {CalendarService} from './calendar.service';
                         <tr>
                         </tbody>
                     </table>
-                </div> -->
+                </div>
             </div>
             <ng-template [ngTemplateOutlet]="monthviewEventDetailTemplate"
                          [ngTemplateOutletContext]="{showEventDetail:showEventDetail, selectedDate: selectedDate, noEventsLabel: noEventsLabel}">
-            </ng-template>
+            </ng-template> -->
         </div>
     `,
     styles: [`
@@ -264,7 +272,12 @@ import {CalendarService} from './calendar.service';
 })
 export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy, OnChanges, AfterViewInit {
 
+    public preLoadedMonthSliders: number[];
+
     constructor(private calendarService: CalendarService, private zone:NgZone) {
+    
+        this.preLoadedMonthSliders = Array(48).fill(0).map((x,i)=>i);
+    
     }  
 
     private slider!: Swiper;
@@ -327,12 +340,17 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
 
     ngOnInit() {
         if (!this.sliderOptions) {
-            this.sliderOptions = {};
+            this.sliderOptions = {
+
+                // slidesPerView: 1,
+                // autoHeight: true,
+                loop: true,
+                allowSlideNext: true,
+                allowSlidePrev: true,
+                allowTouchMove: true,
+                initialSlide: this.preLoadedMonthSliders.length / 2
+            };
         }
-        this.sliderOptions.loop = true;
-        this.sliderOptions.allowSlidePrev = !this.lockSwipeToPrev;
-        this.sliderOptions.allowSlideNext = !this.lockSwipeToNext;
-        this.sliderOptions.allowTouchMove = !this.lockSwipes;
 
         if (this.dateFormatter && this.dateFormatter.formatMonthViewDay) {
             this.formatDayLabel = this.dateFormatter.formatMonthViewDay;
@@ -365,6 +383,9 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
         this.inited = true;
 
         this.currentDateChangedFromParentSubscription = this.calendarService.currentDateChangedFromParent$.subscribe(currentDate => {
+
+            // console.log('REFRESH VIEW')
+
             this.refreshView();
         });
 
@@ -373,6 +394,9 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
         });
 
         this.slideChangedSubscription = this.calendarService.slideChanged$.subscribe(direction => {
+
+            // console.log('SLIDE CHANGED MONTH VIEW', direction);
+
             if (direction === 1) {
                 this.slider.slideNext();
             } else if (direction === -1) {
@@ -381,6 +405,9 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
         });
 
         this.slideUpdatedSubscription = this.calendarService.slideUpdated$.subscribe(() => {
+
+            // console.log('SLIDE UPDATED MONTH VIEW');
+
             this.slider.update();
         });
     }
@@ -457,8 +484,16 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
     }
 
     onSlideChanged(direction: number) {
+
+        // console.log('ON SLIDE CHANGED', direction);
+
         this.currentViewIndex = (this.currentViewIndex + direction + 3) % 3;
+
+        // console.log('CURRENT VIEW INDEX', this.currentViewIndex);
+
         this.move(direction);
+
+        
     }
 
     move(direction: number) {
@@ -466,8 +501,11 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
             return;
         }
 
+        // console.log('MOVE');
+
         this.direction = direction;
         if (!this.moveOnSelected) {
+            // console.log('MOVE ON SELECTED');
             const adjacentDate = this.calendarService.getAdjacentCalendarDate(this.mode, direction);
             this.calendarService.setCurrentDate(adjacentDate);
         }
@@ -674,6 +712,9 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
     }
 
     refreshView() {
+
+        // console.log('REFRESH VIEW');
+
         this.range = this.getRange(this.calendarService.currentDate);
 
         if (this.inited) {
@@ -705,6 +746,9 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
     }
 
     select(viewDate: IMonthViewRow) {
+
+        // console.log('SELECT', viewDate);
+
         if (!this.views) {
             return;
         }

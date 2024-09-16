@@ -141,7 +141,11 @@ export class TodoPage implements OnInit, OnDestroy {
 
           // this.todoHistoryList = [];
 
-          this.mainTodo = this.todos.find(todo => todo.id == params['id'])!;
+          let mainTodo = this.todos.find(todo => todo.id == params['id']);
+
+          if (mainTodo == undefined) return;
+          
+          this.mainTodo = mainTodo;
 
           if (this.todo){
             this.todo = TodoUtils.findSubTodoById(this.mainTodo, this.todo.id) || this.mainTodo;
@@ -163,7 +167,7 @@ export class TodoPage implements OnInit, OnDestroy {
         if (this.todo){
           this.initializeSubTasksList(); 
         }
-        if (!this.isTodoSynchronized()) {
+        if (!this.isTodoSynchronized() && !this.isNewTodo) {
           console.log("TODO NOT SYNCHRONIZED")
           this.taskService.updateTodo(this.mainTodo);
         }
@@ -175,9 +179,14 @@ export class TodoPage implements OnInit, OnDestroy {
   ngOnDestroy(){
     console.log("TODO PAGE ON DESTROY")
 
-    if (!this.isTodoSynchronized()) {
+    if (!this.isTodoSynchronized() && this.mainTodo != undefined && !this.isNewTodo) {
       console.log("TODO NOT SYNCHRONIZED")
-      this.taskService.updateTodo(this.mainTodo);
+
+      let todo = this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id);
+
+      if (todo){
+        this.taskService.updateTodo(this.mainTodo);      
+      }
     }
 
     if (this.userSubscription){

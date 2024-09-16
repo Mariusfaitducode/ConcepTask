@@ -146,6 +146,9 @@ export class CalendarService {
                 component.views[toUpdateViewIndex] = component.getViewData(currentViewStartDate);
             }
         }
+
+        // console.log('POPULATE ADJACENT VIEWS', component.views);
+
     }
 
     loadEvents() {
@@ -153,6 +156,9 @@ export class CalendarService {
     }
 
     slide(direction: number) {
+
+        // console.log('SLIDE CHANGED', direction);
+
         this.slideChanged.next(direction);
     }
 
