@@ -16,7 +16,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { TodoUtils } from 'src/app/utils/todo-utils';
 import { SettingsService } from 'src/app/services/settings/settings.service';
-import { Subscription } from 'rxjs';
+import { find, Subscription } from 'rxjs';
 import { GraphComponent } from 'src/app/components/graph/graph.component';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Keyboard } from '@capacitor/keyboard';
@@ -129,6 +129,16 @@ export class TodoPage implements OnInit, OnDestroy {
           this.mainTodo = new Todo();
           this.todo = this.mainTodo;
 
+          if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
+
+            this.todo.config.date = true;
+    
+            const formattedDate = TodoDate.getFormattedDateFromYearMonthDay(params['year'], params['month'], params['day'])
+    
+            this.todo.date = formattedDate;
+            document.getElementById('datePicker')?.setAttribute('value', this.todo.date);
+          }
+
           this.isNewTodo = true;
           this.editMode = true;
         
@@ -137,29 +147,41 @@ export class TodoPage implements OnInit, OnDestroy {
           if (this.todos.length == 0) return;
 
           // if (this.isTodoSynchronized()) return;
-
-
           // this.todoHistoryList = [];
 
           let mainTodo = this.todos.find(todo => todo.id == params['id']);
 
-          if (mainTodo == undefined) return;
-          
-          this.mainTodo = mainTodo;
+          if (mainTodo == undefined){ // POSSIBLY SUB TODO
 
-          if (this.todo){
-            this.todo = TodoUtils.findSubTodoById(this.mainTodo, this.todo.id) || this.mainTodo;
+            let findTodo = false;
 
-            // Re init todoHistoryList
-            for (let i = 0; i < this.todoHistoryList.length; i++) {
-              this.todoHistoryList[i] = TodoUtils.findSubTodoById(this.mainTodo, this.todoHistoryList[i].id) || this.mainTodo;
+            for (let todo of this.todos){
+              let subTodo = TodoUtils.findSubTodoById(todo, params['id']);
+              if (subTodo){
+                this.mainTodo = todo;
+                this.todo = subTodo;
+                findTodo = true;
+                break;
+              }
             }
+            if (!findTodo) return;
           }
           else{
-            this.todo = this.mainTodo;
-            
-          }
+            this.mainTodo = mainTodo;
 
+            if (this.todo){
+              this.todo = TodoUtils.findSubTodoById(this.mainTodo, this.todo.id) || this.mainTodo;
+  
+              // Re init todoHistoryList
+              for (let i = 0; i < this.todoHistoryList.length; i++) {
+                this.todoHistoryList[i] = TodoUtils.findSubTodoById(this.mainTodo, this.todoHistoryList[i].id) || this.mainTodo;
+              }
+            }
+            else{
+              this.todo = this.mainTodo;
+              
+            }
+          }
         }
         
         // Initialisation pour drag and drop indexs

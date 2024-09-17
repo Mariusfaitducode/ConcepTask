@@ -20,6 +20,7 @@
         *ngIf="!modalConfig.open" 
           [todo]="todo"
           [isNewTodo]="isNewTodo"
+          [editMode]="editMode"
           (editModeEmitter)="modifyTodo($event)"
           (deleteEmitter)="showConfirmDeleteTodo()"
           (validationEmitter)="setTodoValidation($event)"

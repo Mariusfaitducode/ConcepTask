@@ -192,6 +192,6 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   addTodoOnDate(date : Date){
     console.log(date) 
-    this.router.navigate(['/add', date.getDate(), date.getMonth(), date.getFullYear() ]);
+    this.router.navigate(['/todo', date.getDate(), date.getMonth(), date.getFullYear() ]);
   }
 }

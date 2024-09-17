@@ -75,7 +75,7 @@ export class DateSelectorComponent  implements OnInit {
     console.log(this.todo.reminder);
     // this.newTodo.sayHello();
 
-    if (this.todo.reminder && TodoDate.passedDate(this.todo)){
+    if (this.todo.reminder && TodoDate.passedDate(this.todo)){ // si la date est passée
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
 
       setTimeout(() => {
@@ -123,7 +123,7 @@ export class DateSelectorComponent  implements OnInit {
     }
 
     if (this.todo.reminder) {
-      let result = await TodoNotification.scheduleRecurringNotification(this.todo, this.router);
+      let result = await TodoNotification.scheduleNotification(this.todo, this.router);
 
       if (result){
         // console.log("notification scheduled")
@@ -173,7 +173,7 @@ export class DateSelectorComponent  implements OnInit {
     if (this.todo.reminder){
       let result = await TodoNotification.cancelNotification(this.todo);
       if (result){
-        let result = await TodoNotification.scheduleRecurringNotification(this.todo, this.router);
+        let result = await TodoNotification.scheduleNotification(this.todo, this.router);
         if (result){
           this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
         }

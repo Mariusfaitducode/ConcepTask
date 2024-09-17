@@ -44,10 +44,6 @@ const routes: Routes = [
         loadChildren: () => import('../pages/add/add.module').then( m => m.AddPageModule)
       },
       {
-        path: 'add/:day/:month/:year',
-        loadChildren: () => import('../pages/add/add.module').then( m => m.AddPageModule)
-      },
-      {
         path: 'todo',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
       },
@@ -57,6 +53,10 @@ const routes: Routes = [
       },
       {
         path: 'todo/:id/:subId',
+        loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
+      },
+      {
+        path: 'todo/:day/:month/:year',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
       },
       {
