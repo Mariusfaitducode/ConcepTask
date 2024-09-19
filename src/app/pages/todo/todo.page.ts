@@ -370,8 +370,19 @@ export class TodoPage implements OnInit, OnDestroy {
       this.todo = this.todoHistoryList.pop()!;
     }
     else{
+
+      if (this.isNewTodo) {
+        // this.navCtrl.back();
+
+        this.showCloseConfirm();
+
+      }
+      else{
+        this.navCtrl.back();
+      }
+
       // Quit page
-      this.navCtrl.back();
+      // this.navCtrl.back();
     }
   }
 
@@ -490,6 +501,9 @@ export class TodoPage implements OnInit, OnDestroy {
   // MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
 
   showConfirmDeleteTodo = async () => {
+
+    console.log("show confirm delete todo", this.todo.title)
+
     const { value } = await Dialog.confirm({
       title: 'Confirm',
       message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
@@ -497,13 +511,48 @@ export class TodoPage implements OnInit, OnDestroy {
 
     if (value) {
 
+      console.log("delete todo", this.todo.title)
+
       this.taskService.deleteTodoById(this.mainTodo, this.todo);
-      this.navCtrl.back();
+
+      if (this.todo == this.mainTodo){
+        this.navCtrl.back();
+      }
+      else{
+        this.todo = this.mainTodo;
+        this.todoHistoryList = [];
+      }
     }
   };
 
 
     // TODO : On modify button, on go back arrow, on platform back button
+
+
+    showCloseConfirm = async () => {
+
+      
+  
+        const { value } = await Dialog.confirm({
+          title: 'Confirm',
+          message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
+        });
+    
+        if (value) {
+          console.log("should loose change")
+  
+          // this.newTodo = this.initialTodo;
+          
+          // // Replace newTodo with initialTodo in todos list
+          // const index = this.todos.findIndex(todo => todo.id === this.newTodo.id);
+          // if (index !== -1) {
+          //   this.todos[index] = this.initialTodo;
+          // }
+          
+          this.navCtrl.back();
+        }
+      
+    };
   
 
 }

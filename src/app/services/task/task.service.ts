@@ -62,14 +62,21 @@ export class TaskService {
           console.log('TRY SYNC SERVICE TODOS FROM FIRESTORE : ')
           
           if (this.user){
-            console.log('SYNC SERVICE TODOS FROM FIRESTORE : ', todosFromFirestore)
-            this.todosSubject.next(todosFromFirestore);
+            console.log('SYNC SERVICE TODOS FROM FIRESTORE : ', todosFromFirestore, this.todosSubject.value)
 
-            // this.todoListOnStorage = todosFromFirestore;
+            // console.log('COMPARISON TODOS FROM FIRESTORE : ', JSON.parse(JSON.stringify(todosFromFirestore)), JSON.parse(JSON.stringify(this.todosSubject.value)))
 
-            this.updateLocalStorage(todosFromFirestore);
+            // TODO : Fix this comparison
+
+
+            if (JSON.parse(JSON.stringify(todosFromFirestore)) != JSON.parse(JSON.stringify(this.todosSubject.value))){
+
+              console.log('TODOS HAVE CHANGED, NEXT NEW TODOS')
+
+              this.todosSubject.next(todosFromFirestore);
+              this.updateLocalStorage(todosFromFirestore);
+            }  
           }
-          
         })
       )
       .subscribe();
@@ -194,7 +201,7 @@ export class TaskService {
     }
     else{ // Remove the sub todo from the main todo
 
-      TodoUtils.deleteTodoById(mainTodo, todoToDelete.subId!);
+      TodoUtils.deleteTodoById(mainTodo, todoToDelete.id!);
       this.updateTodo(mainTodo);
     }
   }

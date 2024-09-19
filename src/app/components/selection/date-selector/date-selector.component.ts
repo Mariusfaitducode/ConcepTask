@@ -163,24 +163,6 @@ export class DateSelectorComponent  implements OnInit {
   }
 
 
-  async updateRepeatNotification(){
-
-    if (this.todo.reminder && TodoDate.passedDate(this.todo)){
-      this.presentToast(`${this.translate.instant('DATE PASSED')}`);
-      return;
-    }
-
-    if (this.todo.reminder){
-      let result = await TodoNotification.cancelNotification(this.todo);
-      if (result){
-        let result = await TodoNotification.scheduleNotification(this.todo, this.router);
-        if (result){
-          this.presentToast(`${this.translate.instant('NOTIF UPDATE')}`);
-        }
-      }
-    }
-  }
-
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -205,15 +187,16 @@ export class DateSelectorComponent  implements OnInit {
   }
 
 
-  validDate(){
-    if (this.todo.config.date){
-      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
-      let now = new Date();
-      return date! > now;
-    }
-    if (this.todo.config.repeat && this.todo.repeat!.delayType){
-      return true;
-    }
-    return false;
-  }
+  // validDate(){
+
+  //   if (this.todo.config.date && this.todo.date){
+  //     let date = TodoDate.getDate(this.todo.date!, this.todo.time);
+  //     let now = new Date();
+  //     return date! > now;
+  //   }
+  //   if (this.todo.config.repeat && this.todo.repeat!.delayType){
+  //     return true;
+  //   }
+  //   return false;
+  // }
 }

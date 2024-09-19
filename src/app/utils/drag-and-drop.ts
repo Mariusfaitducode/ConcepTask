@@ -62,7 +62,7 @@ export class DragAndDrop {
                 parentTodo.config.subtasks = true;
             }
 
-            TodoUtils.deleteTodoById(mainTodo, item.subId!);
+            // TodoUtils.deleteTodoById(mainTodo, item.subId!);
             let parent = TodoUtils.findSubTodoById(mainTodo, parentTodo.id!);
             parent!.list.splice(0, 0, item);
             item.parentId = parentTodo.subId;

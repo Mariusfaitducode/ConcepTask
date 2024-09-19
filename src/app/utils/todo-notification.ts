@@ -14,9 +14,11 @@ export class TodoNotification {
           console.log("get notifId")
           // console.log(localStorage.getItem('notifId') || [])
   
-          let notifId = Date.now();
+          let notifId = Math.floor(Math.random() * (2 ** 31));
 
           todo.notifId = notifId;
+
+          console.log("notifId", notifId)
   
           return todo.notifId;
         }
@@ -56,8 +58,8 @@ export class TodoNotification {
             let repeat = false;
 
             if (todo.repeat && todo.repeat.delayType){
-              // repeatEvery  = todo.repeat!.delayType!;
-              repeatEvery  = 'second';
+              repeatEvery  = todo.repeat!.delayType!;
+              // repeatEvery  = 'second';
 
               repeat = true;
 

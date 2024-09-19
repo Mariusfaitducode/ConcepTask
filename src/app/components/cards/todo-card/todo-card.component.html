@@ -21,7 +21,7 @@
       
       <div *ngIf="!todo.isDone">
         
-        <ion-label class="date-card" [ngClass]="{'passed-date' : !validDate()}"> {{formatDateToCustomString()}}</ion-label>
+        <ion-label *ngIf="todo.date || todo.repeat && todo.repeat?.startDate" class="date-card" [ngClass]="{'passed-date' : !validDate()}"> {{formatDateToCustomString()}}</ion-label>
 
         
       </div>

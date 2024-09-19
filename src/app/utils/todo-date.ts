@@ -117,6 +117,7 @@ export class TodoDate {
             return true;
           }
         }
+        
         else if (todo.config.repeat && todo.repeat?.startDate) {
           let date = new Date(todo.repeat.startDate);
   
@@ -142,6 +143,12 @@ export class TodoDate {
       public static formatDateToCustomString(todo : Todo, translate : TranslateService | null = null) {
   
         // console.log(translate)
+
+        if (!todo.config.date && !todo.config.repeat) return null;
+
+        if (todo.config.date && !todo.date) return 'Date not defined';
+
+        if (todo.config.repeat && !todo.repeat?.startDate) return 'Date not defined';
   
         let daysOfWeek : string[] = []
         let months : string[] = []

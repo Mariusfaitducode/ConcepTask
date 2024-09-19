@@ -11,11 +11,11 @@ export class TodoUtils {
 
 // DELETE TODO
 
-    public static deleteTodoById(rootTodo: Todo, idToDelete: number): Todo {
+    public static deleteTodoById(rootTodo: Todo, idToDelete: string): Todo {
 
         console.log('Delete todo by id, todo-utils :', idToDelete)
 
-        TodoNotification.cancelNotification(rootTodo);
+        // TodoNotification.cancelNotification(rootTodo);
     
         // Créez une copie du todo actuel
         // const updatedTodo: Todo = { ...rootTodo, initializeMainTodo: rootTodo.initializeMainTodo };
@@ -25,13 +25,16 @@ export class TodoUtils {
         // Parcourez les sous-todos récursivement
         rootTodo.list!.forEach((subTodo) => {
 
-        if (subTodo.subId === idToDelete) {
-            // Supprimer le todo
-            updatedTodo.list!.splice(updatedTodo.list!.indexOf(subTodo), 1);
-        } else {
-            // Sinon, parcourez les sous-todos de ce todo
-            TodoUtils.deleteTodoById(subTodo, idToDelete);
-        }
+            if (subTodo.id === idToDelete) {
+                // Supprimer le todo
+
+                TodoNotification.cancelNotification(subTodo);
+
+                updatedTodo.list!.splice(updatedTodo.list!.indexOf(subTodo), 1);
+            } else {
+                // Sinon, parcourez les sous-todos de ce todo
+                TodoUtils.deleteTodoById(subTodo, idToDelete);
+            }
         });
     
         // Renvoyez le todo mis à jour (ou null s'il doit être supprimé)

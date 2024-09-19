@@ -43,6 +43,8 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.taskService.getTodos().subscribe((todos: Todo[]) => {
 
+      if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
+
       console.log('Todos loaded in home page:', todos)
       this.todos = todos;
       this.results = [...this.todos];

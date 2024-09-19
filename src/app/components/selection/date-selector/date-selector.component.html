@@ -10,7 +10,7 @@
       <ion-item >
         <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
         label="{{'DUE DATE' | translate}}" labelPlacement="floating" class="label-padding"
-          [ngClass]="{'passed-date' : !validDate()}">
+          [ngClass]="{'passed-date' : !passedDate()}">
         </ion-input>
   
         <ion-icon *ngIf="!passedDate() && todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
@@ -23,7 +23,7 @@
       <ion-item >
         <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
         label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
-          [ngClass]="{'passed-date' : !validDate()}">
+          [ngClass]="{'passed-date' : !passedDate()}">
         </ion-input>
   
         <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
@@ -72,7 +72,7 @@
     
           <ion-input type="date" placeholder="MM/DD/YYYY"  
             label="{{'START DATE' | translate}}" labelPlacement="floating"
-            [(ngModel)]="todo.repeat.startDate" (ionChange)="updateRepeatNotification()"></ion-input>
+            [(ngModel)]="todo.repeat.startDate" (ionChange)="updateNotification()"></ion-input>
         </ion-item>
     
         <ion-item [ngClass]="{'modal-item' : page === 'modal'}">
@@ -81,7 +81,7 @@
     
           <ion-input type="time" placeholder="Time" 
             label="{{'TIME' | translate}}" labelPlacement="floating"
-            [(ngModel)]="todo.repeat.startTime" (ionChange)="updateRepeatNotification()"></ion-input>
+            [(ngModel)]="todo.repeat.startTime" (ionChange)="updateNotification()"></ion-input>
         </ion-item>
       </div>
       
