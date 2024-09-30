@@ -10,7 +10,8 @@
       [subTask]="subTodo" 
       
       (todoSelectedEmitter)="onNewTodoSelected($event)"
-      [page]="'todo'" 
+      (todoDeveloppedEmitter)="onTodoDevelopped()"
+
       [hideSubTasks]="hideDoneTasks"
       ></app-sub-task>
     </div>

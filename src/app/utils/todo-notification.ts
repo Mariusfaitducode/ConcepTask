@@ -34,14 +34,9 @@ export class TodoNotification {
           
           console.log("schedule notification")
           
-          
           // Vérifier si les notifications sont disponibles
           const available = await LocalNotifications.requestPermissions();
     
-          
-
-
-
           if (available) {
 
             let date = TodoDate.getDate(todo.date!, todo.time);

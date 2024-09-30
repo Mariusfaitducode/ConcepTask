@@ -7,7 +7,7 @@
      >
 
     <ion-card-content 
-      (click)="clickSubTask()" (press)="developSubTaskPressed($event)"
+      (click)="clickSubTask()"
       class="sub-task-card" [style.background-color]="backgroundColor()"
       
       >
@@ -55,7 +55,7 @@
         </div>
         
 
-        <div *ngIf="this.subTask.config.subtasks && (this.subTask.list.length !== 0 || page === 'add')" class="develop-task" (click)="developSubTask($event)">
+        <div *ngIf="this.subTask.config.subtasks && (this.subTask.list.length !== 0)" class="develop-task" (click)="developSubTask($event)">
           <div  *ngIf="!this.subTask.developped">
             <ion-icon name="chevron-down-outline" ></ion-icon>
           </div>
@@ -86,8 +86,10 @@
           [todos]="todos" 
           [parentTask]="subTask" 
           [subTask]="sub" 
+
           (todoSelectedEmitter)="onNewTodoSelected($event)"
-          [page]="page" 
+          (todoDeveloppedEmitter)="onTodoDevelopped()"
+ 
           [level]="level + 1" 
           [openModal]="openModal" 
           [hideSubTasks]="hideSubTasks">

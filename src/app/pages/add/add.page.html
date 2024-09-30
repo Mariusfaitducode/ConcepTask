@@ -87,7 +87,7 @@
 
       <app-button-add-sub-task [modalConfig]="modalConfig" [parentTask]="newTodo"></app-button-add-sub-task>
 
-      <div cdkDropListGroup>
+      <!-- <div cdkDropListGroup>
         <div *ngFor="let subTodo of newTodo.list; let id = index">
 
           <div cdkDropList [cdkDropListData]="subTasksList[id]" (cdkDropListDropped)="drop($event)">
@@ -99,7 +99,7 @@
             [openModal]="modalConfig"></app-sub-task>
           </div>
         </div> 
-      </div> 
+      </div>  -->
 
     </div>
   </ion-list>

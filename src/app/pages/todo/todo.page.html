@@ -51,7 +51,8 @@
     <app-title-category-edit *ngIf="this.editMode" [todo]="this.todo"></app-title-category-edit>
 
     <app-maintodo-subtask
-          [todo]="todo" [mainTodo]="mainTodo" [todos]="todos" [hideDoneTasks]="hideDoneTasks"
+          [todo]="todo" [mainTodo]="mainTodo" [todos]="todos" 
+          [hideDoneTasks]="hideDoneTasks"
           (todoSelectedEmitter)="onNewTodoSelected($event)"
         ></app-maintodo-subtask>
 
@@ -96,6 +97,7 @@
             [hideDoneTasks]="hideDoneTasks"
             [subTasksList]="subTasksList"
             (todoSelectedEmitter)="onNewTodoSelected($event)"
+            (initializeDragDropListEmitter)="initializeDragDropList()"
           ></app-todo-subtasks-tree>
 
         </div>

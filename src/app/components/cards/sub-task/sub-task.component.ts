@@ -25,12 +25,12 @@ export class SubTaskComponent  implements OnInit {
 
   @Output() todoSelectedEmitter = new EventEmitter<Todo>();
 
+  @Output() todoDeveloppedEmitter = new EventEmitter();
+
   //Parent of subTask
   @Input() parentTask!: Todo;
   
-  //Index = mainTodo in todo page / subTodo in add page
-  // @Input() index: number = 0;
-  @Input() page: string = "";
+  
   @Input() level: number = 0;
 
   @Input() hideSubTasks: boolean = false;
@@ -46,6 +46,7 @@ export class SubTaskComponent  implements OnInit {
   ngOnInit() {
   }
 
+  
   startDrag(){
     console.log("Start Timer")
     
@@ -61,6 +62,7 @@ export class SubTaskComponent  implements OnInit {
   stopDrag(){
     this.isDragged = false;
   }
+
 
 
   backgroundColor(){
@@ -79,10 +81,10 @@ export class SubTaskComponent  implements OnInit {
   }
 
 
-  developSubTaskPressed(event: Event){
-    event.stopPropagation();
-    this.subTask.developped = true;
-  }
+  // developSubTaskPressed(event: Event){
+  //   event.stopPropagation();
+  //   this.subTask.developped = true;
+  // }
 
 
   developSubTask(event: Event){
@@ -91,6 +93,11 @@ export class SubTaskComponent  implements OnInit {
 
     // localStorage.setItem('todos', JSON.stringify(this.todos));
 
+    this.todoDeveloppedEmitter.emit();
+  }
+
+  onTodoDevelopped(){
+    this.todoDeveloppedEmitter.emit();
   }
 
 
@@ -104,23 +111,6 @@ export class SubTaskComponent  implements OnInit {
   clickSubTask(){
 
     this.todoSelectedEmitter.emit(this.subTask);
-
-    // [routerLink]="'/todo/' + this.index + '/' + subTodo.subId"
-
-    // if (this.page == "todo") {
-
-    //   // if (this.todos){
-    //   //   console.log(this.todos);
-    //   //   localStorage.setItem('todos', JSON.stringify(this.todos));
-    //   // }
-
-    //   this.router.navigate(['/todo', this.mainId, this.subTask.subId]);
-    // }
-    if (this.page == "add"){
-
-      // add page
-      this.modifyTaskOnList(this.subTask);
-    }
   }
 
   modifyTaskOnList(subTask : Todo){

@@ -179,7 +179,6 @@ export class TodoPage implements OnInit, OnDestroy {
             }
             else{
               this.todo = this.mainTodo;
-              
             }
           }
         }
@@ -187,7 +186,7 @@ export class TodoPage implements OnInit, OnDestroy {
         // Initialisation pour drag and drop indexs
 
         if (this.todo){
-          this.initializeSubTasksList(); 
+          this.initializeDragDropList(); 
         }
         if (!this.isTodoSynchronized() && !this.isNewTodo) {
           console.log("TODO NOT SYNCHRONIZED")
@@ -224,31 +223,19 @@ export class TodoPage implements OnInit, OnDestroy {
     return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
   }
 
-  
-
 
   // DRAG AND DROP SETUP
 
-  actualizeWhenDeveloppedClicked(){
-    let developTask = Array.from(document.getElementsByClassName("develop-task"));
-
-    for (let dev of developTask) {
-      dev.removeEventListener("click", () => this.initializeSubTasksList());
-      dev.addEventListener("click", () => this.initializeSubTasksList());
-    }
-  }
-
-
-  hideSubTasksClicked(){
+  updateDragDropListWhenDoneTasksChanged(){
     setTimeout(() => {
-      this.initializeSubTasksList();
+      this.initializeDragDropList();
     }, 1000);
   }
 
 
-  initializeSubTasksList(){
+  initializeDragDropList(){
 
-    this.actualizeWhenDeveloppedClicked();
+    // this.actualizeWhenDeveloppedClicked();
 
     this.subTasksList = [];
 
@@ -257,7 +244,7 @@ export class TodoPage implements OnInit, OnDestroy {
         this.subTasksList.push(TodoUtils.transformTodoInListByDepth(subTask, this.hideDoneTasks));
       }
     }
-    console.log(this.subTasksList)
+    console.log('INITIALIZE SUBTASK FOR DRAG AND DROP',this.subTasksList)
   }
 
   
@@ -423,6 +410,7 @@ export class TodoPage implements OnInit, OnDestroy {
 
   changeHideDoneTasks(hideDoneTasks : boolean){
     this.hideDoneTasks = hideDoneTasks;
+    this.updateDragDropListWhenDoneTasksChanged();
   }
 
   
