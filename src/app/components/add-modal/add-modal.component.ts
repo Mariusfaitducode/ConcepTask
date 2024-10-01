@@ -23,6 +23,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   // @Input() newModalConfig: TaskModal = new TaskModal();
 
+  @Output() initializeDragDropListEmitter = new EventEmitter();
+
 
   //@Input() subTodo! : Todo;
   subTask!: Todo;
@@ -64,33 +66,33 @@ export class AddModalComponent implements OnInit, AfterViewInit {
  
 
 
-  showConfirm = async () => {
-    const { value } = await Dialog.confirm({
-      title: 'Confirm',
-      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.subTask.title +` ?`,
-    });
+  // showConfirm = async () => {
+  //   const { value } = await Dialog.confirm({
+  //     title: 'Confirm',
+  //     message: `${this.translate.instant('DELETE MESSAGE')} `+ this.subTask.title +` ?`,
+  //   });
   
-    console.log('Confirmed:', value);
+  //   console.log('Confirmed:', value);
 
-    if (value) {
-      this.deleteSubTask();
-    }
-  };
+  //   if (value) {
+  //     this.deleteSubTask();
+  //   }
+  // };
 
 
 
-  deleteSubTask(){
-    console.log('delete subTask with index : ')
+  // deleteSubTask(){
+  //   console.log('delete subTask with index : ')
 
-    const index = this.modalConfig.parentTask!.list!.findIndex(task => task.id === this.subTask.id);
-    if (index !== -1) {
-      this.modalConfig.parentTask!.list!.splice(index, 1);
-    }
+  //   const index = this.modalConfig.parentTask!.list!.findIndex(task => task.id === this.subTask.id);
+  //   if (index !== -1) {
+  //     this.modalConfig.parentTask!.list!.splice(index, 1);
+  //   }
 
     
-    console.log( this.modalConfig.parentTask!.list )
-    this.modalConfig.open = false;
-  }
+  //   console.log( this.modalConfig.parentTask!.list )
+  //   this.modalConfig.open = false;
+  // }
 
 
   addSubTask(){
@@ -102,6 +104,8 @@ export class AddModalComponent implements OnInit, AfterViewInit {
     this.modalConfig.parentTask!.list.push(this.subTask);
 
     this.closeSubTask();
+
+    this.initializeDragDropListEmitter.emit();
     
   }
 

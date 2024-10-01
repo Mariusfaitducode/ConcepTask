@@ -83,7 +83,7 @@
           (subModeChangeEmitter)="changeSubMode($event)" (hideDoneTasksChangeEmitter)="changeHideDoneTasks($event)"
         ></app-todo-sub-tasks-header>
 
-        <app-button-add-sub-task *ngIf="editMode" [parentTask]="todo" [modalConfig]="modalConfig"></app-button-add-sub-task>
+        <app-button-add-sub-task *ngIf="editMode" [parentTask]="todo" [modalConfig]="modalConfig" (initializeDragDropListEmitter)="initializeDragDropList()"></app-button-add-sub-task>
 
         
         <!-- SUBTAKS LIST -->
@@ -123,12 +123,12 @@
 
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isNewTodo && !isKeyboardVisible && !modalConfig.open">
-  <ion-fab-button [disabled]="!canSaveTodo()" (click)="addNewTodo()">
+  <ion-fab-button [disabled]="!canSaveTodo()" (click)="saveNewTodo()">
     <ion-icon name="checkmark-outline" ></ion-icon>
   </ion-fab-button>
 </ion-fab>
 
 
 <div *ngIf="modalConfig.open">
-  <app-add-modal [modalConfig]="modalConfig"></app-add-modal>
+  <app-add-modal [modalConfig]="modalConfig" (initializeDragDropListEmitter)="initializeDragDropList()"></app-add-modal>
 </div>

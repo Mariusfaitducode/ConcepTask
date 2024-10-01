@@ -349,6 +349,7 @@ export class TodoPage implements OnInit, OnDestroy {
       this.content.scrollToTop(300);
       
       this.initializeGraphHeight();
+      this.initializeDragDropList();
     }
   }
 
@@ -371,10 +372,11 @@ export class TodoPage implements OnInit, OnDestroy {
       // Quit page
       // this.navCtrl.back();
     }
+    this.initializeDragDropList();
   }
 
 
-  modifyTodo(editMode : boolean){ // redirection to add page
+  modifyTodo(editMode : boolean){ // toggle edit button
 
     this.editMode = editMode;
 
@@ -385,13 +387,7 @@ export class TodoPage implements OnInit, OnDestroy {
 
         this.taskService.updateTodo(this.mainTodo);
       }
-
     }
-
-
-    // TODO : Message pop up if changes are not saved
-
-    // Navigation control
   }
 
 
@@ -410,7 +406,8 @@ export class TodoPage implements OnInit, OnDestroy {
 
   changeHideDoneTasks(hideDoneTasks : boolean){
     this.hideDoneTasks = hideDoneTasks;
-    this.updateDragDropListWhenDoneTasksChanged();
+    // this.updateDragDropListWhenDoneTasksChanged();
+    this.initializeDragDropList();
   }
 
   
@@ -437,23 +434,17 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  addNewTodo(){
+  saveNewTodo(){
 
     // console.log(this.todos)
     this.assignIds(); // A vérifier
 
-    // if (!this.isNewTodo) {  // Modification d'un Todo existant
-
-    //   this.taskService.updateTodo(this.mainTodo);
-    //   this.navCtrl.back()
-    // }
-    // else{
-
     this.taskService.addTodo(this.mainTodo);
     this.navCtrl.back()
-    // }
 
-    console.log(this.todos)
+    // console.log(this.todos)
+
+    this.initializeDragDropList();
   }
 
 
@@ -502,6 +493,7 @@ export class TodoPage implements OnInit, OnDestroy {
       console.log("delete todo", this.todo.title)
 
       this.taskService.deleteTodoById(this.mainTodo, this.todo);
+      this.initializeDragDropList();
 
       if (this.todo == this.mainTodo){
         this.navCtrl.back();
@@ -518,9 +510,7 @@ export class TodoPage implements OnInit, OnDestroy {
 
 
     showCloseConfirm = async () => {
-
       
-  
         const { value } = await Dialog.confirm({
           title: 'Confirm',
           message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,

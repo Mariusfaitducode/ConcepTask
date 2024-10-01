@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Todo } from 'src/app/models/todo';
 
@@ -11,6 +11,8 @@ export class ButtonAddSubTaskComponent  implements OnInit {
 
   @Input() parentTask!: Todo;
   @Input() modalConfig!: TaskModal;
+
+  @Output() initializeDragDropListEmitter = new EventEmitter();
 
   subType : string = "customize";
   newTodoOnListTitle: string = "";
@@ -26,6 +28,7 @@ export class ButtonAddSubTaskComponent  implements OnInit {
     newTodoOnList.title = this.newTodoOnListTitle;
     this.parentTask.list?.push(newTodoOnList);
     this.newTodoOnListTitle = '';
+    this.initializeDragDropListEmitter.emit();
   }
 
 
