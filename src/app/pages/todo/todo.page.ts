@@ -71,7 +71,7 @@ export class TodoPage implements OnInit, OnDestroy {
   // Visualisation
 
   // Toggle sub task
-  hideDoneTasks : boolean = false;
+  // hideDoneTasks : boolean = false;
 
   // changePositionSubMode : boolean = false;
   subMode : string = "tree";
@@ -226,11 +226,11 @@ export class TodoPage implements OnInit, OnDestroy {
 
   // DRAG AND DROP SETUP
 
-  updateDragDropListWhenDoneTasksChanged(){
-    setTimeout(() => {
-      this.initializeDragDropList();
-    }, 1000);
-  }
+  // updateDragDropListWhenDoneTasksChanged(){
+  //   setTimeout(() => {
+  //     this.initializeDragDropList();
+  //   }, 1000);
+  // }
 
 
   initializeDragDropList(){
@@ -240,8 +240,8 @@ export class TodoPage implements OnInit, OnDestroy {
     this.subTasksList = [];
 
     for (let subTask of this.todo.list!) {
-      if (!this.hideDoneTasks || !subTask.isDone){
-        this.subTasksList.push(TodoUtils.transformTodoInListByDepth(subTask, this.hideDoneTasks));
+      if (!this.mainTodo.hideDoneTasks || !subTask.isDone){
+        this.subTasksList.push(TodoUtils.transformTodoInListByDepth(subTask, this.mainTodo.hideDoneTasks));
       }
     }
     console.log('INITIALIZE SUBTASK FOR DRAG AND DROP',this.subTasksList)
@@ -404,11 +404,11 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  changeHideDoneTasks(hideDoneTasks : boolean){
-    this.hideDoneTasks = hideDoneTasks;
-    // this.updateDragDropListWhenDoneTasksChanged();
-    this.initializeDragDropList();
-  }
+  // changeHideDoneTasks(hideDoneTasks : boolean){
+  //   this.mainTodo.hideDoneTasks = hideDoneTasks;
+  //   // this.updateDragDropListWhenDoneTasksChanged();
+  //   this.initializeDragDropList();
+  // }
 
   
 

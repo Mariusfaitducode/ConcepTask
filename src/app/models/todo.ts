@@ -27,6 +27,7 @@ export class Todo {
     public isDone: boolean = false;
     public developped?: boolean = false;  // The todo is developped if we see his sub todos
 
+    public hideDoneTasks: boolean = false; // Hide the done tasks only useful for mainTodo
 
     // Propriety to choose
 

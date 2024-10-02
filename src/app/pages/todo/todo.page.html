@@ -52,7 +52,7 @@
 
     <app-maintodo-subtask
           [todo]="todo" [mainTodo]="mainTodo" [todos]="todos" 
-          [hideDoneTasks]="hideDoneTasks"
+          [hideDoneTasks]="mainTodo.hideDoneTasks"
           (todoSelectedEmitter)="onNewTodoSelected($event)"
         ></app-maintodo-subtask>
 
@@ -80,7 +80,8 @@
 
         <app-todo-sub-tasks-header
           [todo]="todo" [mainTodo]="mainTodo"
-          (subModeChangeEmitter)="changeSubMode($event)" (hideDoneTasksChangeEmitter)="changeHideDoneTasks($event)"
+          (subModeChangeEmitter)="changeSubMode($event)" 
+          (initializeDragDropListEmitter)="initializeDragDropList()"
         ></app-todo-sub-tasks-header>
 
         <app-button-add-sub-task *ngIf="editMode" [parentTask]="todo" [modalConfig]="modalConfig" (initializeDragDropListEmitter)="initializeDragDropList()"></app-button-add-sub-task>
@@ -94,7 +95,7 @@
             [todo]="todo"
             [mainTodo]="mainTodo"
             [todos]="todos"
-            [hideDoneTasks]="hideDoneTasks"
+            [hideDoneTasks]="mainTodo.hideDoneTasks"
             [subTasksList]="subTasksList"
             (todoSelectedEmitter)="onNewTodoSelected($event)"
             (initializeDragDropListEmitter)="initializeDragDropList()"

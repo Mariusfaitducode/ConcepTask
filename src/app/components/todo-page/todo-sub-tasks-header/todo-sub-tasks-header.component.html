@@ -2,7 +2,7 @@
   <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
 
   <div class="toggle-done-tasks" *ngIf="todo.config.subtasks && todo.list.length > 0">
-    <ion-toggle labelPlacement="end" [(ngModel)]="hideDoneTasks" (ionChange)="changeHideDoneTasks()"></ion-toggle>
+    <ion-toggle labelPlacement="end" [(ngModel)]="mainTodo.hideDoneTasks" (ionChange)="changeHideDoneTasks()"></ion-toggle>
     <!-- <ion-label>{{'HIDE DONE TASKS' | translate}}</ion-label> -->
     <div>{{'HIDE DONE TASKS' | translate}}</div>
     

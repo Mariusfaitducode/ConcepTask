@@ -12,10 +12,11 @@ export class TodoSubTasksHeaderComponent  implements OnInit {
   @Input() todo!: Todo;
   @Input() mainTodo!: Todo;
   subMode : string = "tree";
-  hideDoneTasks : boolean = false;
+  // hideDoneTasks : boolean = false;
 
   @Output() subModeChangeEmitter = new EventEmitter<string>();
-  @Output() hideDoneTasksChangeEmitter = new EventEmitter<boolean>();
+  // @Output() hideDoneTasksChangeEmitter = new EventEmitter<boolean>();
+  @Output() initializeDragDropListEmitter = new EventEmitter();
 
 
 
@@ -32,6 +33,7 @@ export class TodoSubTasksHeaderComponent  implements OnInit {
 
   changeHideDoneTasks(){
     // this.hideDoneTasks = !this.hideDoneTasks;
-    this.hideDoneTasksChangeEmitter.emit(this.hideDoneTasks);
+    // this.hideDoneTasksChangeEmitter.emit(this.hideDoneTasks);
+    this.initializeDragDropListEmitter.emit();
   }
 }
