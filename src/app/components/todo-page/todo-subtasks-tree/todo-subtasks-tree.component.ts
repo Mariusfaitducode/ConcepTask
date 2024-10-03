@@ -18,7 +18,7 @@ export class TodoSubtasksTreeComponent  implements OnInit {
 
   @Input() hideDoneTasks: boolean = false;
 
-  @Input() subTasksList: {todo: Todo, level: number}[][] = [];
+  @Input() dragAndDropTodosDatas: {todo: Todo, level: number}[][] = [];
 
   @Output() todoSelectedEmitter = new EventEmitter<Todo>();
 
@@ -43,6 +43,9 @@ export class TodoSubtasksTreeComponent  implements OnInit {
   async drop(event: CdkDragDrop<any[]>) {
 
     // TODO : fix drop event
+
+
+    console.log("DROP MOMENT : ", this.dragAndDropTodosDatas);
 
     await DragAndDrop.drop(event, this.mainTodo, this.translate);
     this.initializeDragDropListEmitter.emit();

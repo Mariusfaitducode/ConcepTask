@@ -43,7 +43,7 @@ export class TodoPage implements OnInit, OnDestroy {
   ){}
 
   // User
-  userSubscription! : Subscription;
+  // userSubscription! : Subscription;
   user : User | null = null;
 
   // Todo objects
@@ -66,17 +66,12 @@ export class TodoPage implements OnInit, OnDestroy {
   todoHistoryList : Todo[] = [];
 
   // Drag and drop need
-  subTasksList : {todo: Todo, level: number}[][] = [];
+  dragAndDropTodosDatas : {todo: Todo, level: number}[][] = [];
 
   // Visualisation
 
-  // Toggle sub task
-  // hideDoneTasks : boolean = false;
-
-  // changePositionSubMode : boolean = false;
   subMode : string = "tree";
 
-  // graphHeight : number = 300;
   scrollTop : number = 0;
 
   isKeyboardVisible = false;
@@ -102,39 +97,50 @@ export class TodoPage implements OnInit, OnDestroy {
       });
     }
 
+    // Gestion du bouton retour sur android
+
     this.platform.backButton.subscribeWithPriority(0, async () => {
       this.goBackTodo();
     });
     
+    // Récupération de l'utilisateur
 
     this.userService.getUser().subscribe((user : User | null) => {
       console.log('Todo page : User get', user)
       this.user = user;
     });
 
-    this.route.params.subscribe((params) => {
+    // Actualisation des todos 
 
-      this.settingsService.initPage(this.translate);
+    this.route.params.subscribe((params) => { // A chaque changement des paramètres de l'url
+
+      this.settingsService.initPage(this.translate); // Settings initialization : theme, language
+
+
+      // Récupération des todos de l'utilisateur, lors de la première arrivée sur la page et à chaque actualization des todos
 
       this.taskService.getTodos().subscribe((todos: Todo[]) =>{
 
+        // Si la liste des todos n'est pas vide et que les todos sont les mêmes, on ne fait rien, pas besoin de recharger les todos
+
         if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
 
+
         console.log('Todos loaded in todo page:', todos, this.todos)
-        this.todos = todos;
+        this.todos = todos; // Actualisation de la liste des todos
 
-        if (params['id'] == undefined) { // NEW TODO
+        // NEW TODO
+        // Si pas d'id dans les paramètres, c'est un nouveau todo
+        if (params['id'] == undefined) { 
 
-          // TODO : Add calendar creation case
           this.mainTodo = new Todo();
           this.todo = this.mainTodo;
 
-          if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date
+          if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date venant du calendrier
 
+            // Configuration à l'avance de la date
             this.todo.config.date = true;
-    
             const formattedDate = TodoDate.getFormattedDateFromYearMonthDay(params['year'], params['month'], params['day'])
-    
             this.todo.date = formattedDate;
             document.getElementById('datePicker')?.setAttribute('value', this.todo.date);
           }
@@ -143,53 +149,69 @@ export class TodoPage implements OnInit, OnDestroy {
           this.editMode = true;
         
         }
-        else { // EXISTING TODO
+        // EXISTING TODO
+        // Si un id est présent dans les paramètres, c'est un todo existant
+        else { 
           if (this.todos.length == 0) return;
 
           // if (this.isTodoSynchronized()) return;
           // this.todoHistoryList = [];
 
+          // Recherche du todo principal, dans la liste des todos
           let mainTodo = this.todos.find(todo => todo.id == params['id']);
 
-          if (mainTodo == undefined){ // POSSIBLY SUB TODO
+          // POSSIBLY SUB TODO
+          // Si le todo principal n'est pas trouvé, c'est peut-être un sous-todo
+          if (mainTodo == undefined){ 
 
             let findTodo = false;
 
             for (let todo of this.todos){
               let subTodo = TodoUtils.findSubTodoById(todo, params['id']);
               if (subTodo){
-                this.mainTodo = todo;
-                this.todo = subTodo;
+                this.mainTodo = todo; // Le todo principal est le todo parent contenant le sous-todo
+                this.todo = subTodo;  // Le todo est le sous-todo trouvé avec l'id
                 findTodo = true;
                 break;
               }
             }
-            if (!findTodo) return;
+            if (!findTodo) return; // Si le sous-todo n'est pas trouvé, on ne fait rien
           }
+
+          // FOUND MAIN TODO
+          // Sinon le todo principal est trouvé
           else{
             this.mainTodo = mainTodo;
 
+            // Si nous avions déjà un todo, nous le recherchons dans la liste des sous-todos pour l'actualiser
+            // Permet de gérer les cas d'actualisation de la page avec un todo déjà ouvert
+            // Sinon, le todo actuel devient le mainTodo
             if (this.todo){
+              // Actualization du todo actuel
               this.todo = TodoUtils.findSubTodoById(this.mainTodo, this.todo.id) || this.mainTodo;
   
-              // Re init todoHistoryList
+              // Réinitialization de l'historique des todos par leurs todos actualisés
               for (let i = 0; i < this.todoHistoryList.length; i++) {
                 this.todoHistoryList[i] = TodoUtils.findSubTodoById(this.mainTodo, this.todoHistoryList[i].id) || this.mainTodo;
               }
             }
             else{
+              // Si le todo actuel n'est pas trouvé, nous venons de charger la page, le todo actuel est le mainTodo
               this.todo = this.mainTodo;
             }
           }
         }
         
         // Initialisation pour drag and drop indexs
-
+        // Permet d'actualiser les sous-todos et les niveaux de profondeur pour les drags and drops à chaque actualization des todos
         if (this.todo){
           this.initializeDragDropList(); 
         }
-        if (!this.isTodoSynchronized() && !this.isNewTodo) {
-          console.log("TODO NOT SYNCHRONIZED")
+
+        // Vérification de la synchronisation du todo
+        // Si le todo n'est pas nouveau et pas synchronisé avec le localstorage, on l'actualise
+        if ( !this.isNewTodo && !this.isMainTodoSynchronized() ) {
+          console.log("TODO NOT SYNCHRONIZED ON ROUTE PARAMS ACTUALIZATION")
           this.taskService.updateTodo(this.mainTodo);
         }
       });
@@ -197,82 +219,99 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
+  // Censé s'activer lors de la fermeture de la page
+  // Permet de vérifier si le todo est synchronisé avec le localstorage avant de quitter la page
+  // WARN : On quitte parfois la page sans passer par cette fonction
   ngOnDestroy(){
     console.log("TODO PAGE ON DESTROY")
 
-    if (!this.isTodoSynchronized() && this.mainTodo != undefined && !this.isNewTodo) {
-      console.log("TODO NOT SYNCHRONIZED")
+    // Si le todo n'est pas nouveau et n'est pas synchronisé avec le localstorage, on l'actualise
 
+    if (!this.isNewTodo && this.mainTodo != undefined && !this.isMainTodoSynchronized() ) {
+      
+      console.log("TODO NOT SYNCHRONIZED ON PAGE DESTROY, SYNCHRONIZATION")
+
+      // Permet de vérifier si le todo est toujours dans la liste des todos à synchroniser
+      // Evite le cas d'actualization après une suppression du mainTodo
       let todo = this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id);
 
-      if (todo){
+      if (todo){ // Actualisation du mainTodo
         this.taskService.updateTodo(this.mainTodo);      
       }
     }
 
-    if (this.userSubscription){
-      this.userSubscription.unsubscribe();
-    }
+    // Services subscriptions
+
+    // if (this.userSubscription){
+    //   this.userSubscription.unsubscribe();
+    // }
     // if (this.todoSubscription){
     //   this.todoSubscription.unsubscribe();
     // }
   }
 
-
-  isTodoSynchronized(): boolean {
+  // SYNCHRONIZATION
+  // Vérifie si le mainTodo est bien synchronisé avec le localstorage
+  // Permet de savoir si l'utilisateur a modifié le todo
+  isMainTodoSynchronized(): boolean {
     return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
   }
 
 
   // DRAG AND DROP SETUP
-
-  // updateDragDropListWhenDoneTasksChanged(){
-  //   setTimeout(() => {
-  //     this.initializeDragDropList();
-  //   }, 1000);
-  // }
-
-
+  // Actualise la liste des sous-todos et les niveaux de profondeur pour les drags and drops
+  // Cette liste permet de gérer les données des containers pour les drags and drops
+  // Elle est transféré au composant todo-subtasks-tree qui la transmet à [cdkDropListData]
+  // La fonction doit être appelée à chaque fois que l'arbre des todos est modifié 
   initializeDragDropList(){
 
-    // this.actualizeWhenDeveloppedClicked();
+    this.dragAndDropTodosDatas = [];
 
-    this.subTasksList = [];
-
+    // Permet d'avoir la liste des taches visibles dans l'arbre des todos
     for (let subTask of this.todo.list!) {
       if (!this.mainTodo.hideDoneTasks || !subTask.isDone){
-        this.subTasksList.push(TodoUtils.transformTodoInListByDepth(subTask, this.mainTodo.hideDoneTasks));
+
+        // Pour chaque sous tache du premier niveau, 
+        // on ajoute tous les enfants de celui-ci sous forme de liste en ordre descendant (dfs)
+        this.dragAndDropTodosDatas.push(TodoUtils.transformTodoInListByDepth(subTask, this.mainTodo.hideDoneTasks));
+      }
+      else{
+        // Ajout d'une liste vide pour les taches cachées
+        // Permet de conserver la structure de l'arbre des todos et éviter des décalages d'indexs
+        this.dragAndDropTodosDatas.push([]); 
       }
     }
-    console.log('INITIALIZE SUBTASK FOR DRAG AND DROP',this.subTasksList)
+    console.log('INITIALIZE SUBTASK FOR DRAG AND DROP', this.dragAndDropTodosDatas)
   }
-
-  
-  
-
-  // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-   
-  //   console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-  //   ev.detail.complete(this.todo.list);
-  //   console.log(this.todo.list);
-  // }
 
 
   // SCROLL Tree / Graph management
-
+  // Permet de gérer le scroll de la page et de bloquer le scroll sur la division scroll-step
+  // Permet de gérer la hauteur du graphique en fonction du scroll
   onContentScroll(event : any){
 
+    // Référence de la position du scroll, position y du haut de la page
     this.scrollTop = event.detail.scrollTop;
 
-    // graph height calculation
+    // Calcul de la hauteur du graphique en fonction du scroll
     this.calcGraphHeightOnScroll(event)
 
     // Permet de bloquer le scroll sur la division scroll-step
+    // La division scroll-step est utilisée pour permettre un scroll pouvant agrandir le graphique
+    // Il faut quand même bloquer le scroll pour éviter de scroller plus loin que nécessaire en mode "tree
     if (this.subMode == 'tree'){
+
+      // La classe list-page est la division contenant toutes les informations de la page
+      // Excepté le graphique, le header et les modals
       const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
 
+      // Si le scroll dépasse la hauteur de la division list-page, on bloque le scroll car on est au bout de la page
+      // La hauteur du header est de 100px, on laisse 80px de marge
+      // TODO : fix lagging effect when scrolling to the bottom
       if (this.scrollTop >= contentHeight - window.innerHeight + 180) {
+
         console.log("scroll stop on tree mode")
+        // Bloque le scroll à la position maximale
         event.target.scrollToPoint(0, contentHeight - window.innerHeight + 180);
         return;
       }
@@ -280,110 +319,141 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
   // GRAPH HEIGHT CALCULATION
-
+  // Permet de calculer la hauteur du graphique en fonction du scroll si le mode graph est activé
   calcGraphHeightOnScroll(event : any){
+
+    // Si le graphique est activé
     if (this.graphComponent){
+
 
       const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
       const windowHeight = window.innerHeight;
 
       // Calculez la nouvelle hauteur pour le graphique
+      // La hauteur du graphique est égale à la hauteur de la page (windowHeight)
+      // moins la hauteur de la division list-page visible (contentHeight - this.scrollTop)
+      // moins la hauteur du header (100px) moins la hauteur du footer tabs (56px)
       let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
 
       // console.log("calc graph height on scroll", graphHeight)
 
       // Pour éviter de scroller plus loin que nécessaire
-      if (this.scrollTop >= contentHeight) {
+      // Si le scroll dépasse la hauteur de la division list-page, on bloque le scroll car on est au bout de la page
+      // On soustrait 56 pour garder le ion-segment "tree" ou "graph" visible
+      if (this.scrollTop >= contentHeight- 56) {
         // console.log("scroll stop")
-        event.target.scrollToPoint(0, contentHeight);
+        event.target.scrollToPoint(0, contentHeight - 56);
         return;
       }
 
       // Ajustez la taille du graphique
+      // On appelle la fonction resizeGraph du graphComponent qui se met à jour lui même
       this.graphComponent.resizeGraph(graphHeight);
     }
   }
 
-
+  // Permet d'initialiser la hauteur du graphique lors du changement de mode
   initializeGraphHeight(){
 
     console.log(this.subMode)
 
-
+    // Attendre 0ms pour que le graphique soit bien initialisé
     setTimeout(() => {
       if (this.graphComponent){
-
-        // console.log("INIT GRAPH SIZE WHEN CLICKED")
-
-        const contentHeight = this.elRef.nativeElement.querySelector('.list-page').clientHeight;
-        const windowHeight = window.innerHeight;
-
-        // Calculez la nouvelle hauteur pour le graphique
-        let graphHeight = windowHeight - contentHeight + this.scrollTop - 156;
-        
-        // // Ajustez la taille du graphique
-        this.graphComponent.resizeGraph(graphHeight);
+        // Actualisation de la hauteur du graphique
+        this.calcGraphHeightOnScroll({detail: {scrollTop: this.scrollTop}});
       }
     }, 0)
+  }
+
+  // Change le mode de visualisation entre "tree" et "graph"
+  changeSubMode(subMode : string){
+    this.subMode = subMode;
+
+    if (subMode == 'graph'){
+      // Actualisation du système de subIds / parentIds pour la construction du graphique
+      this.assignIds();
+
+      // Actualisation de la hauteur du graphique
+      this.initializeGraphHeight();
+    }
   }
 
 
 
   // NAVIGATION
-
+  // Permet de naviguer entre les différents sous todos de mainTodo
+  // S'active lors de la sélection d'un todo dans le composant todo-subtasks-tree ou dans le graph
   onNewTodoSelected(todo: Todo){
 
-    if (todo !== this.todo){
+    // Si le todo sélectionné est différent du todo actuel, on le sélectionne
+    if (todo !== this.todo){ 
 
+      // Si le todo sélectionné est différent de mainTodo, on actualise l'historique des todos
+      // Sinon, on vide l'historique des todos
+      // Permet de savoir ou aller lors du click sur le bouton retour
       if (todo != this.mainTodo){
         this.todoHistoryList.push(this.todo);
       }
       else{
         this.todoHistoryList = [];
       }
+
+      // Actualisation du todo actuel
       this.todo = todo;
 
-      // window.scrollTo(0, 0);
-
+      // Actualisation de la hauteur du scroll pour voir toutes les informations du todo
       console.log("automatic scroll to top")
       this.content.scrollToTop(300);
-      
+      // Actualisation de la hauteur du graphique
       this.initializeGraphHeight();
+      // Actualisation de la liste des sous-todos pour les drags and drops
       this.initializeDragDropList();
     }
   }
 
+  // Permet de retourner en arrière lors de la sélection du bouton retour (header back button ou platform back button)
+  // Suit l'historique des todos pour revenir en arrière
   goBackTodo(){
+
+    // Si l'historique des todos n'est pas vide et que le mode est "tree" on revient vers le todo précédent
     if (this.todoHistoryList.length > 0 && this.subMode == 'tree'){
       this.todo = this.todoHistoryList.pop()!;
     }
+    // Sinon, on retourne vers la page précédente
     else{
 
+      // Si le todo est nouveau, on demande une confirmation avant de quitter la page
       if (this.isNewTodo) {
-        // this.navCtrl.back();
 
         this.showCloseConfirm();
-
       }
       else{
+
+        // Si le todo n'est pas synchronisé avec le localstorage, on demande une confirmation avant de quitter la page
+        // TODO : verifier si le todo est synchronisé
         this.navCtrl.back();
       }
-
-      // Quit page
-      // this.navCtrl.back();
     }
+
+    // On actualise la liste des sous-todos pour les drags and drops
     this.initializeDragDropList();
   }
 
 
-  modifyTodo(editMode : boolean){ // toggle edit button
 
+  // MANIPULATION DU TODO
+  // Permet le toggle du mode modification
+  modifyTodo(editMode : boolean){ 
+
+    // Met à jour le mode modification
     this.editMode = editMode;
 
+    // Si le mode modification est désactivé, on regarde s'il faut mettre à jour le todo
     if (!editMode){
       
-      if (!this.isTodoSynchronized()) {
-        console.log("TODO NOT SYNCHRONIZED")
+      if (!this.isMainTodoSynchronized()) {
+        console.log("TODO NOT SYNCHRONIZED WHEN LEAVING EDIT MODE")
 
         this.taskService.updateTodo(this.mainTodo);
       }
@@ -391,63 +461,43 @@ export class TodoPage implements OnInit, OnDestroy {
   }
 
 
-  
-
-
-  changeSubMode(subMode : string){
-    this.subMode = subMode;
-
-    if (subMode == 'graph'){
-      this.assignIds();
-      this.initializeGraphHeight();
-    }
-  }
-
-
-  // changeHideDoneTasks(hideDoneTasks : boolean){
-  //   this.mainTodo.hideDoneTasks = hideDoneTasks;
-  //   // this.updateDragDropListWhenDoneTasksChanged();
-  //   this.initializeDragDropList();
-  // }
-
-  
-
 
   // MODIFICATION PROPRIETES TODO
 
-
+  // Set todo as DONE
   setTodoValidation(isDone: boolean){
     this.todo.isDone = isDone;
-    // this.taskService.actualizeTodos(this.todos);
-    // this.taskService.updateTodo(this.mainTodo);
   }
 
 
 
-   // SAVE TODO
+  // AJOUT D'UN NOUVEAU TODO DANS LE STORAGE
 
-   canSaveTodo(){
+  // Permet de sauvegarder un nouveau todo 
+  saveNewTodo(){
+
+    // Set subId and parentId for each todo, pas forcément nécessaire, surtout utile pour le graph
+    this.assignIds(); // A vérifier
+
+    // Ajout du todo dans le storage par TaskService 
+    this.taskService.addTodo(this.mainTodo);
+
+    // Retour à la page précédente
+    this.navCtrl.back()
+  }
+
+  // Vérifie qu'il y'ait assez d'informations pour sauvegarder un nouveau todo
+  canSaveTodo(){
     if (this.todo.title == undefined || this.todo.title == "") {
       return false;
     }
     return true;
   }
 
+  
 
-  saveNewTodo(){
-
-    // console.log(this.todos)
-    this.assignIds(); // A vérifier
-
-    this.taskService.addTodo(this.mainTodo);
-    this.navCtrl.back()
-
-    // console.log(this.todos)
-
-    this.initializeDragDropList();
-  }
-
-
+  // Assignes les subIds et parentIds pour chaque todo et sous-todo
+  // Surtout utile pour construire le graph
   assignIds(): void {
 
     console.log("assign ids function")
@@ -479,56 +529,56 @@ export class TodoPage implements OnInit, OnDestroy {
 
   // MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
 
+  // DELETE TODO
+  // Message de confirmation avant de supprimer un todo
   showConfirmDeleteTodo = async () => {
 
     console.log("show confirm delete todo", this.todo.title)
 
+    // Vérifie si l'utilisateur veut vraiment supprimer le todo
     const { value } = await Dialog.confirm({
       title: 'Confirm',
       message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
     });
 
+    // Si l'utilisateur confirme la suppression, alors on supprime le todo
     if (value) {
 
       console.log("delete todo", this.todo.title)
 
+      // Suppression du todo par TaskService
       this.taskService.deleteTodoById(this.mainTodo, this.todo);
-      this.initializeDragDropList();
 
+      // Retour à la page précédente si le todo supprimé est le mainTodo
       if (this.todo == this.mainTodo){
         this.navCtrl.back();
       }
+      // Sinon, on revient au todo parent
       else{
-        this.todo = this.mainTodo;
-        this.todoHistoryList = [];
+        this.onNewTodoSelected(this.mainTodo);
       }
     }
   };
 
 
-    // TODO : On modify button, on go back arrow, on platform back button
-
-
-    showCloseConfirm = async () => {
-      
-        const { value } = await Dialog.confirm({
-          title: 'Confirm',
-          message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
-        });
     
-        if (value) {
-          console.log("should loose change")
+
+    // Message de confirmation avant de quitter la page
+    // Utilisé seulement lors de la création d'un nouveau todo
+    showCloseConfirm = async () => {
+
+      // Vérifie si l'utilisateur veut vraiment quitter la page sans sauvegarder le nouveau todo
+      const { value } = await Dialog.confirm({
+        title: 'Confirm',
+        message: `${this.translate.instant('LOOSE CHANGE MESSAGE')}`,
+      });
   
-          // this.newTodo = this.initialTodo;
-          
-          // // Replace newTodo with initialTodo in todos list
-          // const index = this.todos.findIndex(todo => todo.id === this.newTodo.id);
-          // if (index !== -1) {
-          //   this.todos[index] = this.initialTodo;
-          // }
-          
-          this.navCtrl.back();
-        }
+      // Si l'utilisateur confirme, alors on quitte la page
+      if (value) {
+        console.log("should loose change")
+        
+        this.navCtrl.back();
+      }
       
     };
   

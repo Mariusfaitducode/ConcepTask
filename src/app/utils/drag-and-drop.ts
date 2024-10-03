@@ -7,17 +7,21 @@ import { TodoUtils } from "./todo-utils";
 export class DragAndDrop {
 
 
+    // Verify container data actualization
+
     public static async drop(event: CdkDragDrop<any[]>, mainTodo: Todo, translate : TranslateService) {
 
         console.log("Element dropped")
 
         console.log(event.container, event.previousContainer, event.currentIndex)
         
-        console.log(event.container.id > event.previousContainer.id);
+        // console.log(event.container.data[0].todo.title);
 
         let newIndex = event.currentIndex;
 
         // Lorsque l'on déplace un élément vers le bas on doit décrémenter l'index de 1
+        // Problème car ne dépend pas de la position mais du sens du déplacement
+
         // if (event.container.id > event.previousContainer.id){
         //     newIndex = event.currentIndex == 0 ? 0 : event.currentIndex - 1; 
         // }
@@ -34,7 +38,6 @@ export class DragAndDrop {
         let parentTodo = event.container.data[newIndex].todo;
     
         console.log("Search parent todo")
-        // console.log(parentTodo.title)
 
         if (!parentTodo){
             console.log("Error : No parent todo")
@@ -46,6 +49,7 @@ export class DragAndDrop {
             return;
         }
 
+        // Feature : Permet de retrier les tâches dans le même parent (garder commenté)
         // if (parentTodo.subId == item.parentId){
         //     console.log("Error : Already on parent todo")
         //     return;
@@ -57,9 +61,7 @@ export class DragAndDrop {
             return;
         }
         
-        await this.moveItem(item, parentTodo, mainTodo, translate);
-        
-        console.log(event.container.data)
+        await this.moveItem(item, parentTodo, mainTodo, translate);        
     }
 
 
@@ -71,8 +73,8 @@ export class DragAndDrop {
 
         const { value } = await Dialog.confirm({
             title: 'Confirm',
-            // message: `${translate.instant('SURE TO MOVE TO')} `+ item.title +` ${translate.instant('INTO')}  `+ parentTodo.title +` ?`,
-            message: `'SURE TO MOVE TO' `+ item.title +` 'INTO' `+ parentTodo.title +` ?`,
+            message: `${translate.instant('SURE TO MOVE TO')} `+ item.title +` ${translate.instant('INTO')}  `+ parentTodo.title +` ?`,
+            // message: `'SURE TO MOVE TO' `+ item.title +` 'INTO' `+ parentTodo.title +` ?`,
 
           });
         
@@ -92,7 +94,6 @@ export class DragAndDrop {
 
             
             item.parentId = parentTodo.subId;
-            
         }
     }
 }

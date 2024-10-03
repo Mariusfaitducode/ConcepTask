@@ -32,7 +32,7 @@ export class TodoHeaderTopComponent  implements OnInit {
     this.goBackEmitter.emit();
   }
 
-
+  // TODO : Already on todo page, verify possibility to remove
   isTodoSynchronized(): boolean {
     return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
   }

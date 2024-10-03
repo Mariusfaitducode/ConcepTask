@@ -1,6 +1,8 @@
 <div cdkDropListGroup>
   <div *ngFor="let subTodo of todo.list; let index = index" >
-    <div cdkDropList [cdkDropListData]="subTasksList[index]" 
+
+    
+    <div cdkDropList [cdkDropListData]="dragAndDropTodosDatas[index]" 
     (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
 
       <app-sub-task 
