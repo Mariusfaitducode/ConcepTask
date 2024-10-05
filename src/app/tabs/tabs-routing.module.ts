@@ -30,19 +30,6 @@ const routes: Routes = [
         redirectTo: '/tabs/home',
         pathMatch: 'full'
       },
-      
-      {
-        path: 'add',
-        loadChildren: () => import('../pages/add/add.module').then( m => m.AddPageModule)
-      },
-      {
-        path: 'add/:id',
-        loadChildren: () => import('../pages/add/add.module').then( m => m.AddPageModule)
-      },
-      {
-        path: 'add/:id/:subId',
-        loadChildren: () => import('../pages/add/add.module').then( m => m.AddPageModule)
-      },
       {
         path: 'todo',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
@@ -58,14 +45,6 @@ const routes: Routes = [
       {
         path: 'todo/:day/:month/:year',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
-      },
-      {
-        path: 'conceptor/:id',
-        loadChildren: () => import('../pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
-      },
-      {
-        path: 'conceptor/:id/:modalId',
-        loadChildren: () => import('../pages/conceptor/conceptor.module').then( m => m.ConceptorPageModule)
       },
       {
         path: 'calendar',

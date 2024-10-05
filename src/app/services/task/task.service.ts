@@ -21,19 +21,18 @@ export class TaskService {
   private todosSubject = new BehaviorSubject<Todo[]>([]);
   todos$: Observable<Todo[]> = this.todosSubject.asObservable();
 
-
-  // todoListOnStorage: Todo[] = [];
-
   private user: User | null = null;
 
   private firestoreSubscription : any;
 
 
   constructor(private firestore: AngularFirestore) {
-
     // Lors de l'initialisation, on récupère les todos du local storage plutôt que de firestore
-    this.getTodosFromLocalStorage();
+    let todos = this.getTodosAsInStorageWithoutSync();
+    // On transmet les todos du local storage à l'observable
+    this.todosSubject.next(todos);
   }
+
 
   // Connection à un compte utilisateur
   // Cette méthode est appelée lors de la connexion réussie d'un utilisateur
@@ -43,38 +42,55 @@ export class TaskService {
     this.syncTodosWithFirestore();
   }
 
+  // Création d'un compte utilisateur
   // Fonction pour initialiser firestore à partir du local storage
-  // Utiliser lors de la création d'un compte utilisateur
+  // Cela permet de remplir firestore avec les todos du local storage
   async initializeTodosFromLocalStorageToFirestore(user : User){
     this.user = user;
     let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
+    // On ajoute chaque todo du local storage à firestore
     for (let todo of todos){
       await this.addTodo(todo);
     }
 
-    this.syncTodosWithFirestore();  // Re-synchroniser après l'initialisation
+    // Initiation de la synchronisation des todos avec firestore    
+    this.syncTodosWithFirestore(); 
   }
 
-  // Synchronisation des todos entre le local storage et firestore
+
+  // FIRESTORE SYNCHRONIZATION
+
+  // Synchronisation des todos de firestore vers le localstorage
   // Permet de mettre à jour les todos locaux à partir de firestore
-  // TODO : Fix this method, too many updates when updating todos
   private syncTodosWithFirestore() {
+
+    // Seulement si l'utilisateur est bien connecté
     if (this.user) {
 
+      // La fonction est appelée lors de la connexion d'un utilisateur
+      // Ce message doit être affiché une seule fois lors de la connexion
       console.log("CONNEXION Sync With Firestore INITIALIZATION")
 
+      // On s'abonne aux changements de la collection des todos de l'utilisateur
       this.firestoreSubscription = this.firestore.collection<Todo>(`users/${this.user.uid}/todos`)
         .valueChanges({ idField: 'id' })
         .pipe(
           tap(todosFromFirestore => {
+
+            // A chaque changement dans firestore, on entre dans cette fonction
+            // On vérifie tout de même si l'utilisateur est toujours connecté
             if (this.user){
+
               console.log('Récupération de todos depuis firestore');
             
+              // On récupère les todos du local storage qu'on compare avec les todos de firestore
+              // L'utilisation de lodash permet de comparer les objets de manière profonde (deep comparison)
+              // Evite les problèmes de références et d'ordres de propriétés avec JSON.stringify
               const localTodos = this.getTodosAsInStorageWithoutSync();
-  
               const hasChanges = !isEqual(todosFromFirestore, localTodos);
   
+              // Seulement si il y a une différence entre les todos de firestore et du local storage on met à jour le local storage
               if (hasChanges) {
                 console.log('Différence détectée entre Firestore et localStorage');
                 
@@ -94,47 +110,49 @@ export class TaskService {
 
   // LOCAL STORAGE MANAGEMENT
 
-  // Récupére les todos du local storage et envoie les données à l'observable
-  private getTodosFromLocalStorage() {
-    const todos = JSON.parse(localStorage.getItem(`todos`) || '[]');
-    this.todosSubject.next(todos);
-  }
-
+  // Retourne les todos du local storage
   getTodosAsInStorageWithoutSync(): Todo[]{
     return JSON.parse(localStorage.getItem(`todos`) || '[]');
   }
 
+  // Met à jour le local storage avec les todos fournis
+  // En cas de différence avec les todos actuels du local storage on met à jour le local storage et on notifie les observateurs
   private updateLocalStorage(todos: Todo[]) {
 
-    let lastTodos = JSON.parse(localStorage.getItem(`todos`) || '[]');
-
-    if (JSON.stringify(todos) == JSON.stringify(lastTodos)){
-      console.log('No need to update local storage');
-    }
-    else{
-
+    // Comparaison profonde de entre les todos actuels et les nouveaux todos
+    const localTodos = this.getTodosAsInStorageWithoutSync();
+    const hasChanges = !isEqual(todos, localTodos)
+    
+    // Si il y a une différence on met à jour le local storage et on notifie les observateurs
+    if (hasChanges){
       console.log('Update local storage with new todos')
       localStorage.setItem(`todos`, JSON.stringify(todos));
       this.todosSubject.next(todos);
-  
     }
-
+    else{
+      console.log('No need to update local storage');  
+    }
   }
 
   
+  // Déconnexion d'un utilisateur
+  // Cette méthode est appelée lors de la déconnexion d'un utilisateur
+  // Elle permet de vider les todos du local storage et de se désabonner des observables
   clearLocalStorageOnLogout(){
     this.user = null;
     
     console.log("LOGOUT UNSUBSCRIBE");
 
+    // Se désabonner de la collection des todos de l'utilisateur
     if (this.firestoreSubscription) {
       this.firestoreSubscription.unsubscribe();
     }
 
+    // Vider les todos du local storage et notifier les observateurs
     this.todosSubject.next([]);
     localStorage.removeItem('todos');
 
-    // Ensure the subscription is nullified to prevent further updates
+    // S'assurer que l'abonnement est annulé pour empêcher toute mise à jour ultérieure.
     this.firestoreSubscription = null;
   }
 
@@ -151,15 +169,17 @@ export class TaskService {
 
     console.log('SYNC SERVICE ADD TODO : ', todo)
 
+    // On clone le todo pour éviter les problèmes de références
     todo = JSON.parse(JSON.stringify(todo));
-
     
-
+    // On ajoute le todo en tête de la liste des todos
     const todos = [...this.todosSubject.value, todo];
-    // this.todosSubject.next(todos);
+    
+    // On met à jour le local storage avec les nouveaux todos
     this.updateLocalStorage(todos);
 
     if (this.user){
+      // On ajoute le todo à la collection des todos de l'utilisateur dans firestore
       this.firestore.collection(`users/${this.user.uid}/todos`).doc(todo.id).set(todo);
     }
 
@@ -173,24 +193,6 @@ export class TaskService {
   getTodos(): Observable<Todo[]> {
     return this.todos$;
   }
-
-
-  // getTodosFromFirestore(id: string){
-
-  //   // if (this.user){
-  //   //   return this.firestore.collection(`users/${this.user.uid}/todos`).doc(id).valueChanges();
-  //   // }
-  //   // else{
-  //   //   return this.todosSubject.value.find(t => t.id === id);
-  //   // }
-  // }
-
-
-  // Méthode pour obtenir les todos directement sans passer par l'observable et souscrire à des changements
-  getCurrentTodos(): Todo[] {
-    return this.todosSubject.getValue();
-  }
-  
 
   
   // UPDATE
@@ -206,13 +208,12 @@ export class TaskService {
     // On met à jour le todo dans la liste des todos
     const todos = this.todosSubject.value.map(t => t.id === todo.id ? todo : t);
 
-
-    // this.todosSubject.next(todos);
+    // On met à jour le local storage avec les nouveaux todos
     this.updateLocalStorage(todos);
 
     if (this.user){
+      // On met à jour le todo dans la collection des todos de l'utilisateur dans firestore
       this.firestore.collection(`users/${this.user.uid}/todos`).doc(todo.id).update(todo);
-
     }
   }
 
@@ -224,13 +225,15 @@ export class TaskService {
 
     console.log('SYNC SERVICE DELETE MAIN TODO : ', todoId)
 
+    // On filtre la liste des todos pour supprimer le todo en fonction de son id
     const todos = this.todosSubject.value.filter(t => t.id !== todoId);
-    // this.todosSubject.next(todos);
+    
+    // On met à jour le local storage avec les nouveaux todos
     this.updateLocalStorage(todos);
 
     if (this.user){
+      // On supprime le todo de la collection des todos de l'utilisateur dans firestore
       this.firestore.collection(`users/${this.user.uid}/todos`).doc(todoId).delete();
-
     }
   }
 
@@ -242,18 +245,17 @@ export class TaskService {
 
     console.log('SYNC SERVICE DELETE TODO BY ID : ', todoToDelete)
 
-    let todos = this.todosSubject.value
+    // On vérifie si le todo à supprimer est le todo racine ou un sous-todo
+    // Si todoToDelete est le todo racine on appelle la méthode deleteMainTodo
+    if (todoToDelete == mainTodo){ 
 
-    if (todoToDelete == mainTodo){ // Remove the main todo
-
-      console.log("DELETE MAIN TODO")
-
-      // todos = todos.filter((todo : Todo) => todo.mainId != todoToDelete.mainId);
       this.deleteMainTodo(todoToDelete.id!);
     }
-    else{ // Remove the sub todo from the main todo
-
+    else{ 
+      // Si todoToDelete est un sous-todo on le supprime du todo racine 
       TodoUtils.deleteTodoById(mainTodo, todoToDelete.id!);
+      
+      // On met ensuite à jour le todo racine
       this.updateTodo(mainTodo);
     }
   }
