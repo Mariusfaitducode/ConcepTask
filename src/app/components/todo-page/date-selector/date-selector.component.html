@@ -9,12 +9,13 @@
       
       <ion-item >
         <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
-        label="{{'DUE DATE' | translate}}" labelPlacement="floating" class="label-padding"
-          [ngClass]="{'passed-date' : !passedDate()}">
+          label="{{'DUE DATE' | translate}}" labelPlacement="floating" 
+          class="label-padding"
+          [ngClass]="{'passed-date' : passedDate()}">
         </ion-input>
   
-        <ion-icon *ngIf="!passedDate() && todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
-        <ion-icon *ngIf="!passedDate() && todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
+        <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>
+        <ion-icon *ngIf="todo.reminder === false" class="priority-icon bell-icon" name="notifications-off-outline"></ion-icon>
   
       </ion-item>
     </div>
@@ -22,8 +23,8 @@
     <div *ngIf="todo.config.repeat" class="item-padding" >
       <ion-item >
         <ion-input [readonly]="true" value="{{formatDateToCustomString()}}" 
-        label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
-          [ngClass]="{'passed-date' : !passedDate()}">
+          label="{{'REPEAT' | translate}}" labelPlacement="floating" class="label-padding"
+          [ngClass]="{'passed-date' : passedDate()}">
         </ion-input>
   
         <ion-icon *ngIf="todo.reminder" class="priority-icon bell-icon" name="notifications-outline"></ion-icon>

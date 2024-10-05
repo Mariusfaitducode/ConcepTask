@@ -71,18 +71,6 @@ export class GraphComponent implements OnInit {
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['selectedTodo']) {
-  //     const prevValue = changes['someInput'].previousValue;
-  //     const currentValue = changes['someInput'].currentValue;
-
-  //     if (prevValue !== currentValue) {
-  //       // Do something with the new value
-  //       console.log("Selected Todo changed :", this.selectedTodo)
-  //     }
-  //   }
-  // }
-
 
   // DATA INITIALIZATION
 
@@ -93,7 +81,7 @@ export class GraphComponent implements OnInit {
     this.graphData.nodes.push({id: 0, level : 0, todo: this.mainTodo});
 
     if (this.mainTodo.developped){
-        this.traverseList(this.mainTodo.list, 0);
+      this.traverseList(this.mainTodo.list, 0);
     }
   }
 
@@ -102,11 +90,15 @@ export class GraphComponent implements OnInit {
     if (!list || list.length === 0) return;
 
     for (let todo of list) {
+
+      if (this.mainTodo.hideDoneTasks && todo.isDone) continue;
+
       this.graphData.nodes.push({ id: todo.subId, level: level, todo: todo });
       this.graphData.links.push({ source: todo.parentId, target: todo.subId });
 
       if (todo.developped && todo.list && todo.list.length > 0) {
-          this.traverseList(todo.list, level + 1); // Appel récursif pour les sous-listes avec un niveau incrémenté
+        
+        this.traverseList(todo.list, level + 1); // Appel récursif pour les sous-listes avec un niveau incrémenté
       }
     }
   }

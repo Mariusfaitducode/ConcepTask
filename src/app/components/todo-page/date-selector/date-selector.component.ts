@@ -29,45 +29,9 @@ export class DateSelectorComponent  implements OnInit {
                 private translate : TranslateService,
                 private router : Router) { }
 
-  ngOnInit() {
+  ngOnInit() {}
 
-    console.log('date selector todo',this.todo)
-
-    // if (!this.todo.repeat){
-    //   this.todo.repeat = {};
-    // }
-
-    // let date = new Date();
-
-    // console.log(date)
-
-    // const year = date.getFullYear(); // Obtenir l'année au format complet (YYYY)
-    // const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Obtenir le mois au format deux chiffres (MM)
-    // const day = date.getDate().toString().padStart(2, "0"); // Obtenir le jour au format deux chiffres (DD)
-
-    // const formattedDate = `${year}-${month}-${day}`;
-
-    // if (!this.todo.repeat?.startDate){
-    //   this.todo.repeat.startDate = formattedDate;
-    // }
-    // if (!this.todo.date){
-    //   this.todo.date = formattedDate;
-    // }
-
-    // const hours = date.getHours().toString().padStart(2, "0"); // Obtenir l'heure au format deux chiffres (HH)
-    // const minutes = date.getMinutes().toString().padStart(2, "0"); // Obtenir les minutes au format deux chiffres (MM)
-
-    // const formattedTime = `${hours}:${minutes}`;
-
-    // if (!this.todo.time){
-    //   this.todo.time = formattedTime;
-    // }
-    // if (!this.todo.repeat?.startTime){
-    //   this.todo.repeat.startTime = formattedTime;
-    // }
-
-  }
-
+  
   async manageNotification(){
     console.log("click")
 

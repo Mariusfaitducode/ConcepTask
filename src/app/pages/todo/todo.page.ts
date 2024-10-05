@@ -23,6 +23,7 @@ import { Keyboard } from '@capacitor/keyboard';
 import { Capacitor } from '@capacitor/core';
 import { set } from 'firebase/database';
 
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'app-todo',
@@ -127,8 +128,10 @@ export class TodoPage implements OnInit {
 
         // Si la liste des todos n'est pas vide et que les todos sont les mêmes, on ne fait rien, pas besoin de recharger les todos
 
-        if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
-
+        if (this.todos.length != 0 && isEqual(this.todos, todos)){
+          console.log('Todos are the same, no need to reload todos on TODO PAGE')
+          return;
+        }
 
         console.log('Todos loaded in todo page:', todos, this.todos)
         this.todos = todos; // Actualisation de la liste des todos
@@ -157,9 +160,6 @@ export class TodoPage implements OnInit {
         // Si un id est présent dans les paramètres, c'est un todo existant
         else { 
           if (this.todos.length == 0) return;
-
-          // if (this.isTodoSynchronized()) return;
-          // this.todoHistoryList = [];
 
           // Recherche du todo principal, dans la liste des todos
           let mainTodo = this.todos.find(todo => todo.id == params['id']);
@@ -449,7 +449,7 @@ export class TodoPage implements OnInit {
     this.todo.isDone = isDone;
   }
 
-  
+
 
   // AJOUT D'UN NOUVEAU TODO DANS LE STORAGE
 

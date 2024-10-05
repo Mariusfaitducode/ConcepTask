@@ -3,7 +3,7 @@
 
     
     <div cdkDropList [cdkDropListData]="dragAndDropTodosDatas[index]" 
-    (cdkDropListDropped)="drop($event)" *ngIf="!hideDoneTasks || !subTodo.isDone">
+    (cdkDropListDropped)="drop($event)" *ngIf="!mainTodo.hideDoneTasks || !subTodo.isDone">
 
       <app-sub-task 
       [mainId]="mainTodo.id"
@@ -14,7 +14,7 @@
       (todoSelectedEmitter)="onNewTodoSelected($event)"
       (todoDeveloppedEmitter)="onTodoDevelopped()"
 
-      [hideSubTasks]="hideDoneTasks"
+      [hideSubTasks]="mainTodo.hideDoneTasks"
       ></app-sub-task>
     </div>
   </div >

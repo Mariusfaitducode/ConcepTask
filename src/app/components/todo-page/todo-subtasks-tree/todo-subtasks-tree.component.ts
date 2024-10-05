@@ -16,8 +16,6 @@ export class TodoSubtasksTreeComponent  implements OnInit {
 
   @Input() todos!: Todo[];
 
-  @Input() hideDoneTasks: boolean = false;
-
   @Input() dragAndDropTodosDatas: {todo: Todo, level: number}[][] = [];
 
   @Output() todoSelectedEmitter = new EventEmitter<Todo>();
