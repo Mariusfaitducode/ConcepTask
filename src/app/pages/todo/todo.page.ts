@@ -21,6 +21,7 @@ import { GraphComponent } from 'src/app/components/graph/graph.component';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Keyboard } from '@capacitor/keyboard';
 import { Capacitor } from '@capacitor/core';
+import { set } from 'firebase/database';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { Capacitor } from '@capacitor/core';
   templateUrl: './todo.page.html',
   styleUrls: ['./todo.page.scss'],
 })
-export class TodoPage implements OnInit, OnDestroy {
+export class TodoPage implements OnInit {
 
   constructor(
     private navCtrl: NavController, 
@@ -60,6 +61,9 @@ export class TodoPage implements OnInit, OnDestroy {
   editMode : boolean = false;
 
   modalConfig: TaskModal = new TaskModal();
+
+
+  synchronizationInProgress : boolean = false;
 
   
   // History for navigation
@@ -210,51 +214,39 @@ export class TodoPage implements OnInit, OnDestroy {
 
         // Vérification de la synchronisation du todo
         // Si le todo n'est pas nouveau et pas synchronisé avec le localstorage, on l'actualise
-        if ( !this.isNewTodo && !this.isMainTodoSynchronized() ) {
-          console.log("TODO NOT SYNCHRONIZED ON ROUTE PARAMS ACTUALIZATION")
-          this.taskService.updateTodo(this.mainTodo);
-        }
+        // if ( !this.isNewTodo && !this.isMainTodoSynchronized() ) {
+        //   console.log("TODO NOT SYNCHRONIZED ON ROUTE PARAMS ACTUALIZATION")
+        //   this.taskService.updateTodo(this.mainTodo);
+        // }
       });
     });
-  }
-
-
-  // Censé s'activer lors de la fermeture de la page
-  // Permet de vérifier si le todo est synchronisé avec le localstorage avant de quitter la page
-  // WARN : On quitte parfois la page sans passer par cette fonction
-  ngOnDestroy(){
-    console.log("TODO PAGE ON DESTROY")
-
-    // Si le todo n'est pas nouveau et n'est pas synchronisé avec le localstorage, on l'actualise
-
-    if (!this.isNewTodo && this.mainTodo != undefined && !this.isMainTodoSynchronized() ) {
-      
-      console.log("TODO NOT SYNCHRONIZED ON PAGE DESTROY, SYNCHRONIZATION")
-
-      // Permet de vérifier si le todo est toujours dans la liste des todos à synchroniser
-      // Evite le cas d'actualization après une suppression du mainTodo
-      let todo = this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id);
-
-      if (todo){ // Actualisation du mainTodo
-        this.taskService.updateTodo(this.mainTodo);      
-      }
-    }
-
-    // Services subscriptions
-
-    // if (this.userSubscription){
-    //   this.userSubscription.unsubscribe();
-    // }
-    // if (this.todoSubscription){
-    //   this.todoSubscription.unsubscribe();
-    // }
   }
 
   // SYNCHRONIZATION
   // Vérifie si le mainTodo est bien synchronisé avec le localstorage
   // Permet de savoir si l'utilisateur a modifié le todo
   isMainTodoSynchronized(): boolean {
-    return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
+    let synchronized: boolean = this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
+    // console.log("TODO SYNCHRONIZED", synchronized)
+
+    if (!synchronized && !this.isNewTodo && this.mainTodo != undefined && !this.synchronizationInProgress) {
+
+      // Permet de vérifier si le todo est toujours dans la liste des todos à synchroniser
+      // Evite le cas d'actualization après une suppression du mainTodo
+      let todo = this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id);
+
+      if (todo){
+        console.log("LAUNCH SYNCHRONIZATION", synchronized)
+        this.synchronizationInProgress = true;
+        
+        setTimeout(() => {
+          this.taskService.updateTodo(this.mainTodo);   
+          this.synchronizationInProgress = false;
+        }, 100);
+      }
+    }
+
+    return synchronized;
   }
 
 
@@ -429,9 +421,7 @@ export class TodoPage implements OnInit, OnDestroy {
         this.showCloseConfirm();
       }
       else{
-
-        // Si le todo n'est pas synchronisé avec le localstorage, on demande une confirmation avant de quitter la page
-        // TODO : verifier si le todo est synchronisé
+        // Retour à la page précédente
         this.navCtrl.back();
       }
     }
@@ -448,16 +438,6 @@ export class TodoPage implements OnInit, OnDestroy {
 
     // Met à jour le mode modification
     this.editMode = editMode;
-
-    // Si le mode modification est désactivé, on regarde s'il faut mettre à jour le todo
-    if (!editMode){
-      
-      if (!this.isMainTodoSynchronized()) {
-        console.log("TODO NOT SYNCHRONIZED WHEN LEAVING EDIT MODE")
-
-        this.taskService.updateTodo(this.mainTodo);
-      }
-    }
   }
 
 
@@ -469,7 +449,7 @@ export class TodoPage implements OnInit, OnDestroy {
     this.todo.isDone = isDone;
   }
 
-
+  
 
   // AJOUT D'UN NOUVEAU TODO DANS LE STORAGE
 

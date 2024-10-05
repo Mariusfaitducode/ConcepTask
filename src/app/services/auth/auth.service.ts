@@ -55,7 +55,7 @@ export class AuthService {
       await this.firestore.collection('users').doc(uid).set(userData);
 
       // Todos synchronisation
-      this.taskService.initializeTodosFromLocalStorage(userData)
+      this.taskService.initializeTodosFromLocalStorageToFirestore(userData)
 
 
       return userData;
@@ -174,7 +174,7 @@ export class AuthService {
 
     console.log('USER DATA : ', userData)
 
-    this.taskService.initializeTodosFromLocalStorage(userData)
+    this.taskService.initializeTodosFromLocalStorageToFirestore(userData)
 
     return userData;
   }

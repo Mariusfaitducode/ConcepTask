@@ -8,7 +8,7 @@
 
   <h1 class="title-input">
     {{todo.title || ('NEW TASK' | translate)}}
-    <span class="sync-status" [ngClass]="isTodoSynchronized() ? 'green' : 'orange'"></span>
+    <span class="sync-status" [ngClass]="synchronized ? 'green' : 'orange'"></span>
   </h1>
 
   

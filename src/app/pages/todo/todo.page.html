@@ -6,7 +6,8 @@
   <ion-toolbar class="toolbar-parent">
 
     <app-todo-header-top 
-      [mainTodo]="mainTodo" [todo]="todo"
+      [mainTodo]="mainTodo" [todo]="todo" 
+      [synchronized]="isMainTodoSynchronized()"
       (goBackEmitter)="goBackTodo()"
 
     ></app-todo-header-top>

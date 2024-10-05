@@ -14,6 +14,8 @@ export class TodoHeaderTopComponent  implements OnInit {
   @Input() todo!: Todo;
   @Output() goBackEmitter = new EventEmitter();
 
+  @Input() synchronized: boolean = true;
+
   constructor(
     private taskService: TaskService,    
   ) { }
@@ -33,7 +35,7 @@ export class TodoHeaderTopComponent  implements OnInit {
   }
 
   // TODO : Already on todo page, verify possibility to remove
-  isTodoSynchronized(): boolean {
-    return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
-  }
+  // isTodoSynchronized(): boolean {
+  //   return this.mainTodo && JSON.stringify(this.mainTodo) == JSON.stringify(this.taskService.getTodosAsInStorageWithoutSync().find(todo => todo.id == this.mainTodo.id));
+  // }
 }
