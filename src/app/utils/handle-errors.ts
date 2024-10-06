@@ -30,6 +30,10 @@ export class HandleErrors {
             case 'auth/operation-not-allowed':
               errorMessage = 'Cette opération n\'est pas autorisée. Contactez le support.';
               break;
+
+            case 'auth/invalid-login-credentials':
+              errorMessage = 'Les identifiants de connexion sont invalides.';
+              break;
       
             // Erreurs liées à la réinitialisation de mot de passe
             case 'auth/missing-email':

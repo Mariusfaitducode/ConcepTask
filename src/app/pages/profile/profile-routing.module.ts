@@ -9,13 +9,14 @@ const routes: Routes = [
     component: ProfilePage
   },
   {
-    path: 'sign-up',
-    loadChildren: () => import('./connexion/sign-up/sign-up.module').then( m => m.SignUpPageModule)
+    path: 'connexion',
+    loadChildren: () => import('./connexion/connexion.module').then( m => m.ConnexionPageModule)
   },
   {
-    path: 'log-in',
-    loadChildren: () => import('./connexion/log-in/log-in.module').then( m => m.LogInPageModule)
-  },  {
+    path: 'connexion/:type',
+    loadChildren: () => import('./connexion/connexion.module').then( m => m.ConnexionPageModule)
+  },
+  {
     path: 'edit-profile',
     loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
   }

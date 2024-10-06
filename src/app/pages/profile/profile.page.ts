@@ -67,11 +67,11 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   goToLogin(){
-    this.router.navigate(['tabs/profile/log-in']);
+    this.router.navigate(['tabs/profile/connexion']);
   }
 
   goToSignUp(){
-    this.router.navigate(['tabs/profile/sign-up']);
+    this.router.navigate(['tabs/profile/connexion/sign-up']);
   }
 
   goToEditProfile(){
