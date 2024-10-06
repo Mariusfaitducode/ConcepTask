@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { local } from 'd3';
+import { AuthentificationResponse } from 'src/app/models/authentification-response';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -47,36 +48,45 @@ export class LogInPage implements OnInit {
     return this.newUser.email != "" && this.newUser.password != "";
   }
 
+  // AUTHENTIFICATION
 
   async logIn(){
     console.log(this.newUser);
 
-    const user = await this.authService.login(this.newUser.email, this.newUser.password!);
+    const response = await this.authService.login(this.newUser.email, this.newUser.password!);
 
-    if (user) {
-      console.log('User logged in:', user);
-      this.router.navigate(['tabs/profile']);
-      // Naviguer vers une autre page ou effectuer d'autres actions
-    } else {
-      console.log('Login failed');
-      this.errorMessage = "Connexion échouée. Email ou mot de passe incorrect.";
-      // Afficher un message d'erreur
-    }
+    this.userLogInResult(response);
   }
 
 
   async logInWithGoogle(){
-    const user = await this.authService.loginWithGoogle();
-    if (user) {
-      this.router.navigate(['tabs/profile']);
-    }
+    const response = await this.authService.loginWithGoogle();
+    
+    this.userLogInResult(response);
+
   }
 
 
   async logInWithGitHub(){
-    const user = await this.authService.loginWithGitHub();
-    if (user) {
+    const response = await this.authService.loginWithGitHub();
+    
+    this.userLogInResult(response);
+    
+  }
+
+
+  userLogInResult(response : AuthentificationResponse){
+    if (response.user) {
+      console.log('User logged in:', response.user);
+      this.errorMessage = response.errorMessage;
+
+      // Utilisateur connecté, retour à la page profil
       this.router.navigate(['tabs/profile']);
+    } 
+    else { // Erreur lors de la connexion
+
+      console.log('Login failed');
+      this.errorMessage = response.errorMessage;
     }
   }
 

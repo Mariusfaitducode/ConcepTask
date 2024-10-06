@@ -45,19 +45,38 @@ export class SignUpPage implements OnInit {
   // FORM
 
   validForm(){
-    return this.newUser.firstname != "" && this.newUser.lastname != "" && this.newUser.pseudo != "" && this.newUser.email != "" && this.newUser.password != "";
+    return this.newUser.pseudo != "" && this.newUser.email != "" && this.newUser.password != "";
   }
 
   validPassword(){
+
+    console.log(this.newUser.password?.length);
+
     return this.newUser.password == this.passwordConfirmation;
   }
 
 
   // AUTHENTIFICATION
 
-  signUp(){
+  async signUp(){
 
-    this.authService.signUp(this.newUser.email, this.newUser.password!, this.newUser.pseudo, this.newUser.firstname!, this.newUser.lastname!);
+    const response = await this.authService.signUp(this.newUser.email, this.newUser.password!, this.newUser.pseudo);
+    
+    this.userSignUpResult(response);
+  }
+
+  userSignUpResult(response : any){
+    if (response.user) {
+      console.log('User signed in:', response.user);
+      this.errorMessage = response.errorMessage;
+
+      // Utilisateur connecté, retour à la page profil
+      this.router.navigate(['tabs/profile']);
+    } 
+    else { // Erreur lors de l'inscription
+      console.log('Sign up failed');
+      this.errorMessage = response.errorMessage;
+    }
   }
 
 }
