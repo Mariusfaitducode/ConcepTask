@@ -69,6 +69,12 @@ export class TaskService {
     if (this.user) {
 
       // La fonction est appelée lors de la connexion d'un utilisateur
+
+      // Se désabonner de la collection des todos de l'utilisateur
+      if (this.firestoreSubscription) {
+        this.firestoreSubscription.unsubscribe();
+      }
+
       // Ce message doit être affiché une seule fois lors de la connexion
       console.log("CONNEXION Sync With Firestore INITIALIZATION")
 

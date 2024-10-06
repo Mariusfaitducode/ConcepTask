@@ -12,6 +12,8 @@ export class ButtonAddSubTaskComponent  implements OnInit {
   @Input() parentTask!: Todo;
   @Input() modalConfig!: TaskModal;
 
+  @Input() todosList!: Todo[];
+
   @Output() initializeDragDropListEmitter = new EventEmitter();
 
   subType : string = "customize";
@@ -24,7 +26,7 @@ export class ButtonAddSubTaskComponent  implements OnInit {
 
   // Add simple todo
   addTodoOnList(){
-    let newTodoOnList = new Todo();
+    let newTodoOnList = new Todo(this.todosList.length);
     newTodoOnList.title = this.newTodoOnListTitle;
     this.parentTask.list?.push(newTodoOnList);
     this.newTodoOnListTitle = '';
@@ -35,7 +37,7 @@ export class ButtonAddSubTaskComponent  implements OnInit {
   // Add sub task with modal
   addTaskOnList(){
 
-    this.modalConfig.openNewTaskModal(this.parentTask)
+    this.modalConfig.openNewTaskModal(this.parentTask, this.todosList.length)
 
     console.log(this.modalConfig);
   }

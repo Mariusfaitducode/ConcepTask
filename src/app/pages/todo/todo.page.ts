@@ -140,7 +140,7 @@ export class TodoPage implements OnInit {
         // Si pas d'id dans les paramètres, c'est un nouveau todo
         if (params['id'] == undefined) { 
 
-          this.mainTodo = new Todo();
+          this.mainTodo = new Todo(this.todos.length); // Création d'un nouveau todo
           this.todo = this.mainTodo;
 
           if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date venant du calendrier

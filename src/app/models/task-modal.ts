@@ -19,11 +19,11 @@ export class TaskModal{
         this.parentTask = parentTask;
     }
 
-    openNewTaskModal(parentTask : Todo){
+    openNewTaskModal(parentTask : Todo, todoListLength: number){
         this.open = true;
         this.modify = false;
 
-        this.task = new Todo();
+        this.task = new Todo(todoListLength);
         this.parentTask = parentTask;
     }
       

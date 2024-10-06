@@ -85,7 +85,12 @@
           (initializeDragDropListEmitter)="initializeDragDropList()"
         ></app-todo-sub-tasks-header>
 
-        <app-button-add-sub-task *ngIf="editMode" [parentTask]="todo" [modalConfig]="modalConfig" (initializeDragDropListEmitter)="initializeDragDropList()"></app-button-add-sub-task>
+        <app-button-add-sub-task *ngIf="editMode" 
+          [parentTask]="todo" 
+          [modalConfig]="modalConfig" 
+          [todosList]="todos"
+          (initializeDragDropListEmitter)="initializeDragDropList()">
+        </app-button-add-sub-task>
 
         
         <!-- SUBTAKS LIST -->

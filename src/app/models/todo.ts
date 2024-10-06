@@ -12,6 +12,8 @@ export class Todo {
     // IDs
     public id: string; // id of the todo
 
+    public index: number; // index of the todo in the list
+
     public subId?: number; // id of reference on the tree 
     public parentId?: number; // id of the parent todo  
 
@@ -55,7 +57,7 @@ export class Todo {
     public list: Todo[] = [];
 
 
-    constructor() {
+    constructor(todoListLength: number) {
 
         this.id = uuidv4();
         
@@ -65,6 +67,8 @@ export class Todo {
         this.repeat = {};
 
         this.config = new TaskConfig(); 
+
+        this.index = todoListLength;
     }
 
 

@@ -118,10 +118,10 @@ export class SubTaskComponent  implements OnInit {
     this.openModal.openModifyTaskModal(subTask, this.parentTask);
   }
 
-  addSubTaskOnList(){
+  // addSubTaskOnList(){
 
-    this.openModal.openNewTaskModal(this.subTask);
-  }
+  //   this.openModal.openNewTaskModal(this.subTask);
+  // }
 
 
   numberOfDoneSubTask(){

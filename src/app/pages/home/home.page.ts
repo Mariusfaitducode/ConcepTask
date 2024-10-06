@@ -47,7 +47,8 @@ export class HomePage implements OnInit, OnDestroy {
 
       console.log('Todos loaded in home page:', todos)
       this.todos = todos;
-      this.results = [...this.todos];
+
+      this.results = [...this.todos].sort((a, b) => a.index - b.index);
     });
 
     this.userService.getUser().subscribe((user : User | null) => {
@@ -80,14 +81,26 @@ export class HomePage implements OnInit, OnDestroy {
   // Drag and drop reorder
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
 
-    // TODO : fix drop event
+    // ev.preventDefault()
+    ev.stopPropagation();
 
-    // console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
-    // ev.detail.complete(this.results);
+    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+    ev.detail.complete(this.results);
     // console.log();
-    // ev.stopPropagation();
 
-    // this.todos = [...this.results];
+    
+
+    for (let i = 0; i < this.results.length; i++) {
+
+      console.log(this.results[i].index, i)
+
+      if (this.results[i].index != i){
+        this.results[i].index = i;
+        this.taskService.updateTodo(this.results[i]);
+      }
+    }
+
+    this.todos = [...this.results];
     // this.taskService.actualizeTodos(this.todos, this.user);
   }
 
