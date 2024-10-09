@@ -10,11 +10,20 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let day of days" class="habit-row">
+      <tr *ngFor="let day of days; let dayIndex = index" class="habit-row">
   
         <!-- <td class="day-label">{{ day }}</td> -->
-        <td *ngFor="let _ of [].constructor(30); let i = index">
-          <div class="day-contribution"></div>
+
+        <td *ngFor="let _ of [].constructor(numberOfWeeks); let weekIndex = index">
+        
+          <div class="day-contribution" 
+          [style.background-color]="
+          getTodoCountByDate(dayIndex, weekIndex) === -1 ? 'var(--ion-color-step-100)' :
+          getTodoCountByDate(dayIndex, weekIndex) >= 10 ? 'var(--ion-color-tertiary)' :
+          getTodoCountByDate(dayIndex, weekIndex) >= 5 ? 'var(--ion-color-secondary)' : 
+          getTodoCountByDate(dayIndex, weekIndex) >= 1 ? 'var(--ion-color-primary)' :
+           'var(--black)'"></div>
+        
         </td>
       </tr>
     </tbody>

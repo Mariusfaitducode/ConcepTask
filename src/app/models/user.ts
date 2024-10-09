@@ -13,12 +13,14 @@ export class User{
 
     settings: Settings = new Settings();
 
+    todosTracker: {todoId: string, date: Date}[] = [];
+
 
 
     // Used to create a new user
 
-    firstname?: string = "";
-    lastname?: string = "";
+    // firstname?: string = "";
+    // lastname?: string = "";
 
     password?: string = "";
     status?: string = "test";

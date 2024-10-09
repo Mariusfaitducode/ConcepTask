@@ -62,7 +62,8 @@ export class AuthService {
           uid,
           pseudo,
           email,
-          settings: this.settingsService.getLocalSettings()
+          settings: this.settingsService.getLocalSettings(),
+          todosTracker: []
         };
 
         // On enregistre les données utilisateur dans Firestore
@@ -223,7 +224,8 @@ export class AuthService {
       email: user.email || '',
       pseudo: user.displayName || '',
       avatar: user.photoURL || '',
-      settings: this.settingsService.getLocalSettings()
+      settings: this.settingsService.getLocalSettings(),
+      todosTracker: []
     };
 
     // Enregistrement des données utilisateur
