@@ -447,6 +447,10 @@ export class TodoPage implements OnInit {
   // Set todo as DONE
   setTodoValidation(isDone: boolean){
     this.todo.isDone = isDone;
+
+    if (this.user){
+      this.userService.setUserTodosTracker(this.user, this.todo.id, this.todo.isDone);
+    }
   }
 
 

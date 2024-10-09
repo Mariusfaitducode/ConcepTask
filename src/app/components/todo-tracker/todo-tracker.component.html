@@ -2,6 +2,7 @@
 
 <div class="habit-tracker">
   <table>
+    
 
     <thead>
       <tr>
@@ -18,7 +19,7 @@
         
           <div class="day-contribution" 
           [style.background-color]="
-          getTodoCountByDate(dayIndex, weekIndex) === -1 ? 'var(--ion-color-step-100)' :
+          getTodoCountByDate(dayIndex, weekIndex) === -1 ? 'var(--ion-color-step-50)' :
           getTodoCountByDate(dayIndex, weekIndex) >= 10 ? 'var(--ion-color-tertiary)' :
           getTodoCountByDate(dayIndex, weekIndex) >= 5 ? 'var(--ion-color-secondary)' : 
           getTodoCountByDate(dayIndex, weekIndex) >= 1 ? 'var(--ion-color-primary)' :

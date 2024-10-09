@@ -56,6 +56,7 @@ export class UserService {
 
     this.userSubscription = this.userRef.valueChanges().subscribe(userData => {
       // console.log('UserRef subscription : userData = ', userData)
+      
 
       // this.settingsService.setUserSettings(userData as User);
       this.taskService.setUserId(userData!);
@@ -88,10 +89,13 @@ export class UserService {
 
     console.log('User service : loadUserData')
 
+    
+
     this.userRef = this.firestore.doc<User>(`users/${uid}`);
     const userDoc = await this.userRef.get().toPromise();
     const userData = userDoc?.data();
     if (userData) {
+      
       // this.userSubject.next(userData);
       return userData;
     }
@@ -127,6 +131,33 @@ export class UserService {
       console.error('Error updating user:', error);
       return false; // Une erreur s'est produite
     }
+  }
+
+
+
+
+  // Set user todos tracker
+  setUserTodosTracker(user: User, todoId: string, isDone: boolean): void {
+
+    if (this.userRef) {
+
+      const todosTracker = user.todosTracker || [];
+
+      if (!todosTracker.some(item => item.todoId === todoId) && isDone) {
+        todosTracker.push({ todoId, date: new Date() });
+      } 
+      else if (!isDone) {
+        todosTracker.splice(todosTracker.findIndex(item => item.todoId === todoId), 1);
+      }
+
+      this.userRef.update({
+        todosTracker: todosTracker
+      });
+    }
+
+
+    // this.userSubject.next(user);
+    // console.log('User service :Setting user data:', user);
   }
 
 

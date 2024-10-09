@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { HabitTrackerComponent } from './habit-tracker.component';
+import { TodoTrackerComponent } from './todo-tracker.component';
 
 describe('HabitTrackerComponent', () => {
-  let component: HabitTrackerComponent;
-  let fixture: ComponentFixture<HabitTrackerComponent>;
+  let component: TodoTrackerComponent;
+  let fixture: ComponentFixture<TodoTrackerComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HabitTrackerComponent ],
+      declarations: [ TodoTrackerComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HabitTrackerComponent);
+    fixture = TestBed.createComponent(TodoTrackerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

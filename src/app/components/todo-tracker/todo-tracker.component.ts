@@ -3,10 +3,10 @@ import { random } from 'lodash';
 
 @Component({
   selector: 'app-habit-tracker',
-  templateUrl: './habit-tracker.component.html',
-  styleUrls: ['./habit-tracker.component.scss'],
+  templateUrl: './todo-tracker.component.html',
+  styleUrls: ['./todo-tracker.component.scss'],
 })
-export class HabitTrackerComponent  implements OnInit {
+export class TodoTrackerComponent  implements OnInit {
 
   @Input() todosTracker: {todoId: string, date: Date}[] = [];
 
@@ -23,6 +23,10 @@ export class HabitTrackerComponent  implements OnInit {
 
 
   ngOnInit() {
+
+
+    console.log("todosTracker", this.todosTracker)
+
     // for (let i = 0; i < this.numberOfWeeks * 20; i++) {
 
     //   // this.weeks.push(i);
@@ -50,8 +54,13 @@ export class HabitTrackerComponent  implements OnInit {
 
     let targetDate = new Date();
     targetDate.setDate(today + pastDays);
-
-    let todosFound = this.todosTracker.filter(todo => todo.date.getDate() === targetDate.getDate() && todo.date.getMonth() === targetDate.getMonth() && todo.date.getFullYear() === targetDate.getFullYear());
+    let todosFound = this.todosTracker.filter(todo => {
+      if (typeof todo.date === 'object' && 'seconds' in todo.date) {
+        let todoDate = new Date((todo.date as any).seconds * 1000);
+        return todoDate.setHours(0,0,0,0) === targetDate.setHours(0,0,0,0);
+      }
+      return false;
+    });
     return todosFound.length;
 
 

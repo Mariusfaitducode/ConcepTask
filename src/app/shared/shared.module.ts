@@ -15,7 +15,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { HabitTrackerComponent } from '../components/todo-tracker/habit-tracker.component';
+import { TodoTrackerComponent } from '../components/todo-tracker/todo-tracker.component';
 import { GraphComponent } from '../components/graph/graph.component';
 import { TitleCategoryEditComponent } from '../components/todo-page/title-category-edit/title-category-edit.component';
 import { TodoDescriptionComponent } from '../components/todo-page/todo-description/todo-description.component';
@@ -59,7 +59,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LeftMenuComponent,
     ButtonAddSubTaskComponent,
     DateSelectorComponent,
-    HabitTrackerComponent,
+    TodoTrackerComponent,
     GraphComponent,
 
     TitleCategoryEditComponent,
@@ -83,7 +83,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonAddSubTaskComponent,
     DateSelectorComponent,
     TranslateModule,
-    HabitTrackerComponent,
+    TodoTrackerComponent,
     GraphComponent,
 
     TitleCategoryEditComponent,

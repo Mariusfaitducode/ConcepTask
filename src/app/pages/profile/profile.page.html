@@ -60,7 +60,7 @@
     <!-- Habit tracker -->
 
     <div class="habit-tracker-container">
-      <app-habit-tracker></app-habit-tracker>
+      <app-habit-tracker [todosTracker]="user.todosTracker || []"></app-habit-tracker>
     </div>
 
 
