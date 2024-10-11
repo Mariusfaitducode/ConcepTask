@@ -31,10 +31,10 @@ export class UserService {
     private taskService : TaskService,
   ) {}
 
+  // Initialise le service utilisateur
   async initUserService(){
-    // Subscribe to the authState observable to get the current user at beginning, connect or disconnect
+    // S'abonne à l'état d'authentification pour obtenir l'utilisateur actuel au démarrage, à la connexion ou à la déconnexion
     this.afAuth.authState.subscribe(user => {
-
       console.log('init user', user )
       if (user) {
         this.setUserSubscription(user.uid);
@@ -45,26 +45,24 @@ export class UserService {
   }
 
 
+  // Configure l'abonnement aux données de l'utilisateur
   private setUserSubscription(uid: string): void {
-    // Nettoyer l'abonnement précédent s'il existe
+    // Nettoie l'abonnement précédent s'il existe
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
-
     console.log('User service : setUserSubscription')
+    
     this.userRef = this.firestore.doc<User>(`users/${uid}`);
 
     this.userSubscription = this.userRef.valueChanges().subscribe(userData => {
-      // console.log('UserRef subscription : userData = ', userData)
-      
-
-      // this.settingsService.setUserSettings(userData as User);
       this.taskService.setUserId(userData!);
       this.userSubject.next(userData as User);
     });
   }
 
 
+  // Nettoie l'abonnement utilisateur
   private clearUserSubscription(): void {
     // Désabonner et nettoyer l'utilisateur lorsque déconnecté
 
@@ -79,6 +77,7 @@ export class UserService {
   
 
 
+  // Retourne un Observable de l'utilisateur actuel
   getUser() {
     return this.userSubject.asObservable();
   }
@@ -89,13 +88,10 @@ export class UserService {
 
     console.log('User service : loadUserData')
 
-    
-
     this.userRef = this.firestore.doc<User>(`users/${uid}`);
     const userDoc = await this.userRef.get().toPromise();
     const userData = userDoc?.data();
     if (userData) {
-      
       // this.userSubject.next(userData);
       return userData;
     }
@@ -103,7 +99,7 @@ export class UserService {
   }
 
 
-  // Méthode pour mettre à jour l'utilisateur dans Firestore, y compris la photo de profil
+  // Met à jour l'utilisateur dans Firestore, y compris la photo de profil
   async updateUser(user: User, profilePictureFile: File | null): Promise<boolean> {
     try {
       if (this.userRef) {
@@ -135,7 +131,6 @@ export class UserService {
 
 
 
-
   // Set user todos tracker
   setUserTodosTracker(user: User, todoId: string, isDone: boolean): void {
 
@@ -146,33 +141,15 @@ export class UserService {
       if (!todosTracker.some(item => item.todoId === todoId) && isDone) {
         todosTracker.push({ todoId, date: new Date() });
       } 
-      else if (!isDone) {
+      else if (todosTracker.some(item => item.todoId === todoId) && !isDone) {
         todosTracker.splice(todosTracker.findIndex(item => item.todoId === todoId), 1);
       }
 
-      this.userRef.update({
-        todosTracker: todosTracker
-      });
+      if (user.todosTracker !== todosTracker) {
+        this.userRef.update({
+          todosTracker: todosTracker
+        });
+      }
     }
-
-
-    // this.userSubject.next(user);
-    // console.log('User service :Setting user data:', user);
   }
-
-
-  // Mettre à jour les données utilisateur localement
-  // setUserData(userData: User): void {
-  //   this.userSubject.next(userData);
-  //   console.log('User service :Setting user data:', userData);
-
-  // }
-
-
-  // Nettoyer les données utilisateur lors de la déconnexion
-  // clearUserData(): void {
-  //   this.userSubject.next(null);
-  //   this.userRef = null;
-  //   console.log('User service : clearUserData')
-  // }
 }

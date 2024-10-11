@@ -40,6 +40,15 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   constructor(private translate : TranslateService) { }
 
+  ngOnInit() {
+
+    this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
+
+    this.subTask = this.modalConfig.task!;
+    
+    this.initialSubTask = JSON.parse(JSON.stringify(this.subTask));
+  }
+
   ngAfterViewInit() {
     
     let doc = document.getElementsByClassName('content');
@@ -50,18 +59,7 @@ export class AddModalComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngOnInit() {
-
-    this.categories = JSON.parse(localStorage.getItem('categories') || '[]');
-
-
-    this.subTask = this.modalConfig.task!;
-    // this.modify = this.modalConfig.modify;
-
-    //this.setConfig();
-    
-    this.initialSubTask = JSON.parse(JSON.stringify(this.subTask));
-  }
+ 
 
  
 
@@ -117,31 +115,31 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
   
 
-  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+  // handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     
-    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+  //   console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
 
-    ev.detail.complete(this.subTask.list);
+  //   ev.detail.complete(this.subTask.list);
 
-    console.log(this.subTask.list);
-  }
+  //   console.log(this.subTask.list);
+  // }
 
 
   
-  manageNotification(){
+  // manageNotification(){
 
-    console.log("click")
+  //   console.log("click")
 
-    console.log("manage notification")
-    console.log(this.subTask.reminder);
-    // this.newTodo.sayHello();
-    if (this.subTask.reminder) {
-      // Todo.scheduleNotification(this.subTask);
-    }
-    else{
-      // Todo.cancelNotification(this.subTask);
-    }
-  }
+  //   console.log("manage notification")
+  //   console.log(this.subTask.reminder);
+  //   // this.newTodo.sayHello();
+  //   if (this.subTask.reminder) {
+  //     // Todo.scheduleNotification(this.subTask);
+  //   }
+  //   else{
+  //     // Todo.cancelNotification(this.subTask);
+  //   }
+  // }
 
   passedDate(){
     return TodoDate.passedDate(this.subTask);

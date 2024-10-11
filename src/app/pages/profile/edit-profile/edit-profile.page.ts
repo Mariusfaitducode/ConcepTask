@@ -32,6 +32,15 @@ export class EditProfilePage implements OnInit {
   }
 
 
+  // NAVIGATION
+
+  goBackTodo(){
+    this.router.navigate(['/tabs/profile']);
+  }
+
+
+  // FORM
+
   fileUpload(event : any){
 
     this.file = event.target.files[0];

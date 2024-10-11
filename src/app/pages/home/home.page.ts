@@ -78,6 +78,12 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
 
+
+  importData(){}
+
+  exportData(){}
+
+
   // Drag and drop reorder
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
 
