@@ -9,6 +9,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { TaskService } from '../task/task.service';
 import { SettingsService } from '../settings/settings.service';
+import { Todo } from 'src/app/models/todo';
 
 // import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -132,17 +133,20 @@ export class UserService {
 
 
   // Set user todos tracker
-  setUserTodosTracker(user: User, todoId: string, isDone: boolean): void {
+  setUserTodosTracker(user: User, todo: Todo): void {
 
     if (this.userRef) {
 
-      const todosTracker = user.todosTracker || [];
+      const todosTracker = [...user.todosTracker] || [];
 
-      if (!todosTracker.some(item => item.todoId === todoId) && isDone) {
-        todosTracker.push({ todoId, date: new Date() });
+      if (!todosTracker.some(item => item.todoId === todo.id) && todo.isDone) {
+        console.log('PUSH NEW NEW TODO TO TRACKER', todo.id)
+
+        todosTracker.push({ todoId:todo.id, title: todo.title, date: new Date() });
       } 
-      else if (todosTracker.some(item => item.todoId === todoId) && !isDone) {
-        todosTracker.splice(todosTracker.findIndex(item => item.todoId === todoId), 1);
+      else if (todosTracker.some(item => item.todoId === todo.id) && !todo.isDone) {
+        console.log('REMOVE TODO FROM TRACKER', todo.id)
+        todosTracker.splice(todosTracker.findIndex(item => item.todoId === todo.id), 1);
       }
 
       if (user.todosTracker !== todosTracker) {

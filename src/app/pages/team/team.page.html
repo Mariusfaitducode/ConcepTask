@@ -1,0 +1,77 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBackTodo()" class="back-button">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Nouvelle équipe</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Équipe</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+
+  <!-- <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-input [(ngModel)]="teamName" placeholder="Nom de l'équipe"></ion-input>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-img [src]="teamImage" alt="Image de l'équipe"></ion-img>
+      <ion-button expand="block" (click)="changeTeamImage()">Changer l'image</ion-button>
+    </ion-card-content>
+  </ion-card> -->
+
+
+  <div class="team-header">
+
+    <div class="team-image">
+
+      <img [src]="'url'" width="100px" height="100px" alt="" >
+
+      <!-- <ion-item>
+
+        
+      </ion-item> -->
+      
+    </div>
+
+
+    <div class="team-name">
+
+      <!-- <ion-item> -->
+        <ion-input [(ngModel)]="teamName" placeholder="Nom de l'équipe"></ion-input>
+      <!-- </ion-item> -->
+
+      <input type="file" accept="image/*" (change)="fileUpload($event)" />
+
+    </div>
+
+  </div>
+
+  <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="searchMembers()" placeholder="Rechercher un membre"></ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let member of filteredMembers">
+      <ion-avatar slot="start">
+        <img [src]="member.image" alt="Photo de profil">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ member.name }}</h2>
+        <p>{{ member.role }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addNewMember()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -13,6 +13,12 @@ const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
+      
+      {
+        path: '',
+        redirectTo: '/tabs/home',
+        pathMatch: 'full'
+      },
       {
         path: 'home',
         loadChildren: () => import('../pages/home/home.module').then(m => m.HomePageModule)
@@ -26,9 +32,12 @@ const routes: Routes = [
         loadChildren: () => import('../pages/profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
-        path: '',
-        redirectTo: '/tabs/home',
-        pathMatch: 'full'
+        path: 'team',
+        loadChildren: () => import('../pages/team/team.module').then( m => m.TeamPageModule)
+      },
+      {
+        path: 'team/:id',
+        loadChildren: () => import('../pages/team/team.module').then( m => m.TeamPageModule)
       },
       {
         path: 'todo',
@@ -36,10 +45,6 @@ const routes: Routes = [
       },
       {
         path: 'todo/:id',
-        loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
-      },
-      {
-        path: 'todo/:id/:subId',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
       },
       {

@@ -1,0 +1,21 @@
+<div class="teams-gestion">
+  
+  <div class="teams-title">Teams</div>
+
+  <ion-list>
+
+    <div>
+      <ion-button (click)="addTeam()" shape="round">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div *ngFor="let team of teams">
+      <ion-item>
+        <ion-label>{{team.name}}</ion-label>
+      </ion-item>
+    </div>
+
+  </ion-list>
+      
+</div>

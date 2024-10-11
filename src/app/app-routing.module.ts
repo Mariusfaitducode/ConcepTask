@@ -59,6 +59,15 @@ const routes: Routes = [
     path: 'profile',
     redirectTo: 'tabs/profile',
   },
+  {
+    path: 'team',
+    redirectTo: 'tabs/team',
+  },
+  {
+    path: 'team/:id',
+    redirectTo: 'tabs/team/:id',
+  },
+
 ];
 
 @NgModule({

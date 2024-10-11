@@ -449,7 +449,7 @@ export class TodoPage implements OnInit {
     this.todo.isDone = isDone;
 
     if (this.user){
-      this.userService.setUserTodosTracker(this.user, this.todo.id, this.todo.isDone);
+      this.userService.setUserTodosTracker(this.user, this.todo);
     }
   }
 

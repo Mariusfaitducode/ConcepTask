@@ -13,7 +13,7 @@ export class User{
 
     settings: Settings = new Settings();
 
-    todosTracker: {todoId: string, date: Date}[] = [];
+    todosTracker: {todoId: string, title: string, date: Date}[] = [];
 
 
 

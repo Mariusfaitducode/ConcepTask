@@ -28,7 +28,7 @@ import { ModalHeaderComponent } from '../components/add-modal/modal-header/modal
 import { MaintodoSubtaskComponent } from '../components/todo-page/maintodo-subtask/maintodo-subtask.component';
 import { TodoSubtasksTreeComponent } from '../components/todo-page/todo-subtasks-tree/todo-subtasks-tree.component';
 import { ImportExportModalComponent } from '../components/import-export-modal/import-export-modal.component';
-
+import { TeamsGestionComponent } from '../components/teams-gestion/teams-gestion.component';
 
 
 
@@ -75,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     ModalHeaderComponent,
     ImportExportModalComponent,
+    TeamsGestionComponent,
   ],
   exports:[
     TodoCardComponent, 
@@ -100,6 +101,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     ModalHeaderComponent,
     ImportExportModalComponent,
+    TeamsGestionComponent,
   ]
 })
 export class SharedModule { }
