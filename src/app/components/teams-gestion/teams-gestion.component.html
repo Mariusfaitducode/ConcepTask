@@ -2,19 +2,34 @@
   
   <div class="teams-title">Teams</div>
 
-  <ion-list>
+  <ion-list >
 
-    <div>
-      <ion-button (click)="addTeam()" shape="round">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-    </div>
+    
 
-    <div *ngFor="let team of teams">
-      <ion-item>
-        <ion-label>{{team.team.name}}</ion-label>
-      </ion-item>
+    <div class="teams-list">
+
+      <div class="add-team">
+        <ion-button (click)="addTeam()" shape="round" class="add-team-button">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+        <ion-label>New team</ion-label>
+      </div>
+
+      <div *ngFor="let team of teams">
+
+        <div class="team-item" (click)="goToTeam(team.team.id)">
+
+          <img [src]="'https://picsum.photos/50/50'" width="50px" height="50px" alt="">
+
+          
+
+          <ion-label>{{team.team.name}}</ion-label>
+
+        </div>
+      </div>
+
     </div>
+    
 
   </ion-list>
       

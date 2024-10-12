@@ -9,7 +9,6 @@
 
     background-color: var(--ion-color-step-50);
 
-    overflow-x: scroll;
 }
 
 .teams-title{
@@ -18,6 +17,65 @@
     justify-self: start;
     padding: 4px;
     font-weight: bold;
+
+    // overflow-x: scroll;
+}
+
+
+.teams-list {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;  /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+// .teams-list::-webkit-scrollbar {
+//     display: none;  /* For Chrome, Safari, and Opera */
+// }
+
+
+.add-team{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 4px;
+}
+
+.add-team-button{
+
+    width: 50px;
+    height: 50px;
+    // margin-left: auto;
+    margin: 0;
+}
+
+.add-team ion-label{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.team-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 4px;
+
+    min-width: 50px;
+}
+
+.team-item img{
+    border-radius: 50%;
+}
+
+.team-item ion-label{
+    font-weight: 400;
+    font-size: 12px;
 }
 
 

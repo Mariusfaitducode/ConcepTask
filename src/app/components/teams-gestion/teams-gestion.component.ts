@@ -27,4 +27,10 @@ export class TeamsGestionComponent  implements OnInit {
 
   }
 
+  goToTeam(teamId: string){
+
+    this.router.navigate(['/team', teamId]);
+
+  }
+
 }

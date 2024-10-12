@@ -62,7 +62,8 @@ export class ProfilePage implements OnInit, OnDestroy {
 
           console.log('ProfilePage : teams = ', teams);
 
-          
+          this.teams = [];
+
           for (let team of teams){
 
             let newTeam : {team:Team, teamUsers:any[]} = {team: team, teamUsers: []};

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
@@ -42,6 +42,7 @@ export class TeamPage implements OnInit {
   fileUrl: string = '';
 
   constructor(
+    private route : ActivatedRoute, 
     private router: Router,
     private alertController: AlertController,
     private userService: UserService,
@@ -51,15 +52,56 @@ export class TeamPage implements OnInit {
   ngOnInit() {
 
 
-    this.userService.getUser().subscribe((user : User | null) => {
+    
 
-      console.log('ProfilePage : user = ', user);
-      this.user = user;
+    this.route.params.subscribe((params) => {
+
+      console.log('TeamPage : params = ', params);
+
+
+      this.userService.getUser().subscribe((user : User | null) => {
+
+        console.log('ProfilePage : user = ', user);
+        this.user = user;
+        
+        if (this.user != null){
+          // this.userConnected = true;
+          this.team = new Team(this.user!);
+
+
+          if (params['id'] == undefined) {
+
+            this.team = new Team(this.user!);
+          }
+
+          else{
+            this.teamService.getTeamById(params['id']).subscribe((team : Team | null) => {
+
+              if (team){
+
+                this.team = team;
+                this.teamUsers = [];
+
+                for (let userId of team.usersIds){
+  
+                  this.userService.getUserById(userId).then(user => {
+    
+                    if (user) this.teamUsers.push(user);
+                  });
+                }
+              }
+              
+            });
+
+            
+          }
+
+
+        }
+      });
+
+
       
-      if (this.user != null){
-        // this.userConnected = true;
-        this.team = new Team(this.user!);
-      }
     });
 
 
