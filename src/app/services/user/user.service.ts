@@ -78,6 +78,20 @@ export class UserService {
   
 
 
+  getUserById(uid: string): Promise<{ uid: string; pseudo: string; avatar: string } | null> {
+    return this.firestore.doc<User>(`users/${uid}`)
+      .get()
+      .toPromise()
+      .then(doc => {
+        if (doc && doc.exists){
+          const data = doc.data();
+          return data ? { ...data, avatar: data.avatar || '' } : null;
+        }
+        return null;
+      });
+  }
+
+
   // Retourne un Observable de l'utilisateur actuel
   getUser() {
     return this.userSubject.asObservable();

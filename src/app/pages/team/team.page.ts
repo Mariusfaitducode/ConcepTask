@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Team } from 'src/app/models/team';
+import { User } from 'src/app/models/user';
+import { TeamService } from 'src/app/services/team/team.service';
+import { UserService } from 'src/app/services/user/user.service';
 
-interface TeamMember {
-  id: number;
-  name: string;
-  role: string;
-  image: string;
-}
+// interface TeamMember {
+//   id: number;
+//   name: string;
+//   role: string;
+//   image: string;
+// }
 
 @Component({
   selector: 'app-team',
@@ -17,27 +21,57 @@ interface TeamMember {
 export class TeamPage implements OnInit {
 
 
-  
-  teamName: string = 'Mon Équipe';
-  teamImage: string = 'https://example.com/default-team-image.jpg';
+
+  // teamName: string = 'Mon Équipe';
+  // teamImage: string = 'https://example.com/default-team-image.jpg';
+
+  team: Team | null = null;
+  teamUsers: any[] = [];
+
+  // teams: {teams:Team, teamUsers:any[]}[] = [];
+
+  user: User | null = null;
+
+
   searchTerm: string = '';
-  members: TeamMember[] = [];
-  filteredMembers: TeamMember[] = [];
+
+  // members: User[] = [];
+  // filteredMembers: TeamMember[] = [];
 
   file: File | null = null;
+  fileUrl: string = '';
 
   constructor(
     private router: Router,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    private userService: UserService,
+    private teamService: TeamService
+  ) { }
 
   ngOnInit() {
+
+
+    this.userService.getUser().subscribe((user : User | null) => {
+
+      console.log('ProfilePage : user = ', user);
+      this.user = user;
+      
+      if (this.user != null){
+        // this.userConnected = true;
+        this.team = new Team(this.user!);
+      }
+    });
+
+
+
+
     // Initialiser avec quelques membres d'exemple
-    this.members = [
-      { id: 1, name: 'Alice Dupont', role: 'Développeur', image: 'https://example.com/alice.jpg' },
-      { id: 2, name: 'Bob Martin', role: 'Designer', image: 'https://example.com/bob.jpg' },
-      { id: 3, name: 'Charlie Leclerc', role: 'Chef de projet', image: 'https://example.com/charlie.jpg' },
-    ];
-    this.filteredMembers = [...this.members];
+    // this.members = [
+    //   { id: 1, name: 'Alice Dupont', role: 'Développeur', image: 'https://example.com/alice.jpg' },
+    //   { id: 2, name: 'Bob Martin', role: 'Designer', image: 'https://example.com/bob.jpg' },
+    //   { id: 3, name: 'Charlie Leclerc', role: 'Chef de projet', image: 'https://example.com/charlie.jpg' },
+    // ];
+    // this.filteredMembers = [...this.members];
   }
 
 
@@ -54,6 +88,7 @@ export class TeamPage implements OnInit {
   fileUpload(event : any){
 
     this.file = event.target.files[0];
+    // this.fileUrl = URL.createObjectURL(this.file);
 
     // TODO : display file after selecting it
   }
@@ -66,51 +101,26 @@ export class TeamPage implements OnInit {
   }
 
   searchMembers() {
-    this.filteredMembers = this.members.filter(member =>
-      member.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      member.role.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    // this.filteredMembers = this.members.filter(member =>
+    //   member.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+    //   member.role.toLowerCase().includes(this.searchTerm.toLowerCase())
+    // );
   }
 
-  async addNewMember() {
-    const alert = await this.alertController.create({
-      header: 'Ajouter un nouveau membre',
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: 'Nom du membre'
-        },
-        {
-          name: 'role',
-          type: 'text',
-          placeholder: 'Rôle du membre'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Annuler',
-          role: 'cancel'
-        },
-        {
-          text: 'Ajouter',
-          handler: (data) => {
-            if (data.name && data.role) {
-              const newMember: TeamMember = {
-                id: this.members.length + 1,
-                name: data.name,
-                role: data.role,
-                image: 'https://example.com/default-avatar.jpg' // Image par défaut
-              };
-              this.members.push(newMember);
-              this.filteredMembers = [...this.members];
-              this.searchMembers(); // Rafraîchir la liste filtrée
-            }
-          }
-        }
-      ]
-    });
 
-    await alert.present();
+
+  canSaveTeam(){
+    return this.user && this.team && this.team.name !== '';
   }
+
+  saveNewTeam(){
+    // TODO : save the team
+
+    if (this.canSaveTeam()){
+      this.teamService.createNewTeam(this.team!, this.user!);
+
+    }
+
+  }
+
 }

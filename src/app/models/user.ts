@@ -15,6 +15,7 @@ export class User{
 
     todosTracker: {todoId: string, title: string, date: Date}[] = [];
 
+    teams: string[] = [];
 
 
     // Used to create a new user

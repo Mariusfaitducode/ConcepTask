@@ -15,7 +15,7 @@ export class TeamsGestionComponent  implements OnInit {
   ) { }
 
 
-  @Input() teams: Team[] = [];
+  @Input() teams: {team:Team, teamUsers:any[]}[] = [];
 
   ngOnInit() {}
 

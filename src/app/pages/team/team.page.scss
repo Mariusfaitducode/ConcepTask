@@ -17,10 +17,14 @@
 .team-image{
     display: flex;
     flex-direction: column;
-    width: 30%;
+
+    min-width: 100px;
+    // width: 30%;
 }
 
 .team-image img{
+    // width: 100px;
+    // height: 100px;
     border-radius: 50%;
 }
 

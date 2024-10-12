@@ -58,12 +58,15 @@ export class AuthService {
 
       // Si l'utilisateur est bien créé, on crée le document utilisateur dans Firestore
       if (uid) {
+
+        // TODO : use userService to create the user on firestore
         let userData: User = {
           uid,
           pseudo,
           email,
           settings: this.settingsService.getLocalSettings(),
-          todosTracker: []
+          todosTracker: [],
+          teams: []
         };
 
         // On enregistre les données utilisateur dans Firestore
@@ -225,7 +228,8 @@ export class AuthService {
       pseudo: user.displayName || '',
       avatar: user.photoURL || '',
       settings: this.settingsService.getLocalSettings(),
-      todosTracker: []
+      todosTracker: [],
+      teams: []
     };
 
     // Enregistrement des données utilisateur

@@ -1,5 +1,6 @@
 import { User } from "./user";
 
+import { v4 as uuidv4 } from 'uuid';
 
 
 export class Team{
@@ -8,5 +9,14 @@ export class Team{
     name: string = "";  
     image?: string = "";
 
-    users: User[] = [];
+    usersIds: string[] = [];
+
+    adminId: string | null = null;
+
+
+    constructor(admin: User){
+        this.id = uuidv4();
+        this.adminId = admin.uid;
+        this.usersIds.push(admin.uid);
+    }
 }

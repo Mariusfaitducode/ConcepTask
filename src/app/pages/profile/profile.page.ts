@@ -6,11 +6,13 @@ import { ImportExportModal } from 'src/app/models/import-export-modal';
 import { Settings } from 'src/app/models/settings';
 import { TaskConfig } from 'src/app/models/task-config';
 import { TaskModal } from 'src/app/models/task-modal';
+import { Team } from 'src/app/models/team';
 import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TaskService } from 'src/app/services/task/task.service';
+import { TeamService } from 'src/app/services/team/team.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -27,7 +29,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     private userService : UserService,
     private authService : AuthService,
     private settingsService : SettingsService,
-    private taskService : TaskService
+    private taskService : TaskService,
+    private teamService: TeamService
   ) { }
 
 
@@ -41,6 +44,9 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   todos: Todo[] = [];
 
+  // TODO : remplacer any par le type User with less properties
+  teams: {team:Team, teamUsers:any[]}[] = [];
+
 
   ngOnInit() {
 
@@ -51,6 +57,29 @@ export class ProfilePage implements OnInit, OnDestroy {
       
       if (this.user != null){
         this.userConnected = true;
+
+        this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
+
+          console.log('ProfilePage : teams = ', teams);
+
+          
+          for (let team of teams){
+
+            let newTeam : {team:Team, teamUsers:any[]} = {team: team, teamUsers: []};
+
+            for (let userId of team.usersIds){
+
+              this.userService.getUserById(userId).then(user => {
+
+                if (user) newTeam.teamUsers.push(user);
+              });
+            }
+
+            this.teams.push(newTeam);
+          }
+
+
+        });
       }
     });
 
