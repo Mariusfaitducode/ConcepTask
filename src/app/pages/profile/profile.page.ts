@@ -56,6 +56,11 @@ export class ProfilePage implements OnInit, OnDestroy {
       this.user = user;
       
       if (this.user != null){
+
+        if (!this.user.avatar || this.user.avatar == ""){
+          this.user.avatar = "assets/images/default-avatar.jpg";
+        }
+
         this.userConnected = true;
 
         this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
@@ -65,6 +70,10 @@ export class ProfilePage implements OnInit, OnDestroy {
           this.teams = [];
 
           for (let team of teams){
+
+            if (!team.image || team.image == ""){
+              team.image = "assets/images/default-group.png";
+            }
 
             let newTeam : {team:Team, teamUsers:any[]} = {team: team, teamUsers: []};
 

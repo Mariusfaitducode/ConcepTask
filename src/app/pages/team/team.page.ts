@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Team } from 'src/app/models/team';
-import { User } from 'src/app/models/user';
+import { User, UserSimplified } from 'src/app/models/user';
 import { TeamService } from 'src/app/services/team/team.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -26,7 +26,12 @@ export class TeamPage implements OnInit {
   // teamImage: string = 'https://example.com/default-team-image.jpg';
 
   team: Team | null = null;
-  teamUsers: any[] = [];
+
+  initialTeam: Team | null = null;
+
+  teamUsers: UserSimplified[] = [];
+
+  searchMembersResult: UserSimplified[] = [];
 
   // teams: {teams:Team, teamUsers:any[]}[] = [];
 
@@ -40,6 +45,10 @@ export class TeamPage implements OnInit {
 
   file: File | null = null;
   fileUrl: string = '';
+
+
+  isNewTeam: boolean = false;
+
 
   constructor(
     private route : ActivatedRoute, 
@@ -71,15 +80,21 @@ export class TeamPage implements OnInit {
 
           if (params['id'] == undefined) {
 
+            this.isNewTeam = true;
             this.team = new Team(this.user!);
+
           }
 
-          else{
+          else{ 
+            this.isNewTeam = false;
             this.teamService.getTeamById(params['id']).subscribe((team : Team | null) => {
 
               if (team){
 
                 this.team = team;
+
+                this.initialTeam = {...team}
+
                 this.teamUsers = [];
 
                 for (let userId of team.usersIds){
@@ -90,18 +105,10 @@ export class TeamPage implements OnInit {
                   });
                 }
               }
-              
-            });
-
-            
+            }); 
           }
-
-
         }
       });
-
-
-      
     });
 
 
@@ -142,25 +149,60 @@ export class TeamPage implements OnInit {
     console.log("'Changer l'image de l'équipe'");
   }
 
+
+
   searchMembers() {
-    // this.filteredMembers = this.members.filter(member =>
-    //   member.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-    //   member.role.toLowerCase().includes(this.searchTerm.toLowerCase())
-    // );
+
+    // console.log("search ")
+
+    if (this.searchTerm == ''){
+      this.searchMembersResult = [];
+      return;
+    }
+
+    this.searchMembersResult = []
+
+    this.userService.searchMembers(this.searchTerm).then(result => {
+      this.searchMembersResult = result;
+
+      console.log('membersResult = ', this.searchMembersResult);
+
+    });
   }
 
 
+  addMember(uid: string){
 
-  canSaveTeam(){
-    return this.user && this.team && this.team.name !== '';
+    this.team!.usersIds.push(uid);
+
+  }
+
+
+  canSaveOrUpdateTeam(){
+    if (this.isNewTeam){
+      return this.user && this.team && this.team.name !== '';
+    }
+    else{
+      return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam);
+    }
+  }
+
+  canUpdateTeam(){
+    return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam);
   }
 
   saveNewTeam(){
     // TODO : save the team
 
-    if (this.canSaveTeam()){
-      this.teamService.createNewTeam(this.team!, this.user!);
+    if (this.file){
+      this.teamService.updateTeamImage(this.team!, this.file);
+    }
 
+    if (this.isNewTeam){
+      this.teamService.createNewTeam(this.team!, this.user!);
+    }
+    else{
+      this.teamService.updateTeam(this.team!);
     }
 
   }

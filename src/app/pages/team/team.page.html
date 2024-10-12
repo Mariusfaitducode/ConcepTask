@@ -33,7 +33,7 @@
 
     <div class="team-image">
 
-      <img [src]="'https://picsum.photos/100/100'" width="100px" height="100px" alt="" >
+      <img [src]="team.image" width="100px" height="100px" alt="" >
 
       
     </div>
@@ -51,7 +51,24 @@
 
   </div>
 
-  <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="searchMembers()" placeholder="Rechercher un membre"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchMembers()" placeholder="Rechercher un membre"></ion-searchbar>
+
+
+  <ion-list>
+    <ion-item *ngFor="let member of searchMembersResult">
+      <ion-avatar slot="start">
+        <img [src]="member.avatar" alt="Photo de profil">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ member.pseudo }}</h2>
+        <!-- <p>{{ member.role }}</p> -->
+      </ion-label>
+
+      <ion-button *ngIf="!teamUsers.includes(member)" (click)="addMember(member.uid)">Ajouter</ion-button>
+      
+    </ion-item>
+  </ion-list>
+
 
   <ion-list>
     <ion-item *ngFor="let member of teamUsers">
@@ -75,7 +92,7 @@
 
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button [disabled]="!canSaveTeam()" (click)="saveNewTeam()">
+  <ion-fab-button [disabled]="!canSaveOrUpdateTeam()" (click)="saveNewTeam()">
     <ion-icon name="checkmark-outline" ></ion-icon>
   </ion-fab-button>
 </ion-fab>

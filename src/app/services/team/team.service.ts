@@ -6,7 +6,7 @@ import { TaskService } from '../task/task.service';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { UserService } from '../user/user.service';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,8 +54,43 @@ export class TeamService {
 
       this.firestore.collection('teams').doc(team.id).set(team);
     }
+  }
 
 
+  async updateTeamImage(team: Team, file: File){
+
+    try {
+        if (file) {
+          const filePath = `team_pictures/${team.id}`;
+          const fileRef = this.storage.ref(filePath);
+          const uploadTask = this.storage.upload(filePath, file);
+
+          await uploadTask.snapshotChanges().pipe(
+            finalize(async () => {
+              const downloadURL = await fileRef.getDownloadURL().toPromise();
+              team.image = downloadURL;
+              // await this.userRef!.update(user);
+              // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
+              
+            })
+          ).toPromise();
+        } 
+        // else {
+        //   await this.userRef.update(user);
+        //   this.userSubject.next(user); // Mettre à jour l'utilisateur localement
+        // }
+        return true; // Mise à jour réussie
+    } 
+    catch (error) {
+      console.error('Error updating user:', error);
+      return false; // Une erreur s'est produite
+    }
+  }
+
+
+  updateTeam(team: Team){
+
+    this.firestore.collection('teams').doc(team.id).update(team);
 
   }
 

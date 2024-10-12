@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { User, UserSimplified } from '../../models/user';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
@@ -78,7 +78,7 @@ export class UserService {
   
 
 
-  getUserById(uid: string): Promise<{ uid: string; pseudo: string; avatar: string } | null> {
+  getUserById(uid: string): Promise<UserSimplified | null> {
     return this.firestore.doc<User>(`users/${uid}`)
       .get()
       .toPromise()
@@ -142,6 +142,54 @@ export class UserService {
       console.error('Error updating user:', error);
       return false; // Une erreur s'est produite
     }
+  }
+
+
+  // Take a string input and search for users with a pseudo or email containing the input
+  async searchMembers(input: string): Promise<UserSimplified[]> {
+    
+    const pseudoQuery = this.firestore.collection<User>('users', ref => 
+      ref.where('pseudo', '>=', input.toLowerCase())
+         .where('pseudo', '<=', input.toLowerCase() + '\uf8ff')
+         .orderBy('pseudo')
+         .limit(10)
+    );
+
+    const emailQuery = this.firestore.collection<User>('users', ref => 
+      ref.where('email', '>=', input.toLowerCase())
+         .where('email', '<=', input.toLowerCase() + '\uf8ff')
+         .orderBy('email')
+         .limit(10)
+    );
+
+    // Get the results from the queries
+    const [pseudoResults, emailResults] = await Promise.all([
+      pseudoQuery.get().toPromise(),
+      emailQuery.get().toPromise()
+    ]);
+
+    const pseudoUsers = pseudoResults?.docs.map(doc => {
+      const data = doc.data();
+      return {
+        uid: data.uid,
+        pseudo: data.pseudo,
+        avatar: data.avatar
+      } as UserSimplified;
+    }) || [];
+
+    const emailUsers = emailResults?.docs.map(doc => {
+      const data = doc.data();
+      return {
+        uid: data.uid,
+        pseudo: data.pseudo,
+        avatar: data.avatar
+      } as UserSimplified;
+    }) || [];
+
+    // Combine and remove duplicates
+    const combinedUsers = [...pseudoUsers, ...emailUsers];
+    return Array.from(new Set(combinedUsers.map(user => user.uid)))
+      .map(uid => combinedUsers.find(user => user.uid === uid)!);
   }
 
 

@@ -27,3 +27,10 @@ export class User{
     status?: string = "test";
     phone?: string = "test";
 }
+
+
+export class UserSimplified{
+    uid : string = "";
+    pseudo : string = "";
+    avatar? : string = "";
+}
