@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -21,6 +21,7 @@ import { UserService } from 'src/app/services/user/user.service';
 export class SettingsPage implements OnInit, OnDestroy {
 
   constructor(
+    private router : Router,
     private route : ActivatedRoute, 
     private translate: TranslateService,
     private userService : UserService,
@@ -30,18 +31,27 @@ export class SettingsPage implements OnInit, OnDestroy {
     {
   }
 
+  @ViewChild('pageContent') pageElement!: ElementRef;
+
   userSubscription! : Subscription;
   user : User | null = null;
 
+  // Get settings from local storage in the constructor
   settings : Settings = new Settings();
 
   todoSubscription! : Subscription;
   todos : Todo[] = []
 
-  darkMode : boolean = this.settings.darkMode;
-  themeColor : string = '#3880ff';
+  // darkMode : boolean = this.settings.darkMode;
+  // themeColor : string = '#3880ff';
 
   newCategory : Category = new Category();
+
+
+  // colorChanged : boolean = false;
+  categoryChanged : boolean = false;
+
+  // TODO : réfléchir si on garde le changement de thème 
 
   ngOnInit() {
 
@@ -56,6 +66,9 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
 
     this.route.queryParams.subscribe(params =>{
+
+      this.settings = new Settings();
+
       this.settingsService.initPage(this.translate);
     });
 
@@ -76,6 +89,41 @@ export class SettingsPage implements OnInit, OnDestroy {
 
 
 
+  saveNewSettings(){
+    // this.settings = new Settings();
+
+    if (this.categoryChanged){
+      // this.updateColorCategory(this.categoryChanged);
+
+      let initialCategories = JSON.parse(localStorage.getItem('settings') || '{}').categories
+
+
+      for (let cat of this.settings.categories){
+
+        let initialCat = initialCategories.find((c: Category) => c.id === cat.id);
+
+        if (initialCat && initialCat.color !== cat.color){
+          this.updateColorCategory(cat);
+        }
+      }
+    }
+
+    this.settingsService.updateSettings(this.user, this.settings);
+
+    this.router.navigate(['/profile']);
+
+  }
+
+  // Vérifier si les paramètres sont synchronisés avec le local storage
+  // Sinon cela signifie que les paramètres ont été modifiés et qu'on peut les mettre à jour
+  areSettingsSynchronized(){
+    return this.settings && JSON.stringify(this.settings) == JSON.stringify(JSON.parse(localStorage.getItem('settings') || '{}'));
+  }
+
+
+  // Suppression d'une catégorie
+  // On envoie un message de confirmation avant de supprimer
+  // TODO : vérifier les conséquences sur les todos
   showConfirmDelete(category : Category) {
     Dialog.confirm({
       title: 'Delete category',
@@ -89,13 +137,13 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
   }
 
-
+  // Suppression d'une catégorie dans les paramètres
   removeCategory(category : Category){
     this.settings.categories = this.settings.categories.filter((c) => c.id !== category.id);
-    this.settingsService.updateSettings(this.user, this.settings);
+    // this.settingsService.updateSettings(this.user, this.settings);
   }
 
-
+  // Ajout d'une catégorie dans les paramètres
   addCategory(){
 
     if (!this.newCategory.name) return;
@@ -106,21 +154,26 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
 
     this.newCategory = new Category();
-    this.settingsService.updateSettings(this.user, this.settings);
+    // this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
+  // Changement de la couleur d'une catégorie à partir de l'interface
   onColorChange(event: Event, category : Category) {
     const colorInput = event.target as HTMLInputElement;
     const selectedColor = colorInput.value;
     category.color = selectedColor;
 
-    this.updateColorCategory(category);
+    // this.updateColorCategory(category);
 
-    this.settingsService.updateSettings(this.user, this.settings);
+    this.categoryChanged = true;
+
+    // this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
+  // Mise à jour de la couleur d'une catégorie dans tous les todos ayant cette catégorie
+  // TODO : incomplet car ne pas à jour les sous todos
   updateColorCategory(cat : Category){
     // let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
@@ -133,36 +186,45 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
 
+  // Activation ou désactivation du mode sombre
   toggleDarkMode() {
 
-    if (this.darkMode) {
+    // N'a pas de répercussion sur les autres pages car le thème de celles-ci est réinitialisé avec initPage
+    if (this.settings.darkMode) {
       document.body.setAttribute('color-theme', 'dark');      
     }
     else{
       document.body.setAttribute('color-theme', 'light');
     }
-    this.settings.darkMode = this.darkMode;
-    this.settingsService.updateSettings(this.user, this.settings);
+    // this.settings.darkMode = this.darkMode;
+    // this.settingsService.updateSettings(this.user, this.settings);
   }
 
 
   onThemeColorChange(event: Event) {
     const colorInput = event.target as HTMLInputElement;
     const selectedColor = colorInput.value;
-    this.themeColor = selectedColor;
+    
 
-    this.settings.themeColor = this.themeColor;
+    this.settings.themeColor = selectedColor;
 
-    this.settingsService.updateSettings(this.user, this.settings);
+    // this.settingsService.updateSettings(this.user, this.settings);
 
-    this.applyTheme(this.themeColor)
+    // this.applyTheme(this.themeColor)
   }
 
 
   applyTheme(color: string) {
+    console.log("applyTheme", color);
 
-    console.log("applyTheme", color)
-
+    // // Apply the color theme only to this page
+    // // const pageElement = this.elRef.nativeElement;
+    // this.pageElement.nativeElement.style.setProperty('--ion-color-primary', color);
+    // this.pageElement.nativeElement.style.setProperty('--ion-color-primary-contrast', '#ffffff');
+    // // pageElement.style.setProperty('--ion-color-primary-shade: mix(black, var(--ion-color-primary), 15%)');
+    // // pageElement.style.setProperty('--ion-color-primary-tint', this.tintColor(color, 15));
+  
+  
     // Appliquer la couleur comme thème en modifiant les variables CSS
     const style = document.createElement('style');
     style.innerHTML = `
@@ -174,32 +236,38 @@ export class SettingsPage implements OnInit, OnDestroy {
       }
     `;
     document.head.appendChild(style);
+  
   }
+
+    
+  
 
 
   onLanguageChange() {
     this.translate.use(this.settings.language); 
 
-    for (let todo of this.todos){  // TODO : find a better way to do this
-      if (todo.welcomeTodo === true){
+    // TODO : find a way to translate the welcome todo ?
 
-        console.log("found welcome todo", todo)
-        // this.todos.splice(this.todos.indexOf(todo), 1);
+    // for (let todo of this.todos){  
+    //   if (todo.welcomeTodo === true){
 
-        // if (this.settings.language === 'en'){
-        //   todo = WelcomeTodo.getWelcomeTodo() as Todo;
-        // }
-        // else{
-        //   todo = WelcomeTodo.getWelcomeTodoFr() as Todo;
-        // }
+    //     console.log("found welcome todo", todo)
+    //     // this.todos.splice(this.todos.indexOf(todo), 1);
 
-        this.taskService.updateTodo(todo);
+    //     // if (this.settings.language === 'en'){
+    //     //   todo = WelcomeTodo.getWelcomeTodo() as Todo;
+    //     // }
+    //     // else{
+    //     //   todo = WelcomeTodo.getWelcomeTodoFr() as Todo;
+    //     // }
 
-        // this.todos.push(todo);
-        break;
-      }
-    }
+    //     this.taskService.updateTodo(todo);
+
+    //     // this.todos.push(todo);
+    //     break;
+    //   }
+    // }
     
-    this.settingsService.updateSettings(this.user, this.settings);
+    // this.settingsService.updateSettings(this.user, this.settings);
   }
 }

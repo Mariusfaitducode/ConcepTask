@@ -24,6 +24,8 @@ export class SettingsService {
   ) { }
 
 
+  // Actualise les settings venant de l'utilisateur et les enregistres dans le local storage
+  // Applique les settings
   setUserSettings(user : User){
     this.user = user;
 
@@ -32,9 +34,10 @@ export class SettingsService {
       localStorage.setItem('settings', JSON.stringify(this.settings));
     }
     this.applySettings();
-
   }
 
+  // Actualise les settings venant de l'utilisateur et les enregistres dans le local storage
+  // Applique les settings
   updateSettings(user : User | null, settings : Settings){
 
     settings = JSON.parse(JSON.stringify(settings));
@@ -46,11 +49,13 @@ export class SettingsService {
     this.settings = settings;
     localStorage.setItem('settings', JSON.stringify(this.settings));
 
+    // Applique les nouveaux settings
     this.applySettings();
-
   }
 
-
+  // Initialise les settings à l'ouverture de l'application
+  // Si les settings ne sont pas déjà en local storage, 
+  // On les initialise avec les valeurs par défaut
   async initSettingsOnAppStart(){
 
     console.log('initSettingsOnAppStart');
@@ -59,16 +64,17 @@ export class SettingsService {
 
     if (this.settings === null){
       console.log('settings is null : load settings');
-      // this.loadInitialSettings();
+
       this.settings = new Settings();
       localStorage.setItem('settings', JSON.stringify(this.settings));
-      // this.applySettings();
     }
+
     this.applySettings();
     
   }
 
-
+  // Applique les settings
+  // Change la langue, le thème et la primary color de l'application
   applySettings(){
 
     console.log('apply settings');
@@ -101,6 +107,8 @@ export class SettingsService {
 
 
   // TODO : verify if needed
+
+  // Permet d'appliquer les settings à une page spécifique
   initPage(translate : TranslateService){
 
     if (this.settings.darkMode) {

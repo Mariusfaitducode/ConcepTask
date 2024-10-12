@@ -11,6 +11,9 @@ export class Settings{
     darkMode : boolean = true;
     themeColor : string = '#3880ff';
 
+    // Pastille sync settings
+    syncChip : boolean = true;
+
     // Language settings
     language : string = 'en';
 
@@ -60,6 +63,8 @@ export class Settings{
             this.language = settings.language;
 
             this.categories = settings.categories;
+
+            this.syncChip = settings.syncChip;
         }
     }
 }

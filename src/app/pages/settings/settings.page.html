@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="#" routerLink="/profile"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{'SETTINGS' | translate}}</ion-title>
+    <ion-title class="title">
+      {{'SETTINGS' | translate}}
+      <span class="sync-status" [ngClass]="areSettingsSynchronized() ? 'green' : 'orange'"></span>
+    
+    </ion-title>
+
 
 <!-- <ion-button class="save-button" slot="end" fill="clear" (click)="save()">
       Save
@@ -11,12 +16,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" #pageContent>
 
 
   <ion-list>
 
-    <ion-label position="floating" color="primary" class="label-section">{{'CATEGORIES' | translate}}</ion-label>
+    <ion-label position="floating" [style.color]="settings.themeColor" class="label-section">{{'CATEGORIES' | translate}}</ion-label>
     
     <!-- <ion-item>
       <div>Categories</div>
@@ -60,7 +65,7 @@
     
 
   <div>
-    <ion-label position="floating" color="primary" class="label-section">Language</ion-label>
+    <ion-label position="floating" [style.color]="settings.themeColor" class="label-section">Language</ion-label>
 
     <ion-row class="category-row">
       <ion-select [(ngModel)]="this.settings.language" (ionChange)="onLanguageChange()">
@@ -76,22 +81,32 @@
 
   <div>
 
-    <ion-label position="floating" color="primary" class="label-section">Theme</ion-label>
+    <ion-label position="floating" [style.color]="settings.themeColor" class="label-section">Theme</ion-label>
 
     <!-- Theme -->
     <ion-row class="label-row">
       <div>{{'DARK MODE' | translate}}</div>
-      <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+      <ion-toggle [(ngModel)]="settings.darkMode" (ionChange)="toggleDarkMode()" [style.--handle-background-checked]="settings.themeColor"></ion-toggle>
     </ion-row>
 
-<ion-row class="category-row ">
+  <ion-row class="category-row ">
       <div>{{'THEME COLOR' | translate}}</div>
       <!-- <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"></ion-toggle> -->
-      <input type="color" id="colorPicker" class="color-category little-margin-right" value="{{themeColor}}" (input)="onThemeColorChange($event)">
+      <input type="color" id="colorPicker" class="color-category little-margin-right" value="{{settings.themeColor}}" (input)="onThemeColorChange($event)">
 
     </ion-row>
   </div>
 
+  <div class="sync">
+
+    <ion-label position="floating" [style.color]="settings.themeColor" class="label-section">Synchronisation</ion-label>
+
+    <!-- Theme -->
+    <ion-row class="label-row">
+      <div>{{'PASTILLE SYNC' | translate}}</div>
+      <ion-toggle [(ngModel)]="settings.syncChip"  [style.--handle-background-checked]="settings.themeColor"></ion-toggle>
+    </ion-row>
+  </div>
   
 
   <ion-list class="version-app">
@@ -103,3 +118,10 @@
   
     
 </ion-content>
+
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button [disabled]="areSettingsSynchronized()" (click)="saveNewSettings()">
+    <ion-icon name="checkmark-outline" ></ion-icon>
+  </ion-fab-button>
+</ion-fab>
