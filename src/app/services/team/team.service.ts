@@ -7,6 +7,7 @@ import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { UserService } from '../user/user.service';
 import { finalize, Observable } from 'rxjs';
+import { TeamInvitation } from 'src/app/models/team-inivitation';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class TeamService {
 
       user.teams.push(team.id);
 
-      this.userService.updateUser(user, null);
+      this.userService.updateUser(user);
 
       this.firestore.collection('teams').doc(team.id).set(team);
     }
@@ -92,6 +93,34 @@ export class TeamService {
 
     this.firestore.collection('teams').doc(team.id).update(team);
 
+  }
+
+
+
+  async sendInvitationToUser(team: Team, userId: string, senderId: string) {
+    try {
+      // Create an invitation object
+      let invitation = new TeamInvitation(team, userId, senderId);
+
+      invitation = JSON.parse(JSON.stringify(invitation));
+
+      // Add the invitation to a 'teamInvitations' collection in Firestore
+      await this.firestore.collection('teamInvitations').add(invitation);
+
+      // Optionally, update the user's document to include a reference to this invitation
+      // await this.firestore.doc(`users/${userId}`).update({
+      //   pendingInvitations: firebase.firestore.FieldValue.arrayUnion(invitation)
+      // });
+
+      // Optionally, send a notification to the user (this would require additional setup)
+      // await this.notificationService.sendNotification(userId, `You've been invited to join ${team.name}`);
+
+      console.log(`Invitation sent to user ${userId} for team ${team.name}`);
+      return true;
+    } catch (error) {
+      console.error('Error sending team invitation:', error);
+      return false;
+    }
   }
 
 }

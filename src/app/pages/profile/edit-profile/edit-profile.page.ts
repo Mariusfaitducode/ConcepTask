@@ -59,7 +59,17 @@ export class EditProfilePage implements OnInit {
 
       // await this.userService.updateUser(this.user, this.file);
 
-      const success = await this.userService.updateUser(this.user, this.file);
+      let success = false
+
+      if (this.file != null){
+        success = await this.userService.updateUserAvatar(this.user, this.file);
+      }
+      else{
+        success = await this.userService.updateUser(this.user);
+      }
+
+      // const success = await this.userService.updateUser(this.user, this.file);
+
       if (success) {
         console.log('User profile updated successfully');
         this.router.navigate(['/profile']); // Naviguer vers la page de profil

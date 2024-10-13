@@ -55,16 +55,16 @@
 
 
   <ion-list>
-    <ion-item *ngFor="let member of searchMembersResult">
+    <ion-item *ngFor="let user of searchMembersResult">
       <ion-avatar slot="start">
-        <img [src]="member.avatar" alt="Photo de profil">
+        <img [src]="user.avatar" alt="Photo de profil">
       </ion-avatar>
       <ion-label>
-        <h2>{{ member.pseudo }}</h2>
+        <h2>{{ user.pseudo }}</h2>
         <!-- <p>{{ member.role }}</p> -->
       </ion-label>
 
-      <ion-button *ngIf="!teamUsers.includes(member)" (click)="addMember(member.uid)">Ajouter</ion-button>
+      <ion-button *ngIf="!isMemberAlreadyInTeam(user.uid)" (click)="sendInvitationToUser(user.uid)">Ajouter</ion-button>
       
     </ion-item>
   </ion-list>

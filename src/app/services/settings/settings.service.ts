@@ -44,7 +44,7 @@ export class SettingsService {
 
     if (user){
       user.settings = settings;
-      this.userService.updateUser(user, null);
+      this.userService.updateUser(user);
     }
     this.settings = settings;
     localStorage.setItem('settings', JSON.stringify(this.settings));

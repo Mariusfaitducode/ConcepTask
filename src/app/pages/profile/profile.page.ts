@@ -49,7 +49,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-
+    // TODO : add verification to limit the reload of teams
     this.userService.getUser().subscribe((user : User | null) => {
 
       console.log('ProfilePage : user = ', user);
@@ -63,6 +63,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
         this.userConnected = true;
 
+        // TODO : add verification to limit the reload of teams
         this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
 
           console.log('ProfilePage : teams = ', teams);

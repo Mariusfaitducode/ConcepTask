@@ -8,7 +8,7 @@ import { random } from 'lodash';
 })
 export class TodoTrackerComponent  implements OnInit {
 
-  @Input() todosTracker: {todoId: string, date: Date}[] = [];
+  @Input() todosTracker: {todoId: string, title: string, date: Date}[] = [];
 
   constructor() { }
 
@@ -20,40 +20,27 @@ export class TodoTrackerComponent  implements OnInit {
   // weeks: number[] = [];
 
 
-
-
   ngOnInit() {
-
-
     console.log("todosTracker", this.todosTracker)
-
-    // for (let i = 0; i < this.numberOfWeeks * 20; i++) {
-
-    //   // this.weeks.push(i);
-
-    //   let randomDate = new Date();
-    //   randomDate.setDate(randomDate.getDate() - random(0, 200));
-    //   this.todosTracker.push({todoId: "1", date: randomDate})
-    // }
   }
 
 
-  getTodoCountByDate( day: number, week: number) {
-
-    let pastDays = (week - this.numberOfWeeks + 2) * 7 + day;
-
+  // The problem is that getDay() returns 0 for Sunday, which causes issues in calculations
+  getTodoCountByDate(day: number, week: number) {
     let date = new Date();
-
     let today = date.getDay();
+    today = today === 0 ? 7 : today; // Convert Sunday from 0 to 7
 
-    pastDays = pastDays - today ;
+    let pastDays = (week + 2 - this.numberOfWeeks) * 7 + day;
+    pastDays = pastDays - today + 1;
 
-    if (pastDays > 6) {
+    if (pastDays > 0) {
       return -1;
     }
 
     let targetDate = new Date();
-    targetDate.setDate(today + pastDays);
+    targetDate.setDate(date.getDate() + pastDays);
+
     let todosFound = this.todosTracker.filter(todo => {
       if (typeof todo.date === 'object' && 'seconds' in todo.date) {
         let todoDate = new Date((todo.date as any).seconds * 1000);
@@ -62,9 +49,19 @@ export class TodoTrackerComponent  implements OnInit {
       return false;
     });
     return todosFound.length;
-
-
   }
+
+  getTodoDate(day: number, week: number) {
+    let date = new Date();
+    let today = date.getDay();
+    today = today === 0 ? 7 : today; // Convert Sunday from 0 to 7
+
+    let pastDays = (week + 2 - this.numberOfWeeks) * 7 + day;
+    pastDays = pastDays - today + 1; // Add 1 to align with Monday as day 1
+
+    return pastDays;
+  }
+
 
   // getDayColor(date: Date): string {
   //   const today = new Date();

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, UserSimplified } from '../../models/user';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { async, BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -114,11 +114,30 @@ export class UserService {
   }
 
 
+
+  async updateUser(user: User){
+    try {
+      if (this.userRef){
+        await this.userRef.update(user);
+      // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
+      
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return false;
+    }
+  }
+
+
   // Met à jour l'utilisateur dans Firestore, y compris la photo de profil
-  async updateUser(user: User, profilePictureFile: File | null): Promise<boolean> {
+  async updateUserAvatar(user: User, profilePictureFile: File | null): Promise<boolean> {
     try {
       if (this.userRef) {
+
         if (profilePictureFile) {
+
           const filePath = `profile_pictures/${user.uid}`;
           const fileRef = this.storage.ref(filePath);
           const uploadTask = this.storage.upload(filePath, profilePictureFile);
@@ -128,13 +147,14 @@ export class UserService {
               const downloadURL = await fileRef.getDownloadURL().toPromise();
               user.avatar = downloadURL;
               await this.userRef!.update(user);
-              this.userSubject.next(user); // Mettre à jour l'utilisateur localement
+              // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
             })
           ).toPromise();
-        } else {
-          await this.userRef.update(user);
-          this.userSubject.next(user); // Mettre à jour l'utilisateur localement
-        }
+        } 
+        // else {
+        //   await this.userRef.update(user);
+        //   this.userSubject.next(user); // Mettre à jour l'utilisateur localement
+        // }
         return true; // Mise à jour réussie
       }
       return false; // UserRef n'existe pas

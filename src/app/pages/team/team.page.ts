@@ -171,9 +171,19 @@ export class TeamPage implements OnInit {
   }
 
 
-  addMember(uid: string){
+  isMemberAlreadyInTeam(uid: string){
+    return this.team!.usersIds.includes(uid);
+  }
 
-    this.team!.usersIds.push(uid);
+
+  sendInvitationToUser(userId: string){
+
+    this.teamService.sendInvitationToUser(this.team!, userId, this.user!.uid);
+
+    // this.team!.usersIds.push(uid);
+
+    // Send an invitation to the user
+
 
   }
 
@@ -191,11 +201,11 @@ export class TeamPage implements OnInit {
     return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam);
   }
 
-  saveNewTeam(){
+  async saveNewTeam(){
     // TODO : save the team
 
     if (this.file){
-      this.teamService.updateTeamImage(this.team!, this.file);
+      await this.teamService.updateTeamImage(this.team!, this.file);
     }
 
     if (this.isNewTeam){
