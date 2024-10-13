@@ -8,7 +8,7 @@ import { TaskService } from '../task/task.service';
 import { UserService } from '../user/user.service';
 import { TeamService } from './team.service';
 import { Observable } from 'rxjs';
-import { UserSimplified } from 'src/app/models/user';
+import { User, UserSimplified } from 'src/app/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -64,4 +64,45 @@ export class TeamInvitationsService {
   getTeamInvitationsOfUser(userId: string): Observable<TeamInvitation[]> {
     return this.firestore.collection('users').doc(userId).collection('teamInvitations').valueChanges() as Observable<TeamInvitation[]>;
   }
+
+
+  async acceptInvitation(user : User, invitation: TeamInvitation) {
+    try {
+      
+      // Add user to the team
+      await this.teamService.addUserToTeam(invitation.teamId, user);
+
+      // TODO : add id infos on team invitation
+      // Remove invitation from user's invitations
+      // await this.firestore.collection('users').doc(user.uid).collection('teamInvitations').doc(invitation.id).delete();
+
+      
+
+      console.log(`Invitation accepted for team ${invitation.teamName}`);
+      return true;
+    } catch (error) {
+      console.error('Error accepting team invitation:', error);
+      return false;
+    }
+  }
+
+  // async rejectInvitation(invitation: TeamInvitation) {
+  //   try {
+  //     const userId = await this.afAuth.currentUser.then(user => user.uid);
+
+  //     // Remove invitation from user's invitations
+  //     await this.firestore.collection('users').doc(userId).collection('teamInvitations').doc(invitation.id).delete();
+
+  //     // Remove user from team's pending invitations
+  //     const team = await this.teamService.getTeam(invitation.team.id).toPromise();
+  //     team.pendingInvitationsUserIds = team.pendingInvitationsUserIds.filter(id => id !== userId);
+  //     await this.teamService.updateTeam(team);
+
+  //     console.log(`Invitation rejected for team ${invitation.team.name}`);
+  //     return true;
+  //   } catch (error) {
+  //     console.error('Error rejecting team invitation:', error);
+  //     return false;
+  //   }
+  // }
 }

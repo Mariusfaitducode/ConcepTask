@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/team';
 import { TeamInvitation } from 'src/app/models/team-inivitation';
+import { User } from 'src/app/models/user';
+import { TeamInvitationsService } from 'src/app/services/team/team-invitations.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-teams-gestion',
@@ -11,7 +14,9 @@ import { TeamInvitation } from 'src/app/models/team-inivitation';
 export class TeamsGestionComponent  implements OnInit {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private userService: UserService,
+    private teamInvitationsService: TeamInvitationsService
 
   ) { }
 
@@ -20,7 +25,15 @@ export class TeamsGestionComponent  implements OnInit {
 
   @Input() teamInvitations: TeamInvitation[] = [];
 
-  ngOnInit() {}
+  user : User| null = null;
+
+  ngOnInit() {
+
+    this.userService.getUser().subscribe((user: User | null) => {
+      this.user = user;
+    });
+
+  }
 
 
 
@@ -33,6 +46,17 @@ export class TeamsGestionComponent  implements OnInit {
   goToTeam(teamId: string){
 
     this.router.navigate(['/team', teamId]);
+
+  }
+
+  acceptInvitation(invitation: TeamInvitation){
+
+    this.teamInvitationsService.acceptInvitation(this.user!, invitation);
+
+  }
+
+
+  rejectInvitation(invitation: TeamInvitation){
 
   }
 

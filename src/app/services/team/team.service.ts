@@ -122,6 +122,45 @@ export class TeamService {
 
 
 
+  async addUserToTeam(teamId: string, user: User): Promise<boolean> {
+    try {
+      const teamRef = this.firestore.collection('teams').doc(teamId);
+      const teamDoc = await teamRef.get().toPromise();
+
+      if (!teamDoc || !teamDoc.exists) {
+        console.error('Team not found');
+        return false;
+      }
+
+      const teamData = teamDoc.data() as Team;
+
+      // Add userId to userIds list
+      if (!teamData.usersIds) {
+        teamData.usersIds = [];
+      }
+      if (!teamData.usersIds.includes(user.uid)) {
+        teamData.usersIds.push(user.uid);
+      }
+
+      // Remove userId from pendingInvitationsUserIds list
+      if (teamData.pendingInvitationsUserIds) {
+        teamData.pendingInvitationsUserIds = teamData.pendingInvitationsUserIds.filter(id => id !== user.uid);
+      }
+
+
+      user.teams.push(teamId);
+      this.userService.updateUser(user);
+
+      // Update the team document
+      await teamRef.update(teamData);
+      return true;
+    } catch (error) {
+      console.error('Error adding user to team:', error);
+      return false;
+    }
+  }
+
+
  
 
 }

@@ -9,7 +9,41 @@
 
     background-color: var(--ion-color-step-50);
 
-    overflow-x: scroll;
+    // overflow-x: scroll;
+}
+
+.todo-body {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;  /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    max-width: 100%;
+    
+}
+
+// .habit-tracker {
+//     overflow-x: auto;
+//     max-width: 100%;
+// }
+
+// table {
+//     width: auto;
+//     min-width: 100%;
+// }
+
+.todo-body::-webkit-scrollbar {
+    display: none;  /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+table {
+    display: inline-block;
+    max-width: 100%;
+}
+
+tbody {
+    display: table-row-group;
 }
 
 .habit-title{
