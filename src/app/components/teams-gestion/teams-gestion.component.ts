@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/team';
+import { TeamInvitation } from 'src/app/models/team-inivitation';
 
 @Component({
   selector: 'app-teams-gestion',
@@ -16,6 +17,8 @@ export class TeamsGestionComponent  implements OnInit {
 
 
   @Input() teams: {team:Team, teamUsers:any[]}[] = [];
+
+  @Input() teamInvitations: TeamInvitation[] = [];
 
   ngOnInit() {}
 

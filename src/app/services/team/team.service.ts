@@ -41,86 +41,87 @@ export class TeamService {
 
     // Add the team on the firestore team collection
 
-    team = JSON.parse(JSON.stringify(team));
+    try{
 
-    if (user){
+      team = JSON.parse(JSON.stringify(team));
 
-      if (!user.teams){
-        user.teams = [];
+      if (user){
+
+        if (!user.teams){
+          user.teams = [];
+        }
+
+        user.teams.push(team.id);
+
+        this.userService.updateUser(user);
+
+        this.firestore.collection('teams').doc(team.id).set(team);
+        return true;
       }
-
-      user.teams.push(team.id);
-
-      this.userService.updateUser(user);
-
-      this.firestore.collection('teams').doc(team.id).set(team);
+      return false;
+    }
+    catch(error){
+      console.error('Error creating new team:', error);
+      return false;
     }
   }
 
 
-  async updateTeamImage(team: Team, file: File){
-
+  async updateTeamImage(team: Team, file: File): Promise<boolean> {
     try {
-        if (file) {
-          const filePath = `team_pictures/${team.id}`;
-          const fileRef = this.storage.ref(filePath);
-          const uploadTask = this.storage.upload(filePath, file);
+      // Check if a file is provided
+      if (!file) {
+        console.log('No file to upload');
+        return false;
+      }
 
-          await uploadTask.snapshotChanges().pipe(
-            finalize(async () => {
+      const filePath = `team_pictures/${team.id}`;
+      const fileRef = this.storage.ref(filePath);
+      const uploadTask = this.storage.upload(filePath, file);
+
+      // Return a promise that resolves with the success status
+      return new Promise<boolean>((resolve) => {
+        uploadTask.snapshotChanges().pipe(
+          finalize(async () => {
+            try {
+              // Get the download URL of the uploaded file
               const downloadURL = await fileRef.getDownloadURL().toPromise();
+              // Update the team's image URL
               team.image = downloadURL;
-              // await this.userRef!.update(user);
-              // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
-              
-            })
-          ).toPromise();
-        } 
-        // else {
-        //   await this.userRef.update(user);
-        //   this.userSubject.next(user); // Mettre à jour l'utilisateur localement
-        // }
-        return true; // Mise à jour réussie
-    } 
-    catch (error) {
-      console.error('Error updating user:', error);
-      return false; // Une erreur s'est produite
+              // Update the team in the database
+              const updateSuccess = await this.updateTeam(team);
+              // Resolve the promise with the update status
+              resolve(updateSuccess);
+            } catch (error) {
+              console.error('Error getting download URL or updating team:', error);
+              // Resolve with false if there's an error
+              resolve(false);
+            }
+          })
+        ).subscribe();
+      });
+    } catch (error) {
+      // Log any errors that occur during the process
+      console.error('Error updating team image:', error);
+      return false;
     }
   }
 
 
   updateTeam(team: Team){
 
-    this.firestore.collection('teams').doc(team.id).update(team);
-
-  }
-
-
-
-  async sendInvitationToUser(team: Team, userId: string, senderId: string) {
-    try {
-      // Create an invitation object
-      let invitation = new TeamInvitation(team, userId, senderId);
-
-      invitation = JSON.parse(JSON.stringify(invitation));
-
-      // Add the invitation to a 'teamInvitations' collection in Firestore
-      await this.firestore.collection('teamInvitations').add(invitation);
-
-      // Optionally, update the user's document to include a reference to this invitation
-      // await this.firestore.doc(`users/${userId}`).update({
-      //   pendingInvitations: firebase.firestore.FieldValue.arrayUnion(invitation)
-      // });
-
-      // Optionally, send a notification to the user (this would require additional setup)
-      // await this.notificationService.sendNotification(userId, `You've been invited to join ${team.name}`);
-
-      console.log(`Invitation sent to user ${userId} for team ${team.name}`);
+    try{
+      this.firestore.collection('teams').doc(team.id).update(team);
       return true;
-    } catch (error) {
-      console.error('Error sending team invitation:', error);
+    }
+    catch(error){
+      console.error('Error updating team:', error);
       return false;
     }
   }
+
+
+
+ 
 
 }

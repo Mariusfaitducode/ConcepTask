@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Team } from 'src/app/models/team';
 import { User, UserSimplified } from 'src/app/models/user';
+import { TeamInvitationsService } from 'src/app/services/team/team-invitations.service';
 import { TeamService } from 'src/app/services/team/team.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -55,7 +56,8 @@ export class TeamPage implements OnInit {
     private router: Router,
     private alertController: AlertController,
     private userService: UserService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private teamInvitationsService: TeamInvitationsService
   ) { }
 
   ngOnInit() {
@@ -178,7 +180,9 @@ export class TeamPage implements OnInit {
 
   sendInvitationToUser(userId: string){
 
-    this.teamService.sendInvitationToUser(this.team!, userId, this.user!.uid);
+    let userSimplified = new UserSimplified(this.user!.uid, this.user!.pseudo, this.user!.avatar);
+
+    this.teamInvitationsService.sendInvitationToUser(this.team!, userId, userSimplified);
 
     // this.team!.usersIds.push(uid);
 
@@ -193,26 +197,41 @@ export class TeamPage implements OnInit {
       return this.user && this.team && this.team.name !== '';
     }
     else{
-      return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam);
+      return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam) || this.file != null;
     }
   }
 
-  canUpdateTeam(){
-    return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam);
-  }
+  // canUpdateTeam(){
+  //   return this.team && this.initialTeam && JSON.stringify(this.team) !== JSON.stringify(this.initialTeam) || this.file != null;
+  // }
 
   async saveNewTeam(){
-    // TODO : save the team
+    // TODO : fix image upload, must actualize better
 
-    if (this.file){
-      await this.teamService.updateTeamImage(this.team!, this.file);
-    }
+    let success = false
 
     if (this.isNewTeam){
-      this.teamService.createNewTeam(this.team!, this.user!);
+      success = await this.teamService.createNewTeam(this.team!, this.user!);
+      if (this.file){
+        success = await this.teamService.updateTeamImage(this.team!, this.file);
+      }
     }
     else{
-      this.teamService.updateTeam(this.team!);
+
+      if (this.file){
+        success = await this.teamService.updateTeamImage(this.team!, this.file);
+      }
+      else{
+        success =await this.teamService.updateTeam(this.team!);
+      }
+    }
+
+    if (success) {
+      console.log('Team updated successfully');
+      this.router.navigate(['/profile']); // Naviguer vers la page de profil
+    } else {
+      console.log('Failed to update team');
+      // Afficher un message d'erreur ou effectuer une autre action
     }
 
   }

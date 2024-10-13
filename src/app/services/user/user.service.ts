@@ -132,35 +132,47 @@ export class UserService {
 
 
   // Met à jour l'utilisateur dans Firestore, y compris la photo de profil
-  async updateUserAvatar(user: User, profilePictureFile: File | null): Promise<boolean> {
+  async updateUserAvatar(user: User, profilePictureFile: File): Promise<boolean> {
     try {
-      if (this.userRef) {
-
-        if (profilePictureFile) {
-
-          const filePath = `profile_pictures/${user.uid}`;
-          const fileRef = this.storage.ref(filePath);
-          const uploadTask = this.storage.upload(filePath, profilePictureFile);
-
-          await uploadTask.snapshotChanges().pipe(
-            finalize(async () => {
-              const downloadURL = await fileRef.getDownloadURL().toPromise();
-              user.avatar = downloadURL;
-              await this.userRef!.update(user);
-              // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
-            })
-          ).toPromise();
-        } 
-        // else {
-        //   await this.userRef.update(user);
-        //   this.userSubject.next(user); // Mettre à jour l'utilisateur localement
-        // }
-        return true; // Mise à jour réussie
+      // Check if a file is provided
+      if (!profilePictureFile) {
+        console.log('No file to upload');
+        return false;
       }
-      return false; // UserRef n'existe pas
+
+      const filePath = `profile_pictures/${user.uid}`;
+      const fileRef = this.storage.ref(filePath);
+      const uploadTask = this.storage.upload(filePath, profilePictureFile);
+
+      // Return a promise that resolves with the success status
+      return new Promise<boolean>((resolve) => {
+        uploadTask.snapshotChanges().pipe(
+          finalize(async () => {
+            try {
+              // Get the download URL of the uploaded file
+              const downloadURL = await fileRef.getDownloadURL().toPromise();
+              // Update the user's avatar URL
+              user.avatar = downloadURL;
+              // Update the user in the database
+              if (this.userRef) {
+                await this.userRef.update(user);
+                resolve(true);
+              } else {
+                console.error('UserRef does not exist');
+                resolve(false);
+              }
+            } catch (error) {
+              console.error('Error getting download URL or updating user:', error);
+              // Resolve with false if there's an error
+              resolve(false);
+            }
+          })
+        ).subscribe();
+      });
     } catch (error) {
-      console.error('Error updating user:', error);
-      return false; // Une erreur s'est produite
+      // Log any errors that occur during the process
+      console.error('Error updating user avatar:', error);
+      return false;
     }
   }
 

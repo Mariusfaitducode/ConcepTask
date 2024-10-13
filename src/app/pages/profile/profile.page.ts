@@ -7,11 +7,13 @@ import { Settings } from 'src/app/models/settings';
 import { TaskConfig } from 'src/app/models/task-config';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Team } from 'src/app/models/team';
+import { TeamInvitation } from 'src/app/models/team-inivitation';
 import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TaskService } from 'src/app/services/task/task.service';
+import { TeamInvitationsService } from 'src/app/services/team/team-invitations.service';
 import { TeamService } from 'src/app/services/team/team.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -30,7 +32,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     private authService : AuthService,
     private settingsService : SettingsService,
     private taskService : TaskService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private teamInvitationsService: TeamInvitationsService
   ) { }
 
 
@@ -46,6 +49,8 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   // TODO : remplacer any par le type User with less properties
   teams: {team:Team, teamUsers:any[]}[] = [];
+
+  teamInvitations: TeamInvitation[] = [];
 
 
   ngOnInit() {
@@ -88,8 +93,12 @@ export class ProfilePage implements OnInit, OnDestroy {
 
             this.teams.push(newTeam);
           }
+        });
 
-
+        this.teamInvitationsService.getTeamInvitationsOfUser(this.user.uid).subscribe((invitations: TeamInvitation[]) => {
+          
+          console.log('ProfilePage : invitations = ', invitations);
+          this.teamInvitations = invitations;
         });
       }
     });
@@ -123,95 +132,95 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
 
-  importData(){
+  // importData(){
 
-    console.log('Importing data...');
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.json';
+  //   console.log('Importing data...');
+  //   const fileInput = document.createElement('input');
+  //   fileInput.type = 'file';
+  //   fileInput.accept = '.json';
     
-    fileInput.onchange = (event: any) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          try {
-            const jsonData = JSON.parse(e.target.result);
-            if (Array.isArray(jsonData)) {
-              const importedTodos: Todo[] = jsonData.map(item => {
-                try {
-                  const todo = new Todo(0); // Assuming 0 as initial index, adjust if needed
+  //   fileInput.onchange = (event: any) => {
+  //     const file = event.target.files[0];
+  //     if (file) {
+  //       const reader = new FileReader();
+  //       reader.onload = (e: any) => {
+  //         try {
+  //           const jsonData = JSON.parse(e.target.result);
+  //           if (Array.isArray(jsonData)) {
+  //             const importedTodos: Todo[] = jsonData.map(item => {
+  //               try {
+  //                 const todo = new Todo(0); // Assuming 0 as initial index, adjust if needed
                   
-                  // Mapping properties
-                  todo.id = item.id || todo.id;
-                  todo.title = item.title || '';
-                  todo.description = item.description;
-                  todo.category = item.category || SettingsService.getCategories()[0];
-                  todo.isDone = item.completed || false;
-                  todo.index = item.index || 0;
+  //                 // Mapping properties
+  //                 todo.id = item.id || todo.id;
+  //                 todo.title = item.title || '';
+  //                 todo.description = item.description;
+  //                 todo.category = item.category || SettingsService.getCategories()[0];
+  //                 todo.isDone = item.completed || false;
+  //                 todo.index = item.index || 0;
                   
-                  // Additional properties from Todo class
-                  todo.config = item.config || new TaskConfig();
-                  todo.reminder = false;
-                  todo.list = [];
+  //                 // Additional properties from Todo class
+  //                 todo.config = item.config || new TaskConfig();
+  //                 todo.reminder = false;
+  //                 todo.list = [];
                   
-                  // Validate required properties
-                  if (!todo.id || !todo.title || !todo.category) {
-                    throw new Error('Invalid Todo object: missing required properties');
-                  }
+  //                 // Validate required properties
+  //                 if (!todo.id || !todo.title || !todo.category) {
+  //                   throw new Error('Invalid Todo object: missing required properties');
+  //                 }
                   
-                  return todo;
-                } catch (error) {
-                  console.error('Error mapping Todo:', error);
-                  throw new Error('Failed to map imported data to Todo object');
-                }
-              });
-              console.log('Imported Todos:', importedTodos);
-              // TODO: Handle the imported todos (e.g., save to service or state)
-            } else {
-              console.error('Invalid JSON format. Expected an array.');
-            }
-          } catch (error) {
-            console.error('Error parsing JSON:', error);
-          }
-        };
-        reader.readAsText(file);
-      }
-    };
+  //                 return todo;
+  //               } catch (error) {
+  //                 console.error('Error mapping Todo:', error);
+  //                 throw new Error('Failed to map imported data to Todo object');
+  //               }
+  //             });
+  //             console.log('Imported Todos:', importedTodos);
+  //             // TODO: Handle the imported todos (e.g., save to service or state)
+  //           } else {
+  //             console.error('Invalid JSON format. Expected an array.');
+  //           }
+  //         } catch (error) {
+  //           console.error('Error parsing JSON:', error);
+  //         }
+  //       };
+  //       reader.readAsText(file);
+  //     }
+  //   };
     
-    fileInput.click();
-  }
+  //   fileInput.click();
+  // }
 
-  exportData(){
+  // exportData(){
 
-    // this.openImportExportModal = true;
+  //   // this.openImportExportModal = true;
 
-    this.importModalConfig.openExportModal(this.todos);
+  //   this.importModalConfig.openExportModal(this.todos);
 
 
-    // const actionSheet = await this.actionSheetController.create({
-    //   header: 'Export Options',
-    //   buttons: [
-    //     {
-    //       text: 'Export All Todos',
-    //       handler: () => {
-    //         this.exportAllTodos();
-    //       }
-    //     },
-    //     {
-    //       text: 'Export Single Todo',
-    //       handler: () => {
-    //         this.presentTodoSelectionModal();
-    //       }
-    //     },
-    //     {
-    //       text: 'Cancel',
-    //       role: 'cancel'
-    //     }
-    //   ]
-    // });
-    // await actionSheet.present();
-  }
+  //   // const actionSheet = await this.actionSheetController.create({
+  //   //   header: 'Export Options',
+  //   //   buttons: [
+  //   //     {
+  //   //       text: 'Export All Todos',
+  //   //       handler: () => {
+  //   //         this.exportAllTodos();
+  //   //       }
+  //   //     },
+  //   //     {
+  //   //       text: 'Export Single Todo',
+  //   //       handler: () => {
+  //   //         this.presentTodoSelectionModal();
+  //   //       }
+  //   //     },
+  //   //     {
+  //   //       text: 'Cancel',
+  //   //       role: 'cancel'
+  //   //     }
+  //   //   ]
+  //   // });
+  //   // await actionSheet.present();
+  // }
 
   // async presentTodoSelectionModal() {
   //   const modal = await this.modalController.create({

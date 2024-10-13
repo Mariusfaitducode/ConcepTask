@@ -11,6 +11,8 @@ export class Team{
 
     usersIds: string[] = [];
 
+    pendingInvitationsUserIds: string[] = [];
+
     adminId: string | null = null;
 
 

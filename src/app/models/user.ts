@@ -33,4 +33,10 @@ export class UserSimplified{
     uid : string = "";
     pseudo : string = "";
     avatar? : string = "";
+
+    constructor(uid: string, pseudo: string, avatar?: string){
+        this.uid = uid;
+        this.pseudo = pseudo;
+        this.avatar = avatar;
+    }
 }
