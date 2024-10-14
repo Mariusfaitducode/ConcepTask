@@ -23,7 +23,7 @@
       </ion-button>
       <ion-label>Perso</ion-label>
     </div> -->
-    <div class="team-item" (click)="{}">
+    <div class="team-item" [class.selected]="space === 'profile'" (click)="selectProfileSpace()">
 
       <img [src]="user.avatar" width="50px" height="50px" alt="">
 
@@ -33,7 +33,7 @@
 
     <div *ngFor="let team of teams">
 
-      <div class="team-item" (click)="{}">
+      <div class="team-item" [class.selected]="space === team.team.id" (click)="selectTeamSpace(team.team.id)">
 
         <img [src]="team.team.image" width="50px" height="50px" alt="">
         <ion-label>{{team.team.name}}</ion-label>

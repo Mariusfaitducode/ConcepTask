@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { Notif } from 'src/app/models/notif';
+// import { Notif } from 'src/app/models/notif';
 import { TaskConfig } from 'src/app/models/task-config';
 import { Todo } from 'src/app/models/todo';
 import { TodoNotification } from 'src/app/utils/todo-notification';

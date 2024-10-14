@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Notif } from 'src/app/models/notif';
+// import { Notif } from 'src/app/models/notif';
 import { Todo } from 'src/app/models/todo';
 
 import { ToastController } from '@ionic/angular';

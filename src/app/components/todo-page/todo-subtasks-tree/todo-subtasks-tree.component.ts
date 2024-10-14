@@ -14,7 +14,7 @@ export class TodoSubtasksTreeComponent  implements OnInit {
   @Input() mainTodo!: Todo;
   @Input() todo!: Todo;
 
-  @Input() todos!: Todo[];
+  // @Input() todos!: Todo[];
 
   @Input() dragAndDropTodosDatas: {todo: Todo, level: number}[][] = [];
 

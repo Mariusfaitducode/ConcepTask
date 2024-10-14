@@ -44,6 +44,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
 
+  space : string = 'profile';
+
 
 
   ngOnInit() {
@@ -158,5 +160,20 @@ export class HomePage implements OnInit, OnDestroy {
     if (query == '') {
       this.results = [...this.todos];
     }
+  }
+
+
+  // Spaces
+
+  selectTeamSpace(teamId : string){
+    console.log('Select team space', teamId)
+
+    this.space = teamId;
+  }
+
+  selectProfileSpace(){
+    console.log('Select profile space')
+
+    this.space = 'profile';
   }
 }

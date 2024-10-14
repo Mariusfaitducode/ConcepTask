@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Notif } from './models/notif';
+// import { Notif } from './models/notif';
 import { TranslateService } from '@ngx-translate/core';
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';

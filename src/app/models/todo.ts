@@ -1,5 +1,5 @@
 import { ScheduleEvery } from "@capacitor/local-notifications";
-import { Notif } from "./notif";
+// import { Notif } from "./notif";
 import { TaskConfig } from "./task-config";
 import { Category } from "./category";
 import { TranslateService } from "@ngx-translate/core";

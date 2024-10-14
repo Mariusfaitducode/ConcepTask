@@ -11,7 +11,7 @@ export class MaintodoSubtaskComponent  implements OnInit {
   @Input() mainTodo!: Todo;
   @Input() todo!: Todo;
 
-  @Input() todos!: Todo[];
+  // @Input() todos!: Todo[];
 
   @Input() hideDoneTasks: boolean = false;
 

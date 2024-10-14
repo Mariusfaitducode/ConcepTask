@@ -20,7 +20,7 @@ export class SubTaskComponent  implements OnInit {
 
   @Input() mainId!: string;
 
-  @Input() todos?: Todo[];
+  // @Input() todos?: Todo[];
   @Input() subTask!: Todo;
 
   @Output() todoSelectedEmitter = new EventEmitter<Todo>();
