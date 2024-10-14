@@ -9,7 +9,7 @@ import { TaskModal } from 'src/app/models/task-modal';
 import { Team } from 'src/app/models/team';
 import { TeamInvitation } from 'src/app/models/team-inivitation';
 import { Todo } from 'src/app/models/todo';
-import { User } from 'src/app/models/user';
+import { User, UserSimplified } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TaskService } from 'src/app/services/task/task.service';
@@ -48,7 +48,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   todos: Todo[] = [];
 
   // TODO : remplacer any par le type User with less properties
-  teams: {team:Team, teamUsers:any[]}[] = [];
+  teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
 
   teamInvitations: TeamInvitation[] = [];
 
@@ -81,7 +81,7 @@ export class ProfilePage implements OnInit, OnDestroy {
               team.image = "assets/images/default-group.png";
             }
 
-            let newTeam : {team:Team, teamUsers:any[]} = {team: team, teamUsers: []};
+            let newTeam : {team:Team, teamUsers:UserSimplified[]} = {team: team, teamUsers: []};
 
             for (let userId of team.usersIds){
 

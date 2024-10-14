@@ -8,10 +8,12 @@ import { Todo } from '../../models/todo';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { UserService } from 'src/app/services/user/user.service';
-import { User } from 'src/app/models/user';
+import { User, UserSimplified } from 'src/app/models/user';
 import { TaskService } from 'src/app/services/task/task.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { Subscribable, Subscription } from 'rxjs';
+import { TeamService } from 'src/app/services/team/team.service';
+import { Team } from 'src/app/models/team';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +27,8 @@ export class HomePage implements OnInit, OnDestroy {
     private route : ActivatedRoute,
     private taskService : TaskService,
     private userService : UserService,
-    private settingsService : SettingsService
+    private settingsService : SettingsService,
+    private teamService : TeamService
   )
   {}
 
@@ -37,6 +40,10 @@ export class HomePage implements OnInit, OnDestroy {
   results : Todo[] = []
 
   darkMode : boolean = false; // Used for ConcepTask logo version
+
+
+  teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
+
 
 
   ngOnInit() {
@@ -54,6 +61,38 @@ export class HomePage implements OnInit, OnDestroy {
     this.userService.getUser().subscribe((user : User | null) => {
       console.log('Home page : User get', user)
       this.user = user;
+
+      if (this.user){
+        this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
+
+          console.log('ProfilePage : teams = ', teams);
+  
+          this.teams = [];
+  
+          for (let team of teams){
+  
+            if (!team.image || team.image == ""){
+              team.image = "assets/images/default-group.png";
+            }
+  
+            let newTeam : {team:Team, teamUsers:UserSimplified[]} = {team: team, teamUsers: []};
+  
+            for (let userId of team.usersIds){
+  
+              this.userService.getUserById(userId).then(user => {
+  
+                if (user) newTeam.teamUsers.push(user);
+              });
+            }
+  
+            this.teams.push(newTeam);
+          }
+        });
+      }
+
+     
+
+
     });
 
     // Actualise la page à chaque changement

@@ -58,6 +58,7 @@ export class TeamsGestionComponent  implements OnInit {
 
   rejectInvitation(invitation: TeamInvitation){
 
+    this.teamInvitationsService.rejectInvitation(this.user!, invitation);
   }
 
 }

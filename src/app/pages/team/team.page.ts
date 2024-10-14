@@ -30,6 +30,7 @@ export class TeamPage implements OnInit {
 
   initialTeam: Team | null = null;
 
+  teamInvitationUsers: UserSimplified[] = [];
   teamUsers: UserSimplified[] = [];
 
   searchMembersResult: UserSimplified[] = [];
@@ -91,7 +92,9 @@ export class TeamPage implements OnInit {
             this.isNewTeam = false;
             this.teamService.getTeamById(params['id']).subscribe((team : Team | null) => {
 
-              if (team){
+              if (team && JSON.stringify(team) != JSON.stringify(this.team)){
+
+                console.log('team = ', team);
 
                 this.team = team;
 
@@ -103,7 +106,15 @@ export class TeamPage implements OnInit {
   
                   this.userService.getUserById(userId).then(user => {
     
-                    if (user) this.teamUsers.push(user);
+                    if (user && !this.teamUsers.includes(user)) this.teamUsers.push(user);
+                  });
+                }
+
+                this.teamInvitationUsers = [];
+
+                for (let userId of team.pendingInvitationsUserIds){
+                  this.userService.getUserById(userId).then(user => {
+                    if (user && !this.teamInvitationUsers.includes(user)) this.teamInvitationUsers.push(user);
                   });
                 }
               }
@@ -173,8 +184,8 @@ export class TeamPage implements OnInit {
   }
 
 
-  isMemberAlreadyInTeam(uid: string){
-    return this.team!.usersIds.includes(uid);
+  isMemberAlreadyInTeamOrInvited(uid: string){
+    return this.team!.usersIds.includes(uid) || this.team!.pendingInvitationsUserIds.includes(uid);
   }
 
 

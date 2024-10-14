@@ -142,20 +142,52 @@ export class TeamService {
         teamData.usersIds.push(user.uid);
       }
 
+      // Add teamId to user's teams list
+      if (!user.teams){
+        user.teams = [];
+      }
+
+      user.teams.push(teamId);
+      this.userService.updateUser(user);
+
+
       // Remove userId from pendingInvitationsUserIds list
       if (teamData.pendingInvitationsUserIds) {
         teamData.pendingInvitationsUserIds = teamData.pendingInvitationsUserIds.filter(id => id !== user.uid);
       }
-
-
-      user.teams.push(teamId);
-      this.userService.updateUser(user);
 
       // Update the team document
       await teamRef.update(teamData);
       return true;
     } catch (error) {
       console.error('Error adding user to team:', error);
+      return false;
+    }
+  }
+
+
+  async removeUserFromPendingInvitations(teamId: string, userId: string){
+    try {
+      const teamRef = this.firestore.collection('teams').doc(teamId);
+      const teamDoc = await teamRef.get().toPromise();
+      
+      if (!teamDoc || !teamDoc.exists) {
+        console.error('Team not found');
+        return false;
+      }
+
+      const teamData = teamDoc.data() as Team;
+
+      // Remove userId from pendingInvitationsUserIds list
+      if (teamData.pendingInvitationsUserIds) {
+        teamData.pendingInvitationsUserIds = teamData.pendingInvitationsUserIds.filter(id => id !== userId);
+      } 
+
+      await teamRef.update(teamData);
+      return true;
+    }
+    catch(error){
+      console.error('Error removing user from pending invitations:', error);
       return false;
     }
   }

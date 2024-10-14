@@ -14,6 +14,70 @@
 
 }
 
+
+// Teams choice
+
+
+.teams-list {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;  /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 0px;
+}
+
+.add-team{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.add-team-button{
+
+  width: 50px;
+  height: 50px;
+  // margin-left: auto;
+  margin: 0;
+}
+
+.add-team ion-label{
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.team-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  min-width: 50px;
+}
+
+.team-item img{
+  border-radius: 50%;
+}
+
+.team-item ion-label{
+  font-weight: 400;
+  font-size: 12px;
+}
+
+
+
+
+// Search bar
+
 .research-header{
   display: flex;
   flex-direction: row;
@@ -31,6 +95,7 @@
   --border-radius: 5px;
 
   padding-bottom : 0px;
+  // padding-top: 0px;
 }
 
 .research-header ion-buttons{

@@ -51,7 +51,16 @@
 
   </div>
 
-  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchMembers()" placeholder="Rechercher un membre"></ion-searchbar>
+
+  <div>
+
+    <!-- <ion-button></ion-button> -->
+
+
+  </div>
+
+
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchMembers()" placeholder="Inviter un utilisateur"></ion-searchbar>
 
 
   <ion-list>
@@ -64,11 +73,31 @@
         <!-- <p>{{ member.role }}</p> -->
       </ion-label>
 
-      <ion-button *ngIf="!isMemberAlreadyInTeam(user.uid)" (click)="sendInvitationToUser(user.uid)">Ajouter</ion-button>
+      <ion-button *ngIf="!isMemberAlreadyInTeamOrInvited(user.uid)" (click)="sendInvitationToUser(user.uid)">Ajouter</ion-button>
       
     </ion-item>
   </ion-list>
 
+
+  <div *ngIf="teamInvitationUsers.length > 0">
+    <div class="team-members-title">En attente</div>
+
+    <ion-list>
+      <ion-item *ngFor="let invitedMember of teamInvitationUsers">
+        <ion-avatar slot="start">
+          <img [src]="invitedMember.avatar" alt="Photo de profil">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ invitedMember.pseudo }}</h2>
+          <!-- <p>{{ member.role }}</p> -->
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  
+
+
+  <div class="team-members-title">Membres</div>
 
   <ion-list>
     <ion-item *ngFor="let member of teamUsers">

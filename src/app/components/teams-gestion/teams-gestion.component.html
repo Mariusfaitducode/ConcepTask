@@ -31,29 +31,35 @@
 
   </ion-list>
 
-  <div class="invitations-title">Invitations</div>
+  <div *ngIf="teamInvitations.length > 0">
 
-  <ion-list>
+    <div class="invitations-title">Invitations</div>
 
-    <div *ngFor="let invitation of teamInvitations">
+    <ion-list>
 
-      <div class="invitation-item">
+      <div *ngFor="let invitation of teamInvitations">
 
-        <ion-label class="invitation-label">
-          <b>{{invitation.sender.pseudo}}</b> 
-          invites you to join 
-          <b>{{invitation.teamName}}</b>
-        </ion-label>
+        <div class="invitation-item">
 
-        <div class="invitation-buttons">
-          <ion-button (click)="acceptInvitation(invitation)" color="medium" shape="round" class="invitation-button">Accept</ion-button>
+          <ion-label class="invitation-label">
+            <b>{{invitation.sender.pseudo}}</b> 
+            invites you to join 
+            <b>{{invitation.teamName}}</b>
+          </ion-label>
 
-          <ion-button (click)="rejectInvitation(invitation)" color="danger" shape="round" class="invitation-button">Reject</ion-button>
-  
+          <div class="invitation-buttons">
+            <ion-button (click)="acceptInvitation(invitation)" color="medium" shape="round" class="invitation-button">Accept</ion-button>
+
+            <ion-button (click)="rejectInvitation(invitation)" color="danger" shape="round" class="invitation-button">Reject</ion-button>
+    
+          </div>
         </div>
       </div>
-    </div>
 
-  </ion-list>
+    </ion-list>
+
+  </div>
+
+  
       
 </div>

@@ -35,7 +35,7 @@ export class TeamInvitationsService {
       invitation = JSON.parse(JSON.stringify(invitation));
 
       // Add the invitation to a 'teamInvitations' collection in Firestore
-      await this.firestore.collection('users').doc(userId).collection('teamInvitations').add(invitation);
+      await this.firestore.collection('users').doc(userId).collection('teamInvitations').doc(invitation.id).set(invitation);
 
       if (!team.pendingInvitationsUserIds){
         team.pendingInvitationsUserIds = [];
@@ -72,6 +72,10 @@ export class TeamInvitationsService {
       // Add user to the team
       await this.teamService.addUserToTeam(invitation.teamId, user);
 
+
+      // Remove the invitation from the user's invitations
+      await this.firestore.collection('users').doc(user.uid).collection('teamInvitations').doc(invitation.id).delete();
+
       // TODO : add id infos on team invitation
       // Remove invitation from user's invitations
       // await this.firestore.collection('users').doc(user.uid).collection('teamInvitations').doc(invitation.id).delete();
@@ -86,23 +90,19 @@ export class TeamInvitationsService {
     }
   }
 
-  // async rejectInvitation(invitation: TeamInvitation) {
-  //   try {
-  //     const userId = await this.afAuth.currentUser.then(user => user.uid);
+  async rejectInvitation(user : User, invitation: TeamInvitation) {
+    try {
+      
+      // Remove invitation from user's invitations
+      await this.firestore.collection('users').doc(user.uid).collection('teamInvitations').doc(invitation.id).delete();
 
-  //     // Remove invitation from user's invitations
-  //     await this.firestore.collection('users').doc(userId).collection('teamInvitations').doc(invitation.id).delete();
+      await this.teamService.removeUserFromPendingInvitations(invitation.teamId, user.uid); 
 
-  //     // Remove user from team's pending invitations
-  //     const team = await this.teamService.getTeam(invitation.team.id).toPromise();
-  //     team.pendingInvitationsUserIds = team.pendingInvitationsUserIds.filter(id => id !== userId);
-  //     await this.teamService.updateTeam(team);
-
-  //     console.log(`Invitation rejected for team ${invitation.team.name}`);
-  //     return true;
-  //   } catch (error) {
-  //     console.error('Error rejecting team invitation:', error);
-  //     return false;
-  //   }
-  // }
+      console.log(`Invitation rejected for team ${invitation.teamName}`);
+      return true;
+    } catch (error) {
+      console.error('Error rejecting team invitation:', error);
+      return false;
+    }
+  }
 }
