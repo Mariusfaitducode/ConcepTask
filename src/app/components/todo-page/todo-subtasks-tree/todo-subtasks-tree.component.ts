@@ -1,8 +1,11 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { DragAndDrop } from 'src/app/utils/drag-and-drop';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+
 
 @Component({
   selector: 'app-todo-subtasks-tree',
@@ -11,14 +14,14 @@ import { DragAndDrop } from 'src/app/utils/drag-and-drop';
 })
 export class TodoSubtasksTreeComponent  implements OnInit {
 
-  @Input() mainTodo!: Todo;
-  @Input() todo!: Todo;
+  @Input() mainTodo!: MainTodo;
+  @Input() todo!: MainTodo | SubTodo;
 
   // @Input() todos!: Todo[];
 
-  @Input() dragAndDropTodosDatas: {todo: Todo, level: number}[][] = [];
+  @Input() dragAndDropTodosDatas: {todo: SubTodo, level: number}[][] = [];
 
-  @Output() todoSelectedEmitter = new EventEmitter<Todo>();
+  @Output() todoSelectedEmitter = new EventEmitter<SubTodo>();
 
   @Output() initializeDragDropListEmitter = new EventEmitter();
 
@@ -29,7 +32,7 @@ export class TodoSubtasksTreeComponent  implements OnInit {
 
   ngOnInit() {}
 
-  onNewTodoSelected(todo: Todo){
+  onNewTodoSelected(todo: SubTodo){
     this.todoSelectedEmitter.emit(todo);
   }
 

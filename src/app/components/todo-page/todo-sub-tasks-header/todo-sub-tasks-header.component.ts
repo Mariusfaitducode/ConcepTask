@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-todo-sub-tasks-header',
@@ -9,8 +11,8 @@ import { Todo } from 'src/app/models/todo';
 export class TodoSubTasksHeaderComponent  implements OnInit {
 
 
-  @Input() todo!: Todo;
-  @Input() mainTodo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
+  @Input() mainTodo!: MainTodo;
   subMode : string = "tree";
   // hideDoneTasks : boolean = false;
 

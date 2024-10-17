@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-todo-description',
@@ -8,7 +10,7 @@ import { Todo } from 'src/app/models/todo';
 })
 export class TodoDescriptionComponent  implements OnInit {
 
-  @Input() todo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
 
   constructor() { }
 

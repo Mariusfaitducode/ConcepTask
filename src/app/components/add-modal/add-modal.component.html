@@ -16,7 +16,7 @@
   
       <app-title-category-edit [todo]="subTask"></app-title-category-edit>
 
-      <app-custom-config [configArray]="subTask.config" [todo]="subTask"></app-custom-config>
+      <app-custom-config [configArray]="subTask.properties.config" [todo]="subTask"></app-custom-config>
 
       <app-todo-description [todo]="subTask"></app-todo-description>
 
@@ -25,7 +25,7 @@
       <app-date-selector [todo]="subTask" [editMode]="true"></app-date-selector>
   
   
-      <div *ngIf="this.subTask.config.subtasks" class="sub-tasks item-padding">
+      <div *ngIf="this.subTask.properties.config.subtasks" class="sub-tasks item-padding">
   
         <ion-label class="sub-todos-label" color="primary">{{'SUB TASKS' | translate}}</ion-label>
         <div class="info-sub-task">

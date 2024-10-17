@@ -1,10 +1,13 @@
 import { SelectorContext } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TodoUtils } from 'src/app/utils/todo-utils';
+
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-todo-card',
@@ -15,7 +18,7 @@ export class TodoCardComponent  implements OnInit {
 
   constructor(public translate : TranslateService) { }
 
-  @Input() todo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
   @Input() color!: string;
 
   ngOnInit() { 
@@ -26,9 +29,9 @@ export class TodoCardComponent  implements OnInit {
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   
-    if (this.todo.config.date){
+    if (this.todo.properties.config.date){
 
-      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
+      let date = TodoDate.getDate(this.todo.properties.date!, this.todo.properties.time);
 
       const day = daysOfWeek[date!.getDay()];
       const dayOfMonth = date!.getDate();
@@ -38,19 +41,18 @@ export class TodoCardComponent  implements OnInit {
     
       return `${day}, ${dayOfMonth} ${month} ${hours}:${minutes}`;
     }
-    if (this.todo.config.repeat && this.todo.repeat!.delayType){
-
+    if (this.todo.properties.config.repeat && this.todo.properties.repeat!.delayType){
       // let startDate = Todo.getDate(this.todo.repeat!.startDate!, this.todo.repeat!.startTime!);
       // let repeat = this.todo.repeat!.delayType;
 
       if (this.translate && this.translate.store.currentLang == "fr") {
-        return `Répété chaque ${this.translate.instant(this.todo.repeat!.delayType)}`;
+        return `Répété chaque ${this.translate.instant(this.todo.properties.repeat!.delayType)}`;
       }
       else{
-        return `Repeat every ${this.todo.repeat!.delayType}`;
+        return `Repeat every ${this.todo.properties.repeat!.delayType}`;
 
       }
-      return `Repeat every ${this.todo.repeat!.delayType}`;
+      return `Repeat every ${this.todo.properties.repeat!.delayType}`;
 
     }
     return null; 
@@ -69,12 +71,12 @@ export class TodoCardComponent  implements OnInit {
   }
 
   validDate(){
-    if (this.todo.config.date){
-      let date = TodoDate.getDate(this.todo.date!, this.todo.time);
+    if (this.todo.properties.config.date){
+      let date = TodoDate.getDate(this.todo.properties.date!, this.todo.properties.time);
       let now = new Date();
       return date! > now;
     }
-    if (this.todo.config.repeat && this.todo.repeat!.delayType){
+    if (this.todo.properties.config.repeat && this.todo.properties.repeat!.delayType){
       return true;
     }
     return false;
@@ -83,7 +85,7 @@ export class TodoCardComponent  implements OnInit {
 
   contrastColor(){
 
-    let color = TodoColor.getCorrectTextColor(this.todo.category.color);
+    let color = TodoColor.getCorrectTextColor(this.todo.properties.category.color);
     
     return color
   

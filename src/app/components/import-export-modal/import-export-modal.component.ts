@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ImportExportModal } from 'src/app/models/import-export-modal';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-import-export-modal',

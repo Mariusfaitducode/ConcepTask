@@ -3,7 +3,7 @@ import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
-import { Todo } from '../../models/todo';
+// import { Todo } from '../../models/todo';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
@@ -14,6 +14,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { Subscribable, Subscription } from 'rxjs';
 import { TeamService } from 'src/app/services/team/team.service';
 import { Team } from 'src/app/models/team';
+import { MainTodo } from 'src/app/models/todo/main-todo';
 
 @Component({
   selector: 'app-home',
@@ -36,8 +37,8 @@ export class HomePage implements OnInit, OnDestroy {
   user : User | null = null;
 
   todoSubscription! : Subscription;
-  todos : Todo[] = []
-  results : Todo[] = []
+  todos :MainTodo[] = []
+  results : MainTodo[] = []
 
   darkMode : boolean = false; // Used for ConcepTask logo version
 
@@ -50,7 +51,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: MainTodo[]) => {
 
       if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
 
@@ -155,7 +156,7 @@ export class HomePage implements OnInit, OnDestroy {
   // SearchBar
   handleInput(event : any) {
     const query = event.target.value.toLowerCase();
-    this.results = [...this.results.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.name.toLowerCase().indexOf(query) > -1)];
+    this.results = [...this.results.filter((d) => d.properties.title.toLowerCase().indexOf(query) > -1 || d.properties.category.name.toLowerCase().indexOf(query) > -1)];
 
     if (query == '') {
       this.results = [...this.todos];

@@ -1,4 +1,4 @@
-import { Todo } from "./todo";
+import { MainTodo } from "./todo/main-todo";
 
 
 export class ImportExportModal{
@@ -8,19 +8,19 @@ export class ImportExportModal{
     public type: 'import' | 'export' = 'export';
 
     // export   
-    public todos: Todo[] = [];
+    public todos: MainTodo[] = [];
 
     // import
-    public importTask: Todo | null = null;
+    public importTask: MainTodo | null = null;
 
 
-    openImportModal(todos: Todo[]){
+    openImportModal(todos: MainTodo[]){
         this.open = true;
         this.type = 'import';
         this.todos = todos;
     }
 
-    openExportModal(todos: Todo[]){
+    openExportModal(todos: MainTodo[]){
         this.open = true;
         this.type = 'export';
         this.todos = todos;

@@ -5,7 +5,7 @@ import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 // import { NavParams } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
-import { Todo } from '../../models/todo';
+// import { Todo } from '../../models/todo';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { WelcomeTodo } from '../../models/welcome-todo';
 
@@ -14,6 +14,7 @@ import { WelcomeTodo } from '../../models/welcome-todo';
 import { TranslateService } from '@ngx-translate/core';
 import { Settings } from 'src/app/models/settings';
 import { SettingsService } from 'src/app/services/settings/settings.service';
+import { MainTodo } from 'src/app/models/todo/main-todo';
 
 @Component({
   selector: 'app-home',
@@ -34,8 +35,8 @@ export class DoneTaskPage {
 
   }
 
-  todos : Todo[] = []
-  results : Todo[] = []
+  todos : MainTodo[] = []
+  results : MainTodo[] = []
 
   darkMode = false;
 
@@ -124,7 +125,7 @@ export class DoneTaskPage {
 
   handleInput(event : any) {
     const query = event.target.value.toLowerCase();
-    this.results = [...this.results.filter((d) => d.title.toLowerCase().indexOf(query) > -1 || d.category.name.toLowerCase().indexOf(query) > -1)];
+    this.results = [...this.results.filter((d) => d.properties.title.toLowerCase().indexOf(query) > -1 || d.properties.category.name.toLowerCase().indexOf(query) > -1)];
 
     if (query == '') {
       this.results = [...this.todos];
@@ -165,26 +166,26 @@ export class DoneTaskPage {
 
     if (this.filters.week) {
       const nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
-      this.results = [...this.results.filter((d) => d.date && new Date(d.date) < nextWeek && new Date(d.date) >= new Date())];
+      this.results = [...this.results.filter((d) => d.properties.date && new Date(d.properties.date) < nextWeek && new Date(d.properties.date) >= new Date())];
     }
 
     if (this.filters.today) {
-      this.results = [...this.results.filter((d) => d.date && new Date(d.date) == new Date())];
+      this.results = [...this.results.filter((d) => d.properties.date && new Date(d.properties.date) == new Date())];
     }
 
     if (this.filters.overdue) {
-      this.results = [...this.todos.filter((d) => d.date && new Date(d.date) < new Date())];
+      this.results = [...this.todos.filter((d) => d.properties.date && new Date(d.properties.date) < new Date())];
     }
 
     if (this.filters.priority) {
-      this.results = [...this.results.filter((d) => d.priority == this.filters.priorityChoosed)];
+      this.results = [...this.results.filter((d) => d.properties.priority == this.filters.priorityChoosed)];
     }
 
     if (this.filters.category) {
-      this.results = [...this.results.filter((d) => d.category.name == this.filters.categoryChoosed)];
+      this.results = [...this.results.filter((d) => d.properties.category.name == this.filters.categoryChoosed)];
     }
     if (this.filters.done) {
-      this.results = [...this.results.filter((d) => d.isDone == true)];
+      this.results = [...this.results.filter((d) => d.properties.isDone == true)];
     }
     
   }

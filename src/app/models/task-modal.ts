@@ -1,4 +1,7 @@
-import { Todo } from "./todo";
+// import { Todo } from "./todo";
+
+import { MainTodo } from "./todo/main-todo";
+import { SubTodo } from "./todo/sub-todo";
 
 
 export class TaskModal{
@@ -7,11 +10,11 @@ export class TaskModal{
     public open: boolean = false;
     public modify: boolean = false;
 
-    public task: Todo | null = null;
-    public parentTask: Todo | null = null;
+    public task: MainTodo | SubTodo | null = null;
+    public parentTask: MainTodo | SubTodo | null = null;
 
 
-    openModifyTaskModal(subTask : Todo, parentTask : Todo | null){
+    openModifyTaskModal(subTask : SubTodo, parentTask : MainTodo | SubTodo | null){
         this.open = true;
         this.modify = true;
 
@@ -19,11 +22,11 @@ export class TaskModal{
         this.parentTask = parentTask;
     }
 
-    openNewTaskModal(parentTask : Todo, todoListLength: number){
+    openNewTaskModal(parentTask : MainTodo | SubTodo){
         this.open = true;
         this.modify = false;
 
-        this.task = new Todo(todoListLength);
+        this.task = new SubTodo();
         this.parentTask = parentTask;
     }
       

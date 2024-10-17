@@ -1,6 +1,8 @@
 
 
-import { Todo } from "../models/todo";
+// import { Todo } from "../models/todo";
+import { MainTodo } from "../models/todo/main-todo";
+import { SubTodo } from "../models/todo/sub-todo";
 import { TranslateService } from "@ngx-translate/core";
 import { TodoNotification } from "./todo-notification";
 
@@ -11,7 +13,7 @@ export class TodoUtils {
 
 // DELETE TODO
 
-    public static deleteTodoById(rootTodo: Todo, idToDelete: string): Todo {
+    public static deleteTodoById(rootTodo: MainTodo | SubTodo, idToDelete: string): MainTodo | SubTodo {
 
         console.log('Delete todo by id, todo-utils :', idToDelete)
 
@@ -19,11 +21,11 @@ export class TodoUtils {
     
         // Créez une copie du todo actuel
         // const updatedTodo: Todo = { ...rootTodo, initializeMainTodo: rootTodo.initializeMainTodo };
-        const updatedTodo: Todo = { ...rootTodo };
+        const updatedTodo: MainTodo | SubTodo = { ...rootTodo };
 
     
         // Parcourez les sous-todos récursivement
-        rootTodo.list!.forEach((subTodo) => {
+        rootTodo.list!.forEach((subTodo: SubTodo) => {
 
             if (subTodo.id === idToDelete) {
                 // Supprimer le todo
@@ -45,7 +47,7 @@ export class TodoUtils {
 
     // FIND SUB TODO
 
-    public static findSubTodoBySubId(rootTodo: Todo, subId : number){
+    public static findSubTodoBySubId(rootTodo: MainTodo, subId : number){
 
         let copyList = [...rootTodo.list!];
 
@@ -66,7 +68,7 @@ export class TodoUtils {
     }
 
 
-    public static findSubTodoById(rootTodo: Todo, id : string){
+    public static findSubTodoById(rootTodo: MainTodo | SubTodo, id : string){
 
         let copyList = [...rootTodo.list!];
 
@@ -96,9 +98,9 @@ export class TodoUtils {
 
     // TODO TO LIST
 
-    public static transformTodoInListByDepth(rootTodo : Todo, hideSubTask : boolean = false, level : number = 0, list : {todo: Todo, level: number}[] = []){
+    public static transformTodoInListByDepth(rootTodo : MainTodo | SubTodo, hideSubTask : boolean = false, level : number = 0, list : {todo: MainTodo | SubTodo, level: number}[] = []){
 
-        if (hideSubTask && rootTodo.isDone){
+        if (hideSubTask && rootTodo.properties.isDone){
         return list;
         }
 
@@ -107,7 +109,7 @@ export class TodoUtils {
         let copyList = [...rootTodo.list!];
         // Dfs algorithm
 
-        if (rootTodo.developped) {
+        if (rootTodo.properties.developped) {
         while(copyList.length > 0){
 
             let todo = copyList.shift()!;
@@ -123,7 +125,7 @@ export class TodoUtils {
 
     // TASK PERCENT VISUALISATION
 
-    public static getDoneTasksPercent(todo : Todo){
+    public static getDoneTasksPercent(todo : MainTodo | SubTodo){
         
         let doneTasks = 0;
         let totalTasks = 0;
@@ -134,7 +136,7 @@ export class TodoUtils {
 
             let todo = copyList.shift()!;
 
-            if (todo.isDone) {
+            if (todo.properties.isDone) {
             doneTasks++;
             }
             totalTasks++;
@@ -156,39 +158,39 @@ export class TodoUtils {
 
     // COMPARE TODOS
 
-    public static areSameTodos(todo1 : Todo, todo2 : Todo){
+    // public static areSameTodos(todo1 : MainTodo | SubTodo, todo2 : MainTodo | SubTodo){
 
 
-        if (!todo1 || !todo2) {
-        return false;
-        }
+    //     if (!todo1 || !todo2) {
+    //     return false;
+    //     }
 
-        const keys1 = Object.keys(todo1);
-        const keys2 = Object.keys(todo2);
+    //     const keys1 = Object.keys(todo1);
+    //     const keys2 = Object.keys(todo2);
     
-        if (keys1.length !== keys2.length) {
-        return false;
-        }
+    //     if (keys1.length !== keys2.length) {
+    //     return false;
+    //     }
     
-        for (let key of keys1) {
+    //     for (let key of keys1) {
 
-        if (key == "list") {
+    //     if (key == "list") {
             
-            for (let i = 0; i < todo1.list.length; i++) {
+    //         for (let i = 0; i < todo1.list.length; i++) {
 
-            if (!TodoUtils.areSameTodos(todo1.list[i], todo2.list[i])) {
-                return false;
-            }
-            }
-        }
+    //         if (!TodoUtils.areSameTodos(todo1.list[i], todo2.list[i])) {
+    //             return false;
+    //         }
+    //         }
+    //     }
 
-        else if (!this.compareObjects(todo1[key as keyof Todo] as Object, todo2[key as keyof Todo] as Object)) {
-            return false;
-        }
-        }
+    //     else if (!this.compareObjects(todo1[key as keyof MainTodo | SubTodo] as Object, todo2[key as keyof MainTodo | SubTodo] as Object)) {
+    //         return false;
+    //     }
+    //     }
     
-        return true;
-    }
+    //     return true;
+    // }
 
 
     public static compareObjects(object1 : Object, object2 : Object) {

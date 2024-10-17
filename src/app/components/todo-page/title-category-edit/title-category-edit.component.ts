@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from 'src/app/models/category';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { SettingsService } from 'src/app/services/settings/settings.service';
+
+
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-title-category-edit',
@@ -10,7 +14,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 })
 export class TitleCategoryEditComponent  implements OnInit {
 
-  @Input() todo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
 
   categoryName : string = '';
 
@@ -30,11 +34,11 @@ export class TitleCategoryEditComponent  implements OnInit {
     //   this.todo.category = this.categories.find((category: Category) => category.id === this.todo.category.id)!;
     // }
 
-    this.categoryName = this.todo.category.name;
+    this.categoryName = this.todo.properties.category.name;
 
   }
 
   changeCategory(){
-    this.todo.category = this.categories.find((category: Category) => category.name === this.categoryName)!;
+    this.todo.properties.category = this.categories.find((category: Category) => category.name === this.categoryName)!;
   }
 }

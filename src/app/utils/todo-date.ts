@@ -1,5 +1,7 @@
-import { Todo } from "../models/todo";
+// import { Todo } from "../models/todo";
 import { TranslateService } from "@ngx-translate/core";
+import { MainTodo } from "../models/todo/main-todo";
+import { SubTodo } from "../models/todo/sub-todo";
 
 
 
@@ -49,9 +51,9 @@ export class TodoDate {
       }
   
   
-      public static isDateInRepeat(todo : Todo, date : Date ){
+      public static isDateInRepeat(todo : MainTodo | SubTodo, date : Date ){
   
-        let startDate = this.getDate(todo.repeat?.startDate!);
+        let startDate = this.getDate(todo.properties.repeat?.startDate!);
   
         while(true){
   
@@ -60,19 +62,19 @@ export class TodoDate {
           }
           else if (startDate < date) {
   
-            if (todo.repeat!.delayType == "day") {
+            if (todo.properties.repeat!.delayType == "day") {
               startDate.setDate(startDate.getDate() + 1);
             }
-            else if (todo.repeat!.delayType == "week") {
+            else if (todo.properties.repeat!.delayType == "week") {
               startDate.setDate(startDate.getDate() + 7);
             }
-            else if (todo.repeat!.delayType == "two-weeks") {
+            else if (todo.properties.repeat!.delayType == "two-weeks") {
               startDate.setDate(startDate.getDate() + 14);
             }
-            else if (todo.repeat!.delayType == "month") {
+            else if (todo.properties.repeat!.delayType == "month") {
               startDate.setMonth(startDate.getMonth() + 1);
             }
-            else if (todo.repeat!.delayType == "year") {
+            else if (todo.properties.repeat!.delayType == "year") {
               startDate.setFullYear(startDate.getFullYear() + 1);
             }
           }
@@ -97,13 +99,15 @@ export class TodoDate {
       }
   
   
-      public static passedDate(todo : Todo){
+      public static passedDate(todo : MainTodo | SubTodo){
+
+        // console.log('Todo properties', todo.properties)
   
-        if (todo.config.date && todo.date) {
-          let date = new Date(todo.date);
+        if (todo.properties.config.date && todo.properties.date) {
+          let date = new Date(todo.properties.date);
   
-          if (todo.time) {
-            let time = todo.time!.split(':');
+          if (todo.properties.time) {
+            let time = todo.properties.time!.split(':');
             const hours = parseInt(time[0], 10); // Convertissez l'heure en entier
             const minutes = parseInt(time[1], 10);
             
@@ -118,11 +122,11 @@ export class TodoDate {
           }
         }
         
-        else if (todo.config.repeat && todo.repeat?.startDate) {
-          let date = new Date(todo.repeat.startDate);
+        else if (todo.properties.config.repeat && todo.properties.repeat?.startDate) {
+          let date = new Date(todo.properties.repeat.startDate);
   
-          if (todo.repeat.startTime) {
-            let time = todo.repeat.startTime!.split(':');
+          if (todo.properties.repeat.startTime) {
+            let time = todo.properties.repeat.startTime!.split(':');
             const hours = parseInt(time[0], 10); // Convertissez l'heure en entier
             const minutes = parseInt(time[1], 10);
             
@@ -140,15 +144,15 @@ export class TodoDate {
   
       }
   
-      public static formatDateToCustomString(todo : Todo, translate : TranslateService | null = null) {
+      public static formatDateToCustomString(todo : MainTodo | SubTodo, translate : TranslateService | null = null) {
   
         // console.log(translate)
 
-        if (!todo.config.date && !todo.config.repeat) return null;
+        if (!todo.properties.config.date && !todo.properties.config.repeat) return null;
 
-        if (todo.config.date && !todo.date) return 'Date not defined';
+        if (todo.properties.config.date && !todo.properties.date) return 'Date not defined';
 
-        if (todo.config.repeat && !todo.repeat?.startDate) return 'Date not defined';
+        if (todo.properties.config.repeat && !todo.properties.repeat?.startDate) return 'Date not defined';
   
         let daysOfWeek : string[] = []
         let months : string[] = []
@@ -169,9 +173,9 @@ export class TodoDate {
         }
   
   
-        if (todo.config.date){
+        if (todo.properties.config.date){
     
-          let date = this.getDate(todo.date!, todo.time);
+          let date = this.getDate(todo.properties.date!, todo.properties.time);
     
           const day = daysOfWeek[date!.getDay()];
           const dayOfMonth = date!.getDate();
@@ -181,9 +185,9 @@ export class TodoDate {
         
           return `${day}, ${dayOfMonth} ${month} ${hours}:${minutes}`;
         }
-        if (todo.config.repeat && todo.repeat!.delayType){
+        if (todo.properties.config.repeat && todo.properties.repeat!.delayType){
     
-          let date = this.getDate(todo.repeat?.startDate!, todo.repeat?.startTime);
+          let date = this.getDate(todo.properties.repeat?.startDate!, todo.properties.repeat?.startTime);
     
           const day = daysOfWeek[date!.getDay()];
           const dayOfMonth = date!.getDate();
@@ -191,26 +195,26 @@ export class TodoDate {
           const hours = String(date!.getHours()).padStart(2, '0');
           const minutes = String(date!.getMinutes()).padStart(2, '0');
   
-          const translateKey = `repeat.${todo.repeat!.delayType}`
+          const translateKey = `repeat.${todo.properties.repeat!.delayType}`
           const translationParams = { day, dayOfMonth, month, hours, minutes }
   
           if (translate) {
             return translate.instant(translateKey, translationParams);
           }
   
-          if (todo.repeat!.delayType == "day") {
+          if (todo.properties.repeat!.delayType == "day") {
             return `Repeat every day at ${hours}:${minutes}`;
           }
-          if (todo.repeat!.delayType == "week") {
+          if (todo.properties.repeat!.delayType == "week") {
             return `Repeat every week on ${day} at ${hours}:${minutes}`;
           }
-          if (todo.repeat!.delayType == "two-weeks") {
+          if (todo.properties.repeat!.delayType == "two-weeks") {
             return `Repeat every two weeks on ${day} at ${hours}:${minutes}`;
           }
-          if (todo.repeat!.delayType == "month") {
+          if (todo.properties.repeat!.delayType == "month") {
             return `Repeat every month on ${dayOfMonth} at ${hours}:${minutes}`;
           }
-          if (todo.repeat!.delayType == "year") {
+          if (todo.properties.repeat!.delayType == "year") {
             return `Repeat every year on ${dayOfMonth} ${month} at ${hours}:${minutes}`;
           }
           // return `Repeat every ${todo.repeat!.delayType}`;

@@ -2,7 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 // import { Notif } from 'src/app/models/notif';
 import { TaskConfig } from 'src/app/models/task-config';
-import { Todo } from 'src/app/models/todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+// import { Todo } from 'src/app/models/todo';
 import { TodoNotification } from 'src/app/utils/todo-notification';
 
 @Component({
@@ -15,7 +17,7 @@ export class CustomConfigComponent  implements OnInit {
 
   @Input() configArray: TaskConfig = new TaskConfig();
 
-  @Input() todo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
 
   constructor(public toastController: ToastController) { }
 
@@ -45,8 +47,8 @@ export class CustomConfigComponent  implements OnInit {
 
 
     if (removeNotif){
-      if (this.todo.reminder && this.todo.notifId){
-        this.todo.reminder = false;
+      if (this.todo.properties.reminder && this.todo.properties.notifId){
+        this.todo.properties.reminder = false;
 
         let result = await TodoNotification.cancelNotification(this.todo);
         if (result) this.presentToast("Notification canceled");

@@ -14,7 +14,7 @@ export class MainTodo {
     // IDs
     public id: string; // id of the todo
 
-    public index: number; // index of the todo in the list
+    public index: number = 0; // index of the todo in the list
     
     public hideDoneTasks: boolean = false; // Hide the done tasks only useful for mainTodo
 
@@ -32,9 +32,9 @@ export class MainTodo {
     public list: SubTodo[] = [];
 
 
-    constructor(todoListLength: number) {
+    constructor(id : string = uuidv4()) {
 
-        this.id = uuidv4();
+        this.id = id;
         
         // this.category = SettingsService.getCategories()[0];
         // this.developped = true;
@@ -43,7 +43,7 @@ export class MainTodo {
 
         // this.config = new TaskConfig(); 
 
-        this.index = todoListLength;
+        // this.index = todoListLength;
     }
 
   }

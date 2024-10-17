@@ -1,5 +1,5 @@
 import { Settings } from "./settings";
-import { Todo } from "./todo";
+
 
 
 export class User{

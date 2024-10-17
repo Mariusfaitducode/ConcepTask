@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 // import { Notif } from 'src/app/models/notif';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 
 import { ToastController } from '@ionic/angular';
 import { set } from 'firebase/database';
@@ -8,6 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TodoNotification } from 'src/app/utils/todo-notification';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-date-selector',
@@ -16,7 +18,7 @@ import { TodoNotification } from 'src/app/utils/todo-notification';
 })
 export class DateSelectorComponent  implements OnInit {
 
-  @Input() todo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
 
   @Input() editMode : boolean = false;
 
@@ -36,21 +38,21 @@ export class DateSelectorComponent  implements OnInit {
     console.log("click")
 
     console.log("manage notification")
-    console.log(this.todo.reminder);
+    console.log(this.todo.properties.reminder);
     // this.newTodo.sayHello();
 
-    if (this.todo.reminder && TodoDate.passedDate(this.todo)){ // si la date est passée
+    if (this.todo.properties.reminder && TodoDate.passedDate(this.todo)){ // si la date est passée
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
 
       setTimeout(() => {
-      this.todo.reminder = false;
+      this.todo.properties.reminder = false;
 
       }, 300);
       return;
     }
 
 
-    if (this.todo.reminder) {
+    if (this.todo.properties.reminder) {
       let result = await TodoNotification.scheduleNotification(this.todo, this.router);
 
       if (result){
@@ -71,22 +73,22 @@ export class DateSelectorComponent  implements OnInit {
   }
 
   repeatReminderPossible(){
-    return this.todo.repeat?.startDate && this.todo.repeat?.startTime && this.todo.repeat?.delayType;
+    return this.todo.properties.repeat?.startDate && this.todo.properties.repeat?.startTime && this.todo.properties.repeat?.delayType;
   }
 
   async manageRepeatNotification(){
 
-    if (this.todo.reminder && TodoDate.passedDate(this.todo)){
+    if (this.todo.properties.reminder && TodoDate.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
 
       setTimeout(() => {
-      this.todo.reminder = false;
+      this.todo.properties.reminder = false;
 
       }, 300);
       return;
     }
 
-    if (this.todo.reminder) {
+    if (this.todo.properties.reminder) {
       let result = await TodoNotification.scheduleNotification(this.todo, this.router);
 
       if (result){
@@ -108,14 +110,14 @@ export class DateSelectorComponent  implements OnInit {
 
   async updateNotification(){
 
-    if ( this.todo.reminder && TodoDate.passedDate(this.todo)){
+    if ( this.todo.properties.reminder && TodoDate.passedDate(this.todo)){
       this.presentToast(`${this.translate.instant('DATE PASSED')}`);
       return;
     }
 
     console.log("update notification")
 
-    if (this.todo.reminder){
+    if (this.todo.properties.reminder){
       let result = await TodoNotification.cancelNotification(this.todo);
       if (result){
         let result = await TodoNotification.scheduleNotification(this.todo, this.router);

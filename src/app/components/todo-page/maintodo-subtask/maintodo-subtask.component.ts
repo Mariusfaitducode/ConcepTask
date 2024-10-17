@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Todo } from 'src/app/models/todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+// import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-maintodo-subtask',
@@ -8,14 +10,14 @@ import { Todo } from 'src/app/models/todo';
 })
 export class MaintodoSubtaskComponent  implements OnInit {
 
-  @Input() mainTodo!: Todo;
-  @Input() todo!: Todo;
+  @Input() mainTodo!: MainTodo;
+  @Input() todo!: SubTodo;
 
   // @Input() todos!: Todo[];
 
   @Input() hideDoneTasks: boolean = false;
 
-  @Output() todoSelectedEmitter = new EventEmitter<Todo>();
+  @Output() todoSelectedEmitter = new EventEmitter<SubTodo>();
 
   
   
@@ -25,7 +27,7 @@ export class MaintodoSubtaskComponent  implements OnInit {
   ngOnInit() {}
 
 
-  onNewTodoSelected(todo: Todo){
+  onNewTodoSelected(todo: SubTodo){
     this.todoSelectedEmitter.emit(todo);
   }
 }

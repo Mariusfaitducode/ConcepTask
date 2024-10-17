@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Todo } from 'src/app/models/todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+// import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-todo-header-right-buttons',
@@ -8,7 +10,7 @@ import { Todo } from 'src/app/models/todo';
 })
 export class TodoHeaderRightButtonsComponent  implements OnInit {
 
-  @Input() todo!: Todo;
+  @Input() todo!: MainTodo | SubTodo;
 
   @Input() isNewTodo!: boolean;
 

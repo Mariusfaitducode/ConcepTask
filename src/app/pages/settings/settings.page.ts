@@ -6,12 +6,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Category } from 'src/app/models/category';
 import { Settings } from 'src/app/models/settings';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { User } from 'src/app/models/user';
 import { WelcomeTodo } from 'src/app/models/welcome-todo';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-settings',
@@ -40,7 +43,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   settings : Settings = new Settings();
 
   todoSubscription! : Subscription;
-  todos : Todo[] = []
+  todos : MainTodo[] = []
 
   // darkMode : boolean = this.settings.darkMode;
   // themeColor : string = '#3880ff';
@@ -60,7 +63,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       this.user = user;
     });
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: MainTodo[]) => {
       console.log('Todos loaded in settings:', todos)
       this.todos = todos;
     });
@@ -177,9 +180,9 @@ export class SettingsPage implements OnInit, OnDestroy {
   updateColorCategory(cat : Category){
     // let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    this.todos.forEach((todo : Todo) => {
-      if (todo.category.name == cat.name){
-        todo.category.color = cat.color;
+    this.todos.forEach((todo : MainTodo) => {
+      if (todo.properties.category.name == cat.name){
+        todo.properties.category.color = cat.color;
         this.taskService.updateTodo(todo);
       }
     });

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ItemReorderEventDetail, ModalController, NavController } from '@ionic/angular';
 import { set } from 'firebase/database';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { Dialog } from '@capacitor/dialog';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/category';
 import { TaskModal } from 'src/app/models/task-modal';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-add-modal',
@@ -27,9 +28,9 @@ export class AddModalComponent implements OnInit, AfterViewInit {
 
 
   //@Input() subTodo! : Todo;
-  subTask!: Todo;
+  subTask!: SubTodo;
 
-  initialSubTask!: Todo;
+  initialSubTask!: SubTodo;
 
   // modify : boolean = false;
 

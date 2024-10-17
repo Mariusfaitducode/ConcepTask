@@ -5,10 +5,12 @@ import { Router } from '@angular/router';
 
 import { CalendarComponent } from './src/calendar';
 import * as moment from 'moment';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { TodoDate } from 'src/app/utils/todo-date';
 import { TaskService } from 'src/app/services/task/task.service';
 import { Subscription } from 'rxjs';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 
 @Component({
@@ -28,7 +30,7 @@ export class CalendarPage implements OnInit, OnDestroy {
   eventSource : any[] = [];
 
   todoSubscription! : Subscription;
-  todos : Todo[] = [];
+  todos : MainTodo[] = [];
 
   currentMonth = moment(new Date()).format('MMMM YYYY');
   viewTitle: string = '';
@@ -40,7 +42,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 
     // this.todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: MainTodo[]) => {
       console.log('Todos loaded in calendar page:', todos)
       this.todos = todos;
       this.initTodoList();
@@ -65,20 +67,20 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   initTodoList(){
 
-    let copyList : Todo[] = [...this.todos!];
+    let copyList : (MainTodo | SubTodo)[] = [...this.todos!];
 
     // Bfs algorithm
     while (copyList.length > 0) {
 
-      let todo : Todo = copyList.shift()!;
+      let todo : MainTodo | SubTodo = copyList.shift()!;
 
-      if (todo.config.date && todo.date){
+      if (todo.properties.config.date && todo.properties.date){
 
-        let endDate = TodoDate.getDate(todo.date!);
+        let endDate = TodoDate.getDate(todo.properties.date!);
         endDate.setDate(endDate.getDate() );
 
         const newEvent = {
-          title: todo.title,
+          title: todo.properties.title,
           startTime: endDate,
           endTime: endDate,
           allDay: true,
@@ -86,13 +88,13 @@ export class CalendarPage implements OnInit, OnDestroy {
 
         this.eventSource.push(newEvent);
       }
-      else if (todo.config.repeat && todo.repeat){
+      else if (todo.properties.config.repeat && todo.properties.repeat){
 
-        let endDate = TodoDate.getDate(todo.repeat.startDate!);
+        let endDate = TodoDate.getDate(todo.properties.repeat.startDate!);
         endDate.setDate(endDate.getDate() );
 
         const newEvent = {
-          title: todo.title,
+          title: todo.properties.title,
           startTime: endDate,
           endTime: endDate,
           allDay: true,
@@ -114,18 +116,18 @@ export class CalendarPage implements OnInit, OnDestroy {
 
 
   findTodosByDate(date : Date){
-    let copyList : Todo[] = [...this.todos!];
-    let eventTodos : Todo[] = [];
+    let copyList : (MainTodo | SubTodo)[] = [...this.todos!];
+    let eventTodos : (MainTodo | SubTodo)[] = [];
 
     while (copyList.length > 0) {
 
-      let todo : Todo = copyList.shift()!;
+      let todo : MainTodo | SubTodo = copyList.shift()!;
 
-      if (todo.config.date && todo.date && this.sameDates(date, new Date(todo.date))){
+      if (todo.properties.config.date && todo.properties.date && this.sameDates(date, new Date(todo.properties.date))){
         
         eventTodos.push(todo);
       }
-      else if (todo.config.repeat && todo.repeat){
+      else if (todo.properties.config.repeat && todo.properties.repeat){
 
         if (TodoDate.isDateInRepeat(todo, date)){
           eventTodos.push(todo);

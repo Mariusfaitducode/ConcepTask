@@ -6,7 +6,7 @@
   <ion-toolbar class="toolbar-parent">
 
     <app-todo-header-top 
-      [mainTodo]="mainTodo" [todo]="todo" 
+      [todo]="todo" 
       [synchronized]="isMainTodoSynchronized()"
       (goBackEmitter)="goBackTodo()"
 
@@ -58,7 +58,7 @@
         ></app-maintodo-subtask>
 
 
-    <app-custom-config *ngIf="this.editMode" [configArray]="this.todo.config" [todo]="this.todo"></app-custom-config>
+    <app-custom-config *ngIf="this.editMode" [configArray]="this.todo.properties.config" [todo]="this.todo"></app-custom-config>
 
 
     <app-todo-description [todo]="todo"></app-todo-description>
@@ -72,7 +72,7 @@
     
     <!-- List sub tasks -->
 
-    <div *ngIf="this.mainTodo.config.subtasks" >
+    <div *ngIf="this.mainTodo.properties.config.subtasks" >
 
       <ion-list class="sub-todo-list item-padding">
 
@@ -88,7 +88,6 @@
         <app-button-add-sub-task *ngIf="editMode" 
           [parentTask]="todo" 
           [modalConfig]="modalConfig" 
-          [todosList]="todos"
           (initializeDragDropListEmitter)="initializeDragDropList()">
         </app-button-add-sub-task>
 

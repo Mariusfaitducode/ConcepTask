@@ -1,15 +1,17 @@
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
-import { Todo } from "../models/todo";
+// import { Todo } from "../models/todo";
 import { Dialog } from "@capacitor/dialog";
 import { TranslateService } from "@ngx-translate/core";
 import { TodoUtils } from "./todo-utils";
+import { MainTodo } from "../models/todo/main-todo";
+import { SubTodo } from "../models/todo/sub-todo";
 
 export class DragAndDrop {
 
 
     // Verify container data actualization
 
-    public static async drop(event: CdkDragDrop<any[]>, mainTodo: Todo, translate : TranslateService) {
+    public static async drop(event: CdkDragDrop<any[]>, mainTodo: MainTodo, translate : TranslateService) {
 
         console.log("Element dropped")
 
@@ -34,7 +36,7 @@ export class DragAndDrop {
             return;
         }
 
-        let item : Todo = event.item.data;
+        let item : SubTodo = event.item.data;
         let parentTodo = event.container.data[newIndex].todo;
     
         console.log("Search parent todo")
@@ -67,13 +69,13 @@ export class DragAndDrop {
 
     // Move item to another parent
 
-    public static async moveItem(item : Todo, parentTodo : Todo, mainTodo : Todo, translate : TranslateService){
+    public static async moveItem(item : SubTodo, parentTodo : SubTodo, mainTodo : MainTodo, translate : TranslateService){
 
-        console.log('SURE TO MOVE : ' + item.title + '  INTO : ' + parentTodo.title)
+        console.log('SURE TO MOVE : ' + item.properties.title + '  INTO : ' + parentTodo.properties.title)
 
         const { value } = await Dialog.confirm({
             title: 'Confirm',
-            message: `${translate.instant('SURE TO MOVE TO')} `+ item.title +` ${translate.instant('INTO')}  `+ parentTodo.title +` ?`,
+            message: `${translate.instant('SURE TO MOVE TO')} `+ item.properties.title +` ${translate.instant('INTO')}  `+ parentTodo.properties.title +` ?`,
             // message: `'SURE TO MOVE TO' `+ item.title +` 'INTO' `+ parentTodo.title +` ?`,
 
           });
@@ -82,8 +84,8 @@ export class DragAndDrop {
       
           if (value) {
 
-            if (parentTodo.config.subtasks !== true){
-                parentTodo.config.subtasks = true;
+            if (parentTodo.properties.config.subtasks !== true){
+                parentTodo.properties.config.subtasks = true;
             }
 
             TodoUtils.deleteTodoById(mainTodo, item.id!);

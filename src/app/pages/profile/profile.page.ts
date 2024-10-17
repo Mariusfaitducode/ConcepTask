@@ -8,7 +8,7 @@ import { TaskConfig } from 'src/app/models/task-config';
 import { TaskModal } from 'src/app/models/task-modal';
 import { Team } from 'src/app/models/team';
 import { TeamInvitation } from 'src/app/models/team-inivitation';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { User, UserSimplified } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
@@ -16,6 +16,9 @@ import { TaskService } from 'src/app/services/task/task.service';
 import { TeamInvitationsService } from 'src/app/services/team/team-invitations.service';
 import { TeamService } from 'src/app/services/team/team.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-profile',
@@ -45,7 +48,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   importModalConfig: ImportExportModal = new ImportExportModal();
   // openImportExportModal: boolean = false;
 
-  todos: Todo[] = [];
+  todos: MainTodo[] = [];
 
   // TODO : remplacer any par le type User with less properties
   teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
@@ -104,7 +107,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     });
 
 
-    this.taskService.getTodos().subscribe((todos: Todo[]) => {
+    this.taskService.getTodos().subscribe((todos: MainTodo[]) => {
 
       if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
 
@@ -244,7 +247,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   //   this.downloadJson(jsonData, 'all_todos.json');
   // }
 
-  exportSingleTodo(todo: Todo) {
+  exportSingleTodo(todo: MainTodo) {
     const jsonData = JSON.stringify(todo, null, 2);
     this.downloadJson(jsonData, `todo_${todo.id}.json`);
   }

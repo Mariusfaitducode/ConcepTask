@@ -1,14 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Todo } from '../../models/todo';
+// import { Todo } from '../../models/todo';
 import { User } from '../../models/user';
 import { UserService } from '../user/user.service';
 // import { TaskService } from '../task.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, QuerySnapshot } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, last, Observable, tap } from 'rxjs';
 import { TodoUtils } from '../../utils/todo-utils';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 import { isEqual } from 'lodash';
+import { RefactorTodos } from 'src/app/utils/refactor-todos';
+import { Todo } from 'src/app/models/todo';
 
 @Injectable({
   providedIn: 'root'
@@ -18,27 +22,60 @@ export class TaskService {
   // Gère les interactions entre l'application et firebase liées aux todos
   // Permet de synchroniser les todos entre le local storage et l'account
 
-  private todosSubject = new BehaviorSubject<Todo[]>([]);
-  todos$: Observable<Todo[]> = this.todosSubject.asObservable();
+  private todosSubject = new BehaviorSubject<MainTodo[]>([]);
+  todos$: Observable<MainTodo[]> = this.todosSubject.asObservable();
 
   private user: User | null = null;
 
   private firestoreSubscription : any;
 
+  private refactorTodos: MainTodo[] = [];
+
 
   constructor(private firestore: AngularFirestore) {
     // Lors de l'initialisation, on récupère les todos du local storage plutôt que de firestore
-    let todos = this.getTodosAsInStorageWithoutSync();
+    let todos : Todo[] = this.getTodosAsInStorageWithoutSync();
+
+    // On refactor les todos
+    this.refactorTodos = RefactorTodos.refactorTodos(todos);
+
+
+
     // On transmet les todos du local storage à l'observable
-    this.todosSubject.next(todos);
+    this.todosSubject.next(this.refactorTodos);
   }
 
 
   // Connection à un compte utilisateur
   // Cette méthode est appelée lors de la connexion réussie d'un utilisateur
   // Cela permet d'initier la synchronisation des todos avec firestore
-  setUserId(user: User) {
+  async setUserId(user: User) {
     this.user = user;
+
+    console.log('setUserId', this.refactorTodos)
+
+    if (this.refactorTodos.length > 0){
+
+      // On set les todos du local storage à la variable refactorTodos
+      localStorage.setItem('todos', JSON.stringify(this.refactorTodos));
+
+      // On vide les todos de firebase
+      await this.firestore.collection(`users/${this.user.uid}/todos`).get().subscribe((querySnapshot: QuerySnapshot<unknown>) => {
+        querySnapshot.docs.forEach((doc:any) => {
+          doc.ref.delete();
+        });
+      });
+
+      // On remplit firestore avec les todos du local storage
+      await this.initializeTodosFromLocalStorageToFirestore(this.user);
+
+
+      console.log('Todos refactored and synced with firestore');
+
+
+    }
+
+
     this.syncTodosWithFirestore();
   }
 
@@ -79,7 +116,7 @@ export class TaskService {
       console.log("CONNEXION Sync With Firestore INITIALIZATION")
 
       // On s'abonne aux changements de la collection des todos de l'utilisateur
-      this.firestoreSubscription = this.firestore.collection<Todo>(`users/${this.user.uid}/todos`)
+      this.firestoreSubscription = this.firestore.collection<MainTodo>(`users/${this.user.uid}/todos`)
         .valueChanges({ idField: 'id' })
         .pipe(
           tap(todosFromFirestore => {
@@ -123,7 +160,7 @@ export class TaskService {
 
   // Met à jour le local storage avec les todos fournis
   // En cas de différence avec les todos actuels du local storage on met à jour le local storage et on notifie les observateurs
-  private updateLocalStorage(todos: Todo[]) {
+  private updateLocalStorage(todos: MainTodo[]) {
 
     // Comparaison profonde de entre les todos actuels et les nouveaux todos
     const localTodos = this.getTodosAsInStorageWithoutSync();
@@ -171,7 +208,7 @@ export class TaskService {
   // CREATE
 
   // Ajoute un todo à la liste des todos
-  addTodo(todo: Todo) {
+  addTodo(todo: MainTodo) {
 
     console.log('SYNC SERVICE ADD TODO : ', todo)
 
@@ -196,7 +233,7 @@ export class TaskService {
 
   // Méthode pour obtenir les todos sous forme d'observable
   // Permet de récupérer la liste des todos, et de s'abonner à chaque changements ou mises à jour
-  getTodos(): Observable<Todo[]> {
+  getTodos(): Observable<MainTodo[]> {
     return this.todos$;
   }
 
@@ -204,7 +241,7 @@ export class TaskService {
   // UPDATE
 
   // Met à jour un todo dans la liste des todos
-  updateTodo(todo: Todo) {
+  updateTodo(todo: MainTodo) {
 
     console.log('SYNC SERVICE UPDATE TODO : ', todo)
 
@@ -247,7 +284,7 @@ export class TaskService {
   // Utiliser notamment pour supprimer un todo enfant
   // Dans ce cas on supprime le todo enfant du todo parent et on met à jour le todo parent
   // TODO : externalise or simplify this system
-  deleteTodoById(mainTodo: Todo, todoToDelete: Todo){
+  deleteTodoById(mainTodo: MainTodo, todoToDelete: SubTodo){
 
     console.log('SYNC SERVICE DELETE TODO BY ID : ', todoToDelete)
 

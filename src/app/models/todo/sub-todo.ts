@@ -24,9 +24,9 @@ export class SubTodo {
     public list: SubTodo[] = [];
 
 
-    constructor() {
+    constructor(id : string = uuidv4()) {
 
-        this.id = uuidv4();
+        this.id = id;
         
         // this.category = SettingsService.getCategories()[0];
         // this.developped = true;

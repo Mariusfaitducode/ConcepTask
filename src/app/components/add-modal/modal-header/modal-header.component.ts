@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Todo } from 'src/app/models/todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+// import { Todo } from 'src/app/models/todo';
 
 @Component({
   selector: 'app-modal-header',
@@ -8,7 +9,7 @@ import { Todo } from 'src/app/models/todo';
 })
 export class ModalHeaderComponent  implements OnInit {
 
-  @Input() subTask! : Todo;
+  @Input() subTask! : SubTodo;
 
   @Output() closeSubTaskEmitter = new EventEmitter();
   @Output() addSubTaskEmitter = new EventEmitter();

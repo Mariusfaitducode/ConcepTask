@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, ItemReorderEventDetail, NavController, Platform } from '@ionic/angular';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { Dialog } from '@capacitor/dialog';
 
 import { CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -24,6 +24,8 @@ import { Capacitor } from '@capacitor/core';
 import { set } from 'firebase/database';
 
 import { isEqual } from 'lodash';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 
 @Component({
   selector: 'app-todo',
@@ -50,12 +52,12 @@ export class TodoPage implements OnInit {
 
   // Todo objects
   // todoSubscription! : Subscription;
-  todos: Todo[] = [];
+  todos: MainTodo[] = [];
 
-  mainTodo! : Todo;
-  todo!: Todo;
+  mainTodo! : MainTodo;
+  todo!: MainTodo | SubTodo;
 
-  initialTodoWithoutModification! : Todo | undefined;
+  initialTodoWithoutModification! : MainTodo | SubTodo | undefined;
 
 
   isNewTodo : boolean = false;
@@ -68,10 +70,10 @@ export class TodoPage implements OnInit {
 
   
   // History for navigation
-  todoHistoryList : Todo[] = [];
+  todoHistoryList : (MainTodo | SubTodo)[] = [];
 
   // Drag and drop need
-  dragAndDropTodosDatas : {todo: Todo, level: number}[][] = [];
+  dragAndDropTodosDatas : {todo: SubTodo, level: number}[][] = [];
 
   // Visualisation
 
@@ -124,7 +126,7 @@ export class TodoPage implements OnInit {
 
       // Récupération des todos de l'utilisateur, lors de la première arrivée sur la page et à chaque actualization des todos
 
-      this.taskService.getTodos().subscribe((todos: Todo[]) =>{
+      this.taskService.getTodos().subscribe((todos: MainTodo[]) =>{
 
         // Si la liste des todos n'est pas vide et que les todos sont les mêmes, on ne fait rien, pas besoin de recharger les todos
 
@@ -140,16 +142,18 @@ export class TodoPage implements OnInit {
         // Si pas d'id dans les paramètres, c'est un nouveau todo
         if (params['id'] == undefined) { 
 
-          this.mainTodo = new Todo(this.todos.length); // Création d'un nouveau todo
+          console.log('NEW TODO')
+
+          this.mainTodo = new MainTodo(); // Création d'un nouveau todo
           this.todo = this.mainTodo;
 
           if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date venant du calendrier
 
             // Configuration à l'avance de la date
-            this.todo.config.date = true;
+            this.todo.properties.config.date = true;
             const formattedDate = TodoDate.getFormattedDateFromYearMonthDay(params['year'], params['month'], params['day'])
-            this.todo.date = formattedDate;
-            document.getElementById('datePicker')?.setAttribute('value', this.todo.date);
+            this.todo.properties.date = formattedDate;
+            document.getElementById('datePicker')?.setAttribute('value', this.todo.properties.date);
           }
 
           this.isNewTodo = true;
@@ -261,7 +265,7 @@ export class TodoPage implements OnInit {
 
     // Permet d'avoir la liste des taches visibles dans l'arbre des todos
     for (let subTask of this.todo.list!) {
-      if (!this.mainTodo.hideDoneTasks || !subTask.isDone){
+      if (!this.mainTodo.hideDoneTasks || !subTask.properties.isDone){
 
         // Pour chaque sous tache du premier niveau, 
         // on ajoute tous les enfants de celui-ci sous forme de liste en ordre descendant (dfs)
@@ -376,7 +380,7 @@ export class TodoPage implements OnInit {
   // NAVIGATION
   // Permet de naviguer entre les différents sous todos de mainTodo
   // S'active lors de la sélection d'un todo dans le composant todo-subtasks-tree ou dans le graph
-  onNewTodoSelected(todo: Todo){
+  onNewTodoSelected(todo: SubTodo | MainTodo){
 
     // Si le todo sélectionné est différent du todo actuel, on le sélectionne
     if (todo !== this.todo){ 
@@ -446,7 +450,7 @@ export class TodoPage implements OnInit {
 
   // Set todo as DONE
   setTodoValidation(isDone: boolean){
-    this.todo.isDone = isDone;
+    this.todo.properties.isDone = isDone;
 
     if (this.user){
       this.userService.setUserTodosTracker(this.user, this.todo);
@@ -472,7 +476,7 @@ export class TodoPage implements OnInit {
 
   // Vérifie qu'il y'ait assez d'informations pour sauvegarder un nouveau todo
   canSaveTodo(){
-    if (this.todo.title == undefined || this.todo.title == "") {
+    if (this.todo.properties.title == undefined || this.todo.properties.title == "") {
       return false;
     }
     return true;
@@ -517,18 +521,18 @@ export class TodoPage implements OnInit {
   // Message de confirmation avant de supprimer un todo
   showConfirmDeleteTodo = async () => {
 
-    console.log("show confirm delete todo", this.todo.title)
+    console.log("show confirm delete todo", this.todo.properties.title)
 
     // Vérifie si l'utilisateur veut vraiment supprimer le todo
     const { value } = await Dialog.confirm({
       title: 'Confirm',
-      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.title +` ?`,
+      message: `${this.translate.instant('DELETE MESSAGE')} `+ this.todo.properties.title +` ?`,
     });
 
     // Si l'utilisateur confirme la suppression, alors on supprime le todo
     if (value) {
 
-      console.log("delete todo", this.todo.title)
+      console.log("delete todo", this.todo.properties.title)
 
       // Suppression du todo par TaskService
       this.taskService.deleteTodoById(this.mainTodo, this.todo);

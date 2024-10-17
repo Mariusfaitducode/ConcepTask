@@ -16,7 +16,7 @@ export class TodoProperties{
 
 
     
-    public config!: TaskConfig;
+    public config: TaskConfig = new TaskConfig();
     
     public title: string = '';
     public category: Category;
@@ -29,6 +29,7 @@ export class TodoProperties{
     public time?: string;
 
     public reminder: boolean = false;
+    public notifId?: number;
 
     public repeat?: {
         startDate?: Date | string,

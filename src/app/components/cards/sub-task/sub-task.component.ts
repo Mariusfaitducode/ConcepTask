@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TaskModal } from 'src/app/models/task-modal';
 import { TodoDate } from 'src/app/utils/todo-date';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
 
 @Component({
   selector: 'app-sub-task',
@@ -21,14 +23,14 @@ export class SubTaskComponent  implements OnInit {
   @Input() mainId!: string;
 
   // @Input() todos?: Todo[];
-  @Input() subTask!: Todo;
+  @Input() subTask!: SubTodo;
 
-  @Output() todoSelectedEmitter = new EventEmitter<Todo>();
+  @Output() todoSelectedEmitter = new EventEmitter<SubTodo>();
 
   @Output() todoDeveloppedEmitter = new EventEmitter();
 
   //Parent of subTask
-  @Input() parentTask!: Todo;
+  @Input() parentTask!: MainTodo | SubTodo;
   
   
   @Input() level: number = 0;
@@ -89,7 +91,7 @@ export class SubTaskComponent  implements OnInit {
 
   developSubTask(event: Event){
     event.stopPropagation();
-    this.subTask.developped = !this.subTask.developped;
+    this.subTask.properties.developped = !this.subTask.properties.developped;
 
     // localStorage.setItem('todos', JSON.stringify(this.todos));
 
@@ -103,7 +105,7 @@ export class SubTaskComponent  implements OnInit {
 
   // Navigation
 
-  onNewTodoSelected(todo: Todo){
+  onNewTodoSelected(todo: SubTodo){
     this.todoSelectedEmitter.emit(todo);
   }
 
@@ -113,7 +115,7 @@ export class SubTaskComponent  implements OnInit {
     this.todoSelectedEmitter.emit(this.subTask);
   }
 
-  modifyTaskOnList(subTask : Todo){
+  modifyTaskOnList(subTask : SubTodo){
 
     this.openModal.openModifyTaskModal(subTask, this.parentTask);
   }
@@ -126,7 +128,7 @@ export class SubTaskComponent  implements OnInit {
 
   numberOfDoneSubTask(){
     if (this.subTask.list) {
-      return this.subTask.list.filter((subTodo : Todo) => subTodo.isDone).length;
+      return this.subTask.list.filter((subTodo : SubTodo) => subTodo.properties.isDone).length;
     }
     return 0;
   }

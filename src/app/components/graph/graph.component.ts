@@ -12,13 +12,16 @@ import { Subscription } from 'rxjs';
 // import { last } from 'rxjs';
 import { GraphConceptor } from 'src/app/models/graph-conceptor';
 import { Settings } from 'src/app/models/settings';
-import { Todo } from 'src/app/models/todo';
+// import { Todo } from 'src/app/models/todo';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TodoColor } from 'src/app/utils/todo-color';
 import { TodoDate } from 'src/app/utils/todo-date';
 
+
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
 // import 'font-awesome';
 
 @Component({
@@ -30,11 +33,11 @@ export class GraphComponent implements OnInit {
 
   // index : string = '';
 
-  @Input() mainTodo! : Todo;
+  @Input() mainTodo! : MainTodo;
 
-  @Input() selectedTodo! : Todo;
+  @Input() selectedTodo! : MainTodo | SubTodo;
 
-  @Output() todoSelectedEmitter = new EventEmitter<Todo>();
+  @Output() todoSelectedEmitter = new EventEmitter<MainTodo | SubTodo>();
 
   minHeight: number = 300; // Hauteur minimale du graphique
   // maxHeight: number = 600; // Hauteur maximale du graphique
@@ -80,7 +83,7 @@ export class GraphComponent implements OnInit {
 
     this.graphData.nodes.push({id: 0, level : 0, todo: this.mainTodo});
 
-    if (this.mainTodo.developped){
+    if (this.mainTodo.properties.developped){
       this.traverseList(this.mainTodo.list, 0);
     }
   }
@@ -379,15 +382,15 @@ export class GraphComponent implements OnInit {
   }
 
   // Fonctions pour ajouter et retirer des sous-tâches
-  addSubTodos(todo: Todo, level: number) {
+  addSubTodos(todo: SubTodo, level: number) {
     for (let subTodo of todo.list!) {
         this.graphData.nodes.push({ id: subTodo.subId, level: level + 1, todo: subTodo});
         this.graphData.links.push({ source: todo.subId, target: subTodo.subId });
-        if (subTodo.developped) this.addSubTodos(subTodo, level + 1);
+        if (subTodo.properties.developped) this.addSubTodos(subTodo, level + 1);
     }
   }
 
-  removeSubTodos(todo: Todo) {
+  removeSubTodos(todo: SubTodo) {
     for (let subTodo of todo.list!) {
         this.graphData.nodes = this.graphData.nodes.filter((node: any) => node.id != subTodo.subId);
         this.graphData.links = this.graphData.links.filter((link: any) => link.target.id != subTodo.subId);

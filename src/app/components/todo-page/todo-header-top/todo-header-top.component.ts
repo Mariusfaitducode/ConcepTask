@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Todo } from 'src/app/models/todo';
+import { MainTodo } from 'src/app/models/todo/main-todo';
+import { SubTodo } from 'src/app/models/todo/sub-todo';
+// import { Todo } from 'src/app/models/todo';
 import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
@@ -10,8 +12,8 @@ import { TaskService } from 'src/app/services/task/task.service';
 })
 export class TodoHeaderTopComponent  implements OnInit {
 
-  @Input() mainTodo!: Todo;
-  @Input() todo!: Todo;
+  // @Input() mainTodo!: MainTodo;
+  @Input() todo!: MainTodo | SubTodo;
   @Output() goBackEmitter = new EventEmitter();
 
   @Input() synchronized: boolean = true;
