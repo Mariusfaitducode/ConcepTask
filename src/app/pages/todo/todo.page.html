@@ -61,6 +61,15 @@
     <app-custom-config *ngIf="this.editMode" [configArray]="this.todo.properties.config" [todo]="this.todo"></app-custom-config>
 
 
+    <div *ngIf="mainTodo.onTeamSpace && team">
+      <ion-label>Team space : {{team.name}}</ion-label>
+    </div>
+
+    <div *ngIf="!mainTodo.onTeamSpace">
+      <ion-label>Profile space</ion-label>
+    </div>
+
+
     <app-todo-description [todo]="todo"></app-todo-description>
 
 

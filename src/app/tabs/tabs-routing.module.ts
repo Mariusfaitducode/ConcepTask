@@ -48,6 +48,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
       },
       {
+        path: 'todo/:teamId',
+        loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
+      },
+      {
         path: 'todo/:day/:month/:year',
         loadChildren: () => import('../pages/todo/todo.module').then( m => m.TodoPageModule)
       },

@@ -25,9 +25,7 @@ export class TeamService {
 
 
   getTeamById(teamId: string): Observable<Team | null> {
-
     return this.firestore.collection('teams').doc(teamId).valueChanges() as Observable<Team | null>;
-
   }
 
   getTeamsOfUser(user: User): Observable<Team[]> {

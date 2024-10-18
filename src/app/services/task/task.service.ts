@@ -34,15 +34,15 @@ export class TaskService {
 
   constructor(private firestore: AngularFirestore) {
     // Lors de l'initialisation, on récupère les todos du local storage plutôt que de firestore
-    let todos : Todo[] = this.getTodosAsInStorageWithoutSync();
+    let todos  = this.getTodosAsInStorageWithoutSync();
 
     // On refactor les todos
-    this.refactorTodos = RefactorTodos.refactorTodos(todos);
+    // this.refactorTodos = RefactorTodos.refactorTodos(todos);
 
 
 
     // On transmet les todos du local storage à l'observable
-    this.todosSubject.next(this.refactorTodos);
+    this.todosSubject.next(todos);
   }
 
 
@@ -54,26 +54,26 @@ export class TaskService {
 
     console.log('setUserId', this.refactorTodos)
 
-    if (this.refactorTodos.length > 0){
+    // if (this.refactorTodos.length > 0){
 
-      // On set les todos du local storage à la variable refactorTodos
-      localStorage.setItem('todos', JSON.stringify(this.refactorTodos));
+    //   // On set les todos du local storage à la variable refactorTodos
+    //   localStorage.setItem('todos', JSON.stringify(this.refactorTodos));
 
-      // On vide les todos de firebase
-      await this.firestore.collection(`users/${this.user.uid}/todos`).get().subscribe((querySnapshot: QuerySnapshot<unknown>) => {
-        querySnapshot.docs.forEach((doc:any) => {
-          doc.ref.delete();
-        });
-      });
+    //   // On vide les todos de firebase
+    //   await this.firestore.collection(`users/${this.user.uid}/todos`).get().subscribe((querySnapshot: QuerySnapshot<unknown>) => {
+    //     querySnapshot.docs.forEach((doc:any) => {
+    //       doc.ref.delete();
+    //     });
+    //   });
 
-      // On remplit firestore avec les todos du local storage
-      await this.initializeTodosFromLocalStorageToFirestore(this.user);
-
-
-      console.log('Todos refactored and synced with firestore');
+    //   // On remplit firestore avec les todos du local storage
+    //   await this.initializeTodosFromLocalStorageToFirestore(this.user);
 
 
-    }
+    //   console.log('Todos refactored and synced with firestore');
+
+
+    // }
 
 
     this.syncTodosWithFirestore();
@@ -154,7 +154,7 @@ export class TaskService {
   // LOCAL STORAGE MANAGEMENT
 
   // Retourne les todos du local storage
-  getTodosAsInStorageWithoutSync(): Todo[]{
+  getTodosAsInStorageWithoutSync(): MainTodo[]{
     return JSON.parse(localStorage.getItem(`todos`) || '[]');
   }
 

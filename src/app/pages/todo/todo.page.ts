@@ -26,6 +26,8 @@ import { set } from 'firebase/database';
 import { isEqual } from 'lodash';
 import { MainTodo } from 'src/app/models/todo/main-todo';
 import { SubTodo } from 'src/app/models/todo/sub-todo';
+import { Team } from 'src/app/models/team';
+import { TeamService } from 'src/app/services/team/team.service';
 
 @Component({
   selector: 'app-todo',
@@ -42,6 +44,7 @@ export class TodoPage implements OnInit {
     private translate : TranslateService,
     private userService : UserService,
     private taskService : TaskService,
+    private teamService : TeamService,
     private settingsService : SettingsService,
     private elRef: ElementRef
   ){}
@@ -56,6 +59,9 @@ export class TodoPage implements OnInit {
 
   mainTodo! : MainTodo;
   todo!: MainTodo | SubTodo;
+
+  // Team
+  team : Team | null = null;
 
   initialTodoWithoutModification! : MainTodo | SubTodo | undefined;
 
@@ -147,6 +153,18 @@ export class TodoPage implements OnInit {
           this.mainTodo = new MainTodo(); // Création d'un nouveau todo
           this.todo = this.mainTodo;
 
+          if (params['teamId']){ // Nouveau todo dans l'espace team
+            this.mainTodo.onTeamSpace = true;
+            this.mainTodo.spaceId = params['teamId'];
+
+            this.teamService.getTeamById(params['teamId']).subscribe((team: Team | null) => {
+              if (team){
+                this.team = team;
+              }
+            });
+
+          }
+
           if (params['day'] && params['month'] && params['year']){ // Nouveau todo avec date venant du calendrier
 
             // Configuration à l'avance de la date
@@ -158,7 +176,6 @@ export class TodoPage implements OnInit {
 
           this.isNewTodo = true;
           this.editMode = true;
-        
         }
         // EXISTING TODO
         // Si un id est présent dans les paramètres, c'est un todo existant
@@ -419,8 +436,8 @@ export class TodoPage implements OnInit {
     // Sinon, on retourne vers la page précédente
     else{
 
-      // Si le todo est nouveau, on demande une confirmation avant de quitter la page
-      if (this.isNewTodo) {
+      // Si le todo est nouveau et que le titre n'est pas vide ou que la config n'est pas vide, on demande une confirmation avant de quitter la page 
+      if (this.isNewTodo && (this.mainTodo.properties.title != "" || JSON.stringify(this.mainTodo.properties.config) != JSON.stringify(new MainTodo().properties.config))) {
 
         this.showCloseConfirm();
       }

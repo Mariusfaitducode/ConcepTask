@@ -94,12 +94,12 @@ export class GraphComponent implements OnInit {
 
     for (let todo of list) {
 
-      if (this.mainTodo.hideDoneTasks && todo.isDone) continue;
+      if (this.mainTodo.hideDoneTasks && todo.properties.isDone) continue;
 
       this.graphData.nodes.push({ id: todo.subId, level: level, todo: todo });
       this.graphData.links.push({ source: todo.parentId, target: todo.subId });
 
-      if (todo.developped && todo.list && todo.list.length > 0) {
+      if (todo.properties.developped && todo.list && todo.list.length > 0) {
         
         this.traverseList(todo.list, level + 1); // Appel récursif pour les sous-listes avec un niveau incrémenté
       }
@@ -219,7 +219,7 @@ export class GraphComponent implements OnInit {
           .data(graph.nodes)
           .enter().append("text")
           .attr("class", "node-label")
-          .text((d: any) => d.todo.title);
+          .text((d: any) => d.todo.properties.title);
 
       return { link, circle, nodeIcon, text };
   }
@@ -300,9 +300,9 @@ export class GraphComponent implements OnInit {
 
   // Propriétés visuelles des éléments du graphique
   nodeColor(d: any) {
-      if (d.todo.isDone) {
+      if (d.todo.properties.isDone) {
           return "var(--is-done-color-node)";
-      } else if (d.todo.config.date && TodoDate.passedDate(d.todo)) {
+      } else if (d.todo.properties.config.date && TodoDate.passedDate(d.todo)) {
           return "var(--ion-color-danger)";
       } else {
           const levelShade = (d.level * 150) + 100;
@@ -317,12 +317,12 @@ export class GraphComponent implements OnInit {
 
   emojiNode(d: any) {
       let emoji = '';
-      if (d.todo.isDone) emoji += '✅';
-      if (d.todo.config.date) emoji += TodoDate.passedDate(d.todo) ? '⏰' : '📅';
-      if (d.todo.config.repeat && d.todo.reminder) emoji += '🔁';
-      if (d.todo.priority == 'high') emoji += '‼️';
-      if (d.todo.priority == 'medium') emoji += '❗';
-      if (d.todo.priority == 'low') emoji += '❕';
+      if (d.todo.properties.isDone) emoji += '✅';
+      if (d.todo.properties.config.date) emoji += TodoDate.passedDate(d.todo) ? '⏰' : '📅';
+      if (d.todo.properties.config.repeat && d.todo.properties.reminder) emoji += '🔁';
+      if (d.todo.properties.priority == 'high') emoji += '‼️';
+      if (d.todo.properties.priority == 'medium') emoji += '❗';
+      if (d.todo.properties.priority == 'low') emoji += '❕';
       return emoji;
   }
 
@@ -368,12 +368,12 @@ export class GraphComponent implements OnInit {
   toggleSubTodos(d: any) {
     for (let subTodo of d.todo.list!) {
         if (this.graphData.nodes.find((node: any) => node.id == subTodo.subId)) {
-            d.todo.developped = false;
+            d.todo.properties.developped = false;
             this.graphData.nodes = this.graphData.nodes.filter((node: any) => node.id != subTodo.subId);
             this.graphData.links = this.graphData.links.filter((link: any) => link.target.id != subTodo.subId);
             this.removeSubTodos(subTodo);
         } else {
-            d.todo.developped = true;
+            d.todo.properties.developped = true;
             this.graphData.nodes.push({ id: subTodo.subId, level: d.level + 1, todo: subTodo,});
             this.graphData.links.push({ source: d.id, target: subTodo.subId });
             if (subTodo.developped) this.addSubTodos(subTodo, d.level + 1);
@@ -452,7 +452,7 @@ export class GraphComponent implements OnInit {
     this.text = this.text.enter().append("text")
         .merge(this.text)
         .attr("class", "node-label")
-        .text((d: any) => d.todo.title);
+        .text((d: any) => d.todo.properties.title);
   }
 
   updateSimulation() {

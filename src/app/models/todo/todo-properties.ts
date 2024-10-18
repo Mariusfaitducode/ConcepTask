@@ -37,21 +37,10 @@ export class TodoProperties{
         delayType?: ScheduleEvery,
     };
 
-    
-
-
     constructor() {
-
-        // this.id = uuidv4();
-        
         this.category = SettingsService.getCategories()[0];
-        // this.developped = true;
 
-        // this.repeat = {};
-
-        // this.config = new TaskConfig(); 
-
-        // this.index = todoListLength;
+        this.repeat = {};
     }
 
 }

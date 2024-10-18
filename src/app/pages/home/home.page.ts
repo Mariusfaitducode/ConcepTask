@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core
 
 import { ItemReorderEventDetail, MenuController } from '@ionic/angular';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // import { Todo } from '../../models/todo';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -26,6 +26,7 @@ export class HomePage implements OnInit, OnDestroy {
   constructor(
     private translate: TranslateService,
     private route : ActivatedRoute,
+    private router : Router,
     private taskService : TaskService,
     private userService : UserService,
     private settingsService : SettingsService,
@@ -170,11 +171,29 @@ export class HomePage implements OnInit, OnDestroy {
     console.log('Select team space', teamId)
 
     this.space = teamId;
+
+    this.results = [...this.todos].filter((todo: MainTodo) => todo.onTeamSpace && todo.spaceId == teamId);
   }
 
   selectProfileSpace(){
     console.log('Select profile space')
 
     this.space = 'profile';
+    this.results = [...this.todos].filter((todo: MainTodo) => !todo.onTeamSpace);
   }
+
+
+  createTodo(){
+    console.log('Create todo')
+
+    if (this.space == 'profile'){
+      this.router.navigate(['/todo']);
+    }
+    else{
+      this.router.navigate(['/todo', {teamId: this.space}]);
+    }
+
+
+  }
+
 }
