@@ -59,7 +59,20 @@ export class HomePage implements OnInit, OnDestroy {
       console.log('Todos loaded in home page:', todos)
       this.todos = todos;
 
-      this.results = [...this.todos].sort((a, b) => a.index - b.index);
+      // On filtre les todos en fonction de l'espace sélectionné
+      this.results = [...this.todos].filter((todo: MainTodo) => {
+        
+        if (this.space == 'profile'){
+          return !todo.onTeamSpace;
+        }
+        else{
+          return todo.onTeamSpace && todo.spaceId == this.space;
+        }
+      });
+
+      this.results = [...this.results].sort((a, b) => a.index - b.index);
+
+
     });
 
     this.userService.getUser().subscribe((user : User | null) => {
