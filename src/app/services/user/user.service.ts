@@ -26,6 +26,8 @@ export class UserService {
 
   private userSubscription: Subscription | null = null;
 
+  // private listUsersSimplifiedSubject = new BehaviorSubject<UserSimplified[]>([]);
+
 
   constructor(
     private afAuth: AngularFireAuth, 
@@ -80,17 +82,33 @@ export class UserService {
   
 
 
-  getUserById(uid: string): Promise<UserSimplified | null> {
-    return this.firestore.doc<User>(`users/${uid}`)
+  private cachedUsers: Map<string, UserSimplified> = new Map();
+
+  getUserSimplifiedById(uid: string): Promise<UserSimplified | null> {
+    // Check if the user is already in the cache
+    if (this.cachedUsers.has(uid)) {
+      console.log('User service : getUserSimplifiedById : user in cache', uid)
+      return Promise.resolve(this.cachedUsers.get(uid) || null);
+    }
+    else{
+      // If not in cache, fetch from Firestore
+      console.log('User service : getUserSimplifiedById : user not in cache', uid)
+      return this.firestore.doc<User>(`users/${uid}`)
       .get()
       .toPromise()
       .then(doc => {
-        if (doc && doc.exists){
+        if (doc && doc.exists) {
           const data = doc.data();
-          return data ? { ...data, avatar: data.avatar || '' } : null;
+          if (data) {
+            const userSimplified: UserSimplified = { ...data, avatar: data.avatar || '' };
+            // Cache the result
+            this.cachedUsers.set(uid, userSimplified);
+            return userSimplified;
+          }
         }
         return null;
       });
+    }
   }
 
 

@@ -6,32 +6,72 @@ import { TaskService } from '../task/task.service';
 import { Team } from 'src/app/models/team';
 import { User } from 'src/app/models/user';
 import { UserService } from '../user/user.service';
-import { finalize, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, finalize, tap, map } from 'rxjs';
 import { TeamInvitation } from 'src/app/models/team-inivitation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamService {
+  private teamsSubject = new BehaviorSubject<Team[]>([]);
+  // teams$: Observable<Team[]> = this.teamsSubject.asObservable();
 
   constructor(
     private afAuth: AngularFireAuth, 
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
-    private taskService : TaskService,
+    private taskService: TaskService,
     private userService: UserService
   ) { }
 
 
 
   getTeamById(teamId: string): Observable<Team | null> {
-    return this.firestore.collection('teams').doc(teamId).valueChanges() as Observable<Team | null>;
+
+    // Check if the team is already in the teamsSubject
+    const cachedTeam = this.teamsSubject.value.find(team => team.id === teamId);
+    if (cachedTeam) {
+      // Create a new Observable that immediately emits the cached team
+      return new Observable(observer => {
+        // Emit the cached team as the next value
+        observer.next(cachedTeam);
+        // Complete the Observable since we only need to emit one value
+        observer.complete();
+      });
+    }
+    else{
+      return this.firestore.collection('teams').doc(teamId).valueChanges() as Observable<Team | null>;
+    }
+
+
+    // return this.firestore.collection('teams').doc(teamId).valueChanges() as Observable<Team | null>;
   }
+  
 
   getTeamsOfUser(user: User): Observable<Team[]> {
+    if (!user.teams || user.teams.length === 0) {
+      return new Observable(observer => {
+        observer.next([]);
+        observer.complete();
+      });
+    }
 
-    return this.firestore.collection('teams', ref => ref.where('usersIds', 'array-contains', user.uid)).valueChanges() as Observable<Team[]>;
-
+    if (this.teamsSubject.value.length != 0){
+      console.log('Teams of user already in cache :', this.teamsSubject.value);
+      return this.teamsSubject.asObservable();
+    }
+    else
+    {
+      console.log('Teams of user not in cache :', user.teams);
+      return this.firestore.collection('teams', ref => ref.where('id', 'in', user.teams))
+      .valueChanges()
+      .pipe(
+        map((response: any) => response as Team[]),
+        tap((teams: Team[]) => {
+          this.teamsSubject.next(teams);
+        })
+      ) as Observable<Team[]>;
+    }
   }
 
 
