@@ -157,11 +157,7 @@ export class TodoPage implements OnInit {
             this.mainTodo.onTeamSpace = true;
             this.mainTodo.spaceId = params['teamId'];
 
-            this.teamService.getTeamById(params['teamId']).subscribe((team: Team | null) => {
-              if (team){
-                this.team = team;
-              }
-            });
+            
 
           }
 
@@ -226,7 +222,17 @@ export class TodoPage implements OnInit {
             }
           }
         }
-        
+
+
+        // Récupération de la team si le todo est dans l'espace team
+        if (this.mainTodo.onTeamSpace){
+          this.teamService.getTeamById(this.mainTodo.spaceId).subscribe((team: Team | null) => {
+            if (team){
+              this.team = team;
+            }
+          });
+        }
+
         // Initialisation pour drag and drop indexs
         // Permet d'actualiser les sous-todos et les niveaux de profondeur pour les drags and drops à chaque actualization des todos
         if (this.todo){
@@ -243,7 +249,7 @@ export class TodoPage implements OnInit {
     });
   }
 
-  // SYNCHRONIZATION
+  // * SYNCHRONIZATION
   // Vérifie si le mainTodo est bien synchronisé avec le localstorage
   // Permet de savoir si l'utilisateur a modifié le todo
   isMainTodoSynchronized(): boolean {
@@ -271,7 +277,7 @@ export class TodoPage implements OnInit {
   }
 
 
-  // DRAG AND DROP SETUP
+  // * DRAG AND DROP SETUP
   // Actualise la liste des sous-todos et les niveaux de profondeur pour les drags and drops
   // Cette liste permet de gérer les données des containers pour les drags and drops
   // Elle est transféré au composant todo-subtasks-tree qui la transmet à [cdkDropListData]
@@ -298,7 +304,7 @@ export class TodoPage implements OnInit {
   }
 
 
-  // SCROLL Tree / Graph management
+  // * SCROLL Tree / Graph management
   // Permet de gérer le scroll de la page et de bloquer le scroll sur la division scroll-step
   // Permet de gérer la hauteur du graphique en fonction du scroll
   onContentScroll(event : any){
@@ -331,7 +337,7 @@ export class TodoPage implements OnInit {
     } 
   }
 
-  // GRAPH HEIGHT CALCULATION
+  // * GRAPH HEIGHT CALCULATION
   // Permet de calculer la hauteur du graphique en fonction du scroll si le mode graph est activé
   calcGraphHeightOnScroll(event : any){
 
@@ -353,9 +359,11 @@ export class TodoPage implements OnInit {
       // Pour éviter de scroller plus loin que nécessaire
       // Si le scroll dépasse la hauteur de la division list-page, on bloque le scroll car on est au bout de la page
       // On soustrait 56 pour garder le ion-segment "tree" ou "graph" visible
-      if (this.scrollTop >= contentHeight- 56) {
+      if (this.scrollTop >= contentHeight - 56) {
         // console.log("scroll stop")
-        event.target.scrollToPoint(0, contentHeight - 56);
+        if (event && event.target && typeof event.target.scrollToPoint === 'function') {
+          event.target.scrollToPoint(0, contentHeight - 56);
+        }
         return;
       }
 
@@ -394,7 +402,7 @@ export class TodoPage implements OnInit {
 
 
 
-  // NAVIGATION
+  // * NAVIGATION
   // Permet de naviguer entre les différents sous todos de mainTodo
   // S'active lors de la sélection d'un todo dans le composant todo-subtasks-tree ou dans le graph
   onNewTodoSelected(todo: SubTodo | MainTodo){
@@ -453,7 +461,7 @@ export class TodoPage implements OnInit {
 
 
 
-  // MANIPULATION DU TODO
+  // * MANIPULATION DU TODO
   // Permet le toggle du mode modification
   modifyTodo(editMode : boolean){ 
 
@@ -476,7 +484,7 @@ export class TodoPage implements OnInit {
 
 
 
-  // AJOUT D'UN NOUVEAU TODO DANS LE STORAGE
+  // * AJOUT D'UN NOUVEAU TODO DANS LE STORAGE
 
   // Permet de sauvegarder un nouveau todo 
   saveNewTodo(){
@@ -532,9 +540,9 @@ export class TodoPage implements OnInit {
   }
 
 
-  // MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
+  // * MESSAGE POP UP : DELETE TODO, CONFIRMATION, CANCEL
 
-  // DELETE TODO
+  // * DELETE TODO
   // Message de confirmation avant de supprimer un todo
   showConfirmDeleteTodo = async () => {
 

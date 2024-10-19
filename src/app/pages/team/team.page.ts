@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { Team } from 'src/app/models/team';
 import { User, UserSimplified } from 'src/app/models/user';
 import { TeamInvitationsService } from 'src/app/services/team/team-invitations.service';
@@ -55,6 +55,7 @@ export class TeamPage implements OnInit {
   constructor(
     private route : ActivatedRoute, 
     private router: Router,
+    private navCtrl: NavController, 
     private alertController: AlertController,
     private userService: UserService,
     private teamService: TeamService,
@@ -104,7 +105,7 @@ export class TeamPage implements OnInit {
 
                 for (let userId of team.usersIds){
   
-                  this.userService.getUserById(userId).then(user => {
+                  this.userService.getUserSimplifiedById(userId).then(user => {
     
                     if (user && !this.teamUsers.includes(user)) this.teamUsers.push(user);
                   });
@@ -113,7 +114,7 @@ export class TeamPage implements OnInit {
                 this.teamInvitationUsers = [];
 
                 for (let userId of team.pendingInvitationsUserIds){
-                  this.userService.getUserById(userId).then(user => {
+                  this.userService.getUserSimplifiedById(userId).then(user => {
                     if (user && !this.teamInvitationUsers.includes(user)) this.teamInvitationUsers.push(user);
                   });
                 }
@@ -142,7 +143,10 @@ export class TeamPage implements OnInit {
   // NAVIGATION
 
   goBackTodo(){
-    this.router.navigate(['/tabs/profile']);
+    // this.router.navigate(['/tabs/profile']);
+    // this.router.navigate(['/profile']);
+
+    this.navCtrl.back();
   }
 
 

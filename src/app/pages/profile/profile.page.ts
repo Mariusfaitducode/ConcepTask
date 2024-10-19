@@ -88,7 +88,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
             for (let userId of team.usersIds){
 
-              this.userService.getUserById(userId).then(user => {
+              this.userService.getUserSimplifiedById(userId).then(user => {
 
                 if (user) newTeam.teamUsers.push(user);
               });

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AddSubTaskToolbarComponent } from './add-sub-task-toolbar.component';
+import { TeamLinkComponent } from './team-link.component';
 
-describe('AddSubTaskToolbarComponent', () => {
-  let component: AddSubTaskToolbarComponent;
-  let fixture: ComponentFixture<AddSubTaskToolbarComponent>;
+describe('TeamLinkComponent', () => {
+  let component: TeamLinkComponent;
+  let fixture: ComponentFixture<TeamLinkComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddSubTaskToolbarComponent ],
+      declarations: [ TeamLinkComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddSubTaskToolbarComponent);
+    fixture = TestBed.createComponent(TeamLinkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

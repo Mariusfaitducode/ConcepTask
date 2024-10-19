@@ -51,6 +51,11 @@
 
     <app-title-category-edit *ngIf="this.editMode" [todo]="this.todo"></app-title-category-edit>
 
+    
+    <app-team-link *ngIf="mainTodo.onTeamSpace && team" [team]="team"></app-team-link>
+    
+
+
     <app-maintodo-subtask
           [todo]="todo" [mainTodo]="mainTodo"
           [hideDoneTasks]="mainTodo.hideDoneTasks"
@@ -61,13 +66,7 @@
     <app-custom-config *ngIf="this.editMode" [configArray]="this.todo.properties.config" [todo]="this.todo"></app-custom-config>
 
 
-    <div *ngIf="mainTodo.onTeamSpace && team">
-      <ion-label>Team space : {{team.name}}</ion-label>
-    </div>
-
-    <div *ngIf="!mainTodo.onTeamSpace">
-      <ion-label>Profile space</ion-label>
-    </div>
+    
 
 
     <app-todo-description [todo]="todo"></app-todo-description>

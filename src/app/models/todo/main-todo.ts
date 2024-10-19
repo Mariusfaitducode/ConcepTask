@@ -35,15 +35,6 @@ export class MainTodo {
     constructor(id : string = uuidv4()) {
 
         this.id = id;
-        
-        // this.category = SettingsService.getCategories()[0];
-        // this.developped = true;
-
-        // this.repeat = {};
-
-        // this.config = new TaskConfig(); 
-
-        // this.index = todoListLength;
     }
 
   }
