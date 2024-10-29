@@ -1,24 +1,115 @@
-
-
-
-.padding-page{
-    padding: 16px;
-}
+// .padding-page{
+//     padding: 16px;
+// }
 
 
 .page-title{
     margin-bottom: 32px;
 }
 
-.pseudo-image{
+
+.profile-image-pseudos{
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+
+    padding: 16px 0px;
 
 }
 
-.pseudo-image img{
-    // width: 33%;
-    // height: 33%;
-    border-radius: 50%;
+.pseudo-image {
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+
+    padding: 0px 16px;
+
+    .image-container {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+
+            ion-icon {
+                color: white;
+                font-size: 24px;
+            }
+        }
+
+        // &:hover .overlay {
+        //     opacity: 1;
+        // }
+    }
 }
+
+.pseudo-input{
+    // padding-left: 16px;
+    width: 100%;
+}
+
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: var(--ion-color-primary);
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.big-button{
+    padding: 12px;
+}
+
+.disabled-form {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+ion-item[disabled] {
+  opacity: 0.5;
+}
+
+ion-button[disabled] {
+  opacity: 0.5;
+}
+
+
+.error-message{
+    color: var(--ion-color-danger);
+    padding-left: 16px;
+}
+

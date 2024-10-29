@@ -15,6 +15,7 @@ import { SettingsService } from '../settings/settings.service';
 import { ToastController } from '@ionic/angular';
 import { AuthentificationResponse } from 'src/app/models/authentification-response';
 import { HandleErrors } from 'src/app/utils/handle-errors';
+import { EmailAuthProvider } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class AuthService {
     );
   }
 
-  // SIGN UP
+  // * SIGN UP
   // Méthode pour s'inscrire avec email et mot de passe et créer un utilisateur dans Firestore
   async signUp(email: string, password: string, pseudo: string): Promise<AuthentificationResponse> {
 
@@ -104,7 +105,7 @@ export class AuthService {
 
 
 
-  // LOGIN
+  // * LOGIN
   // Méthode pour connecter un utilisateur avec email et mot de passe
   async login(email: string, password: string): Promise<AuthentificationResponse> {
 
@@ -147,7 +148,7 @@ export class AuthService {
       if (uid) {
         const userData = await this.userService.loadUserData(uid);
         
-        // CONNEXION
+        // * CONNEXION
         // Si l'utilisateur existe déjà dans Firestore on le récupère 
         if (userData) { 
 
@@ -158,7 +159,7 @@ export class AuthService {
 
           return new AuthentificationResponse(userData, ''); // L'utilisateur existe déjà dans Firestore
         } 
-        // INSCRIPTION
+        // * INSCRIPTION
         // Si l'utilisateur n'existe pas dans Firestore, on le crée avec les informations de google 
         else if (userCredential.user) { 
 
@@ -244,7 +245,7 @@ export class AuthService {
   }
 
 
-  // DECONNEXION
+  // * DECONNEXION
   // Méthode pour déconnecter l'utilisateur
   async logout(): Promise<void> {
 
@@ -256,4 +257,43 @@ export class AuthService {
 
     // this.userService.clearUserData();
   }
+
+
+  // * UPDATE EMAIL OR PASSWORD
+
+
+  // Méthode pour mettre à jour l'email de l'utilisateur
+  async updateUserEmail(newEmail: string): Promise<AuthentificationResponse> {
+    try {
+      const user = await this.afAuth.currentUser;
+      if (!user) {
+        throw new Error('Aucun utilisateur connecté');
+      }
+
+      console.log('newEmail = ', newEmail)
+      console.log('user.email = ', user.email)
+
+      // Ré-authentifier l'utilisateur avant la mise à jour
+      const credential = EmailAuthProvider.credential(user.email!, prompt('Veuillez entrer votre mot de passe') || '');
+      await user.reauthenticateWithCredential(credential);
+
+      // Mettre à jour l'email dans Firebase Authentication
+      await user.updateEmail(newEmail);
+
+      // Mettre à jour l'email dans Firestore
+      const uid = user.uid;
+      await this.firestore.collection('users').doc(uid).update({ email: newEmail });
+
+      // Récupérer les données utilisateur mises à jour
+      const updatedUserData = await this.userService.loadUserData(uid);
+
+      return new AuthentificationResponse(updatedUserData, 'Email mis à jour avec succès');
+    } catch (error) {
+      console.error("Échec de la mise à jour de l'email", error);
+      const errorMessage = HandleErrors.handleFirebaseErrors(error);
+      return new AuthentificationResponse(null, errorMessage);
+    }
+  }
+
+
 }

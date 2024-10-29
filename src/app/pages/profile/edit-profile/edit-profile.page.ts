@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class EditProfilePage implements OnInit {
   constructor(
     private router : Router,
     private userService : UserService,
+    private authService : AuthService
   ) { }
 
   user : User | null = null;
@@ -21,7 +23,21 @@ export class EditProfilePage implements OnInit {
 
   file: File | null = null;
 
+  // EDIT EMAIL
+  editMail = false;
+  newEmail : string = "m@g.com";
+  errorMessageMail : string = "";
+
+  // EDIT PASSWORD
+  editPassword = false;
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  imagePreview: string | ArrayBuffer | null = null;
+
   ngOnInit() {
+
+    this.newEmail = this.user?.email || "";
+
     this.userService.getUser().subscribe(user => {
 
       console.log('Edit profile page : user = ', user)
@@ -41,11 +57,20 @@ export class EditProfilePage implements OnInit {
 
   // FORM
 
-  fileUpload(event : any){
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
 
-    this.file = event.target.files[0];
-
-    // TODO : display file after selecting it
+  fileUpload(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      // Ici, vous pouvez également ajouter la logique pour envoyer le fichier au serveur
+    }
   }
 
 
@@ -78,6 +103,28 @@ export class EditProfilePage implements OnInit {
         // Afficher un message d'erreur ou effectuer une autre action
       }
     }
+  }
+
+
+  validEmail(){
+
+    console.log('newEmail = ', this.newEmail)
+    console.log('user?.email = ', this.user?.email)
+
+    return this.newEmail != "" && this.newEmail != this.user?.email;
+  }
+
+  async modifyEmail(){
+    // const success = await this.userService.updateUserEmail(this.newEmail);
+  
+    const response = await this.authService.updateUserEmail(this.newEmail);
+
+    this.errorMessageMail = response.errorMessage;
+
+    if (response.user){
+      this.router.navigate(['/profile']);
+    }
+
   }
 
 }

@@ -19,51 +19,91 @@
 
     <!-- <app-user-card [user]="user"></app-user-card> -->
 
-    <div class="pseudo-image">
+    <ion-list [class.disabled-form]="editMail">
 
-      <img [src]="user.avatar" width="100px" height="100px" alt="" >
 
-      <ion-item>
+      <div class="profile-image-pseudos">
 
-          <input type="file" accept="image/*" (change)="fileUpload($event)" />
-        
-      </ion-item>
-      
-    </div>
+        <div class="pseudo-image">
+          <div class="image-container" (click)="triggerFileInput()">
+            <img [src]="imagePreview || user.avatar" alt="Profile picture">
+            <div class="overlay">
+              <ion-icon name="pencil"></ion-icon>
+            </div>
+          </div>
+          <input #fileInput type="file" accept="image/*" (change)="fileUpload($event)" style="display: none;" />
+        </div>
+    
+        <ion-item class="item-margin pseudo-input">
+          <ion-input type="text" 
+          label="Pseudo" labelPlacement="floating" aria-label="Pseudo" 
+          [(ngModel)]="user.pseudo"></ion-input>
+        </ion-item>
 
-    <ion-list>
-      <!-- <ion-item>
-        <ion-input type="text" 
-        label="Prénom" labelPlacement="floating" aria-label="Pseudo" 
-        [(ngModel)]="user.firstname"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input type="text" 
-        label="Nom" labelPlacement="floating" aria-label="Pseudo" 
-        [(ngModel)]="user.lastname"></ion-input>
-      </ion-item> -->
-
-      <ion-item>
-        <ion-input type="text" 
-        label="Pseudo" labelPlacement="floating" aria-label="Pseudo" 
-        [(ngModel)]="user.pseudo"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input type="text" 
-        label="Email" labelPlacement="floating" aria-label="Email" 
-        [(ngModel)]="user.email"></ion-input>
-      </ion-item>
-      
-      
-    </ion-list>
+      </div>
 
     
 
+    
 
-    <ion-button [disabled]="!canModifyUser()" (click)="modifyUser()" expand="block" class="big-button">Modifier</ion-button>
+      <ion-item class="item-margin" [disabled]="editMail">
+        <ion-input type="text" 
+        label="Bio" labelPlacement="floating" aria-label="Email" 
+        [(ngModel)]="user.bio"></ion-input>
+      </ion-item>
 
+    </ion-list>
+
+
+
+      <ion-item class="item-margin">
+        <ion-input type="text"
+          [label]="editMail ? 'Changer email' : 'Email'"
+          labelPlacement="floating" 
+          aria-label="Email"
+          [ngModel]="editMail ? newEmail : user.email"
+          (ngModelChange)="newEmail = $event"
+          [readonly]="!editMail">
+        </ion-input>
+
+        
+
+        <ion-button slot="end" color="medium" (click)="editMail = !editMail">
+          {{editMail ? 'Annuler' : 'Modifier'}}
+        </ion-button>
+      </ion-item>
+
+      <!-- <div *ngIf="editMail">
+        <ion-input type="text" 
+        label="Nouvel Email" labelPlacement="floating" aria-label="Nouvel Email" 
+        [(ngModel)]="newEmail"></ion-input>
+      </div> -->
+
+    <div *ngIf="errorMessageMail" class="error-message">{{errorMessageMail}}</div>
+
+    <ion-button *ngIf="editMail" [disabled]="!validEmail()" (click)="modifyEmail()" class="big-button">Sauvegarder</ion-button>
+
+
+      
+
+
+
+
+
+      <ion-item class="item-margin" [disabled]="editMail">
+        <ion-input type="password" 
+        label="Password" labelPlacement="floating" aria-label="Status" value="************" readonly></ion-input>
+
+        <ion-button slot="end" color="medium" (click)="{}" [disabled]="editMail">
+          Modifier
+        </ion-button>
+      </ion-item>
+    
+
+    <!-- <ion-button [disabled]="!canModifyUser() || editMail" (click)="modifyUser()" expand="block" class="big-button">Sauvegarder</ion-button> -->
+
+    <ion-item class="item-margin" [disabled]="editMail">
+      <ion-label>Supprimer</ion-label>
+    </ion-item>
   </div>
 </ion-content>
-

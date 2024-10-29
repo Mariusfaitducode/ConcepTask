@@ -7,6 +7,7 @@ export class User{
     uid: string = "";
     
     pseudo: string = "";
+    bio?: string = "";
     email: string = "";
 
     avatar?: string = "";
@@ -23,9 +24,9 @@ export class User{
     // firstname?: string = "";
     // lastname?: string = "";
 
-    password?: string = "";
-    status?: string = "test";
-    phone?: string = "test";
+    // password?: string = "";
+    // status?: string = "test";
+    // phone?: string = "test";
 }
 
 

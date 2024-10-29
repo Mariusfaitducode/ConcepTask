@@ -28,6 +28,10 @@ export class ConnexionPage implements OnInit {
 
   errorMessage : string = "";
 
+
+  pseudo : string = "";
+  email : string = "";
+  password : string = "";
   
   passwordConfirmation : string = "";
 
@@ -77,19 +81,21 @@ export class ConnexionPage implements OnInit {
     }
   }
 
+  // TODO : Vérifier si l'email est valide
   validLogInForm(){
-    return this.newUser.email != "" && this.newUser.password != "";
+    return this.email != "" && this.password != "";
   }
 
+  // TODO : Vérifier si l'email est valide
   validSignUpForm(){
-    return this.newUser.pseudo != "" && this.newUser.email != "" && this.newUser.password != "";
+    return this.pseudo != "" && this.email != "" && this.password != "";
   }
 
   validPassword(){
 
-    console.log(this.newUser.password?.length);
+    console.log(this.password?.length);
 
-    return this.newUser.password!.length >= 6 && this.newUser.password == this.passwordConfirmation;
+    return this.password!.length >= 6 && this.password == this.passwordConfirmation;
   }
 
   // AUTHENTIFICATION
@@ -105,7 +111,7 @@ export class ConnexionPage implements OnInit {
 
   async signUp(){
 
-    const response = await this.authService.signUp(this.newUser.email, this.newUser.password!, this.newUser.pseudo);
+    const response = await this.authService.signUp(this.email, this.password!, this.pseudo);
     
     this.userConnexionResult(response);
   }
@@ -114,7 +120,7 @@ export class ConnexionPage implements OnInit {
   async logIn(){
     console.log(this.newUser);
 
-    const response = await this.authService.login(this.newUser.email, this.newUser.password!);
+    const response = await this.authService.login(this.email, this.password!);
 
     this.userConnexionResult(response);
   }
@@ -155,7 +161,7 @@ export class ConnexionPage implements OnInit {
   switchConnexionInscription(){
     this.isSignUpPage = !this.isSignUpPage;
 
-    this.newUser.password = "";
+    this.password = "";
 
     if (this.isSignUpPage){
       this.connexionText = "Inscription";
