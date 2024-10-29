@@ -13,7 +13,7 @@ import { map, Observable } from 'rxjs';
 import { Settings } from 'src/app/models/settings';
 import { SettingsService } from '../settings/settings.service';
 import { ToastController } from '@ionic/angular';
-import { AuthentificationResponse } from 'src/app/models/authentification-response';
+import { AuthentificationResponse } from 'src/app/models/firebase-response';
 import { HandleErrors } from 'src/app/utils/handle-errors';
 import { EmailAuthProvider } from 'firebase/auth';
 
@@ -46,7 +46,7 @@ export class AuthService {
     // On utilise try/catch pour gérer les erreurs
     try{
       // Vérifier si le pseudo est unique
-      const pseudoExists = await this.checkIfPseudoAlreadyExists(pseudo);
+      const pseudoExists = await this.userService.checkIfPseudoAlreadyExists(pseudo);
 
       // Si le pseudo existe déjà, on renvoie une erreur
       if (pseudoExists) {
@@ -93,15 +93,7 @@ export class AuthService {
   }
 
 
-  // Méthode pour vérifier si le pseudo existe déjà
-  private async checkIfPseudoAlreadyExists(pseudo: string): Promise<boolean> {
-
-    const usersRef = this.firestore.collection('users', ref => ref.where('pseudo', '==', pseudo));
-    const result = await usersRef.get().toPromise();
-
-    // On renvoie true si le pseudo existe déjà
-    return  result != undefined && !result.empty;
-  }
+  
 
 
 
@@ -290,6 +282,35 @@ export class AuthService {
       return new AuthentificationResponse(updatedUserData, 'Email mis à jour avec succès');
     } catch (error) {
       console.error("Échec de la mise à jour de l'email", error);
+      const errorMessage = HandleErrors.handleFirebaseErrors(error);
+      return new AuthentificationResponse(null, errorMessage);
+    }
+  }
+
+
+  async updateUserPassword(newPassword: string): Promise<AuthentificationResponse> {
+    try {
+      const user = await this.afAuth.currentUser;
+
+      if (!user) {
+        throw new Error('Aucun utilisateur connecté');
+      }
+
+      // Ré-authentifier l'utilisateur avant la mise à jour
+      const credential = EmailAuthProvider.credential(user.email!, prompt('Veuillez entrer votre mot de passe') || '');
+      await user.reauthenticateWithCredential(credential);
+
+      // Mettre à jour l'email dans Firebase Authentication
+      await user.updatePassword(newPassword);
+
+      // Récupérer les données utilisateur mises à jour
+      const updatedUserData = await this.userService.loadUserData(user.uid);
+
+      return new AuthentificationResponse(updatedUserData, 'Password mis à jour avec succès');
+
+    }
+    catch (error) {
+      console.error("Échec de la mise à jour du mot de passe", error);
       const errorMessage = HandleErrors.handleFirebaseErrors(error);
       return new AuthentificationResponse(null, errorMessage);
     }

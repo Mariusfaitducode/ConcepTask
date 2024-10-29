@@ -19,8 +19,7 @@
 
     <!-- <app-user-card [user]="user"></app-user-card> -->
 
-    <ion-list [class.disabled-form]="editMail">
-
+    <ion-list [class.disabled-form]="editMode !== null">
 
       <div class="profile-image-pseudos">
 
@@ -39,70 +38,65 @@
           label="Pseudo" labelPlacement="floating" aria-label="Pseudo" 
           [(ngModel)]="user.pseudo"></ion-input>
         </ion-item>
-
       </div>
 
-    
 
-    
-
-      <ion-item class="item-margin" [disabled]="editMail">
+      <ion-item class="item-margin">
         <ion-input type="text" 
         label="Bio" labelPlacement="floating" aria-label="Email" 
         [(ngModel)]="user.bio"></ion-input>
       </ion-item>
 
+
+    <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+
+    <ion-button [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()" expand="block" class="big-button">Sauvegarder</ion-button>
+
+
     </ion-list>
 
+    <ion-item class="item-margin" [disabled]="editMode === 'password'">
+      <ion-input type="text"
+        [label]="editMode === 'mail' ? 'Changer email' : 'Email'"
+        labelPlacement="floating" 
+        aria-label="Email"
+        [ngModel]="editMode === 'mail' ? newEmail : user.email"
+        (ngModelChange)="newEmail = $event"
+        [readonly]="editMode !== 'mail'">
+      </ion-input>
+
+      <ion-button slot="end" color="medium" (click)="editMailOrPassword('mail')">
+        {{editMode === 'mail' ? 'Annuler' : 'Modifier'}}
+      </ion-button>
+    </ion-item>
+
+    <div *ngIf="editMode === 'mail' && errorMessageMail" class="error-message">{{errorMessageMail}}</div>
+
+    <ion-button *ngIf="editMode === 'mail'" [disabled]="!validEmail()" (click)="modifyEmail()" class="big-button">Sauvegarder</ion-button>
 
 
-      <ion-item class="item-margin">
-        <ion-input type="text"
-          [label]="editMail ? 'Changer email' : 'Email'"
-          labelPlacement="floating" 
-          aria-label="Email"
-          [ngModel]="editMail ? newEmail : user.email"
-          (ngModelChange)="newEmail = $event"
-          [readonly]="!editMail">
-        </ion-input>
+    <ion-item class="item-margin" [disabled]="editMode === 'mail'">
+      <ion-input type="password"
+        [label]="editMode === 'password' ? 'Changer mot de passe' : 'Mot de passe'"
+        labelPlacement="floating"
+        aria-label="Password" 
+        [ngModel]="editMode === 'password' ? newPassword : '************'"
+        (ngModelChange)="newPassword = $event"
+        [readonly]="editMode !== 'password'">
+      </ion-input>
 
-        
+      <ion-button slot="end" color="medium" (click)="editMailOrPassword('password')">
+        {{editMode === 'password' ? 'Annuler' : 'Modifier'}}
+      </ion-button>
+    </ion-item>
 
-        <ion-button slot="end" color="medium" (click)="editMail = !editMail">
-          {{editMail ? 'Annuler' : 'Modifier'}}
-        </ion-button>
-      </ion-item>
+    <div *ngIf="editMode === 'password' && errorMessagePassword" class="error-message">{{errorMessagePassword}}</div>
 
-      <!-- <div *ngIf="editMail">
-        <ion-input type="text" 
-        label="Nouvel Email" labelPlacement="floating" aria-label="Nouvel Email" 
-        [(ngModel)]="newEmail"></ion-input>
-      </div> -->
-
-    <div *ngIf="errorMessageMail" class="error-message">{{errorMessageMail}}</div>
-
-    <ion-button *ngIf="editMail" [disabled]="!validEmail()" (click)="modifyEmail()" class="big-button">Sauvegarder</ion-button>
-
-
-      
-
-
-
-
-
-      <ion-item class="item-margin" [disabled]="editMail">
-        <ion-input type="password" 
-        label="Password" labelPlacement="floating" aria-label="Status" value="************" readonly></ion-input>
-
-        <ion-button slot="end" color="medium" (click)="{}" [disabled]="editMail">
-          Modifier
-        </ion-button>
-      </ion-item>
+    <ion-button *ngIf="editMode === 'password'" [disabled]="!newPassword" (click)="modifyPassword()" class="big-button">Sauvegarder</ion-button>
     
 
-    <!-- <ion-button [disabled]="!canModifyUser() || editMail" (click)="modifyUser()" expand="block" class="big-button">Sauvegarder</ion-button> -->
 
-    <ion-item class="item-margin" [disabled]="editMail">
+    <ion-item class="item-margin" [disabled]="editMode !== null">
       <ion-label>Supprimer</ion-label>
     </ion-item>
   </div>

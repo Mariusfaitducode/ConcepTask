@@ -12,6 +12,8 @@ import { SettingsService } from '../settings/settings.service';
 // import { Todo } from 'src/app/models/todo';
 import { MainTodo } from 'src/app/models/todo/main-todo';
 import { SubTodo } from 'src/app/models/todo/sub-todo';
+import { HandleErrors } from 'src/app/utils/handle-errors';
+import { RequestResponse } from 'src/app/models/firebase-response';
 
 // import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -118,6 +120,8 @@ export class UserService {
   }
   
 
+  // TODO : if user is connected, get user data from userSubject, else get user data from firestore
+
   // Charger les données utilisateur après connexion ou inscription
   async loadUserData(uid: string): Promise<User | null> {
 
@@ -134,30 +138,42 @@ export class UserService {
   }
 
 
+  // TODO : check if pseudo already exists optimize, HandleError return error message
 
-  async updateUser(user: User){
+  async updateUser(newUser: User): Promise<RequestResponse>{
     try {
       if (this.userRef){
-        await this.userRef.update(user);
+
+        // if (newUser.pseudo !== this.userSubject.value?.pseudo){
+        //   console.log('check if pseudo already exists')
+        const pseudoExists = await this.checkIfPseudoAlreadyExists(newUser.pseudo);
+        if (pseudoExists) {
+          throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+        }
+        // }
+
+        await this.userRef.update(newUser);
       // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
       
-        return true;
+        return new RequestResponse(true, '');
       }
-      return false;
-    } catch (error) {
+      return new RequestResponse(false, 'UserRef does not exist');
+    } 
+    catch (error) {
       console.error('Error updating user:', error);
-      return false;
+      let errorMessage = HandleErrors.handleFirebaseErrors(error);
+      return new RequestResponse(false, errorMessage);
     }
   }
 
 
   // Met à jour l'utilisateur dans Firestore, y compris la photo de profil
-  async updateUserAvatar(user: User, profilePictureFile: File): Promise<boolean> {
+  async updateUserAvatar(user: User, profilePictureFile: File): Promise<RequestResponse> {
     try {
       // Check if a file is provided
       if (!profilePictureFile) {
         console.log('No file to upload');
-        return false;
+        return new RequestResponse(false, 'No file to upload');
       }
 
       const filePath = `profile_pictures/${user.uid}`;
@@ -165,7 +181,7 @@ export class UserService {
       const uploadTask = this.storage.upload(filePath, profilePictureFile);
 
       // Return a promise that resolves with the success status
-      return new Promise<boolean>((resolve) => {
+      return new Promise<RequestResponse>((resolve) => {
         uploadTask.snapshotChanges().pipe(
           finalize(async () => {
             try {
@@ -176,15 +192,15 @@ export class UserService {
               // Update the user in the database
               if (this.userRef) {
                 await this.userRef.update(user);
-                resolve(true);
+                resolve(new RequestResponse(true, ''));
               } else {
                 console.error('UserRef does not exist');
-                resolve(false);
+                resolve(new RequestResponse(false, 'UserRef does not exist'));
               }
             } catch (error) {
               console.error('Error getting download URL or updating user:', error);
               // Resolve with false if there's an error
-              resolve(false);
+              resolve(new RequestResponse(false, 'Error getting download URL or updating user'));
             }
           })
         ).subscribe();
@@ -192,7 +208,8 @@ export class UserService {
     } catch (error) {
       // Log any errors that occur during the process
       console.error('Error updating user avatar:', error);
-      return false;
+      let errorMessage = HandleErrors.handleFirebaseErrors(error);
+      return new RequestResponse(false, errorMessage);
     }
   }
 
@@ -270,5 +287,16 @@ export class UserService {
         });
       }
     }
+  }
+
+
+  // Méthode pour vérifier si le pseudo existe déjà
+  public async checkIfPseudoAlreadyExists(pseudo: string): Promise<boolean> {
+
+    const usersRef = this.firestore.collection('users', ref => ref.where('pseudo', '==', pseudo));
+    const result = await usersRef.get().toPromise();
+
+    // On renvoie true si le pseudo existe déjà
+    return  result != undefined && !result.empty;
   }
 }

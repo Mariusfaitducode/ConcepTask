@@ -11,3 +11,13 @@ export class AuthentificationResponse{
         this.errorMessage = errorMessage;
     }
 }
+
+export class RequestResponse{
+    success: boolean;
+    errorMessage: string;
+
+    constructor(success: boolean, errorMessage: string){
+        this.success = success;
+        this.errorMessage = errorMessage;
+    }
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RequestResponse } from 'src/app/models/firebase-response';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -12,6 +13,7 @@ import { UserService } from 'src/app/services/user/user.service';
 export class EditProfilePage implements OnInit {
 
   constructor(
+    private route : ActivatedRoute,
     private router : Router,
     private userService : UserService,
     private authService : AuthService
@@ -23,28 +25,53 @@ export class EditProfilePage implements OnInit {
 
   file: File | null = null;
 
+  errorMessage : string = "";
+
   // EDIT EMAIL
-  editMail = false;
-  newEmail : string = "m@g.com";
+  editMode : null | "mail" | "password" = null;
+
+
+  newEmail : string = "";
   errorMessageMail : string = "";
 
   // EDIT PASSWORD
-  editPassword = false;
+  // editPassword = false;
+  newPassword : string = "";
+  errorMessagePassword : string = "";
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   imagePreview: string | ArrayBuffer | null = null;
 
   ngOnInit() {
 
-    this.newEmail = this.user?.email || "";
 
-    this.userService.getUser().subscribe(user => {
+    this.route.params.subscribe(params => {
 
-      console.log('Edit profile page : user = ', user)
+      // Reset error messages and form fields on page refresh
+      this.errorMessage = "";
+      this.errorMessageMail = "";
+      this.errorMessagePassword = "";
 
-      this.user = user;
-      this.lastUser = JSON.parse(JSON.stringify(user));
-    });
+      this.newEmail = "";
+      this.newPassword = "";
+
+      // Reset edit mode
+      this.editMode = null;
+
+      // Reset file upload
+      this.file = null;
+      this.imagePreview = null;
+
+      this.userService.getUser().subscribe(user => {
+
+        console.log('Edit profile page : user = ', user)
+  
+        this.user = JSON.parse(JSON.stringify(user));
+        this.lastUser = JSON.parse(JSON.stringify(user));
+      });
+    })
+
+    
   }
 
 
@@ -62,20 +89,20 @@ export class EditProfilePage implements OnInit {
   }
 
   fileUpload(event: any) {
-    const file = event.target.files[0];
-    if (file) {
+    this.file = event.target.files[0];
+    if (this.file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imagePreview = e.target.result;
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.file);
       // Ici, vous pouvez également ajouter la logique pour envoyer le fichier au serveur
     }
   }
 
 
   canModifyUser(){
-    return this.user != null && this.lastUser != null && JSON.stringify(this.user) != JSON.stringify(this.lastUser) || this.file != null;
+    return this.user != null && this.lastUser != null && (JSON.stringify(this.user) != JSON.stringify(this.lastUser) || this.imagePreview != null);
   }
 
   async modifyUser(){
@@ -84,35 +111,50 @@ export class EditProfilePage implements OnInit {
 
       // await this.userService.updateUser(this.user, this.file);
 
-      let success = false
+      let response : RequestResponse = new RequestResponse(false, '');
 
       if (this.file != null){
-        success = await this.userService.updateUserAvatar(this.user, this.file);
+        response = await this.userService.updateUserAvatar(this.user, this.file);
       }
-      else{
-        success = await this.userService.updateUser(this.user);
+      else if (JSON.stringify(this.user) != JSON.stringify(this.lastUser)){
+        response = await this.userService.updateUser(this.user);
       }
 
       // const success = await this.userService.updateUser(this.user, this.file);
 
-      if (success) {
+      if (response.success) {
         console.log('User profile updated successfully');
         this.router.navigate(['/profile']); // Naviguer vers la page de profil
       } else {
         console.log('Failed to update profile');
+
+        this.errorMessage = response.errorMessage;
         // Afficher un message d'erreur ou effectuer une autre action
       }
     }
   }
 
 
+  editMailOrPassword(editMode : null | "mail" | "password"){
+
+    this.errorMessageMail = "";
+    this.errorMessagePassword = "";
+    this.newEmail = '';
+    this.newPassword = '';
+
+    if (this.editMode === editMode){
+      this.editMode = null;
+    }
+    else{
+      this.editMode = editMode
+    }
+  }
+
+
   validEmail(){
-
-    console.log('newEmail = ', this.newEmail)
-    console.log('user?.email = ', this.user?.email)
-
     return this.newEmail != "" && this.newEmail != this.user?.email;
   }
+
 
   async modifyEmail(){
     // const success = await this.userService.updateUserEmail(this.newEmail);
@@ -124,7 +166,17 @@ export class EditProfilePage implements OnInit {
     if (response.user){
       this.router.navigate(['/profile']);
     }
+  }
 
+
+  async modifyPassword(){
+    const response = await this.authService.updateUserPassword(this.newPassword);
+
+    this.errorMessagePassword = response.errorMessage;
+
+    if (response.user){
+      this.router.navigate(['/profile']);
+    }
   }
 
 }
