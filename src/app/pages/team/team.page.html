@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Nouvelle équipe</ion-title>
+    <ion-title>{{ team?.name || 'Nouvelle équipe' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -31,36 +31,42 @@
 
   <div class="team-header">
 
-    <div class="team-image">
 
-      <img [src]="team.image" width="100px" height="100px" alt="" >
+    <div class="team-image-name">
 
-      
+      <div class="team-image">
+        <div class="image-container" (click)="triggerFileInput()">
+          <img [src]="imagePreview || team.image" alt="Profile picture">
+          <div class="overlay">
+            <ion-icon name="pencil"></ion-icon>
+          </div>
+        </div>
+        <input #fileInput type="file" accept="image/*" (change)="fileUpload($event)" style="display: none;" />
+      </div>
+  
+      <ion-item class="item-margin name-input">
+        <ion-input type="text" 
+        label="Team name" labelPlacement="floating" aria-label="Team name" 
+        [(ngModel)]="team!.name"></ion-input>
+      </ion-item>
     </div>
-
-
-    <div class="team-name">
-
-      <!-- <ion-item> -->
-        <ion-input [(ngModel)]="team!.name" placeholder="Nom de l'équipe"></ion-input>
-      <!-- </ion-item> -->
-
-      <input type="file" accept="image/*" (change)="fileUpload($event)" />
-
-    </div>
-
   </div>
 
 
-  <div>
+  <div class="team-actions" *ngIf="!isNewTeam">
+    <ion-button class="team-action-button" *ngIf="team?.adminId === user?.uid" color="danger" (click)="deleteTeam()">
+      <ion-icon slot="start" name="trash"></ion-icon>
+      Supprimer l'équipe
+    </ion-button>
 
-    <!-- <ion-button></ion-button> -->
-
-
+    <ion-button *ngIf="team?.adminId !== user?.uid" color="medium" (click)="leaveTeam()">
+      <ion-icon slot="start" name="exit"></ion-icon>
+      Quitter l'équipe
+    </ion-button>
   </div>
 
 
-  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchMembers()" placeholder="Inviter un utilisateur"></ion-searchbar>
+  <ion-searchbar [disabled]="isNewTeam" [(ngModel)]="searchTerm" (ionInput)="searchMembers()" placeholder="Inviter un utilisateur"></ion-searchbar>
 
 
   <ion-list>
@@ -98,6 +104,11 @@
 
 
   <div class="team-members-title">Membres</div>
+
+  <div *ngIf="isNewTeam" class="team-members-warning">
+
+    Veuillez d'abord créer l'équipe pour ensuite inviter des utilisateurs
+  </div>
 
   <ion-list>
     <ion-item *ngFor="let member of teamUsers">

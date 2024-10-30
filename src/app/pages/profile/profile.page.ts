@@ -101,7 +101,7 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.teamInvitationsService.getTeamInvitationsOfUser(this.user.uid).subscribe((invitations: TeamInvitation[]) => {
           
           console.log('ProfilePage : invitations = ', invitations);
-          this.teamInvitations = invitations;
+          this.teamInvitations = invitations.filter(invitation => invitation.teamName != null && invitation.teamName != "");
         });
       }
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { Team } from 'src/app/models/team';
@@ -47,6 +47,9 @@ export class TeamPage implements OnInit {
 
   file: File | null = null;
   fileUrl: string = '';
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  imagePreview: string | ArrayBuffer | null = null;
 
 
   isNewTeam: boolean = false;
@@ -150,13 +153,21 @@ export class TeamPage implements OnInit {
   }
 
 
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
 
-  fileUpload(event : any){
 
+  fileUpload(event: any) {
     this.file = event.target.files[0];
-    // this.fileUrl = URL.createObjectURL(this.file);
-
-    // TODO : display file after selecting it
+    if (this.file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(this.file);
+      // Ici, vous pouvez également ajouter la logique pour envoyer le fichier au serveur
+    }
   }
 
 
@@ -251,4 +262,27 @@ export class TeamPage implements OnInit {
 
   }
 
+
+  async deleteTeam(){
+    const response = await this.teamService.deleteTeam(this.team!);
+    if (response.success){
+      this.router.navigate(['/profile']);
+    }
+    else{
+      console.log('Error deleting team');
+    }
+  }
+
+  async leaveTeam(){
+    const response = await this.teamService.leaveTeam(this.team!, this.user!);
+    
+    if (response.success){
+      this.router.navigate(['/profile']);
+    }
+    else{
+      console.log('Error leaving team');
+    }
+  }
+
 }
+

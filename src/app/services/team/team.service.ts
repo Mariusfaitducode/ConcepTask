@@ -8,6 +8,7 @@ import { User } from 'src/app/models/user';
 import { UserService } from '../user/user.service';
 import { BehaviorSubject, Observable, finalize, tap, map } from 'rxjs';
 import { TeamInvitation } from 'src/app/models/team-inivitation';
+import { RequestResponse } from 'src/app/models/firebase-response';
 
 @Injectable({
   providedIn: 'root'
@@ -149,6 +150,9 @@ export class TeamService {
   updateTeam(team: Team){
 
     try{
+
+      team = JSON.parse(JSON.stringify(team));
+
       this.firestore.collection('teams').doc(team.id).update(team);
       return true;
     }
@@ -231,6 +235,41 @@ export class TeamService {
   }
 
 
- 
+  async deleteTeam(team: Team): Promise<RequestResponse> {
+    try{
+      await this.firestore.collection('teams').doc(team.id).delete();
+      
+      return new RequestResponse(true, 'Team deleted successfully');
+    }
+    catch(error){
+      console.error('Error deleting team:', error);
+      return new RequestResponse(false, 'Error deleting team');
+    }
+  }
+
+
+  async leaveTeam(team: Team, user: User): Promise<RequestResponse> {
+    try {
+
+      // Remove user from team members list
+      if (team.usersIds) {
+        team.usersIds = team.usersIds.filter(id => id !== user.uid);
+      }
+
+      await this.firestore.collection('teams').doc(team.id).update(team);
+
+      // Remove team from user's teams list
+      if (user.teams) {
+        user.teams = user.teams.filter(id => id !== team.id);
+      }
+
+      this.userService.updateUser(user);
+
+      return new RequestResponse(true, 'Successfully left team');
+    } catch (error) {
+      console.error('Error leaving team:', error);
+      return new RequestResponse(false, 'Error leaving team');
+    }
+  }
 
 }

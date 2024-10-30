@@ -146,10 +146,10 @@ export class UserService {
 
         // if (newUser.pseudo !== this.userSubject.value?.pseudo){
         //   console.log('check if pseudo already exists')
-        const pseudoExists = await this.checkIfPseudoAlreadyExists(newUser.pseudo);
-        if (pseudoExists) {
-          throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-        }
+        // const pseudoExists = await this.checkIfPseudoAlreadyExists(newUser.pseudo);
+        // if (pseudoExists) {
+        //   throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+        // }
         // }
 
         await this.userRef.update(newUser);
