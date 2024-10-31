@@ -69,6 +69,7 @@ export class TeamService {
       .pipe(
         map((response: any) => response as Team[]),
         tap((teams: Team[]) => {
+          console.log("VALUE CHANGES TEAM USER")
           this.teamsSubject.next(teams);
         })
       ) as Observable<Team[]>;
@@ -200,8 +201,15 @@ export class TeamService {
 
       // Update the team document
       await teamRef.update(teamData);
+
+      // Update the teamSubject
+      // TODO : Il faut mettre à jour teamsSubject dans le cas ou la team est nouvelle dans teamSubject aussi
+
+      this.teamsSubject.next(this.teamsSubject.value.map(t => t.id === teamId ? { ...t, usersIds: teamData.usersIds } : t));
+
       return true;
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error adding user to team:', error);
       return false;
     }
@@ -226,6 +234,10 @@ export class TeamService {
       } 
 
       await teamRef.update(teamData);
+
+      // TODO Update teamSubject
+
+
       return true;
     }
     catch(error){
@@ -257,6 +269,9 @@ export class TeamService {
       }
 
       await this.firestore.collection('teams').doc(team.id).update(team);
+
+      // Update the teamsSubject
+      this.teamsSubject.next(this.teamsSubject.value.filter(t => t.id !== team.id));
 
       // Remove team from user's teams list
       if (user.teams) {

@@ -218,15 +218,17 @@ export class UserService {
   async searchMembers(input: string): Promise<UserSimplified[]> {
     
     const pseudoQuery = this.firestore.collection<User>('users', ref => 
-      ref.where('pseudo', '>=', input.toLowerCase())
-         .where('pseudo', '<=', input.toLowerCase() + '\uf8ff')
+      ref.where('pseudo', '>=', input)
+        //  .where('pseudo', '>=', input.toLowerCase())
+         .where('pseudo', '<=', input + '\uf8ff')
+        //  .where('pseudo', '<=', input.toLowerCase() + '\uf8ff')
          .orderBy('pseudo')
          .limit(10)
     );
 
     const emailQuery = this.firestore.collection<User>('users', ref => 
-      ref.where('email', '>=', input.toLowerCase())
-         .where('email', '<=', input.toLowerCase() + '\uf8ff')
+      ref.where('email', '>=', input)
+         .where('email', '<=', input + '\uf8ff')
          .orderBy('email')
          .limit(10)
     );

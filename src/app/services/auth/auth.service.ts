@@ -12,7 +12,7 @@ import { TaskService } from '../task/task.service';
 import { map, Observable } from 'rxjs';
 import { Settings } from 'src/app/models/settings';
 import { SettingsService } from '../settings/settings.service';
-import { ToastController } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { AuthentificationResponse } from 'src/app/models/firebase-response';
 import { HandleErrors } from 'src/app/utils/handle-errors';
 import { EmailAuthProvider } from 'firebase/auth';
@@ -28,6 +28,8 @@ export class AuthService {
     private userService: UserService,
     private taskService: TaskService,
     private settingsService: SettingsService,
+
+    private platform: Platform,
 
     private toastController: ToastController
   ) { }
@@ -134,7 +136,17 @@ export class AuthService {
 
       // Appel de la méthode de connexion Google avec popup
       const provider = new firebase.auth.GoogleAuthProvider();
-      const userCredential = await this.afAuth.signInWithPopup(provider);
+
+
+      const userCredential = this.platform.is('mobile') ? 
+        await this.afAuth.signInWithRedirect(provider) :
+        await this.afAuth.signInWithPopup(provider);
+
+      if (!userCredential) {
+        return new AuthentificationResponse(null, "No user credential, google login failed");
+      }
+
+      
       const uid = userCredential.user?.uid;
 
       if (uid) {
@@ -174,7 +186,17 @@ export class AuthService {
 
       // Appel de la méthode de connexion GitHub avec popup
       const provider = new firebase.auth.GithubAuthProvider();
-      const userCredential = await this.afAuth.signInWithPopup(provider);
+
+
+      const userCredential = this.platform.is('mobile') ? 
+        await this.afAuth.signInWithRedirect(provider) :
+        await this.afAuth.signInWithPopup(provider);
+
+      if (!userCredential) {
+        return new AuthentificationResponse(null, "No user credential, github login failed");
+      }
+
+
       const uid = userCredential.user?.uid;
 
       if (uid) {
