@@ -13,7 +13,7 @@ import { map, Observable } from 'rxjs';
 import { Settings } from 'src/app/models/settings';
 import { SettingsService } from '../settings/settings.service';
 import { Platform, ToastController } from '@ionic/angular';
-import { AuthentificationResponse } from 'src/app/models/firebase-response';
+import { AuthentificationResponse, RequestResponse } from 'src/app/models/firebase-response';
 import { HandleErrors } from 'src/app/utils/handle-errors';
 import { EmailAuthProvider } from 'firebase/auth';
 
@@ -47,13 +47,13 @@ export class AuthService {
 
     // On utilise try/catch pour gérer les erreurs
     try{
-      // Vérifier si le pseudo est unique
-      const pseudoExists = await this.userService.checkIfPseudoAlreadyExists(pseudo);
+      // // Vérifier si le pseudo est unique
+      // const pseudoExists = await this.userService.checkIfPseudoAlreadyExists(pseudo);
 
-      // Si le pseudo existe déjà, on renvoie une erreur
-      if (pseudoExists) {
-        throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-      }
+      // // Si le pseudo existe déjà, on renvoie une erreur
+      // if (pseudoExists) {
+      //   throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
+      // }
 
       // Création de l'utilisateur avec email et mot de passe
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
@@ -338,5 +338,24 @@ export class AuthService {
     }
   }
 
+
+
+  async deleteUserAccount(): Promise<RequestResponse> {
+   
+    try{
+      const user = await this.afAuth.currentUser;
+      if (!user) {
+        throw new Error('Aucun utilisateur connecté');
+      }
+
+      await user.delete();
+
+      return new RequestResponse(true, 'Compte supprimé avec succès');
+    }
+    catch(error){
+      const errorMessage = HandleErrors.handleFirebaseErrors(error);
+      return new RequestResponse(false, errorMessage);
+    }
+  }
 
 }

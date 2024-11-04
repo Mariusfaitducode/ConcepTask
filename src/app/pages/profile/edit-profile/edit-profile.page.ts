@@ -135,49 +135,49 @@ export class EditProfilePage implements OnInit {
   }
 
 
-  editMailOrPassword(editMode : null | "mail" | "password"){
+  // editMailOrPassword(editMode : null | "mail" | "password"){
 
-    this.errorMessageMail = "";
-    this.errorMessagePassword = "";
-    this.newEmail = '';
-    this.newPassword = '';
+  //   this.errorMessageMail = "";
+  //   this.errorMessagePassword = "";
+  //   this.newEmail = '';
+  //   this.newPassword = '';
 
-    if (this.editMode === editMode){
-      this.editMode = null;
-    }
-    else{
-      this.editMode = editMode
-    }
-  }
-
-
-  validEmail(){
-    return this.newEmail != "" && this.newEmail != this.user?.email;
-  }
+  //   if (this.editMode === editMode){
+  //     this.editMode = null;
+  //   }
+  //   else{
+  //     this.editMode = editMode
+  //   }
+  // }
 
 
-  async modifyEmail(){
-    // const success = await this.userService.updateUserEmail(this.newEmail);
+  // validEmail(){
+  //   return this.newEmail != "" && this.newEmail != this.user?.email;
+  // }
+
+
+  // async modifyEmail(){
+  //   // const success = await this.userService.updateUserEmail(this.newEmail);
   
-    const response = await this.authService.updateUserEmail(this.newEmail);
+  //   const response = await this.authService.updateUserEmail(this.newEmail);
 
-    this.errorMessageMail = response.errorMessage;
+  //   this.errorMessageMail = response.errorMessage;
 
-    if (response.user){
-      this.router.navigate(['/profile']);
-    }
-  }
+  //   if (response.user){
+  //     this.router.navigate(['/profile']);
+  //   }
+  // }
 
 
-  async modifyPassword(){
-    const response = await this.authService.updateUserPassword(this.newPassword);
+  // async modifyPassword(){
+  //   const response = await this.authService.updateUserPassword(this.newPassword);
 
-    this.errorMessagePassword = response.errorMessage;
+  //   this.errorMessagePassword = response.errorMessage;
 
-    if (response.user){
-      this.router.navigate(['/profile']);
-    }
-  }
+  //   if (response.user){
+  //     this.router.navigate(['/profile']);
+  //   }
+  // }
 
 }
 

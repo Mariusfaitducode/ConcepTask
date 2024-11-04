@@ -19,7 +19,11 @@ const routes: Routes = [
   {
     path: 'edit-profile',
     loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
+  },  {
+    path: 'personnal-informations',
+    loadChildren: () => import('./personnal-informations/personnal-informations.module').then( m => m.PersonnalInformationsPageModule)
   }
+
 
 ];
 

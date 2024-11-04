@@ -1,66 +1,29 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-
     <ion-buttons slot="start">
       <ion-button (click)="goBackTodo()" class="back-button">
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      Edit Profile
-    </ion-title>
+
+    <ion-title>Informations personnelles</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="padding-page" *ngIf="user !== null">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Informations personnelles</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-    <!-- <div class="page-title">Modifier profil</div> -->
-
-    <!-- <app-user-card [user]="user"></app-user-card> -->
-
-    <ion-list [class.disabled-form]="editMode !== null">
-
-      <div class="profile-image-pseudos">
-
-        <div class="pseudo-image">
-          <div class="image-container" (click)="triggerFileInput()">
-            <img [src]="imagePreview || user.avatar" alt="Profile picture">
-            <div class="overlay">
-              <ion-icon name="pencil"></ion-icon>
-            </div>
-          </div>
-          <input #fileInput type="file" accept="image/*" (change)="fileUpload($event)" style="display: none;" />
-        </div>
-    
-        <ion-item class="item-margin pseudo-input">
-          <ion-input type="text" 
-          label="Pseudo" labelPlacement="floating" aria-label="Pseudo" 
-          [(ngModel)]="user.pseudo"></ion-input>
-        </ion-item>
-      </div>
-
-
-      <ion-item class="item-margin">
-        <ion-input type="text" 
-        label="Bio" labelPlacement="floating" aria-label="Email" 
-        [(ngModel)]="user.bio"></ion-input>
-      </ion-item>
-
-
-    <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
-
-    <ion-button [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()" expand="block" class="big-button">Sauvegarder</ion-button>
-
-
-    </ion-list>
-
-    <!-- <ion-item class="item-margin" [disabled]="editMode === 'password'">
+  <ion-list>
+    <ion-item class="item-margin" [disabled]="editMode === 'password'">
       <ion-input type="text"
         [label]="editMode === 'mail' ? 'Changer email' : 'Email'"
         labelPlacement="floating" 
         aria-label="Email"
-        [ngModel]="editMode === 'mail' ? newEmail : user.email"
+        [ngModel]="editMode === 'mail' ? newEmail : user!.email"
         (ngModelChange)="newEmail = $event"
         [readonly]="editMode !== 'mail'">
       </ion-input>
@@ -97,7 +60,12 @@
 
 
     <ion-item class="item-margin" [disabled]="editMode !== null">
-      <ion-label>Supprimer</ion-label>
-    </ion-item> -->
-  </div>
+      <ion-label>Supprimer compte</ion-label>
+
+      <ion-button slot="end" color="danger" (click)="showDeleteAccountConfirm()"> Supprimer
+      </ion-button>
+    </ion-item>
+
+    <div *ngIf="errorMessageDelete" class="error-message">{{errorMessageDelete}}</div>
+  </ion-list>
 </ion-content>

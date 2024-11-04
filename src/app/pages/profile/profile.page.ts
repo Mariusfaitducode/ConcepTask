@@ -19,6 +19,7 @@ import { UserService } from 'src/app/services/user/user.service';
 
 import { MainTodo } from 'src/app/models/todo/main-todo';
 import { SubTodo } from 'src/app/models/todo/sub-todo';
+import { Dialog } from '@capacitor/dialog';
 
 @Component({
   selector: 'app-profile',
@@ -42,7 +43,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   userSubscription! : Subscription;
   user : User | null = new User();
-  userConnected : boolean = false;
+  // userConnected : boolean = false;
 
 
   importModalConfig: ImportExportModal = new ImportExportModal();
@@ -69,7 +70,7 @@ export class ProfilePage implements OnInit, OnDestroy {
           this.user.avatar = "assets/images/default-avatar.jpg";
         }
 
-        this.userConnected = true;
+        // this.userConnected = true;
 
         // TODO : add verification to limit the reload of teams
         this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
@@ -263,7 +264,11 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   }
 
-  // Navigation 
+  // * NAVIGATION
+
+  goToPersonnalInformations(){
+    this.router.navigate(['tabs/profile/personnal-informations']);
+  }
 
   goToSettings(){
     this.router.navigate(['/settings']);
@@ -281,17 +286,21 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.router.navigate(['tabs/profile/edit-profile']);
   }
 
-  disconnect(){
+  async disconnect(){
 
     console.log('Profile page : disconnect')
 
-    // localStorage.removeItem('token');
-    this.userConnected = false;
-    this.user = null;
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: `${this.translate.instant('DISCONNECT ACCOUNT WARNING')}`,
+    });
 
-    // this.taskService.loadTodos(null);
-
-    this.authService.logout();
+    // Si l'utilisateur confirme, alors on se déconnecte
+    if (value){
+      this.user = null;
+      // this.taskService.loadTodos(null);
+      this.authService.logout();
+    }
   }
 
 }
