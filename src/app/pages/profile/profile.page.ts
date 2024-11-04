@@ -50,7 +50,6 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   todos: MainTodo[] = [];
 
-  // TODO : remplacer any par le type User with less properties
   teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
 
   teamInvitations: TeamInvitation[] = [];
@@ -263,7 +262,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   }
 
-  // Navigation 
+  // * NAVIGATION 
 
   goToSettings(){
     this.router.navigate(['/settings']);
@@ -279,6 +278,10 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   goToEditProfile(){
     this.router.navigate(['tabs/profile/edit-profile']);
+  }
+
+  goToPersonnalInformations(){
+    this.router.navigate(['tabs/profile/personnal-informations']);
   }
 
   disconnect(){

@@ -26,8 +26,17 @@ export class EditProfilePage implements OnInit {
 
       console.log('Edit profile page : user = ', user)
 
-      this.user = user;
-      this.lastUser = JSON.parse(JSON.stringify(user));
+      this.user = JSON.parse(JSON.stringify(user));
+
+      if (user != null){
+
+        if (user.bio == null){
+          user.bio = "";
+        }
+
+        this.lastUser = JSON.parse(JSON.stringify(user));
+      }
+      
     });
   }
 
@@ -78,6 +87,12 @@ export class EditProfilePage implements OnInit {
         // Afficher un message d'erreur ou effectuer une autre action
       }
     }
+  }
+
+
+
+  async deleteUser(){
+    // await this.userService.deleteUser(this.user);
   }
 
 }

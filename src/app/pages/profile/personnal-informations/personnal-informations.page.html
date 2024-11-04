@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBackTodo()" class="back-button">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Informations personnelles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Informations personnelles</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">E-mail</ion-label>
+      <ion-input type="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="updateEmail()">Modifier l'e-mail</ion-button>
+
+    <ion-item>
+      <ion-label position="stacked">Nouveau mot de passe</ion-label>
+      <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="updatePassword()">Modifier le mot de passe</ion-button>
+
+    <ion-item lines="none">
+      <ion-button expand="block" color="danger" (click)="confirmDeleteAccount()">Supprimer le compte</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

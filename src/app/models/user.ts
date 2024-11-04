@@ -7,6 +7,9 @@ export class User{
     uid: string = "";
     
     pseudo: string = "";
+
+    bio?: string = "";
+
     email: string = "";
 
     avatar?: string = "";
@@ -16,16 +19,6 @@ export class User{
     todosTracker: {todoId: string, title: string, date: Date}[] = [];
 
     teams: string[] = [];
-
-
-    // Used to create a new user
-
-    // firstname?: string = "";
-    // lastname?: string = "";
-
-    password?: string = "";
-    status?: string = "test";
-    phone?: string = "test";
 }
 
 
