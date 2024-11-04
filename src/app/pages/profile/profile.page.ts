@@ -51,10 +51,6 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   todos: MainTodo[] = [];
 
-  // TODO : remplacer any par le type User with less properties
-  teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
-
-  teamInvitations: TeamInvitation[] = [];
 
 
   ngOnInit() {
@@ -69,41 +65,6 @@ export class ProfilePage implements OnInit, OnDestroy {
         if (!this.user.avatar || this.user.avatar == ""){
           this.user.avatar = "assets/images/default-avatar.jpg";
         }
-
-        // this.userConnected = true;
-
-        // TODO : add verification to limit the reload of teams
-        this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
-
-          console.log('ProfilePage : teams = ', teams);
-
-          this.teams = [];
-
-          for (let team of teams){
-
-            if (!team.image || team.image == ""){
-              team.image = "assets/images/default-group.png";
-            }
-
-            let newTeam : {team:Team, teamUsers:UserSimplified[]} = {team: team, teamUsers: []};
-
-            for (let userId of team.usersIds){
-
-              this.userService.getUserSimplifiedById(userId).then(user => {
-
-                if (user) newTeam.teamUsers.push(user);
-              });
-            }
-
-            this.teams.push(newTeam);
-          }
-        });
-
-        this.teamInvitationsService.getTeamInvitationsOfUser(this.user.uid).subscribe((invitations: TeamInvitation[]) => {
-          
-          console.log('ProfilePage : invitations = ', invitations);
-          this.teamInvitations = invitations.filter(invitation => invitation.teamName != null && invitation.teamName != "");
-        });
       }
     });
 
@@ -135,118 +96,6 @@ export class ProfilePage implements OnInit, OnDestroy {
     }
   }
 
-
-  // importData(){
-
-  //   console.log('Importing data...');
-  //   const fileInput = document.createElement('input');
-  //   fileInput.type = 'file';
-  //   fileInput.accept = '.json';
-    
-  //   fileInput.onchange = (event: any) => {
-  //     const file = event.target.files[0];
-  //     if (file) {
-  //       const reader = new FileReader();
-  //       reader.onload = (e: any) => {
-  //         try {
-  //           const jsonData = JSON.parse(e.target.result);
-  //           if (Array.isArray(jsonData)) {
-  //             const importedTodos: Todo[] = jsonData.map(item => {
-  //               try {
-  //                 const todo = new Todo(0); // Assuming 0 as initial index, adjust if needed
-                  
-  //                 // Mapping properties
-  //                 todo.id = item.id || todo.id;
-  //                 todo.title = item.title || '';
-  //                 todo.description = item.description;
-  //                 todo.category = item.category || SettingsService.getCategories()[0];
-  //                 todo.isDone = item.completed || false;
-  //                 todo.index = item.index || 0;
-                  
-  //                 // Additional properties from Todo class
-  //                 todo.config = item.config || new TaskConfig();
-  //                 todo.reminder = false;
-  //                 todo.list = [];
-                  
-  //                 // Validate required properties
-  //                 if (!todo.id || !todo.title || !todo.category) {
-  //                   throw new Error('Invalid Todo object: missing required properties');
-  //                 }
-                  
-  //                 return todo;
-  //               } catch (error) {
-  //                 console.error('Error mapping Todo:', error);
-  //                 throw new Error('Failed to map imported data to Todo object');
-  //               }
-  //             });
-  //             console.log('Imported Todos:', importedTodos);
-  //             // TODO: Handle the imported todos (e.g., save to service or state)
-  //           } else {
-  //             console.error('Invalid JSON format. Expected an array.');
-  //           }
-  //         } catch (error) {
-  //           console.error('Error parsing JSON:', error);
-  //         }
-  //       };
-  //       reader.readAsText(file);
-  //     }
-  //   };
-    
-  //   fileInput.click();
-  // }
-
-  // exportData(){
-
-  //   // this.openImportExportModal = true;
-
-  //   this.importModalConfig.openExportModal(this.todos);
-
-
-  //   // const actionSheet = await this.actionSheetController.create({
-  //   //   header: 'Export Options',
-  //   //   buttons: [
-  //   //     {
-  //   //       text: 'Export All Todos',
-  //   //       handler: () => {
-  //   //         this.exportAllTodos();
-  //   //       }
-  //   //     },
-  //   //     {
-  //   //       text: 'Export Single Todo',
-  //   //       handler: () => {
-  //   //         this.presentTodoSelectionModal();
-  //   //       }
-  //   //     },
-  //   //     {
-  //   //       text: 'Cancel',
-  //   //       role: 'cancel'
-  //   //     }
-  //   //   ]
-  //   // });
-  //   // await actionSheet.present();
-  // }
-
-  // async presentTodoSelectionModal() {
-  //   const modal = await this.modalController.create({
-  //     component: TodoSelectionModalComponent,
-  //     componentProps: {
-  //       todos: this.todos
-  //     }
-  //   });
-
-  //   modal.onDidDismiss().then((result) => {
-  //     if (result.data) {
-  //       this.exportSingleTodo(result.data);
-  //     }
-  //   });
-
-  //   return await modal.present();
-  // }
-
-  // exportAllTodos() {
-  //   const jsonData = JSON.stringify(this.todos, null, 2);
-  //   this.downloadJson(jsonData, 'all_todos.json');
-  // }
 
   exportSingleTodo(todo: MainTodo) {
     const jsonData = JSON.stringify(todo, null, 2);
@@ -285,6 +134,9 @@ export class ProfilePage implements OnInit, OnDestroy {
   goToEditProfile(){
     this.router.navigate(['tabs/profile/edit-profile']);
   }
+
+
+  // * DISCONNECT
 
   async disconnect(){
 

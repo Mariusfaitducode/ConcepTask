@@ -44,8 +44,6 @@ export class HomePage implements OnInit, OnDestroy {
   darkMode : boolean = false; // Used for ConcepTask logo version
 
 
-  teams: {team:Team, teamUsers:UserSimplified[]}[] = [];
-
   space : string = 'profile';
 
 
@@ -78,38 +76,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.userService.getUser().subscribe((user : User | null) => {
       console.log('Home page : User get', user)
       this.user = user;
-
-      if (this.user){
-        this.teamService.getTeamsOfUser(this.user!).subscribe((teams: Team[]) => {
-
-          console.log('ProfilePage : teams = ', teams);
-  
-          this.teams = [];
-  
-          for (let team of teams){
-  
-            if (!team.image || team.image == ""){
-              team.image = "assets/images/default-group.png";
-            }
-  
-            let newTeam : {team:Team, teamUsers:UserSimplified[]} = {team: team, teamUsers: []};
-  
-            for (let userId of team.usersIds){
-  
-              this.userService.getUserSimplifiedById(userId).then(user => {
-  
-                if (user) newTeam.teamUsers.push(user);
-              });
-            }
-  
-            this.teams.push(newTeam);
-          }
-        });
-      }
-
-     
-
-
     });
 
     // Actualise la page à chaque changement
@@ -148,8 +114,6 @@ export class HomePage implements OnInit, OnDestroy {
 
     console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
     ev.detail.complete(this.results);
-    // console.log();
-
     
 
     for (let i = 0; i < this.results.length; i++) {
@@ -205,8 +169,5 @@ export class HomePage implements OnInit, OnDestroy {
     else{
       this.router.navigate(['/todo', {teamId: this.space}]);
     }
-
-
   }
-
 }

@@ -13,53 +13,10 @@
 <ion-content>
 
 
-  
-
-  <div class="teams-list" *ngIf="user && teams.length > 0">
-
-    <!-- <div class="add-team">
-      <ion-button (click)="{}" shape="round" class="add-team-button">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-      <ion-label>Perso</ion-label>
-    </div> -->
-    <div class="team-item" [class.selected]="space === 'profile'" (click)="selectProfileSpace()">
-
-      <img [src]="user.avatar" width="50px" height="50px" alt="">
-
-      <ion-label>Perso</ion-label>
-
-    </div>
-
-    <div *ngFor="let team of teams">
-
-      <div class="team-item" [class.selected]="space === team.team.id" (click)="selectTeamSpace(team.team.id)">
-
-        <img [src]="team.team.image" width="50px" height="50px" alt="">
-        <ion-label>{{team.team.name}}</ion-label>
-
-      </div>
-    </div>
-
-  </div>
-
-
-
   <ion-row class="research-header">
     <ion-searchbar (ionInput)="handleInput($event)"  placeholder="{{'SEARCH' | translate}}"></ion-searchbar>
   </ion-row>
 
-  <!-- <div class="import-export-buttons">
-    <ion-button (click)="importData()" color="medium">
-      <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
-      Import Todo
-    </ion-button>
-    
-    <ion-button (click)="exportData()" color="medium">
-      <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
-      Export Todo
-    </ion-button>
-  </div> -->
   
   <ion-list>
     <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
@@ -78,7 +35,5 @@
 </ion-content>
 
 </div>
-
-<!-- <app-left-menu></app-left-menu> -->
 
 
