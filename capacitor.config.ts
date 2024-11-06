@@ -1,12 +1,17 @@
 import { CapacitorConfig } from '@capacitor/cli';
 import { LocalNotifications } from '@capacitor/local-notifications';
 
+import { environment } from './src/environments/environment';
+
+
+
 const config: CapacitorConfig = {
   appId: 'fr.marscode.todolist',
   appName: 'ToDoList',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    hostname: environment.firebaseConfig.authDomain
   },
   
   plugins: {

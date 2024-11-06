@@ -32,7 +32,34 @@ export class AuthService {
     private platform: Platform,
 
     private toastController: ToastController
-  ) { }
+  ) { 
+
+    console.log('afAuth = ', this.afAuth)
+    // Listen for the redirect result after authentication
+    this.afAuth.getRedirectResult().then((result) => {
+
+      console.log('result from getRedirectResult = ', result)
+      if (result.user) {
+        // User successfully authenticated
+        console.log('Redirect result :', result);
+      }
+    }).catch((error) => {
+      console.error('Authentication redirect error:', error);
+    });
+
+
+    // Observer pour les changements d'état d'auth en général
+    this.afAuth.authState.subscribe(async (user) => {
+      console.log('Auth state changed:', user);
+      if (user) {
+        // C'est ici que vous traiterez les changements d'état d'auth
+        // Y compris après une redirection réussie
+        console.log('User is authenticated:', user);
+        // Traiter l'authentification...
+      }
+    });
+
+  }
 
 
   get isConnected(): Observable<boolean> {
@@ -40,6 +67,7 @@ export class AuthService {
       map(user => !!user)
     );
   }
+
 
   // * SIGN UP
   // Méthode pour s'inscrire avec email et mot de passe et créer un utilisateur dans Firestore
@@ -137,41 +165,66 @@ export class AuthService {
       // Appel de la méthode de connexion Google avec popup
       const provider = new firebase.auth.GoogleAuthProvider();
 
+      provider.setCustomParameters({
+        'prompt': 'select_account'
+      });
 
-      const userCredential = this.platform.is('mobile') ? 
-        await this.afAuth.signInWithRedirect(provider) :
-        await this.afAuth.signInWithPopup(provider);
 
-      if (!userCredential) {
-        return new AuthentificationResponse(null, "No user credential, google login failed");
-      }
+      // const userCredential = this.platform.is('mobile') ? 
+      //   await this.afAuth.signInWithRedirect(provider) :
+      //   await this.afAuth.signInWithPopup(provider);
+
+      // this.afAuth.getRedirectResult().then((result) => {
+      //   console.log('Google redirect result:', result);
+
+      //   if (result.user) {
+      //     // User successfully authenticated
+      //     console.log('Redirect result:', result);
+      //   }
+      // }).catch((error) => {
+      //   console.error('Authentication redirect error:', error);
+      // });
+
+      await this.afAuth.signInWithRedirect(provider);
+
+       // Listen for the redirect result after authentication
+      
+      const userCredential = await firebase.auth().getRedirectResult(); 
+
+      console.log('userCredential = ', userCredential)
+
+      return new AuthentificationResponse(null, 'test');
+
+      // if (!userCredential) {
+      //   return new AuthentificationResponse(null, "No user credential, google login failed");
+      // }
 
       
-      const uid = userCredential.user?.uid;
+      // const uid = userCredential.user?.uid;
 
-      if (uid) {
-        const userData = await this.userService.loadUserData(uid);
+      // if (uid) {
+      //   const userData = await this.userService.loadUserData(uid);
         
-        // * CONNEXION
-        // Si l'utilisateur existe déjà dans Firestore on le récupère 
-        if (userData) { 
+      //   // * CONNEXION
+      //   // Si l'utilisateur existe déjà dans Firestore on le récupère 
+      //   if (userData) { 
 
-          // Settings synchronisation
-          this.settingsService.setUserSettings(userData as User);
-          // Todos synchronisation
-          this.taskService.setUserId(userData)
+      //     // Settings synchronisation
+      //     this.settingsService.setUserSettings(userData as User);
+      //     // Todos synchronisation
+      //     this.taskService.setUserId(userData)
 
-          return new AuthentificationResponse(userData, ''); // L'utilisateur existe déjà dans Firestore
-        } 
-        // * INSCRIPTION
-        // Si l'utilisateur n'existe pas dans Firestore, on le crée avec les informations de google 
-        else if (userCredential.user) { 
+      //     return new AuthentificationResponse(userData, ''); // L'utilisateur existe déjà dans Firestore
+      //   } 
+      //   // * INSCRIPTION
+      //   // Si l'utilisateur n'existe pas dans Firestore, on le crée avec les informations de google 
+      //   else if (userCredential.user) { 
 
-          const userData = await this.setUserDataOnSignUpWithExternalInformations(userCredential.user);
-          return new AuthentificationResponse(userData, '');
-        }
-      }
-      return new AuthentificationResponse(null, "No user id, google login failed");
+      //     const userData = await this.setUserDataOnSignUpWithExternalInformations(userCredential.user);
+      //     return new AuthentificationResponse(userData, '');
+      //   }
+      // }
+      // return new AuthentificationResponse(null, "No user id, google login failed");
     } 
     catch (error) { // Gestion des erreurs
       const errorMessage = HandleErrors.handleFirebaseErrors(error);
@@ -188,42 +241,69 @@ export class AuthService {
       const provider = new firebase.auth.GithubAuthProvider();
 
 
-      const userCredential = this.platform.is('mobile') ? 
-        await this.afAuth.signInWithRedirect(provider) :
-        await this.afAuth.signInWithPopup(provider);
+      provider.setCustomParameters({
+        'prompt': 'select_account'
+      });
 
-      if (!userCredential) {
-        return new AuthentificationResponse(null, "No user credential, github login failed");
-      }
+      // const userCredential = this.platform.is('mobile') ? 
+      //   await this.afAuth.signInWithRedirect(provider) :
+      //   await this.afAuth.signInWithPopup(provider);
+
+      // this.afAuth.getRedirectResult().then((result) => {
+      //   console.log('github redirect result', result)
+      //   if (result.user) {
+      //     // User successfully authenticated
+      //     console.log('Redirect result GITHUB :', result);
+      //   }
+      // }).catch((error) => {
+      //   console.error('Authentication redirect error:', error);
+      // });
+
+      console.log('github redirect')
+
+      await this.afAuth.signInWithRedirect(provider);
+
+      console.log('github redirect 2')
+
+      const userCredential = await firebase.auth().getRedirectResult(); 
+
+      console.log('userCredential = ', userCredential)
 
 
-      const uid = userCredential.user?.uid;
+      return new AuthentificationResponse(null, 'test');
 
-      if (uid) {
+      // if (!userCredential) {
+      //   return new AuthentificationResponse(null, "No user credential, github login failed");
+      // }
 
-        const userData = await this.userService.loadUserData(uid);
+
+      // const uid = userCredential.user?.uid;
+
+      // if (uid) {
+
+      //   const userData = await this.userService.loadUserData(uid);
         
-        // CONNEXION
-        // Si l'utilisateur existe déjà dans Firestore on le récupère 
-        if (userData) {
+      //   // CONNEXION
+      //   // Si l'utilisateur existe déjà dans Firestore on le récupère 
+      //   if (userData) {
 
-          // Settings synchronisation
-          this.settingsService.setUserSettings(userData as User);
-          // Todos synchronisation
-          this.taskService.setUserId(userData)
+      //     // Settings synchronisation
+      //     this.settingsService.setUserSettings(userData as User);
+      //     // Todos synchronisation
+      //     this.taskService.setUserId(userData)
 
-          return new AuthentificationResponse(userData, ''); // L'utilisateur existe déjà dans Firestore
-        } 
-        // INSCRIPTION  
-        // Si l'utilisateur n'existe pas dans Firestore, on le crée avec les informations de GitHub
-        else if (userCredential.user) { // Sign in
+      //     return new AuthentificationResponse(userData, ''); // L'utilisateur existe déjà dans Firestore
+      //   } 
+      //   // INSCRIPTION  
+      //   // Si l'utilisateur n'existe pas dans Firestore, on le crée avec les informations de GitHub
+      //   else if (userCredential.user) { // Sign in
 
-          const userData = await this.setUserDataOnSignUpWithExternalInformations(userCredential.user);
-          return new AuthentificationResponse(userData, '');
-        }
-      }
-      console.error();
-      return new AuthentificationResponse(null, "No user id, github login failed");
+      //     const userData = await this.setUserDataOnSignUpWithExternalInformations(userCredential.user);
+      //     return new AuthentificationResponse(userData, '');
+      //   }
+      // }
+      // console.error();
+      // return new AuthentificationResponse(null, "No user id, github login failed");
     } 
     catch (error) { // Gestion des erreurs
       const errorMessage = HandleErrors.handleFirebaseErrors(error);
