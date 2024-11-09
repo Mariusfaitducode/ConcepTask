@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
-import { Share } from '@capacitor/share';
+// import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-left-menu',
@@ -47,14 +47,14 @@ export class LeftMenuComponent  implements OnInit {
   //   });
   // }
 
-  async shareApp() {
-    await Share.share({
-      title: 'Téléchargez ConcepTask',
-      text: `Téléchargez l'application ConcepTask :`,
-      url: 'https://conceptask.com',
-      dialogTitle: 'Partager'
-    });
-  }
+  // async shareApp() {
+  //   await Share.share({
+  //     title: 'Téléchargez ConcepTask',
+  //     text: `Téléchargez l'application ConcepTask :`,
+  //     url: 'https://conceptask.com',
+  //     dialogTitle: 'Partager'
+  //   });
+  // }
 
   
 }

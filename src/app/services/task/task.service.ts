@@ -29,12 +29,13 @@ export class TaskService {
 
   private firestoreSubscription : any;
 
-  private refactorTodos: MainTodo[] = [];
+  // private refactorTodos: MainTodo[] = [];
 
 
   constructor(private firestore: AngularFirestore) {
     // Lors de l'initialisation, on récupère les todos du local storage plutôt que de firestore
     let todos  = this.getTodosAsInStorageWithoutSync();
+    // let todos: MainTodo[] = [];
 
     // ! Code pour refactor les todos de la classe Todo vers MainTodo puis synchroniser
     // On refactor les todos
@@ -53,28 +54,7 @@ export class TaskService {
   async setUserId(user: User) {
     this.user = user;
 
-    console.log('setUserId', this.refactorTodos)
-
-    // ! Code pour refactor les todos de la classe Todo vers MainTodo puis synchroniser
-    // if (this.refactorTodos.length > 0){
-
-    //   // On set les todos du local storage à la variable refactorTodos
-    //   localStorage.setItem('todos', JSON.stringify(this.refactorTodos));
-
-    //   // On vide les todos de firebase
-    //   await this.firestore.collection(`users/${this.user.uid}/todos`).get().subscribe((querySnapshot: QuerySnapshot<unknown>) => {
-    //     querySnapshot.docs.forEach((doc:any) => {
-    //       doc.ref.delete();
-    //     });
-    //   });
-
-    //   // On remplit firestore avec les todos du local storage
-    //   await this.initializeTodosFromLocalStorageToFirestore(this.user);
-
-
-    //   console.log('Todos refactored and synced with firestore');
-    // }
-
+    console.log('setUserId')
 
     this.syncTodosWithFirestore();
   }
@@ -117,14 +97,14 @@ export class TaskService {
         .valueChanges({ idField: 'id' });
       observables.push(personalTodosObservable);
 
-      // Observables pour les todos des équipes de l'utilisateur
-      if (this.user.teams && this.user.teams.length > 0) {
-        for (let teamId of this.user.teams) {
-          const teamTodosObservable = this.firestore.collection<MainTodo>(`teams/${teamId}/todos`)
-            .valueChanges({ idField: 'id' });
-          observables.push(teamTodosObservable);
-        }
-      }
+      // * Observables pour les todos des équipes de l'utilisateur
+      // if (this.user.teams && this.user.teams.length > 0) {
+      //   for (let teamId of this.user.teams) {
+      //     const teamTodosObservable = this.firestore.collection<MainTodo>(`teams/${teamId}/todos`)
+      //       .valueChanges({ idField: 'id' });
+      //     observables.push(teamTodosObservable);
+      //   }
+      // }
 
       // Utilisation de combineLatest pour combiner toutes les observables
       this.firestoreSubscription = combineLatest(observables).pipe(

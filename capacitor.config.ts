@@ -11,7 +11,7 @@ const config: CapacitorConfig = {
   webDir: 'www',
   server: {
     androidScheme: 'https',
-    hostname: environment.firebaseConfig.authDomain
+    hostname: 'localhost'
   },
   
   plugins: {

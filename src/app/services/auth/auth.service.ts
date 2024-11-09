@@ -32,34 +32,7 @@ export class AuthService {
     private platform: Platform,
 
     private toastController: ToastController
-  ) { 
-
-    console.log('afAuth = ', this.afAuth)
-    // Listen for the redirect result after authentication
-    this.afAuth.getRedirectResult().then((result) => {
-
-      console.log('result from getRedirectResult = ', result)
-      if (result.user) {
-        // User successfully authenticated
-        console.log('Redirect result :', result);
-      }
-    }).catch((error) => {
-      console.error('Authentication redirect error:', error);
-    });
-
-
-    // Observer pour les changements d'état d'auth en général
-    this.afAuth.authState.subscribe(async (user) => {
-      console.log('Auth state changed:', user);
-      if (user) {
-        // C'est ici que vous traiterez les changements d'état d'auth
-        // Y compris après une redirection réussie
-        console.log('User is authenticated:', user);
-        // Traiter l'authentification...
-      }
-    });
-
-  }
+  ) { }
 
 
   get isConnected(): Observable<boolean> {
@@ -156,6 +129,8 @@ export class AuthService {
       return new AuthentificationResponse(null, errorMessage);
     }
   }
+
+
 
 
   // Connexion avec Google

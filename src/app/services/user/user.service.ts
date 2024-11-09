@@ -63,6 +63,7 @@ export class UserService {
     this.userRef = this.firestore.doc<User>(`users/${uid}`);
 
     this.userSubscription = this.userRef.valueChanges().subscribe(userData => {
+      console.log('User service : setUserSubscription : userData', userData)
       this.taskService.setUserId(userData!);
       this.userSubject.next(userData as User);
     });
