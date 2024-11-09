@@ -18,13 +18,19 @@
   <!-- USER NOT CONNECTED -->
   <div *ngIf="!user" class="padding-connexion">
 
-    <div class="connexion-text">
-      Créer un compte vous permet de synchroniser vos projets sur différents appareils, 
-      de les partager avec vos amis et créer des équipes.
+    <div class="connexion-text" *ngIf="usedLanguage() === 'fr'">
+      Créer un compte vous permet de sauvegarder et synchroniser vos todos en toute sécurité sur tous vos appareils.
+      <!-- De nouvelles fonctionnalités passionnantes arrivent bientôt : création d'équipes et partage de projets ! -->
     </div>
+
+    <div class="connexion-text" *ngIf="usedLanguage() === 'en'">
+      Creating an account allows you to save and synchronize your todos securely on all your devices.
+      <!-- De nouvelles fonctionnalités passionnantes arrivent bientôt : création d'équipes et partage de projets ! -->
+    </div>
+
     
-    <ion-button expand="block" (click)="goToLogin()">Se connecter</ion-button>
-    <ion-button expand="block" fill="clear" (click)="goToSignUp()">Pas de compte ? S'inscrire</ion-button>
+    <ion-button expand="block" (click)="goToLogin()">{{'LOGIN' | translate}}</ion-button>
+    <ion-button expand="block" fill="clear" (click)="goToSignUp()">{{'NO ACCOUNT' | translate}} {{'SIGN UP' | translate}}</ion-button>
   </div>
 
 

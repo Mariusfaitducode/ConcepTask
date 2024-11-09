@@ -7,16 +7,12 @@
       </ion-button>
     </ion-buttons>
     
-    <ion-title>Connectez vous</ion-title>
+    <ion-title>{{'LOGIN' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Connectez vous</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  
 
   <div class="login-page">
     <ion-list>
@@ -30,13 +26,13 @@
 
       <ion-item>
         <ion-input type="text" 
-        label="Email" labelPlacement="floating" aria-label="Email" 
+        label="{{'EMAIL' | translate}}" labelPlacement="floating" aria-label="Email" 
         [(ngModel)]="email"></ion-input>
       </ion-item>
       
       <ion-item>
         <ion-input type="password" 
-        label="Mot de passe" labelPlacement="floating" aria-label="Mot de passe" 
+        label="{{'PASSWORD' | translate}}" labelPlacement="floating" aria-label="Mot de passe" 
         [(ngModel)]="password"></ion-input>
       </ion-item>
     </ion-list>
@@ -44,7 +40,7 @@
     <!-- Only on sign up case -->
     <ion-item *ngIf="isSignUpPage">
       <ion-input type="password" 
-      label="Confirmation mot de passe" labelPlacement="floating" aria-label="Confirmation mot de passe"
+      label="{{'PASSWORD CONFIRMATION' | translate}}" labelPlacement="floating" aria-label="Confirmation mot de passe"
       [(ngModel)]="passwordConfirmation"></ion-input>
     </ion-item>
   
@@ -65,9 +61,6 @@
         [disabled]="!validForm()" (click)="connexion()">{{connexionText}}</ion-button>
 
 
-
-
-
         <!-- <ion-button expand="block" class="connexion-button" color="medium"
        (click)="logInWithGoogle()">{{connexionText}} avec Google</ion-button>
 
@@ -76,9 +69,9 @@
 
 
 
-      <ion-button *ngIf="!isSignUpPage" expand="block" fill="clear" color="secondary" (click)="switchConnexionInscription()">Créer un compte</ion-button>
+      <ion-button *ngIf="!isSignUpPage" expand="block" fill="clear" (click)="switchConnexionInscription()">{{'NO ACCOUNT' | translate}} {{'SIGN UP' | translate}}</ion-button>
 
-      <ion-button *ngIf="isSignUpPage" expand="block" fill="clear" color="secondary" (click)="switchConnexionInscription()">J'ai déjà un compte</ion-button>
+      <ion-button *ngIf="isSignUpPage" expand="block" fill="clear" (click)="switchConnexionInscription()">{{'ALREADY ACCOUNT' | translate}} {{'LOGIN' | translate}}</ion-button>
       <!-- <ion-button expand="block" fill="clear" color="secondary" (click)="goToHomePage()">Retour à l'accueil</ion-button> -->
     
     </div>

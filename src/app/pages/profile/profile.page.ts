@@ -110,6 +110,10 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   }
 
+  usedLanguage(){
+    return this.translate.currentLang;
+  }
+
   // * NAVIGATION
 
   goToPersonnalInformations(){

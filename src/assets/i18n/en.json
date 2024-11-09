@@ -124,6 +124,12 @@
     "EMAIL": "Email",
     "CHANGE PASSWORD": "Change password",
     "PASSWORD": "Password",
+    "PASSWORD CONFIRMATION": "Password confirmation",
+
+    "LOGIN": "Login",
+    "NO ACCOUNT": "No account ?",
+    "ALREADY ACCOUNT": "Already have an account ?",
+    "SIGN UP": "Sign up",
 
     "ABOUT THIS APP": "About this app"
 

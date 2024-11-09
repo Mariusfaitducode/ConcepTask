@@ -131,6 +131,12 @@
     "EMAIL": "Email",
     "CHANGE PASSWORD": "Changer mot de passe",
     "PASSWORD": "Mot de passe",
+    "PASSWORD CONFIRMATION": "Confirmation mot de passe",
+
+    "LOGIN": "Se connecter",
+    "NO ACCOUNT": "Pas de compte ?",
+    "ALREADY ACCOUNT": "Déjà un compte ?",
+    "SIGN UP": "S'inscrire",
 
     "ABOUT THIS APP": "À propos de cette application"
 

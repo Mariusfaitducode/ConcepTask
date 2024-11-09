@@ -1,80 +1,97 @@
 <ion-header [translucent]="true">
-  
+
   <ion-toolbar>
 
     <ion-buttons slot="start">
-      <ion-back-button default-href="#" routerLink="/home"></ion-back-button>
+      <ion-back-button default-href="#" routerLink="/profile"></ion-back-button>
     </ion-buttons>
     <ion-title>{{'ABOUT THIS APP' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
 
-  <div class="feedback-text" *ngIf="usedLanguage() === 'fr'">
-    ConcepTask est mon premier projet d'application mobile. 
-    <br>
-    <br>
-    Je l'ai réalisé en me basant sur mes besoins d'avoir une application de gestion de tâches simple, efficace et complète. 
-    <!-- J'ai essayé ensuite de faire en sorte que l'application soit la plus intuitive possible. -->
-    <br>
-    <br>
-    L'application est loin d'être terminée, il y a encore beaucoup de choses à améliorer et j'ai énormément d'idées pour la suite.
 
+  <!-- <div class="feedback-text" *ngIf="usedLanguage() === 'fr'">
+    <b>ConcepTask</b> est une application mobile open-source de gestion de tâches, développée dans mon temps libre en parallèle de mes études.
     <br>
     <br>
-    Si vous avez des idées d'amélioration ou des bugs à me signaler n'hésitez pas à me contacter par mail à l'adresse suivante :
-
-    <a href="mailto:marius.diguat--mateus@utbm.fr">
-      
-      <p>marius.diguat--mateus@utbm.fr</p>
+    L’originalité de ConcepTask réside dans sa capacité à décomposer un projet complexe en un arbre structuré. Chaque tâche peut être divisée en sous-tâches, permettant une vue d’ensemble claire et facilement visualisable sous forme de graphe interactif.
+    <br>
+    <br>
+    Bien que le développement soit actuellement en pause, de nombreuses améliorations sont envisagées pour les versions futures. Toute contribution ou collaboration au projet est la bienvenue.
+    <br>
+    <br>
+    Pour toute suggestion d'amélioration, proposition de collaboration ou signalement de bug, veuillez contacter :
+    <a href="mailto:contact@mariusdiguat.fr">
+      <p>contact@mariusdiguat.fr</p>
     </a>
-
     <br>
-    <br>
-    Pour visualiser mon portfolio, rendez-vous sur le lien suivant :
-
+    Pour plus d'informations sur le projet et son développeur :
     <a href="https://mariusdiguat.fr/">
-      
       <p>https://mariusdiguat.fr/</p>
     </a>
-
     <br>
-    <br>
-    Merci d'avoir utilisé ConcepTask ! 
-
+    Merci d'utiliser ConcepTask !
     <br>
     <br>
     Marius Diguat-Mateus
+  </div> -->
+
+  <div class="feedback-text" *ngIf="usedLanguage() === 'fr'"> 
+    <b>ConcepTask</b> est une application mobile open-source
+    de gestion de tâches, conçue durant mon temps libre, en parallèle de mes études. 
+    <br><br> 
+    Son objectif est simple : aider à structurer des projets complexes
+    en les décomposant en tâches et sous-tâches. 
+    <br><br> 
+    Il s'agit de la première version et de nombreuses améliorations sont envisagées pour les versions futures.
+    <br><br>
+    Pour toute question, suggestion, proposition de collaboration ou signalement de bug, veuillez me contacter à l'adresse suivante :
+    <a href="mailto:contact@mariusdiguat.fr">
+      <p>contact@mariusdiguat.fr</p>
+    </a>
+
+    <br>
+
+    Pour plus d'informations sur mon profil et mes projets je vous invite à visiter mon portfolio à l'adresse suivante :
+    <a href="https://mariusdiguat.fr/">
+      <p>https://mariusdiguat.fr/</p>
+    </a>
+
+    <br> 
+    Merci d’utiliser <b>ConcepTask</b> ! 
+    <br>
+    <br> 
+    Marius Diguat--Mateus 
   </div>
 
-  <div class="feedback-text" *ngIf="usedLanguage() === 'en'">
-    ConcepTask is my first mobile app project.
-    <br>
-    <br>
-    I created it based on my needs for a simple, efficient, and comprehensive task management application.
-    <br>
-    <br>
-    The app is far from finished; there's still a lot to improve, and I have plenty of ideas for what comes next.
-    <br>
-    <br>
-    If you have suggestions for improvement or bugs to report, feel free to contact me via email at the following address:
-    <a href="mailto:marius.diguat--mateus@utbm.fr">
-      <p>marius.diguat--mateus@utbm.fr</p>
-    </a>
-    <br>
-    <br>
-    To view my portfolio, visit the following link:
-    <a href="https://mariusdiguat.fr/">
-      <p>https://mariusdiguat.fr/</p>
-    </a>
-    <br>
-    <br>
-    Thank you for using ConcepTask!
-    <br>
-    <br>
-    Marius Diguat-Mateus
-</div>
+
+  <div class="feedback-text" *ngIf="usedLanguage() === 'en'">  
+    <b>ConcepTask</b> is an open-source mobile application for task management, developed during my free time alongside my studies.  
+    <br><br>  
+    Its goal is simple: to help structure complex projects by breaking them down into tasks and subtasks.  
+    <br><br>  
+    This is the first version, and many improvements are planned for future releases.  
+    <br><br>  
+    For any questions, suggestions, collaboration proposals, or bug reports, please contact me at:  
+    <a href="mailto:contact@mariusdiguat.fr">  
+      <p>contact@mariusdiguat.fr</p>  
+    </a>  
+
+    <br>  
+
+    For more information about my profile and projects, feel free to visit my portfolio at:  
+    <a href="https://mariusdiguat.fr/">  
+      <p>https://mariusdiguat.fr/</p>  
+    </a>  
+
+    <br>  
+    Thank you for using <b>ConcepTask</b>!  
+    <br>  
+    <br>  
+    Marius Diguat-Mateus  
+</div>  
+
 
 </ion-content>

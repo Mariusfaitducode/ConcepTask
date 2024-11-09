@@ -1,10 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { local } from 'd3';
 import { AuthentificationResponse } from 'src/app/models/firebase-response';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -18,7 +20,10 @@ export class ConnexionPage implements OnInit {
     private router : Router,
     private route : ActivatedRoute, 
     private authService : AuthService,
-    private userService : UserService,) { }
+    private userService : UserService,
+    private settingsService : SettingsService,
+    private translate : TranslateService
+    ) { }
 
 
   isSignUpPage : boolean = false;  
@@ -39,13 +44,15 @@ export class ConnexionPage implements OnInit {
 
     this.route.params.subscribe((params) => {
 
+      this.settingsService.initPage(this.translate);
+
       if (params['type'] == 'sign-up'){
         this.isSignUpPage = true;
-        this.connexionText = "Inscription";
+        this.connexionText = this.translate.instant('SIGN UP');
       }
       else{
         this.isSignUpPage = false;
-        this.connexionText = "Connection";
+        this.connexionText = this.translate.instant('LOGIN');
       }
 
       console.log('ConnexionPage : isSignUpPage = ', this.isSignUpPage);
@@ -164,10 +171,11 @@ export class ConnexionPage implements OnInit {
     this.password = "";
 
     if (this.isSignUpPage){
-      this.connexionText = "Inscription";
+
+      this.connexionText = this.translate.instant('SIGN UP');
     }
     else{
-      this.connexionText = "Connection";
+      this.connexionText = this.translate.instant('LOGIN');
     }
   }
 
