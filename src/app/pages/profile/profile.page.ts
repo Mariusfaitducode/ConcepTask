@@ -132,6 +132,11 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.router.navigate(['tabs/profile/edit-profile']);
   }
 
+  goToFeedback(){
+    this.router.navigate(['tabs/feedback']);
+  }
+
+
 
   // * DISCONNECT
 

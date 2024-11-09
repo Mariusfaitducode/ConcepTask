@@ -235,7 +235,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
         }
 
         .monthview-primary-with-event {
-            background-color: #3a87ad;
+            // background-color: #3a87ad;
             // color: white;
         }
 
@@ -260,6 +260,10 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
         .monthview-datetable td {
             cursor: pointer;
             text-align: center;
+
+            // display: inline-flex;
+            // justify-content: center;
+            // align-items: center;
         }
 
         .monthview-secondary-with-event {

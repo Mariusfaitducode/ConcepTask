@@ -50,7 +50,7 @@
 
     <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
 
-    <ion-button [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()" expand="block" class="big-button">{{'SAVE' | translate}}</ion-button>
+    <!-- <ion-button [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()" expand="block" class="big-button">{{'SAVE' | translate}}</ion-button> -->
 
 
     </ion-list>
@@ -101,3 +101,9 @@
     </ion-item> -->
   </div>
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button  [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()">
+    <ion-icon name="checkmark-outline" ></ion-icon>
+  </ion-fab-button>
+</ion-fab>

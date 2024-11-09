@@ -63,25 +63,32 @@
 
 
 
-    <ion-list>
-
-      <ion-item (click)="goToSettings()">
-        <ion-icon name="settings-outline" slot="start"></ion-icon>
-        <ion-label>{{'SETTINGS' | translate}}</ion-label>
-      </ion-item>
-
-      <ion-item (click)="goToPersonnalInformations()">
-        <ion-icon name="person-outline" slot="start"></ion-icon>
-        <ion-label>{{'PERSONAL INFORMATION' | translate}}</ion-label>
-      </ion-item>
-
-      <ion-item  (click)="disconnect()">
-        <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        <ion-label>{{'DISCONNECT' | translate}}</ion-label>
-      </ion-item>
-    </ion-list>
+    
 
   </div>
+
+  <ion-list>
+
+    <ion-item (click)="goToSettings()">
+      <ion-icon name="settings-outline" slot="start"></ion-icon>
+      <ion-label>{{'SETTINGS' | translate}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="user" (click)="goToPersonnalInformations()">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label>{{'PERSONAL INFORMATION' | translate}}</ion-label>
+    </ion-item>
+
+    <ion-item (click)="goToFeedback()">
+      <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+      <ion-label>{{'ABOUT THIS APP' | translate}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="user"  (click)="disconnect()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      <ion-label>{{'DISCONNECT' | translate}}</ion-label>
+    </ion-item>
+  </ion-list>
 
 
 </ion-content>

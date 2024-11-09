@@ -63,7 +63,7 @@ export class PersonnalInformationsPage implements OnInit {
 
 
   goBackTodo(){
-    this.router.navigate(['/tabs/profile']);
+    this.router.navigate(['/profile']);
   }
 
   editMailOrPassword(editMode : null | "mail" | "password"){

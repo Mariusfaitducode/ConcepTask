@@ -15,13 +15,20 @@ export class TodoTrackerComponent  implements OnInit {
 
   days : string[] = ["M", "T", "W", "T", "F", "S", "S"];
 
-  numberOfWeeks: number = 24;
+  numberOfWeeks: number = 52;
 
   // weeks: number[] = [];
 
 
   ngOnInit() {
     console.log("todosTracker", this.todosTracker)
+  }
+
+  ngAfterViewInit() {
+    const todoBody = document.querySelector('.todo-body');
+    if (todoBody) {
+      todoBody.scrollLeft = todoBody.scrollWidth;
+    }
   }
 
 

@@ -1,5 +1,3 @@
-
-
 .habit-tracker{
     margin: 16px 8px;
     border-radius: 4px;
@@ -20,8 +18,10 @@
     scrollbar-width: none;  /* For Firefox */
     -ms-overflow-style: none;  /* For Internet Explorer and Edge */
     max-width: 100%;
-    
+    // direction: ltr;
 }
+
+
 
 // .habit-tracker {
 //     overflow-x: auto;
@@ -40,6 +40,7 @@
 table {
     display: inline-block;
     max-width: 100%;
+    // direction: ltr;
 }
 
 tbody {

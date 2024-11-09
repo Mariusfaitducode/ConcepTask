@@ -140,7 +140,7 @@ app-sub-task ion-card{
 }
  
 
-//CALENDAR 
+// * CALENDAR 
 
 
 .calendar-style{
@@ -159,6 +159,8 @@ app-sub-task ion-card{
     height: 35px;
 
     border-radius: 50%;
+
+    margin: auto !important;
 
     // text-align: center;
     display: flex;
@@ -183,6 +185,10 @@ app-sub-task ion-card{
     background-color: var(--background) !important; 
     padding-top: 0px !important;
     padding-bottom: 0px !important;
+
+    // display: inline-flex;
+            // justify-content: center;
+            // align-items: center;
 }
 
 .monthview-primary-with-event { 
@@ -190,6 +196,11 @@ app-sub-task ion-card{
     background-color: var(--background) !important; 
     padding-top: 0px !important;
     padding-bottom: 0px !important;
+
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
 }
 
 
@@ -199,6 +210,11 @@ app-sub-task ion-card{
     // color: red !important;
     padding-top: 0px !important;
     padding-bottom: 0px !important;
+
+    // text-align: center;
+
+    
+
 }
 
 
@@ -206,16 +222,21 @@ app-sub-task ion-card{
     width: 35px;
     height: 35px;
 
+    // padding: auto !important;
+
     border-radius: 50%;
     border: 2px solid var(--ion-color-danger) !important;
     color: var(--ion-text-color) !important;
 
     // color: var(--ion-color-danger) !important;
 
+    margin: auto !important;
+
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    
 }
 
 
@@ -242,6 +263,8 @@ app-sub-task ion-card{
 // }
 
 
+
+// * GRAPH
 
 
 
