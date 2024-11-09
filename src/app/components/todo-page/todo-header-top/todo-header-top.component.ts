@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { MainTodo } from 'src/app/models/todo/main-todo';
 import { SubTodo } from 'src/app/models/todo/sub-todo';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 // import { Todo } from 'src/app/models/todo';
 import { TaskService } from 'src/app/services/task/task.service';
 
@@ -20,6 +21,7 @@ export class TodoHeaderTopComponent  implements OnInit {
 
   constructor(
     private taskService: TaskService,    
+    public settingsService: SettingsService
   ) { }
 
   ngOnInit() {}

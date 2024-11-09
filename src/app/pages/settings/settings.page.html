@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title class="title">
       {{'SETTINGS' | translate}}
-      <span class="sync-status" [ngClass]="areSettingsSynchronized() ? 'green' : 'orange'"></span>
+      <span *ngIf="settings.syncChip" class="sync-status" [ngClass]="areSettingsSynchronized() ? 'green' : 'orange'"></span>
     
     </ion-title>
 
@@ -102,7 +102,7 @@
 
     <!-- Theme -->
     <ion-row class="label-row">
-      <div>{{'PASTILLE SYNC' | translate}}</div>
+      <div>{{'SYNC CHIP' | translate}}</div>
       <ion-toggle [(ngModel)]="settings.syncChip"  [style.--handle-background-checked]="settings.themeColor"></ion-toggle>
     </ion-row>
   </div>
