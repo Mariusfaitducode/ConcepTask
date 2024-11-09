@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { RequestResponse } from 'src/app/models/firebase-response';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -16,7 +18,9 @@ export class EditProfilePage implements OnInit {
     private route : ActivatedRoute,
     private router : Router,
     private userService : UserService,
-    private authService : AuthService
+    private authService : AuthService,
+    private settingsService : SettingsService,
+    private translate: TranslateService
   ) { }
 
   user : User | null = null;
@@ -47,6 +51,9 @@ export class EditProfilePage implements OnInit {
 
     this.route.params.subscribe(params => {
 
+      this.settingsService.initPage(this.translate);
+
+
       // Reset error messages and form fields on page refresh
       this.errorMessage = "";
       this.errorMessageMail = "";
@@ -70,7 +77,6 @@ export class EditProfilePage implements OnInit {
         this.lastUser = JSON.parse(JSON.stringify(user));
       });
     })
-
     
   }
 

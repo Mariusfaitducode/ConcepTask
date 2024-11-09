@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // import { NgCalendarModule } from 'ionic2-calendar'; 
 // import { CalendarComponent } from 'ionic2-calendar/calendar';
 
@@ -11,6 +11,8 @@ import { TaskService } from 'src/app/services/task/task.service';
 import { Subscription } from 'rxjs';
 import { MainTodo } from 'src/app/models/todo/main-todo';
 import { SubTodo } from 'src/app/models/todo/sub-todo';
+import { TranslateService } from '@ngx-translate/core';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 
 @Component({
@@ -21,6 +23,9 @@ import { SubTodo } from 'src/app/models/todo/sub-todo';
 export class CalendarPage implements OnInit, OnDestroy {
 
   constructor(
+    private route : ActivatedRoute,
+    private settingsService : SettingsService,
+    private translate: TranslateService,
     private router : Router,
     private taskService : TaskService
   ) { }
@@ -48,8 +53,10 @@ export class CalendarPage implements OnInit, OnDestroy {
       this.initTodoList();
     });
 
-
-    // this.initTodoList();
+    // Actualise la page à chaque changement
+    this.route.queryParams.subscribe(params =>{
+      this.settingsService.initPage(this.translate);
+    });
   }
 
 
@@ -174,13 +181,41 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   onViewTitleChanged(title: string) {
     console.log(title)
-    this.viewTitle = title;
+
+    // this.viewTitle = this.formatDateToCustomString(new Date(title));
+    this.viewTitle = this.formatMonthTitle(title);
+  }
+
+  formatMonthTitle(title: string){
+    let months = []
+    
+    if (this.translate.currentLang === 'fr'){
+      months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    }
+    else{
+      months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    }
+
+    let date = new Date(title);
+    return `${months[date.getMonth()]} ${date.getFullYear()}`;
+  
+
   }
 
 
   formatDateToCustomString(calendarDate: Date) {
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    let daysOfWeek = []
+    let months = []
+    
+    if (this.translate.currentLang === 'fr'){
+      daysOfWeek = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+      months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    }
+    else{
+      daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    }
 
     let date = calendarDate;
 

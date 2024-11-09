@@ -7,7 +7,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      Edit Profile
+      {{'EDIT PROFILE' | translate}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -50,7 +50,7 @@
 
     <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
 
-    <ion-button [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()" expand="block" class="big-button">Sauvegarder</ion-button>
+    <ion-button [disabled]="!canModifyUser() || editMode !== null" (click)="modifyUser()" expand="block" class="big-button">{{'SAVE' | translate}}</ion-button>
 
 
     </ion-list>

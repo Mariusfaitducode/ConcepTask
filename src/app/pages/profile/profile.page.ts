@@ -49,12 +49,11 @@ export class ProfilePage implements OnInit, OnDestroy {
   importModalConfig: ImportExportModal = new ImportExportModal();
   // openImportExportModal: boolean = false;
 
-  todos: MainTodo[] = [];
+  // todos: MainTodo[] = [];
 
 
 
   ngOnInit() {
-    // TODO : add verification to limit the reload of teams
     this.userService.getUser().subscribe((user : User | null) => {
 
       console.log('ProfilePage : user = ', user);
@@ -69,15 +68,13 @@ export class ProfilePage implements OnInit, OnDestroy {
     });
 
 
-    this.taskService.getTodos().subscribe((todos: MainTodo[]) => {
+    // this.taskService.getTodos().subscribe((todos: MainTodo[]) => {
 
-      if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
+    //   if (this.todos.length != 0 && JSON.stringify(this.todos) == JSON.stringify(todos)) return;
 
-      console.log('Todos loaded in profile page:', todos)
-      this.todos = todos;
-
-      // this.results = [...this.todos].sort((a, b) => a.index - b.index);
-    });
+    //   console.log('Todos loaded in profile page:', todos)
+    //   this.todos = todos;
+    // });
 
     // Actualise la page à chaque changement
     this.route.queryParams.subscribe(params =>{
@@ -144,7 +141,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
     const { value } = await Dialog.confirm({
       title: 'Confirm',
-      message: `${this.translate.instant('DISCONNECT ACCOUNT WARNING')}`,
+      message: `${this.translate.instant('DISCONNECT MESSAGE')}`,
     });
 
     // Si l'utilisateur confirme, alors on se déconnecte

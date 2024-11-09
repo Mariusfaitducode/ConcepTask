@@ -6,21 +6,21 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Informations personnelles</ion-title>
+    <ion-title>{{'PERSONAL INFORMATION' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Informations personnelles</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
 
   <ion-list>
     <ion-item class="item-margin" [disabled]="editMode === 'password'">
       <ion-input type="text"
-        [label]="editMode === 'mail' ? 'Changer email' : 'Email'"
+        [label]="editMode === 'mail' ? translate.instant('CHANGE EMAIL') : translate.instant('EMAIL')"
         labelPlacement="floating" 
         aria-label="Email"
         [ngModel]="editMode === 'mail' ? newEmail : user!.email"
@@ -29,18 +29,18 @@
       </ion-input>
 
       <ion-button slot="end" color="medium" (click)="editMailOrPassword('mail')">
-        {{editMode === 'mail' ? 'Annuler' : 'Modifier'}}
+        {{editMode === 'mail' ? translate.instant('CANCEL') : translate.instant('MODIFY')}}
       </ion-button>
     </ion-item>
 
     <div *ngIf="editMode === 'mail' && errorMessageMail" class="error-message">{{errorMessageMail}}</div>
 
-    <ion-button *ngIf="editMode === 'mail'" [disabled]="!validEmail()" (click)="modifyEmail()" class="big-button">Sauvegarder</ion-button>
+    <ion-button *ngIf="editMode === 'mail'" [disabled]="!validEmail()" (click)="modifyEmail()" class="big-button">{{translate.instant('SAVE')}}</ion-button>
 
 
     <ion-item class="item-margin" [disabled]="editMode === 'mail'">
       <ion-input type="password"
-        [label]="editMode === 'password' ? 'Changer mot de passe' : 'Mot de passe'"
+        [label]="editMode === 'password' ? translate.instant('CHANGE PASSWORD') : translate.instant('PASSWORD')"
         labelPlacement="floating"
         aria-label="Password" 
         [ngModel]="editMode === 'password' ? newPassword : '************'"
@@ -49,20 +49,20 @@
       </ion-input>
 
       <ion-button slot="end" color="medium" (click)="editMailOrPassword('password')">
-        {{editMode === 'password' ? 'Annuler' : 'Modifier'}}
+        {{editMode === 'password' ? translate.instant('CANCEL') : translate.instant('MODIFY')}}
       </ion-button>
     </ion-item>
 
     <div *ngIf="editMode === 'password' && errorMessagePassword" class="error-message">{{errorMessagePassword}}</div>
 
-    <ion-button *ngIf="editMode === 'password'" [disabled]="!newPassword" (click)="modifyPassword()" class="big-button">Sauvegarder</ion-button>
+    <ion-button *ngIf="editMode === 'password'" [disabled]="!newPassword" (click)="modifyPassword()" class="big-button">{{translate.instant('SAVE')}}</ion-button>
     
 
 
     <ion-item class="item-margin" [disabled]="editMode !== null">
-      <ion-label>Supprimer compte</ion-label>
+      <ion-label>{{translate.instant('DELETE ACCOUNT')}}</ion-label>
 
-      <ion-button slot="end" color="danger" (click)="showDeleteAccountConfirm()"> Supprimer
+      <ion-button slot="end" color="danger" (click)="showDeleteAccountConfirm()"> {{translate.instant('DELETE')}}
       </ion-button>
     </ion-item>
 

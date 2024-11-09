@@ -28,9 +28,7 @@ export class AuthService {
     private userService: UserService,
     private taskService: TaskService,
     private settingsService: SettingsService,
-
     private platform: Platform,
-
     private toastController: ToastController
   ) { }
 
@@ -48,13 +46,6 @@ export class AuthService {
 
     // On utilise try/catch pour gérer les erreurs
     try{
-      // // Vérifier si le pseudo est unique
-      // const pseudoExists = await this.userService.checkIfPseudoAlreadyExists(pseudo);
-
-      // // Si le pseudo existe déjà, on renvoie une erreur
-      // if (pseudoExists) {
-      //   throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-      // }
 
       // Création de l'utilisateur avec email et mot de passe
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
@@ -63,7 +54,7 @@ export class AuthService {
       // Si l'utilisateur est bien créé, on crée le document utilisateur dans Firestore
       if (uid) {
 
-        // TODO : use userService to create the user on firestore
+        // Création des données utilisateur
         let userData: User = {
           uid,
           pseudo,
@@ -76,7 +67,7 @@ export class AuthService {
         // On enregistre les données utilisateur dans Firestore
         await this.firestore.collection('users').doc(uid).set(userData);
 
-        // initialise la synchronisation des todos en reprenant les données locales
+        // Initialise la synchronisation des todos en reprenant les données locales
         this.taskService.initializeTodosFromLocalStorageToFirestore(userData)
 
         return new AuthentificationResponse(userData, '');
@@ -115,7 +106,7 @@ export class AuthService {
         // Settings synchronisation
         this.settingsService.setUserSettings(userData as User);
 
-        // Todos synchronisation
+        // Start todos synchronisation
         this.taskService.setUserId(userData!)
 
         return new AuthentificationResponse(userData, '');
@@ -329,8 +320,6 @@ export class AuthService {
 
 
   // * UPDATE EMAIL OR PASSWORD
-
-
   // Méthode pour mettre à jour l'email de l'utilisateur
   async updateUserEmail(newEmail: string): Promise<AuthentificationResponse> {
     try {
@@ -394,7 +383,8 @@ export class AuthService {
   }
 
 
-
+  // * DELETE USER ACCOUNT
+  // Méthode pour supprimer le compte utilisateur
   async deleteUserAccount(): Promise<RequestResponse> {
    
     try{

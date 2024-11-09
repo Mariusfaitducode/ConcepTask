@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from 'firebase/auth';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -14,9 +15,11 @@ import { UserService } from 'src/app/services/user/user.service';
 export class PersonnalInformationsPage implements OnInit {
 
   constructor(
+    private route : ActivatedRoute,
     private authService : AuthService,
     private userService : UserService,
-    private translate : TranslateService,
+    public translate : TranslateService,
+    private settingsService : SettingsService,
     private router: Router) { }
 
 
@@ -51,6 +54,11 @@ export class PersonnalInformationsPage implements OnInit {
       this.user = JSON.parse(JSON.stringify(user));
       this.lastUser = JSON.parse(JSON.stringify(user));
     });
+
+    this.route.queryParams.subscribe(params => {
+      this.settingsService.initPage(this.translate);
+    });
+
   }
 
 

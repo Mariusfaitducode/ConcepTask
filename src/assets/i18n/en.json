@@ -1,6 +1,7 @@
 
 
 {
+    "HOME": "Home",
     "SEARCH": "Search",
     "FILTERS": "Filters",
     "CLOSE": "Close",
@@ -52,6 +53,15 @@
     "repeat.month": "Repeat every month on {{dayOfMonth}} at {{hours}}:{{minutes}}",
     "repeat.year": "Repeat every year on {{dayOfMonth}} {{month}} at {{hours}}:{{minutes}}",
 
+    "TODAY": "Today",
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat",
+    "Sun": "Sun",
+
     "NOTIF SCHEDULED": "Notification scheduled",
     "NOTIF PROBLEM": "A problem occurs, notification not scheduled",
     "NOTIF CANCELED": "Notification canceled",
@@ -91,5 +101,26 @@
     "LOOSE CHANGE MESSAGE": "You will loose all changes made since your last save.",
 
     "SURE TO MOVE TO": "Are you sure to move",
-    "INTO": "into"
+    "INTO": "into",
+
+    "PROFILE": "Profile",
+    "EDIT PROFILE": "Edit profile",
+    "PERSONAL INFORMATION": "Personal information",
+    "DISCONNECT": "Disconnect",
+    "SAVE": "Save",
+
+    "DISCONNECT MESSAGE": "Are you sure you want to disconnect your account?",
+
+    "DELETE ACCOUNT": "Delete account",
+    "DELETE ACCOUNT WARNING": "Are you sure you want to delete your account? All your data will be deleted and cannot be recovered.",
+
+    "CANCEL": "Cancel",
+    "MODIFY": "Modify",
+    "DELETE": "Delete",
+
+    "CHANGE EMAIL": "Change email",
+    "EMAIL": "Email",
+    "CHANGE PASSWORD": "Change password",
+    "PASSWORD": "Password"
+
 }

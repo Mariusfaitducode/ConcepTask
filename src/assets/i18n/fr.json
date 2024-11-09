@@ -1,6 +1,7 @@
 
 
 {
+    "HOME": "Accueil",
     "SEARCH": "Recherche",
     "FILTERS": "Filtres",
     "CLOSE": "Fermer",
@@ -52,6 +53,15 @@
     "repeat.month": "Répéter chaque mois le {{dayOfMonth}} à {{hours}}:{{minutes}}",
     "repeat.year": "Répéter chaque année le {{dayOfMonth}} {{month}} à {{hours}}:{{minutes}}",
 
+    "TODAY": "Aujourd'hui",
+    "Mon": "Lun",
+    "Tue": "Mar",
+    "Wed": "Mer",
+    "Thu": "Jeu",
+    "Fri": "Ven",
+    "Sat": "Sam",
+    "Sun": "Dim",
+
     "day": "jour",
     "week": "semaine",
     "two-weeks": "deux semaines",
@@ -98,7 +108,26 @@
     "LOOSE CHANGE MESSAGE": "Vous allez perdre vos changements si vous quittez la page sans sauvegarder.",
 
     "SURE TO MOVE TO": "Etes vous sur de vouloir déplacer ",
-    "INTO": "dans"
+    "INTO": "dans",
 
+    "PROFILE": "Profil",
+    "EDIT PROFILE": "Editer le profil",
+    "PERSONAL INFORMATION": "Informations personnelles",
+    "DISCONNECT": "Déconnexion",
+    "SAVE": "Sauvegarder",
+
+    "DISCONNECT MESSAGE": "Êtes vous sûr de vouloir déconnecter votre compte?",
+    
+    "DELETE ACCOUNT": "Supprimer compte",
+    "DELETE ACCOUNT WARNING": "Êtes vous sûr de vouloir supprimer votre compte? Toutes vos données seront supprimées et ne pourront pas être récupérées.",
+
+    "CANCEL": "Annuler",
+    "MODIFY": "Modifier",
+    "DELETE": "Supprimer",
+
+    "CHANGE EMAIL": "Changer email",
+    "EMAIL": "Email",
+    "CHANGE PASSWORD": "Changer mot de passe",
+    "PASSWORD": "Mot de passe"
 
 }

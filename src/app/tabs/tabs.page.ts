@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-tabs',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabsPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private settingsService : SettingsService,
+    public translate : TranslateService,
+  ) { }
 
   ngOnInit() {
+    this.settingsService.initPage(this.translate);
+    
   }
 
 }

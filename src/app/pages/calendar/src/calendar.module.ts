@@ -6,12 +6,13 @@ import { WeekViewComponent } from './weekview';
 import { DayViewComponent } from './dayview';
 import { CalendarComponent } from './calendar';
 import { initPositionScrollComponent } from './init-position-scroll';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     declarations: [
         MonthViewComponent, WeekViewComponent, DayViewComponent, CalendarComponent, initPositionScrollComponent
     ],
-    imports: [IonicModule, CommonModule],
+    imports: [IonicModule, CommonModule, SharedModule],
     exports: [CalendarComponent]
 })
 export class NgCalendarModule {}

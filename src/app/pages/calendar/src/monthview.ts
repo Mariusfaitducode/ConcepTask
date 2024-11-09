@@ -19,6 +19,8 @@ import {SwiperOptions} from 'swiper/types';
 import {ICalendarComponent, IEvent, IMonthView, IMonthViewRow, ITimeSelected, IRange, CalendarMode, IDateFormatter, IMonthViewDisplayEventTemplateContext} from './calendar.interface';
 import {CalendarService} from './calendar.service';
 import { set } from 'firebase/database';
+import { TranslateService } from '@ngx-translate/core';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 @Component({
     selector: 'monthview',
@@ -37,7 +39,7 @@ import { set } from 'firebase/database';
                         <thead>
                         <tr>
                             <th *ngFor="let dayHeader of views[currentViewIndex].dayHeaders">
-                                <small>{{dayHeader}}</small>
+                                <small>{{dayHeader | translate}}</small>
                             </th>
                         </tr>
                         </thead>
@@ -274,7 +276,13 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
 
     public preLoadedMonthSliders: number[];
 
-    constructor(private calendarService: CalendarService, private zone:NgZone) {
+    constructor(
+        private calendarService: CalendarService, 
+        private zone:NgZone,
+        private translate: TranslateService,
+        private settingsService: SettingsService
+    
+    ) {
     
         this.preLoadedMonthSliders = Array(48).fill(0).map((x,i)=>i);
     
@@ -339,6 +347,12 @@ export class MonthViewComponent implements ICalendarComponent, OnInit, OnDestroy
     }
 
     ngOnInit() {
+
+        // console.log('MONTH VIEW INIT');
+
+        this.settingsService.initPage(this.translate);
+
+
         if (!this.sliderOptions) {
             this.sliderOptions = {
 

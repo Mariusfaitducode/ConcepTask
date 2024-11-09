@@ -28,6 +28,9 @@ export class UserService {
 
   private userSubscription: Subscription | null = null;
 
+  private cachedUsers: Map<string, UserSimplified> = new Map();
+
+
   // private listUsersSimplifiedSubject = new BehaviorSubject<UserSimplified[]>([]);
 
 
@@ -38,7 +41,12 @@ export class UserService {
     private taskService : TaskService,
   ) {}
 
-  // Initialise le service utilisateur
+
+  // * AUTHENTIFICATION SUBSCRIPTION
+
+  // * Initialise le service utilisateur
+  // Appelé par le AppInitService
+  // Permet de s'abonner à l'état d'authentification pour obtenir l'utilisateur actuel au démarrage, à la connexion ou à la déconnexion
   async initUserService(){
     // S'abonne à l'état d'authentification pour obtenir l'utilisateur actuel au démarrage, à la connexion ou à la déconnexion
     this.afAuth.authState.subscribe(user => {
@@ -84,9 +92,9 @@ export class UserService {
   }
   
 
-
-  private cachedUsers: Map<string, UserSimplified> = new Map();
-
+  // * GET USER SIMPLIFIED
+  // Permet de récupérer n'importe quel utilisateur simplifié par son uid
+  // Utilise un cache pour optimiser les requêtes
   getUserSimplifiedById(uid: string): Promise<UserSimplified | null> {
     // Check if the user is already in the cache
     if (this.cachedUsers.has(uid)) {
@@ -114,16 +122,15 @@ export class UserService {
     }
   }
 
-
-  // Retourne un Observable de l'utilisateur actuel
+  // * GET USER
+  // Retourne l'observable de l'utilisateur actuel
   getUser() {
     return this.userSubject.asObservable();
   }
-  
 
-  // TODO : if user is connected, get user data from userSubject, else get user data from firestore
-
-  // Charger les données utilisateur après connexion ou inscription
+  // * LOAD USER DATA
+  // Permet de charger les données utilisateur après connexion ou inscription
+  // Utiliser seulement AuthService
   async loadUserData(uid: string): Promise<User | null> {
 
     console.log('User service : loadUserData')
@@ -139,22 +146,12 @@ export class UserService {
   }
 
 
-  // TODO : check if pseudo already exists optimize, HandleError return error message
-
+  // * UPDATE USER
   async updateUser(newUser: User): Promise<RequestResponse>{
     try {
       if (this.userRef){
 
-        // if (newUser.pseudo !== this.userSubject.value?.pseudo){
-        //   console.log('check if pseudo already exists')
-        // const pseudoExists = await this.checkIfPseudoAlreadyExists(newUser.pseudo);
-        // if (pseudoExists) {
-        //   throw new Error('Ce pseudo est déjà utilisé. Veuillez en choisir un autre.');
-        // }
-        // }
-
         await this.userRef.update(newUser);
-      // this.userSubject.next(user); // Mettre à jour l'utilisateur localement
       
         return new RequestResponse(true, '');
       }
@@ -168,7 +165,8 @@ export class UserService {
   }
 
 
-  // Met à jour l'utilisateur dans Firestore, y compris la photo de profil
+  // * UPDATE USER AVATAR
+  // Met à jour l'avatar de l'utilisateur
   async updateUserAvatar(user: User, profilePictureFile: File): Promise<RequestResponse> {
     try {
       // Check if a file is provided
@@ -215,6 +213,7 @@ export class UserService {
   }
 
 
+  // * SEARCH MEMBERS
   // Take a string input and search for users with a pseudo or email containing the input
   async searchMembers(input: string): Promise<UserSimplified[]> {
     
@@ -267,6 +266,7 @@ export class UserService {
 
   // ! Add new service to update todosTracker ?
 
+  // * SET USER TODOS TRACKER
   // Set user todos tracker
   setUserTodosTracker(user: User, todo: MainTodo | SubTodo): void {
 
@@ -292,14 +292,14 @@ export class UserService {
     }
   }
 
-
+  // * CHECK IF PSEUDO ALREADY EXISTS
   // Méthode pour vérifier si le pseudo existe déjà
-  public async checkIfPseudoAlreadyExists(pseudo: string): Promise<boolean> {
+  // public async checkIfPseudoAlreadyExists(pseudo: string): Promise<boolean> {
 
-    const usersRef = this.firestore.collection('users', ref => ref.where('pseudo', '==', pseudo));
-    const result = await usersRef.get().toPromise();
+  //   const usersRef = this.firestore.collection('users', ref => ref.where('pseudo', '==', pseudo));
+  //   const result = await usersRef.get().toPromise();
 
-    // On renvoie true si le pseudo existe déjà
-    return  result != undefined && !result.empty;
-  }
+  //   // On renvoie true si le pseudo existe déjà
+  //   return  result != undefined && !result.empty;
+  // }
 }
